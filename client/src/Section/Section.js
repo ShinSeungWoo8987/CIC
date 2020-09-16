@@ -7,7 +7,7 @@ function Section() {
             <div className="sectionContainer">
                 <div className="sectionArticle_1">
                     <div className="search">
-                        검색창
+                        검색창11
                     </div>
                     <div className="category">
 
