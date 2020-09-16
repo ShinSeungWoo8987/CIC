@@ -24,20 +24,18 @@
     float: left;
     width: 22.5%;
     height: 400px;
-    background-color: green;
 }
 .section .sectionContainer .sectionArticle_1 .title {
     float: left;
     width: 75%;
     font-size: 60px;
-    padding: 10px 0px 10px 7.5px;
-    background-color: red;
+    padding: 10px 0px 50px 7.5px;
 }
 .section .sectionContainer .sectionArticle_1 .menu {
     float: left;
     width: 75%;
     font-size: 30px;
-    padding: 50px 0px 100px 7.5px;
+    padding: 50px 0px 150px 7.5px;
     border-left: 2px solid #707070;
 }
 .section .sectionContainer .sectionArticle_2 {
