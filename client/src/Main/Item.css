@@ -1,0 +1,129 @@
+.item {
+    float: left;
+    width: 30%;
+    height: 49.5%;
+    margin: 7px 15px;
+}
+.item .new {
+    float: left;
+    width: 50px;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+    font-size: 10px;
+    margin-bottom: 10px;
+    border-radius: 2px;
+    color: lightgray;
+    background-color: white;
+}
+.item .itemContainer {
+    float: left;
+    width: 100%;
+    height: 90%;
+    border: 1px solid #424040;
+    border-radius: 10px;
+}
+.item .itemContainer .itemImage {
+    float: left;
+    width: 100%;
+    height: 140px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    z-index: 1;
+    background-color: white;
+}
+.item .itemContainer .itemLogo {
+    position: relative;
+    float: left;
+    bottom: 40px;
+    left: 10px;
+    width: 60px;
+    height: 60px;
+    z-index: 2;
+    border: 1px solid black;
+    background-color: white;
+}
+.item .itemContainer .itemProducer {
+    position: relative;
+    float: left;
+    left: 7.5px;
+    width: 75px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 10px;
+    text-align: center;
+    color: #675151;
+}
+.item .itemContainer .itemDday {
+    float: right;
+    width: 50px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 10px;
+    color: #675151;
+}
+.item .itemContainer .itemTitle {
+    position: relative;
+    float: left;
+    bottom: 12.5px;
+    left: 7.5%;
+    width: 85%;
+    font-size: 15px;
+    text-align: center;
+    color: #675151;
+}
+.item .itemContainer .itemDescription {
+    position: relative;
+    float: left;
+    left: 5%;
+    width: 90%;
+    font-size: 10px;
+    color: #675151;
+}
+.item .itemContainer .itemTargetAmount {
+    position: relative;
+    float: left;
+    left: 2%;
+    top: 15px;
+    width: 96%;
+    font-size: 10px;
+    color: #675151;
+}
+.item .itemContainer .itemPercentBar {
+    position: relative;
+    float: left;
+    width: 96%;
+    left: 2%;
+    top: 17.5px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: white;
+}
+.item .itemContainer .itemCurrentAmount {
+    position: relative;
+    float: left;
+    width: 100%;
+    left: 2%;
+    top: 22.5px;
+    color: #675151;
+}
+.item .itemContainer .itemCurrentAmount .itemCurrentAmountText {
+    font-size: 10px;
+}
+.item .itemContainer .itemCurrentAmount .itemCurrentAmountValue {
+    font-size: 15px;
+}
+.item .itemContainer .itemCurrentAmount .itemAchievementAmount {
+    float: left;
+    width: 32%;
+}
+.item .itemContainer .itemCurrentAmount .itemInvestor {
+    float: left;
+    width: 33%;
+    text-align: center;
+}
+.item .itemContainer .itemCurrentAmount .itemPercentRate {
+    float: left;
+    width: 31%;
+    text-align: right;
+}
