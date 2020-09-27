@@ -1,5 +1,6 @@
 import React from 'react';
 import './Header.css';
+import Login from './Login_SC.js';
 
 function Header() {
   return (
@@ -24,7 +25,7 @@ function Header() {
                     회원가입
                 </div>
                 <div className="headerMenu">
-                    로그인
+                    <Login></Login>
                 </div>
             </div>
         </div>
