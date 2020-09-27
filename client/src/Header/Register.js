@@ -12,7 +12,7 @@ function Login() {
     }
     return(
         <div>
-            <LinkModal href='login'  onClick={(e)=>changeModalState(e)}>로그인</LinkModal>
+            <LinkModal href='register'  onClick={(e)=>changeModalState(e)}>회원가입</LinkModal>
             <Modal 
                 isOpen={modalState}
                 style={ModalStyle}
@@ -22,21 +22,12 @@ function Login() {
                 <Component>
                     <InputText id='id' type='text' placeholder="아이디"></InputText><br/>
                     <InputText id='id' type='password' placeholder="비밀번호"></InputText><br/>
-                    <Find>
-                        <A href='#'>아이디 찾기</A>
-                        <Blank>|</Blank>
-                        <A href='#'>비밀번호 찾기</A><br/>
-                    </Find>
-                    <InputSubmit type="submit" value="로그인"></InputSubmit>
+                    <InputSubmit type="submit" value="회원가입"></InputSubmit>
                 </Component>
             </Modal>
         </div>
     );
 }
-
-export default Login;
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const LinkModal = styled.a`
     color: white;
 `
@@ -45,12 +36,12 @@ const Component = styled.div`
 `
 const Input = styled.input`
     position: relative;
-    left: 14%;
+    left: 13%;
     height: 50px;
     border-radius: 10px;
 `
 const InputText = styled(Input)`
-    width: 285px;
+    width: 350px;
     font-size: 15px;
     padding: 0 0 0 15px;
     margin: 0 0 15px 0;
@@ -64,26 +55,6 @@ const InputSubmit = styled(Input)`
     color: white;
     background-color: #ABF200;
 `
-const Find = styled.div`
-    position: relative;
-    left: 27.5%;
-    width: 75%;
-    font-size: 12.5px;
-    margin: -5px 0 20px 0;
-`
-const A = styled.a`
-    float: left;
-    color: #9A9A9A;
-
-    &:hover {
-        font-weight: bold;
-        color: black;
-    }
-`
-const Blank = styled.div`
-    float: left;
-    margin: 0 20px;
-`
 const ModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.9)',
@@ -91,12 +62,12 @@ const ModalStyle = {
     },
     content: {
         position: "absolute",
-        left: '40%',
-        top: '27.5%',
-        width: '425px',
-        height: '250px',
+        left: '37.5%',
+        top: '10%',
+        width: '500px',
+        height: '750px',
         borderRadius: 10,
         boxShadow: '9px 9px 10px #4E4E4E'
     }
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export default Login;

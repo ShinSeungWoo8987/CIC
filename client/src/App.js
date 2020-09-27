@@ -1,7 +1,18 @@
 import React from 'react';
 import {createGlobalStyle} from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
-import Header from './Header/Header_SC'
-import Main from './Main/Main_SC'
+import Header from './Header/Header'
+import Main from './Main/Main'
+function App() {
+  return (
+    <div className="App">
+      <GlobalStyle/>
+      <Header/>
+      <Main/>
+    </div>
+  );
+}
+
+export default App;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const GlobalStyle = createGlobalStyle`
   body {
@@ -19,14 +30,3 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function App() {
-  return (
-    <div className="App">
-      <GlobalStyle/>
-      <Header></Header>
-      <Main></Main>
-    </div>
-  );
-}
-
-export default App;
