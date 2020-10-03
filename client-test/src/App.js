@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { post } from 'axios'
+import TextEditor from './TextEditor';
 
 function App(props) {
   const [files, setFiles] = useState([]);
@@ -44,7 +45,7 @@ function App(props) {
     }
   }
   return (
-    <div>
+    <>
       <form onSubmit={e=>onSubmit(e)}>
         <input type='file'
           accept='image/jpg,impge/png,image/jpeg,image/gif'
@@ -56,7 +57,9 @@ function App(props) {
         <button type="submit">Upload</button>
       </form>
       {files.map(file => <img src={file.previewURL} width='100px' alt='profile_preview' />)}
-    </div>
+
+      <TextEditor/>
+    </>
   );
 }
 
