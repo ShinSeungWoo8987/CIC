@@ -16,7 +16,7 @@ function App(props) {
     const config={ headers:{ 'content-type':'multipart/form-data' } }
 
     for(var i=0; i<files.length;i++){
-      formData.append('image'+i,files[i]);
+      formData.append('file'+i, files[i].file);
     }
 
     return post(url, formData, config)
