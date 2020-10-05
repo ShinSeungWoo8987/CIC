@@ -1,64 +1,50 @@
-import React, { useRef, useState } from 'react';
-import { post } from 'axios'
+import React, { useContext } from 'react';
+import UploadImage from './UploadImage';
 import TextEditor from './TextEditor';
+import { post } from 'axios'
+import Store from './store/store';
 
 function App(props) {
-  const [files, setFiles] = useState([]);
-  const imagesRef = useRef();
+  const { content, contentDispatch} = useContext(Store);
+  
+  const addContent = ()=>{
+    var newContent = content.concat([{
+      id : content.length,
+      head : content.length%2===0 ? 'text':'image',
+      content : content.length%2===0 ? '':[]
+    }]);
+    contentDispatch({type: 'CHANGE', payload: newContent});
+  }
   
   // Upload to server
   const onSubmit = (e)=>{
     e.preventDefault();
-    setFiles([]);
-    imagesRef.current.value = '';
+    contentDispatch({type: 'CHANGE', payload: [{id:0, head:'text', content:''}]  })
 
     const url = '/upload'
     const formData = new FormData()
     const config={ headers:{ 'content-type':'multipart/form-data' } }
 
-    for(var i=0; i<files.length;i++){
-      formData.append('file'+i, files[i].file);
-    }
+    const imageContent = content.filter(i => i.head === 'image');
 
+    var cnt=0;
+    imageContent.map( (u)=>{
+      u.content.map(f=>formData.append('file'+cnt++, f.file));
+    });
     return post(url, formData, config)
   }
 
-  // Image preview
-  const handleFileOnChange = (e) => {
-    e.preventDefault();
-    var newFileList = [];
-    const uploadedFile = e.target.files;
-    for (var i = 0; i < uploadedFile.length; i++) {
-      let reader = new FileReader();
-      let file = uploadedFile[i];
-      reader.onloadend = () => {
-        newFileList.push({
-          file: file,
-          previewURL: reader.result
-        })
-      }
-      reader.readAsDataURL(file);
+  const makeAddContent = content.map(i=> i.head==='text'?
+    <TextEditor key={i.id} id={i.id} /> : <UploadImage key={i.id} id={i.id} />
+  );
 
-      if (i === uploadedFile.length - 1) {
-        setTimeout(() => setFiles(newFileList), 1000);
-      }
-    }
-  }
   return (
     <>
       <form onSubmit={e=>onSubmit(e)}>
-        <input type='file'
-          accept='image/jpg,impge/png,image/jpeg,image/gif'
-          name='profile_img'
-          onChange={handleFileOnChange}
-          ref={imagesRef}
-          multiple
-        />
+        {makeAddContent}
         <button type="submit">Upload</button>
       </form>
-      {files.map(file => <img src={file.previewURL} width='100px' alt='profile_preview' />)}
-
-      <TextEditor/>
+      <button onClick={()=>addContent()}>+</button>
     </>
   );
 }
