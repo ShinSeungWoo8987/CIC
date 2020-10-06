@@ -2,3 +2,8 @@ Upload버튼 클릭시
 1. 이미지 먼저 업로드 이후.
 서버에서 경로를 res로 주면,
 2. 그 경로로 이미지세팅 다시해서 글 등록하기.
+
+
+https://crowdincreative.s3.ap-northeast-2.amazonaws.com/폴더명/파일명
+
+FileUploadController.java 키값 수정해야 작동함.
