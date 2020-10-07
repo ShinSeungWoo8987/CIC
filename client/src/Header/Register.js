@@ -1,34 +1,84 @@
-import React, {useState} from 'react';
+import React, {useState, useContext}  from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
+import DaumPostcode from 'react-daum-postcode';
+import Store from '../Store/store.js';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Register() {
-    const [modalState, setModalState] = useState(false)
-    const changeModalState = (e) => {
-        e.preventDefault()
-        setModalState(true)
-    }
     const register=true?'회원가입':''
+    // Register Modal Setting
+    const [registerModalState, setRegisterModalState] = useState(false)
+    const changeRegisterModalState = (e) => {
+        e.preventDefault()
+        setRegisterModalState(true)
+    }
+    // Postcode Modal Setting
+    const [postcodeModalState, setPostcodeModalState] = useState(false)
+    const changePostcodeModalState = (e) => {
+        e.preventDefault()
+        setPostcodeModalState(true)
+    }
+    // Postcode & Address Value Setting
+    const [postcode, setPostcode] = useState('')
+    const [address1, setAddress1] = useState('')
+    const handleComplete = (data) => {
+        setPostcode(data.zonecode)
+        setAddress1(data.address)
+        setPostcodeModalState(false)
+    }
+    // Register Information Setting
+    const {user, userDispatch} = useContext(Store);
+    const onSubmit = (e) => {
+        var newUser = user;
+        
+        newUser.id = e.target.id.value;
+        newUser.pw = e.target.pw.value;
+        newUser.name = e.target.name.value;
+        newUser.birth = e.target.birth.value;
+        newUser.phone = e.target.phone.value;
+        newUser.postcode = e.target.postcode.value;
+        newUser.address1 = e.target.address1.value;
+        newUser.address2 = e.target.address2.value;
+        
+        // console.log(newUser);
+        // debugger;
+        
+        userDispatch( {type: 'INFORMATION',payload: newUser} )
+
+        // console.log("e.target.id.value : "+e.target.id.value);
+    }
     return(
         <Container>
-            <LinkModal href='login'  onClick={(e)=>changeModalState(e)}>{register}</LinkModal>
+            <LinkModal href='login'  onClick={(e)=>changeRegisterModalState(e)}>{register}</LinkModal>
             <Modal 
-                isOpen={modalState}
-                style={ModalStyle}
-                onRequestClose={(e) => setModalState(false)}
+                isOpen={registerModalState}
+                style={RegisterModalStyle}
+                onRequestClose={(e) => setRegisterModalState(false)}
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
-                <Form>
-                    <InputText id='id' type='text' placeholder="아이디"></InputText><br/>
-                    <InputText id='id' type='password' placeholder="비밀번호"></InputText><br/>
-                    <Find>
-                        <A href='#'>아이디 찾기</A>
-                        <Blank>|</Blank>
-                        <A href='#'>비밀번호 찾기</A><br/>
-                    </Find>
-                    <InputSubmit type="submit" value="로그인"></InputSubmit>
+                <Form onSubmit={(e)=>onSubmit(e)}>
+                    <InputText id='id' type='text' placeholder="아이디"/><br/>
+                    <InputText id='pw' type='password' placeholder="비밀번호" /><br/>
+                    <InputText id='name' type='text' placeholder="이름" /><br/>
+                    <InputDate id='birth' type='date' min='1996-01-01' max='2099-12-31' /><br/>
+                    <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
+                    <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={postcode} readOnly/>
+                    <BtnPostcode type='submit' value='우편번호 검색' onClick={(e)=>changePostcodeModalState(e)}/><br/>
+                    <InputText id="address1" type="text" placeholder="도로명 주소" value={address1} readOnly/><br/>
+                    <InputText id="address2" type="text" placeholder="상세 주소" />
+                    <Modal 
+                        isOpen={postcodeModalState}
+                        style={PostcodeModalStyle}
+                        onRequestClose={(e) => setPostcodeModalState(false)}
+                        // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
+                    >
+                        <DaumPostcode
+                            onComplete={handleComplete}
+                        />
+                    </Modal><br/>
+                    <InputSubmit type="submit" value="회원가입"/>
                 </Form>
             </Modal>
         </Container>
@@ -44,62 +94,82 @@ const Container = Styled.div`
 `
 const LinkModal = Styled.a`
     color: #A3A3A3;
+
+    &:hover {
+        color: black;
+    }
 `
-const Form = Styled.div`
-    padding: 25px 0 0 0;
+const Form = Styled.form`
+    padding: 37.5px 0 0 0;
 `
 const Input = Styled.input`
     position: relative;
     left: 14%;
+    width: 355px;
     height: 50px;
+    margin: 0 0 15px 0;
+    font-size: 15px;
+    text-indent: 15px;
+    border: 1px solid #E0E0E0;
     border-radius: 10px;
+    color: #717171;
 `
 const InputText = Styled(Input)`
-    width: 285px;
-    font-size: 15px;
-    padding: 0 0 0 15px;
-    margin: 0 0 15px 0;
-    border: 1px solid #E0E0E0;
+`
+const InputDate = Styled(Input)`
+    text-indent: 7.5px;
+`
+const InputPostcode = Styled(Input)`
+    width: 175px;
+    margin: 0 28.5px 15px 0;
+`
+const BtnPostcode = Styled(Input)`
+    width: 150px;
+    height: 54px;
+    font-weight: bold;
+    text-indent: 0px;
+    text-shadow: 0 3px 7px #D6D6D6;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    background-color: #A6A6A6;
 `
 const InputSubmit = Styled(Input)`
-    width: 300px;  
+    width: 361px;  
     font-size: 20px;
     font-weight: bold;
+    text-shadow: 0 3px 7px #D6D6D6;
+    margin: 30px 0 0 0;
     border: none;
     color: white;
-    background-color: #ABF200;
+    background-color: #83E538;
 `
-const Find = Styled.div`
-    position: relative;
-    left: 27.5%;
-    width: 75%;
-    font-size: 12.5px;
-    margin: -5px 0 20px 0;
-`
-const A = Styled.a`
-    float: left;
-    color: #9A9A9A;
-
-    &:hover {
-        font-weight: bold;
-        color: black;
-    }
-`
-const Blank = Styled.div`
-    float: left;
-    margin: 0 20px;
-`
-const ModalStyle = {
+const RegisterModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.9)',
         zIndex: 3               
     },
     content: {
         position: "absolute",
-        left: '40%',
-        top: '27.5%',
+        left: '37.5%',
+        top: '10%',
         width: '500px',
         height: '700px',
+        borderRadius: 10,
+        boxShadow: '9px 9px 10px #4E4E4E'
+    }
+}
+const PostcodeModalStyle = {
+    overlay: {
+        backgroundColor: 'rgba(140,140,140,0.9)',
+        zIndex: 3               
+    },
+    content: {
+        position: "absolute",
+        left: '37.5%',
+        top: '22.5%',
+        width: '500px',
+        height: '450px',
         borderRadius: 10,
         boxShadow: '9px 9px 10px #4E4E4E'
     }

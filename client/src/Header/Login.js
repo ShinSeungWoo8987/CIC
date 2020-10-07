@@ -1,16 +1,30 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
+import Store from '../Store/store.js';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Login() {
+    const login=false?'로그아웃':'로그인'
+    // Login Modal Setting
     const [modalState, setModalState] = useState(false)
     const changeModalState = (e) => {
         e.preventDefault()
         setModalState(true)
     }
-    const login=false?'로그아웃':'로그인'
+    // Login Information Setting
+    const {user, userDispatch} = useContext(Store);
+    const onSubmit = (e) => {
+        var newUser = user;
+        
+        newUser.id = e.target.id.value;
+        newUser.pw = e.target.pw.value;
+
+        // console.log(newUser);
+        // debugger;
+        userDispatch( {type: 'INFORMATION',payload: newUser} )
+    }
     return(
         <Container>
             <LinkModal href='login'  onClick={(e)=>changeModalState(e)}>{login}</LinkModal>
@@ -20,23 +34,21 @@ function Login() {
                 onRequestClose={(e) => setModalState(false)}
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
-                <Form>
-                    <InputText id='id' type='text' placeholder="아이디"></InputText><br/>
-                    <InputText id='id' type='password' placeholder="비밀번호"></InputText><br/>
+                <Form onSubmit={(e)=>onSubmit(e)}>
+                    <InputText id='id' type='text' placeholder="아이디"/><br/>
+                    <InputText id='pw' type='password' placeholder="비밀번호"/><br/>
                     <Find>
                         <A href='#'>아이디 찾기</A>
                         <Blank>|</Blank>
                         <A href='#'>비밀번호 찾기</A><br/>
                     </Find>
-                    <InputSubmit type="submit" value="로그인"></InputSubmit>
+                    <InputSubmit type="submit" value="로그인"/>
                 </Form>
             </Modal>
         </Container>
     );
 }
-
 export default Login;
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Container = Styled.div`
     float: right;
@@ -44,6 +56,10 @@ const Container = Styled.div`
 `
 const LinkModal = Styled.a`
     color: #A3A3A3;
+
+    &:hover {
+        color: black;
+    }
 `
 const Form = Styled.div`
     padding: 25px 0 0 0;
@@ -55,19 +71,20 @@ const Input = Styled.input`
     border-radius: 10px;
 `
 const InputText = Styled(Input)`
-    width: 285px;
+    width: 300px;
     font-size: 15px;
-    padding: 0 0 0 15px;
+    text-indent: 15px;
     margin: 0 0 15px 0;
     border: 1px solid #E0E0E0;
 `
 const InputSubmit = Styled(Input)`
-    width: 300px;  
+    width: 306px;  
     font-size: 20px;
     font-weight: bold;
+    text-shadow: 0 3px 7px #D6D6D6;
     border: none;
     color: white;
-    background-color: #ABF200;
+    background-color: #83E538;
 `
 const Find = Styled.div`
     position: relative;
