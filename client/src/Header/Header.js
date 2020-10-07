@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Logo from './Logo.js'
 import Search from './Search.js'
 import Menu from './Menu.js'
@@ -15,9 +15,6 @@ function Header() {
 }
 export default Header;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const Left = Styled.div`
-  float: left;
-`
 const Container = Styled.div`
   width: 98%;
   margin: 10px 1% 0 1%;

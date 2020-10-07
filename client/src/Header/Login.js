@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
-import Store from '../Store/store.js';
+import Store from '../Store/Store.js';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
@@ -10,8 +10,8 @@ function Login() {
     // Login Modal Setting
     const [modalState, setModalState] = useState(false)
     const changeModalState = (e) => {
-        e.preventDefault()
-        setModalState(true)
+        e.preventDefault();
+        setModalState(true);
     }
     // Login Information Setting
     const {user, userDispatch} = useContext(Store);
@@ -21,9 +21,7 @@ function Login() {
         newUser.id = e.target.id.value;
         newUser.pw = e.target.pw.value;
 
-        // console.log(newUser);
-        // debugger;
-        userDispatch( {type: 'INFORMATION',payload: newUser} )
+        userDispatch( {type: 'INFORMATION',payload: newUser} );
     }
     return(
         <Container>
@@ -61,7 +59,7 @@ const LinkModal = Styled.a`
         color: black;
     }
 `
-const Form = Styled.div`
+const Form = Styled.form`
     padding: 25px 0 0 0;
 `
 const Input = Styled.input`

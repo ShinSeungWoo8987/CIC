@@ -2,8 +2,6 @@
 const exampleReducer = (state, { type, payload }) => {
     switch (type) {
         default:
-            return true;
-        case 'DEFAULT':
             return payload;
     }
 }
@@ -20,8 +18,8 @@ const _user = [
         address2:''
     }
 ]
-const userReducer = (state, {type, payload}) => {
-    switch(type) {
+const userReducer = (state, { type, payload }) => {
+    switch (type) {
         default:
             return _user;
         case 'INFORMATION':

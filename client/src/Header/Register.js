@@ -1,57 +1,57 @@
-import React, {useState, useContext}  from 'react';
+import React, {useContext, useState}  from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import DaumPostcode from 'react-daum-postcode';
-import Store from '../Store/store.js';
+import Store from '../Store/Store.js';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Register() {
-    const register=true?'회원가입':''
+    const register=true?'회원가입':'';
     // Register Modal Setting
-    const [registerModalState, setRegisterModalState] = useState(false)
+    const [registerModalState, setRegisterModalState] = useState(false);
     const changeRegisterModalState = (e) => {
-        e.preventDefault()
-        setRegisterModalState(true)
-    }
+        console.log("changeRegisterModalState");
+        e.preventDefault();
+        setRegisterModalState(true);
+    };
     // Postcode Modal Setting
-    const [postcodeModalState, setPostcodeModalState] = useState(false)
+    const [postcodeModalState, setPostcodeModalState] = useState(false);
     const changePostcodeModalState = (e) => {
-        e.preventDefault()
-        setPostcodeModalState(true)
-    }
+        console.log("changePostcodeModalState");
+        e.preventDefault();
+        setPostcodeModalState(true);
+    };
     // Postcode & Address Value Setting
-    const [postcode, setPostcode] = useState('')
-    const [address1, setAddress1] = useState('')
+    const [postcode, setPostcode] = useState('');
+    const [address1, setAddress1] = useState('');
     const handleComplete = (data) => {
-        setPostcode(data.zonecode)
-        setAddress1(data.address)
-        setPostcodeModalState(false)
-    }
+        console.log("handleComplete");
+        setPostcode(data.zonecode);
+        setAddress1(data.address);
+        setPostcodeModalState(false);
+    };
     // Register Information Setting
     const {user, userDispatch} = useContext(Store);
     const onSubmit = (e) => {
-        var newUser = user;
-        
-        newUser.id = e.target.id.value;
-        newUser.pw = e.target.pw.value;
-        newUser.name = e.target.name.value;
-        newUser.birth = e.target.birth.value;
-        newUser.phone = e.target.phone.value;
-        newUser.postcode = e.target.postcode.value;
-        newUser.address1 = e.target.address1.value;
-        newUser.address2 = e.target.address2.value;
-        
-        // console.log(newUser);
-        // debugger;
-        
-        userDispatch( {type: 'INFORMATION',payload: newUser} )
-
-        // console.log("e.target.id.value : "+e.target.id.value);
-    }
+        e.preventDefault();
+        const {id,pw,name,birth,phone,postcode,address1,address2} = e.target;
+        let newUser = user;
+        newUser = {
+            id:id.value,
+            pw:pw.value,
+            name:name.value,
+            birth:birth.value,
+            phone:phone.value,
+            postcode:postcode.value,
+            address1:address1.value,
+            address2:address2.value
+        };
+        userDispatch( {type: 'INFORMATION', payload: newUser} )
+    };
     return(
         <Container>
-            <LinkModal href='login'  onClick={(e)=>changeRegisterModalState(e)}>{register}</LinkModal>
+            <LinkModal href='login' onClick={(e)=>changeRegisterModalState(e)}>{register}</LinkModal>
             <Modal 
                 isOpen={registerModalState}
                 style={RegisterModalStyle}
