@@ -45,6 +45,7 @@ function UploadImage({id}) {
 
   return (
     <div id={id}>
+      <br/>
       <input type='file'
           accept='image/jpg,image/jpeg'
           name='profile_img'
