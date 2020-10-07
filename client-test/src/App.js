@@ -31,36 +31,7 @@ function App(props) {
     imageContent.map( (u)=>{
       u.content.map(f=>formData.append('file'+cnt++, f.file));
     });
-    return post(url, formData, config).then( res => {
-      const folderName = 'https://crowdincreative.s3.ap-northeast-2.amazonaws.com/'+res.data.folderName;
-      const fileName = [ res.data.fileName0, res.data.fileName1, res.data.fileName2, res.data.fileName3, res.data.fileName4 ]
-
-      //DB에 저장할 data형태로 만들기.
-      var cnt = 0;
-      const _data = content.map( ({id,head,content}) => {
-        if(head==='text'){
-          return {id,head,content};
-        }else{
-          return content.map( ({width}, idx)=>{
-            return `<img src=${folderName+fileName[cnt++]} width=${width} alt='profile_preview' />`;
-          } );
-        }
-      });
-      console.log(_data);
-
-      //DB에 전송
-      const sendData = _data.map( (n)=>{
-        if( !n.isArray() ){
-          /////////// uploadMethod('text',n);
-        }else{
-          n.map( (img)=>{
-            /////////// uploadMethod('image',img);
-          });
-        }
-      });
-
-
-    });
+    return post(url, formData, config)
   }
 
   const makeAddContent = content.map(i=> i.head==='text'?

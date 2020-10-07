@@ -20,7 +20,6 @@ function TextEditor({id}) {
                     handleCKeditorState(event, editor);
                     //console.log(editor.sourceElement.parentNode.id)
                 }}
-                //data="<strong>123</strong>"
                 config={{
                     toolbar: [
                         "heading", "|", "bold", "italic", "link", "bulletedList",

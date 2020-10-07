@@ -46,7 +46,7 @@ function UploadImage({id}) {
   return (
     <div id={id}>
       <input type='file'
-          accept='image/jpg,image/jpeg'
+          accept='image/jpg,impge/png,image/jpeg,image/gif'
           name='profile_img'
           onChange={handleFileOnChange}
           ref={imagesRef}

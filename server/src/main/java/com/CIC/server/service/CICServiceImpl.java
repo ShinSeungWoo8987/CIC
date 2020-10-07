@@ -15,11 +15,13 @@ public class CICServiceImpl implements CICService {
 	
 	@Override
 	public List<Type> getTypeList() {
+		System.out.println( this.cicMapper.getTypeList() );
 		return this.cicMapper.getTypeList();
 	}
 	
 	@Override
 	public List<Project> getProjectList() {
+		System.out.println( this.cicMapper.getProjectList() );
 		return this.cicMapper.getProjectList();
 	}
 }
