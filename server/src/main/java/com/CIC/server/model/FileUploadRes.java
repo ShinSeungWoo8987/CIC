@@ -7,6 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class FileUploadRes {
 	private String folderName;
+	private String thumbnail;
+	private String logo;
 	private String fileName0;
 	private String fileName1;
 	private String fileName2;

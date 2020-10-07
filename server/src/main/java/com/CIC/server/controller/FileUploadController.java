@@ -57,6 +57,8 @@ public class FileUploadController{
 	@RequestMapping( value = "/upload", method = RequestMethod.POST, consumes = "multipart/form-data")
 	@CrossOrigin//(origins = {"http://localhost:3000"})
 	public FileUploadRes fileUpload( //ArrayList<FileUploadRes>
+			@RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
+			@RequestParam(value = "logo", required = false) MultipartFile logo,
 			@RequestParam(value = "file0", required = false) MultipartFile file0,
 			@RequestParam(value = "file1", required = false) MultipartFile file1,
 			@RequestParam(value = "file2", required = false) MultipartFile file2,
@@ -65,7 +67,8 @@ public class FileUploadController{
 			) throws IOException {
 		String folderName = UUID.randomUUID().toString();
 		
-		
+		String thumbnailName = thumbnail == null ? "" : uploadS3(folderName, convert(thumbnail));
+		String logoName = logo == null ? "" : uploadS3(folderName, convert(logo));
 		String fileName0 = file0 == null ? "" : uploadS3(folderName, convert(file0));
 		String fileName1 = file1 == null ? "" : uploadS3(folderName, convert(file1));
 		String fileName2 = file2 == null ? "" : uploadS3(folderName, convert(file2));
@@ -73,10 +76,10 @@ public class FileUploadController{
 		String fileName4 = file4 == null ? "" : uploadS3(folderName, convert(file4));
 		
 		if(!(fileName0.equals(fileName1)&&fileName1.equals(fileName2)&&fileName2.equals(fileName3)&&fileName3.equals(fileName4))) {
-			FileUploadRes res = new FileUploadRes(folderName, fileName0, fileName1, fileName2, fileName3, fileName4);
+			FileUploadRes res = new FileUploadRes(folderName, thumbnailName, logoName, fileName0, fileName1, fileName2, fileName3, fileName4);
 			return res;
 		}else {
-			FileUploadRes res = new FileUploadRes("","","","","","");
+			FileUploadRes res = new FileUploadRes(folderName,thumbnailName,logoName,"","","","","");
 			return res;
 		}
 	}
