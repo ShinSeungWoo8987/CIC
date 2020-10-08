@@ -56,7 +56,6 @@ function Register() {
         const url = '/register';
         const data = newUser;
         put(url,data).then(res=>{
-          // res.data === 'Success'
         });
         setRegisterModalState(false);
     };
@@ -73,21 +72,16 @@ function Register() {
         }
     }
     // Id Valid Check
-    // onChange 함수를 사용하여 실시간 통신을 사용하는 것은 불가능한것인가???
-    // 가능하다면 무엇이 문제인것인가???
     const [idError, setIdError] = useState('');
     const checkId = (e) => {
         e.preventDefault();
-        const url = 'memberList';
-        const data = e.target.value;
+        const url = '/memberList';
+        const data = {
+            id: e.target.value
+        }
         put(url,data).then(res=>{
-          if(res.data === 'possible'){
-              setIdError('사용할 수 있는 아이디입니다.');
-          }else{
-            setIdError('사용할 수 없는 아이디입니다.');
-          }
+            setIdError(res.data);
         });
-        console.log("ID Valid Check");
     }
     return(
         <Container>
