@@ -1,23 +1,14 @@
 // const ..Reducer = (state, { payload }) => payload
-const exampleReducer = (state, { type, payload }) => {
-    switch (type) {
-        default:
-            return payload;
-    }
+const _user = {
+    id: null,
+    pw: null,
+    name: null,
+    birth: null,
+    phone: null,
+    postcode: null,
+    address1: null,
+    address2: null
 }
-
-const _user = [
-    {
-        id:'',
-        pw:'',
-        name:'',
-        birth:'',
-        phone:'',
-        postcode:'',
-        address1:'',
-        address2:''
-    }
-]
 const userReducer = (state, { type, payload }) => {
     switch (type) {
         default:
@@ -26,18 +17,20 @@ const userReducer = (state, { type, payload }) => {
             return payload;
     }
 }
-const _content = [
-    {id:0, head:'text', content:''}
-]
-const contentReducer = (state, { type, payload }) => {
+const _session = {
+    state: false,
+    id: null,
+    grade: null
+}
+const sessionReducer = (state, { type, payload }) => {
     switch (type) {
         default:
-            return _content;
-        case 'CHANGE':
+            return _session;
+        case 'SESSION':
             return payload;
     }
 }
 
 export {
-    exampleReducer, _user, userReducer , _content, contentReducer
+    _user, userReducer, _session, sessionReducer
 };

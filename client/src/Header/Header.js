@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Logo from './Logo.js'
 import Search from './Search.js'
 import Menu from './Menu.js'

@@ -4,7 +4,7 @@ import Img from '../Image/Logo.png';
 
 function Logo() {
     return (
-      <Container href='Main'>
+      <Container href="#">
         <ImageContainer>
           <Image src={Img} />
         </ImageContainer>

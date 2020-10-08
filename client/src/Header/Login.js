@@ -6,22 +6,39 @@ import Store from '../Store/Store.js';
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Login() {
-    const login=false?'로그아웃':'로그인'
+    // Redux Test - User
+    const {user, userDispatch} = useContext(Store);
+    // console.log(user);
+    // Login Information Setting
+    const {session, sessionDispatch} = useContext(Store);
+    const onSubmit = (e) => {
+        e.preventDefault();
+        let newSession = session;
+        newSession = {
+            state: true,
+            id: e.target.id.value,
+            grade: '관리자'
+        }
+        setModalState(false)
+        sessionDispatch( { type: 'SESSION', payload: newSession} );
+    }
+    // Login State
+    const login=session.state?'로그아웃':'로그인'
     // Login Modal Setting
     const [modalState, setModalState] = useState(false)
     const changeModalState = (e) => {
         e.preventDefault();
-        setModalState(true);
-    }
-    // Login Information Setting
-    const {user, userDispatch} = useContext(Store);
-    const onSubmit = (e) => {
-        var newUser = user;
-        
-        newUser.id = e.target.id.value;
-        newUser.pw = e.target.pw.value;
-
-        userDispatch( {type: 'INFORMATION',payload: newUser} );
+        if(login === '로그인'){
+            setModalState(true);
+        }else{
+            let newSession = session;
+            newSession = {
+                state: false,
+                id: null,
+                grade: null
+            }
+            sessionDispatch( { type: 'SESSION', payload: newSession} );
+        }
     }
     return(
         <Container>

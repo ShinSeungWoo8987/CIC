@@ -1,16 +1,15 @@
 import React, { useReducer } from 'react';
 import Store from './Store';
-import { exampleReducer, _user, userReducer, _content, contentReducer } from './clientReducer';
+import { _user, userReducer, _session, sessionReducer} from './clientReducer';
 
 function ClientStore(props) {
 
     // const [ .. , ..Dispatch] = useReducer( Reducer, '');
-    const [example, exampleDispatch] = useReducer(exampleReducer, 1);
     const [user, userDispatch] = useReducer(userReducer, _user);
-    const [content, contentDispatch] = useReducer(contentReducer, _content);
+    const [session, sessionDispatch] = useReducer(sessionReducer, _session);
 
     return (
-        <Store.Provider value={ { example, exampleDispatch, user, userDispatch, content, contentDispatch } }>
+        <Store.Provider value={ { user, userDispatch, session, sessionDispatch } }>
             {props.children}
         </Store.Provider>
     );

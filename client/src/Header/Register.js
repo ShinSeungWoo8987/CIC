@@ -3,22 +3,25 @@ import Styled from "styled-components" // styled-components 라이브러리를 �
 import Modal from 'react-modal';
 import DaumPostcode from 'react-daum-postcode';
 import Store from '../Store/Store.js';
+import { put } from 'axios'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Register() {
-    const register=true?'회원가입':'';
+    // Login State
+    const {session, sessionDispatch} = useContext(Store);
+    const register=session.state?'':'회원가입';
     // Register Modal Setting
     const [registerModalState, setRegisterModalState] = useState(false);
     const changeRegisterModalState = (e) => {
-        console.log("changeRegisterModalState");
         e.preventDefault();
-        setRegisterModalState(true);
+        if(register === '회원가입'){
+            setRegisterModalState(true);
+        }
     };
     // Postcode Modal Setting
     const [postcodeModalState, setPostcodeModalState] = useState(false);
     const changePostcodeModalState = (e) => {
-        console.log("changePostcodeModalState");
         e.preventDefault();
         setPostcodeModalState(true);
     };
@@ -26,7 +29,6 @@ function Register() {
     const [postcode, setPostcode] = useState('');
     const [address1, setAddress1] = useState('');
     const handleComplete = (data) => {
-        console.log("handleComplete");
         setPostcode(data.zonecode);
         setAddress1(data.address);
         setPostcodeModalState(false);
@@ -35,11 +37,15 @@ function Register() {
     const {user, userDispatch} = useContext(Store);
     const onSubmit = (e) => {
         e.preventDefault();
-        const {id,pw,name,birth,phone,postcode,address1,address2} = e.target;
+        const {id,pw1,pw2,name,birth,phone,postcode,address1,address2} = e.target;
+        if(pw1.value !== pw2.value){
+            document.getElementById('pw2').focus();
+            return false;
+        }
         let newUser = user;
         newUser = {
             id:id.value,
-            pw:pw.value,
+            pw:pw1.value,
             name:name.value,
             birth:birth.value,
             phone:phone.value,
@@ -47,8 +53,42 @@ function Register() {
             address1:address1.value,
             address2:address2.value
         };
-        userDispatch( {type: 'INFORMATION', payload: newUser} )
+        const url = '/register';
+        const data = newUser;
+        put(url,data).then(res=>{
+          // res.data === 'Success'
+        });
+        setRegisterModalState(false);
     };
+    // Password Equal Check
+    const [passwordError, setPasswordError] = useState('');
+    const checkPassword = (e) => {
+        e.preventDefault();
+        var pw1 = document.getElementById('pw1').value
+        var pw2 = e.target.value;
+        if(pw1 !== pw2){
+            setPasswordError('비밀번호가 일치하지 않습니다.');
+        }else{
+            setPasswordError('');
+        }
+    }
+    // Id Valid Check
+    // onChange 함수를 사용하여 실시간 통신을 사용하는 것은 불가능한것인가???
+    // 가능하다면 무엇이 문제인것인가???
+    const [idError, setIdError] = useState('');
+    const checkId = (e) => {
+        e.preventDefault();
+        const url = 'memberList';
+        const data = e.target.value;
+        put(url,data).then(res=>{
+          if(res.data === 'possible'){
+              setIdError('사용할 수 있는 아이디입니다.');
+          }else{
+            setIdError('사용할 수 없는 아이디입니다.');
+          }
+        });
+        console.log("ID Valid Check");
+    }
     return(
         <Container>
             <LinkModal href='login' onClick={(e)=>changeRegisterModalState(e)}>{register}</LinkModal>
@@ -59,14 +99,18 @@ function Register() {
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form onSubmit={(e)=>onSubmit(e)}>
-                    <InputText id='id' type='text' placeholder="아이디"/><br/>
-                    <InputText id='pw' type='password' placeholder="비밀번호" /><br/>
-                    <InputText id='name' type='text' placeholder="이름" /><br/>
-                    <InputDate id='birth' type='date' min='1996-01-01' max='2099-12-31' /><br/>
+                    <InputId id='id' type='text' placeholder="아이디" required onChange={(e)=>checkId(e)}/><br/>
+                    <SpanText id='error' value="테스트">{idError}</SpanText><br/>
+                    <InputPw id='pw1' type='password' placeholder="비밀번호" required/><br/>
+                    <SpanText id='error' value="테스트"/><br/>
+                    <InputPw id='pw2' type='password' placeholder="비밀번호 확인" required onChange={(e)=>checkPassword(e)}/><br/>
+                    <SpanText id='error' value="테스트">{passwordError}</SpanText><br/>
+                    <InputText id='name' type='text' placeholder="이름" required/><br/>
+                    <InputDate id='birth' type='date' min='1996-01-01' max='2099-12-31' required/><br/>
                     <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
-                    <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={postcode} readOnly/>
+                    <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={postcode} required readOnly/>
                     <BtnPostcode type='submit' value='우편번호 검색' onClick={(e)=>changePostcodeModalState(e)}/><br/>
-                    <InputText id="address1" type="text" placeholder="도로명 주소" value={address1} readOnly/><br/>
+                    <InputText id="address1" type="text" placeholder="도로명 주소" value={address1} required readOnly/><br/>
                     <InputText id="address2" type="text" placeholder="상세 주소" />
                     <Modal 
                         isOpen={postcodeModalState}
@@ -100,19 +144,24 @@ const LinkModal = Styled.a`
     }
 `
 const Form = Styled.form`
-    padding: 37.5px 0 0 0;
+    padding: 25px 0 0 0;
 `
 const Input = Styled.input`
     position: relative;
     left: 14%;
     width: 355px;
     height: 50px;
-    margin: 0 0 15px 0;
+    margin: 0 0 20px 0;
     font-size: 15px;
     text-indent: 15px;
     border: 1px solid #E0E0E0;
     border-radius: 10px;
     color: #717171;
+`
+const InputId = Styled(Input)`
+    margin: 0 0;
+`
+const InputPw = Styled(InputId)`
 `
 const InputText = Styled(Input)`
 `
@@ -144,6 +193,13 @@ const InputSubmit = Styled(Input)`
     color: white;
     background-color: #83E538;
 `
+const SpanText = Styled.span`
+    position: relative;
+    left: 18%;
+    bottom: 4px;
+    font-size: 5px;
+    color: red;
+`
 const RegisterModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.9)',
@@ -152,9 +208,9 @@ const RegisterModalStyle = {
     content: {
         position: "absolute",
         left: '37.5%',
-        top: '10%',
+        top: '7.5%',
         width: '500px',
-        height: '700px',
+        height: '800px',
         borderRadius: 10,
         boxShadow: '9px 9px 10px #4E4E4E'
     }
