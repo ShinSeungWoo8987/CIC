@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.CIC.server.mapper.CICMapper">
+	<select id="getProjectList" resultType="com.CIC.server.model.Project">
+		select * from PROJECT
+	</select>
+	<select id="getTypeList" resultType="com.CIC.server.model.Type">
+		select * from TYPE
+	</select>
+	<insert id="addMember">
+		insert into member(mem_id, mem_pw, mem_name, mem_phone, mem_birth, mem_postcode, mem_address1, mem_address2) 
+		values(#{mem_id}, #{mem_pw}, #{mem_name}, #{mem_phone}, #{mem_birth}, #{mem_postcode}, #{mem_address1}, #{mem_address2})
+	</insert>
+	<select id="getMemberList" resultType="String">
+		select mem_id from member
+	</select> 
+
+</mapper>
