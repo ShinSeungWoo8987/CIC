@@ -10,7 +10,7 @@ const _content = [
     {id:0, head:'text', content:''}
 ]
 const _info = {
-    project_name: '', category: '', target_money: '', sdate: '', fdate: '', thumbnail: '', logo: ''
+    project_name: '', category: '', target_money: '', sdate: '', fdate: '', thumbnail: '', logo: '', subDescription:''
 };
 
 // const ..Reducer = (state, { payload }) => payload

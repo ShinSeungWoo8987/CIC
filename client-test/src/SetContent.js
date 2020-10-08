@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import UploadImage from './UploadImage';
 import TextEditor from './TextEditor';
-import { post } from 'axios'
+import { put, post } from 'axios'
 import Store from './store/store';
 
 function SetContent(props) {
@@ -21,7 +21,7 @@ function SetContent(props) {
         e.preventDefault();
 
         const url = '/upload'
-        const formData = new FormData()
+        const formData = new FormData();
         const config = { headers: { 'content-type': 'multipart/form-data' } }
 
         const imageContent = content.filter(i => i.head === 'image');
@@ -33,7 +33,7 @@ function SetContent(props) {
         imageContent.map((u) => {
             u.content.map(f => formData.append('file' + cnt++, f.file));
         });
-        return post(url, formData, config).then(res => {
+        return put(url, formData, config).then(res => {
             const folderName = 'https://crowdincreative.s3.ap-northeast-2.amazonaws.com/' + res.data.folderName;
             const fileName = [res.data.fileName0, res.data.fileName1, res.data.fileName2, res.data.fileName3, res.data.fileName4];
             const thumbnail = `<img src='${folderName}/${res.data.thumbnail} alt='thumbnail' />`
@@ -44,24 +44,22 @@ function SetContent(props) {
 
             //DB에 저장할 data형태로 만들기.
             var cnt = 0;
-            let sendData = [info]
+            let sendContent = []
             for(var k=0; k<content.length; k++){
                 const {head} = content[k];
                 const _content = content[k].content
-                if(head === 'text') sendData.push({id:sendData.length,head,content:_content})
+                if(head === 'text') sendContent.push({id:sendContent.length,head,content:_content})
                 else for(var j=0; j<_content.length; j++){
                     const {width} = _content[j];
-                    sendData.push({id:sendData.length, head, content:`<img src='${folderName}/${fileName[cnt++]} width=${width}' alt='content' />`})
+                    sendContent.push({id:sendContent.length, head, content:`<img src='${folderName}/${fileName[cnt++]} width=${width}' alt='content' />`})
                 }
             }
-            console.log(sendData);
+
             // post data
-            post('/create_project', sendData)
-            .then(function (response) {
-                console.log(response);
-            }).catch(function (error) {
-                console.log(error);
-            });
+            put('/create_project', {...info, sendContent})
+                .then((res) => {
+                    console.log(res);
+                }).catch((err) => console.log(err));
         });
     }
     return (
@@ -81,3 +79,5 @@ function SetContent(props) {
 }
 
 export default SetContent;
+
+

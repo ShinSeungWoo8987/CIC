@@ -54,7 +54,7 @@ public class FileUploadController{
 		return fileName;
 	}
 	
-	@RequestMapping( value = "/upload", method = RequestMethod.POST, consumes = "multipart/form-data")
+	@RequestMapping( value = "/upload", method = RequestMethod.PUT, consumes = "multipart/form-data")
 	@CrossOrigin//(origins = {"http://localhost:3000"})
 	public FileUploadRes fileUpload( //ArrayList<FileUploadRes>
 			@RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
