@@ -7,6 +7,14 @@ import { put } from 'axios'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
+/*
+    - 실시간 아이디 중복체크
+    - 실시간 비밀번호 동일 유무 체크
+    - 실시간 아이디 및 비밀번호 제한된 문자 체크
+    - 우편번호
+    - DB 연결
+*/
+
 function Register() {
     // Login State
     const {session, sessionDispatch} = useContext(Store);
@@ -59,25 +67,43 @@ function Register() {
         });
         setRegisterModalState(false);
     };
-    // Password Equal Check
+    // Password Valid Check
     const [passwordError, setPasswordError] = useState('');
     const checkPassword = (e) => {
+        e.preventDefault();
+        const pw = e.target.value;
+        // Restricted Charater
+        if(pw.indexOf(" ") !== -1 || pw.indexOf("=") !== -1){
+            setPasswordError("사용할 수 없는 비밀번호입니다.");
+        }else{
+            setPasswordError('');
+        }
+    }
+    // Password Equal Check
+    const [passwordConfirmError, setPasswordConfirmError] = useState('');
+    const checkPasswordConfirm = (e) => {
         e.preventDefault();
         var pw1 = document.getElementById('pw1').value
         var pw2 = e.target.value;
         if(pw1 !== pw2){
-            setPasswordError('비밀번호가 일치하지 않습니다.');
+            setPasswordConfirmError('비밀번호가 일치하지 않습니다.');
         }else{
-            setPasswordError('');
+            setPasswordConfirmError('');
         }
     }
     // Id Valid Check
     const [idError, setIdError] = useState('');
     const checkId = (e) => {
         e.preventDefault();
+        const id = e.target.value;
+        // Restricted Charater
+        if(id.indexOf(" ") !== -1 || id.indexOf("=") !== -1){
+            setIdError("사용할 수 없는 아이디입니다.");
+            return false;   
+        }
         const url = '/memberList';
         const data = {
-            id: e.target.value
+            id: id
         }
         put(url,data).then(res=>{
             setIdError(res.data);
@@ -93,12 +119,12 @@ function Register() {
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form onSubmit={(e)=>onSubmit(e)}>
-                    <InputId id='id' type='text' placeholder="아이디" required onChange={(e)=>checkId(e)}/><br/>
+                    <InputId id='id' type='text' placeholder="아이디" required pattern="[A-Za-z0-9]{3,12}" onChange={(e)=>checkId(e)}/><br/>
                     <SpanText id='error' value="테스트">{idError}</SpanText><br/>
-                    <InputPw id='pw1' type='password' placeholder="비밀번호" required/><br/>
-                    <SpanText id='error' value="테스트"/><br/>
-                    <InputPw id='pw2' type='password' placeholder="비밀번호 확인" required onChange={(e)=>checkPassword(e)}/><br/>
+                    <InputPw id='pw1' type='password' placeholder="비밀번호" required onChange={(e)=>checkPassword(e)}/><br/>
                     <SpanText id='error' value="테스트">{passwordError}</SpanText><br/>
+                    <InputPw id='pw2' type='password' placeholder="비밀번호 확인" required onChange={(e)=>checkPasswordConfirm(e)}/><br/>
+                    <SpanText id='error' value="테스트">{passwordConfirmError}</SpanText><br/>
                     <InputText id='name' type='text' placeholder="이름" required/><br/>
                     <InputDate id='birth' type='date' min='1996-01-01' max='2099-12-31' required/><br/>
                     <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
