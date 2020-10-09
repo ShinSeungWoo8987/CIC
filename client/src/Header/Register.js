@@ -3,7 +3,7 @@ import Styled from "styled-components" // styled-components 라이브러리를 �
 import Modal from 'react-modal';
 import DaumPostcode from 'react-daum-postcode';
 import Store from '../Store/Store.js';
-import { put } from 'axios'
+import { put, post } from 'axios'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
@@ -13,6 +13,7 @@ Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속
     - 실시간 아이디 및 비밀번호 제한된 문자 체크
     - 우편번호
     - DB 연결
+    - 모달창 종료 시 메세지 초기화
 */
 
 function Register() {
@@ -21,12 +22,20 @@ function Register() {
     const register=session.state?'':'회원가입';
     // Register Modal Setting
     const [registerModalState, setRegisterModalState] = useState(false);
-    const changeRegisterModalState = (e) => {
+    const openRegisterModal = (e) => {
         e.preventDefault();
         if(register === '회원가입'){
             setRegisterModalState(true);
         }
     };
+    const closeRegisterModal = () => {
+        setIdMessage("");
+        setPasswordMessage("");
+        setPasswordConfirmMessage("");
+        setPostcode("");
+        setAddress1("");
+        setRegisterModalState(false);
+    }
     // Postcode Modal Setting
     const [postcodeModalState, setPostcodeModalState] = useState(false);
     const changePostcodeModalState = (e) => {
@@ -41,7 +50,7 @@ function Register() {
         setAddress1(data.address);
         setPostcodeModalState(false);
     };
-    // Register Information Setting
+    // Register Member
     const {user, userDispatch} = useContext(Store);
     const onSubmit = (e) => {
         e.preventDefault();
@@ -64,67 +73,70 @@ function Register() {
         const url = '/register';
         const data = newUser;
         put(url,data).then(res=>{
+            if(res.data === 'Fail'){
+                return false;
+            }
         });
-        setRegisterModalState(false);
+        closeRegisterModal();
     };
     // Password Valid Check
-    const [passwordError, setPasswordError] = useState('');
+    const [passwordMessage, setPasswordMessage] = useState('');
     const checkPassword = (e) => {
         e.preventDefault();
         const pw = e.target.value;
         // Restricted Charater
         if(pw.indexOf(" ") !== -1 || pw.indexOf("=") !== -1){
-            setPasswordError("사용할 수 없는 비밀번호입니다.");
+            setPasswordMessage("사용할 수 없는 비밀번호입니다.");
         }else{
-            setPasswordError('');
+            setPasswordMessage('');
         }
     }
     // Password Equal Check
-    const [passwordConfirmError, setPasswordConfirmError] = useState('');
+    const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
     const checkPasswordConfirm = (e) => {
         e.preventDefault();
         var pw1 = document.getElementById('pw1').value
         var pw2 = e.target.value;
         if(pw1 !== pw2){
-            setPasswordConfirmError('비밀번호가 일치하지 않습니다.');
+            setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
         }else{
-            setPasswordConfirmError('');
+            setPasswordConfirmMessage('');
         }
     }
     // Id Valid Check
-    const [idError, setIdError] = useState('');
+    const [idMessage, setIdMessage] = useState('');
     const checkId = (e) => {
         e.preventDefault();
         const id = e.target.value;
         // Restricted Charater
         if(id.indexOf(" ") !== -1 || id.indexOf("=") !== -1){
-            setIdError("사용할 수 없는 아이디입니다.");
+            setIdMessage("사용할 수 없는 아이디입니다.");
             return false;   
         }
         const url = '/memberList';
         const data = {
             id: id
         }
-        put(url,data).then(res=>{
-            setIdError(res.data);
+        post(url,data).then(res=>{
+            setIdMessage(res.data);
         });
     }
     return(
         <Container>
-            <LinkModal href='login' onClick={(e)=>changeRegisterModalState(e)}>{register}</LinkModal>
+            <LinkModal href='login' onClick={(e)=>openRegisterModal(e)}>{register}</LinkModal>
             <Modal 
                 isOpen={registerModalState}
                 style={RegisterModalStyle}
-                onRequestClose={(e) => setRegisterModalState(false)}
+                onRequestClose={(e) => closeRegisterModal()}
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form onSubmit={(e)=>onSubmit(e)}>
                     <InputId id='id' type='text' placeholder="아이디" required pattern="[A-Za-z0-9]{3,12}" onChange={(e)=>checkId(e)}/><br/>
-                    <SpanText id='error' value="테스트">{idError}</SpanText><br/>
+                    <SpanText>{idMessage}</SpanText><br/>
                     <InputPw id='pw1' type='password' placeholder="비밀번호" required onChange={(e)=>checkPassword(e)}/><br/>
-                    <SpanText id='error' value="테스트">{passwordError}</SpanText><br/>
+                    <SpanText>{passwordMessage}</SpanText><br/>
                     <InputPw id='pw2' type='password' placeholder="비밀번호 확인" required onChange={(e)=>checkPasswordConfirm(e)}/><br/>
-                    <SpanText id='error' value="테스트">{passwordConfirmError}</SpanText><br/>
+                    <SpanText>{passwordConfirmMessage}</SpanText><br/>
                     <InputText id='name' type='text' placeholder="이름" required/><br/>
                     <InputDate id='birth' type='date' min='1996-01-01' max='2099-12-31' required/><br/>
                     <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
@@ -183,6 +195,13 @@ const InputId = Styled(Input)`
 `
 const InputPw = Styled(InputId)`
 `
+const SpanText = Styled.span`
+    position: relative;
+    left: 18%;
+    bottom: 4px;
+    font-size: 5px;
+    color: red;
+`
 const InputText = Styled(Input)`
 `
 const InputDate = Styled(Input)`
@@ -212,13 +231,6 @@ const InputSubmit = Styled(Input)`
     border: none;
     color: white;
     background-color: #83E538;
-`
-const SpanText = Styled.span`
-    position: relative;
-    left: 18%;
-    bottom: 4px;
-    font-size: 5px;
-    color: red;
 `
 const RegisterModalStyle = {
     overlay: {

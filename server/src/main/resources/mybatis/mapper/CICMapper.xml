@@ -11,8 +11,11 @@
 		insert into member(mem_id, mem_pw, mem_name, mem_phone, mem_birth, mem_postcode, mem_address1, mem_address2) 
 		values(#{mem_id}, #{mem_pw}, #{mem_name}, #{mem_phone}, #{mem_birth}, #{mem_postcode}, #{mem_address1}, #{mem_address2})
 	</insert>
-	<select id="getMemberList" resultType="String">
+	<select id="getMemberIdList" resultType="String">
 		select mem_id from member
 	</select> 
+	<select id="getMember" resultType="com.CIC.server.model.Member">
+		select * from member where mem_id = #{id}
+	</select>
 
 </mapper>

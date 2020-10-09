@@ -11,7 +11,8 @@ import com.CIC.server.model.Type;
 @Mapper
 public interface CICMapper {
 	public void addMember(Member member);
+	public Member getMember(String id);
 	public List<Type> getTypeList();
 	public List<Project> getProjectList();
-	public List<String> getMemberList();
+	public List<String> getMemberIdList();
 }

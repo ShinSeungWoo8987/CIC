@@ -30,7 +30,12 @@ public class CICServiceImpl implements CICService {
 	}
 
 	@Override
-	public List<String> getMemberList() {
-		return this.cicMapper.getMemberList();
+	public List<String> getMemberIdList() {
+		return this.cicMapper.getMemberIdList();
+	}
+
+	@Override
+	public Member getMember(String id) {
+		return this.cicMapper.getMember(id);
 	}
 }
