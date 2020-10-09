@@ -1,12 +1,15 @@
 import React from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
+import SearchImg from '../Image/Search.png';
 
 function Search() {
     return (
       <Container>
         <SubContainer>
           <Input type='text' />
-          <Btn type='button' value='검색'/>
+          <ImageContainer>
+            <Image src={SearchImg}></Image>
+          </ImageContainer>
         </SubContainer>
       </Container>
     );
@@ -35,7 +38,7 @@ const Input = Styled.input`
   border-left: 1px solid #A6A6A6;
   border-radius: 5px 0 0 5px;
 `
-const Btn = Styled.input`
+const ImageContainer = Styled(Left)`
   float: left;
   width: 50px;
   height: 29px;
@@ -45,5 +48,10 @@ const Btn = Styled.input`
   border-radius: 0 5px 5px 0;
   background-color: #A6A6A6;
   color: white;
+  cursor: pointer;
+`
+const Image = Styled.img`
+  width: 25px;
+  margin: 2.5px 0 0 12px;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

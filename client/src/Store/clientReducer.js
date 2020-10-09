@@ -30,7 +30,18 @@ const sessionReducer = (state, { type, payload }) => {
             return payload;
     }
 }
-
+const _globalState = {
+    main: 'all',
+    sub: 'all'
+}
+const globalStateReducer = (state, {type, payload}) => {
+    switch (type) {
+        default:
+            return _globalState;
+        case 'GLOBAL':
+            return payload;
+    }
+}
 export {
-    _user, userReducer, _session, sessionReducer
+    _user, userReducer, _session, sessionReducer, _globalState, globalStateReducer
 };

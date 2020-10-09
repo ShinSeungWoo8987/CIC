@@ -29,7 +29,6 @@ const ImageContainer = Styled(Left)`
   margin: 0 50px 0 0;
 `
 const Image = Styled.img`
-
 `
 const TextContainer = Styled(Left)`
   height: 50px;
