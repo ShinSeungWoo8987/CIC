@@ -31,7 +31,6 @@ function Login() {
         const url = '/login';
         const data = newLogin;
         post(url,data).then(res=>{
-            console.log(res.data[0]);
             if(res.data.length===1){
                 setMessage(res.data[0])
             }else{

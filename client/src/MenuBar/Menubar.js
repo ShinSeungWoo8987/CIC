@@ -1,5 +1,6 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
+import Store from '../Store/Store.js';
 import All from '../Image/All.png';
 import SelectAll from '../Image/SelectAll.png';
 import Tech from '../Image/Tech.png';
@@ -14,12 +15,25 @@ import Notice from '../Image/Notice.png';
 import SelectNotice from '../Image/SelectNotice.png';
 import Center from '../Image/Center.png';
 import SelectCenter from '../Image/SelectCenter.png';
-import Store from '../Store/Store.js';
+import UpdateUser from '../Image/UpdateUser.png';
+import SelectUpdateUser from '../Image/SelectUpdateUser.png';
+import FundingList from '../Image/FundingList.png';
+import SelectFundingList from '../Image/SelectFundingList.png';
+import GradeUp from '../Image/GradeUp.png';
+import SelectGradeUp from '../Image/SelectGradeUp.png';
+import DeleteUser from '../Image/DeleteUser.png';
+import SelectDeleteUser from '../Image/SelectDeleteUser.png';
+import ProjectList from '../Image/ProjectList.png';
+import SelectProjectList from '../Image/SelectProjectList.png';
+import AddProject from '../Image/AddProject.png';
+import SelectAddProject from '../Image/SelectAddProject.png';
+import UserList from '../Image/UserList.png';
+import SelectUserList from '../Image/SelectUserList.png';
 
 function MenuBar() {
   const {globalState, globalStateDispatch} = useContext(Store);
   const {session, sessioneDispatch} = useContext(Store);
-  // Menu List Setting
+  // Menu List
   const menuList = [
     {id: 'all', img: All, select: SelectAll, title: '전체'},
     {id: 'tech', img: Tech, select: SelectTech, title: '테크·가전'},
@@ -29,6 +43,7 @@ function MenuBar() {
     {id: 'notice', img: Notice, select: SelectNotice, title: '공지사항'},
     {id: 'center', img: Center, select: SelectCenter, title: '고객센터'}
   ]
+  // Menu List Setting
   const menu = [];
   var i = 0;
   while(i <menuList.length){
@@ -66,7 +81,73 @@ function MenuBar() {
     }
     i += 1;
   }
+  // Grade Per Menu List
+  const common = [
+    {id: 'updateUser', img: UpdateUser, select: SelectUpdateUser, title: '정보수정'},
+    {id: 'fundingList', img: FundingList, select: SelectFundingList, title: '펀딩목록'},
+    {id: 'gradeUp', img: GradeUp, select: SelectGradeUp, title: '창작자신청'},
+    {id: 'deleteUser', img: DeleteUser, select: SelectDeleteUser, title: '회원탈퇴'}
+  ]
+  const creator = [
+    {id: 'updateUser', img: UpdateUser, select: SelectUpdateUser, title: '정보수정'},
+    {id: 'fundingList', img: FundingList, select: SelectFundingList, title: '펀딩목록'},
+    {id: 'projectList', img: ProjectList, select: SelectProjectList, title: '프로젝트목록'},
+    {id: 'addProject', img: AddProject, select: SelectAddProject, title: '프로젝트등록'},
+    {id: 'deleteUser', img: DeleteUser, select: SelectDeleteUser, title: '회원탈퇴'}
+  ]
+  const admin = [
+    {id: 'userList', img: UserList, select: SelectUserList, title: '회원목록'},
+    {id: 'adminGradeUp', img: GradeUp, select: SelectGradeUp, title: '창작자승인'},
+    {id: 'projectListAll', img: ProjectList, select: SelectProjectList, title: '프로젝트목록'},
+  ]
   // My Information Setting
+  const myInformation = [];
+  let currentGrade = [];
+  switch(session.grade){
+    default:
+      currentGrade = [];
+      break;
+    case('0'):
+      currentGrade = common
+      break;
+    case('1'):
+      currentGrade = creator
+      break;
+    case('2'):
+      currentGrade = admin
+      break;
+  }
+  var i = 0;
+  while(i <currentGrade.length){
+    if(globalState.main === currentGrade[i].id){
+      myInformation.push(
+        <A id={currentGrade[i].id} onClick={(e)=>changeState(e)}>
+          <SelectMenuContainer>
+            <ImageContainer>
+              <Image src={currentGrade[i].select}/>
+            </ImageContainer>
+            <TextContainer>
+              <Text>{currentGrade[i].title}</Text>
+            </TextContainer><br/>
+          </SelectMenuContainer>
+        </A>
+      )
+    }else{
+      myInformation.push(
+        <A id={currentGrade[i].id} onClick={(e)=>changeState(e)}>
+          <MenuContainer >
+            <ImageContainer>
+              <Image src={currentGrade[i].img}/>
+            </ImageContainer>
+            <TextContainer>
+              <Text>{currentGrade[i].title}</Text>
+            </TextContainer><br/>
+          </MenuContainer>
+        </A>
+      )
+    }
+    i += 1;
+  }
   // Selected Menu Setting
   const changeState = (e) => {
     e.preventDefault();
@@ -74,11 +155,13 @@ function MenuBar() {
     newGlobalState = {
       main: e.currentTarget.id
     }
+    console.log(newGlobalState.main);
     globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
   }
     return (
       <Container>
         {menu}
+        {myInformation}
       </Container>
     );
   }
@@ -120,7 +203,7 @@ const TextContainer = Styled(Left)`
   line-height :50px;
 `
 const Text = Styled.div`
-font-size: 20px;
+font-size: 17.5px;
 `
 const A = Styled.a`
   cursor: pointer;
