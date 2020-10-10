@@ -18,7 +18,7 @@ Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속
 
 function Register() {
     // Login State
-    const {session, sessionDispatch} = useContext(Store);
+    const { session } = useContext(Store);
     const register=session.state?'':'회원가입';
     // Register Modal Setting
     const [registerModalState, setRegisterModalState] = useState(false);

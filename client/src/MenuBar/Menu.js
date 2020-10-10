@@ -10,7 +10,7 @@ function Menu() {
   const login = <LoginContainer><Login/><Register/></LoginContainer>;
   const logout = <LogoutContainer><Login/></LogoutContainer>;
   // Login State
-  const {session, sessionDispatch} = useContext(Store);
+  const { session } = useContext(Store);
   const menu=session.state?logout:login;
     return (
       <span>

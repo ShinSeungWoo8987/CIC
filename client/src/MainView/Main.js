@@ -9,7 +9,7 @@ function Main() {
         {id: 'all', title: '전체'},
         {id: 'new', title: '신규'},
         {id: 'closeSoon', title: '마감임박'},
-        {id: 'close', title: '마감'},
+        {id: 'close', title: '마감'}
     ]
     // Menu List Setting
     const menu = [];
@@ -41,8 +41,9 @@ function Main() {
     // Selected Menu Setting
     const changeState = (e) => {
         e.preventDefault();
-        let newGlobalState = globalState;
+        let newGlobalState;
         newGlobalState = {
+            main: globalState.main,
             sub: e.currentTarget.id
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
@@ -80,6 +81,7 @@ const MenuContainer = Styled(Left)`
 `
 const SelectMenuContainer = Styled(MenuContainer)`  
   font-weight: bold;
+  text-shadow: 1px 1px 2px gray;
 `
 const TextContainer = Styled(Left)`
   height: 50px;

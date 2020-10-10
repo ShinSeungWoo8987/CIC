@@ -3,7 +3,7 @@ import styled, {createGlobalStyle} from "styled-components" // styled-components
 import ClientStore from './Store/ClientStore';
 import Header from './Header/Header'
 import MenuBar from './MenuBar/Menubar'
-import Main from './Main/Main';
+import MainView from './MainView/MainView';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
         <GlobalStyle/>
         <Header/>
         <MenuBar/>
-        <Main/>
+        <MainView/>
       </Container>
     </ClientStore>
   );

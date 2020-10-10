@@ -31,7 +31,7 @@ function Menu() {
     // Menu List Setting
     const menu = [];
     var i = 0;
-    while(i <menuList.length){
+    while(i<menuList.length){
         if(globalState.main === menuList[i].id){
             menu.push(
                 <A id={menuList[i].id} onClick={(e)=>changeState(e)}>
@@ -69,9 +69,10 @@ function Menu() {
     // Selected Menu Setting
     const changeState = (e) => {
         e.preventDefault();
-        let newGlobalState = globalState;
+        let newGlobalState
         newGlobalState = {
-            main: e.currentTarget.id
+            main: e.currentTarget.id,
+            sub: globalState.sub
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }
@@ -96,6 +97,7 @@ const MenuContainer = Styled(Left)`
 `
 const SelectMenuContainer = Styled(MenuContainer)`  
   font-weight: bold;
+  text-shadow: 1px 1px 2px gray;
   background-color: #A3A3A3;
 `
 const BottomLine = Styled(Left)`

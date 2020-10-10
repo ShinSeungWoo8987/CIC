@@ -18,7 +18,7 @@ import SelectUserList from '../Image/SelectUserList.png';
 
 function MyInformation() {
     const {globalState, globalStateDispatch} = useContext(Store);
-    const {session, sessioneDispatch} = useContext(Store);
+    const { session } = useContext(Store);
     // Grade Per Menu List
     const common = [
         {id: 'updateUser', img: UpdateUser, select: SelectUpdateUser, title: '정보수정'},
@@ -89,10 +89,12 @@ function MyInformation() {
     // Selected Menu Setting
     const changeState = (e) => {
         e.preventDefault();
-        let newGlobalState = globalState;
+        let newGlobalState;
         newGlobalState = {
-            main: e.currentTarget.id
+            main: e.currentTarget.id,
+            sub: globalState.sub
         }
+        console.log(newGlobalState);
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }
     return(
@@ -111,6 +113,8 @@ const MenuContainer = Styled(Left)`
   padding: 0 0 0 17.5px;
 `
 const SelectMenuContainer = Styled(MenuContainer)`
+  font-weight: bold;
+  text-shadow: 1px 1px 2px gray;  
   background-color: #A3A3A3;
 `
 const ImageContainer = Styled(Left)`
