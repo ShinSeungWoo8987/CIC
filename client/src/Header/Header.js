@@ -1,7 +1,7 @@
 import React from 'react';
-import Logo from './Logo.js'
-import Search from './Search.js'
-import Menu from './Menu.js'
+import Logo from './Logo'
+import Search from './Search'
+import Menu from './Menu'
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 
 function Header() {

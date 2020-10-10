@@ -1,12 +1,12 @@
 import React, {useContext, useState} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
-import Store from '../Store/Store.js';
+import Store from '../Store/Store';
 import { post } from 'axios'
 
 function Main() {
     const {globalState, globalStateDispatch} = useContext(Store);
     return(
-
+        <span></span>
     );
 }
 export default Main;

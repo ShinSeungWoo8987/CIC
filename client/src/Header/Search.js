@@ -30,7 +30,7 @@ const SubContainer = Styled.div`
 `
 const Input = Styled.input`
   float: left;
-  width: 335px;
+  width: 330px;
   height: 25px;
   border-top: 1px solid #A6A6A6;
   border-right: none;
@@ -41,17 +41,21 @@ const Input = Styled.input`
 const ImageContainer = Styled(Left)`
   float: left;
   width: 50px;
-  height: 29px;
+  height: 27px;
   font-weight: bold;
-  text-shadow: 0 3px 7px #D6D6D6;
-  border: none;
+  border-top: 1px solid #A6A6A6;
+  border-right: 1px solid #A6A6A6;
+  border-bottom: 1px solid #A6A6A6;
+  border-left: none;
+  
+  
   border-radius: 0 5px 5px 0;
-  background-color: #A6A6A6;
   color: white;
   cursor: pointer;
 `
 const Image = Styled.img`
-  width: 25px;
-  margin: 2.5px 0 0 12px;
+  width: 20px;
+  margin: 2.5px 0 0 15px;
+  text-shadow: 0 3px 7px #D6D6D6;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -2,7 +2,7 @@ import React, {useContext, useState}  from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import DaumPostcode from 'react-daum-postcode';
-import Store from '../Store/Store.js';
+import Store from '../Store/Store';
 import { put, post } from 'axios'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
@@ -51,7 +51,6 @@ function Register() {
         setPostcodeModalState(false);
     };
     // Register Member
-    const {user, userDispatch} = useContext(Store);
     const onSubmit = (e) => {
         e.preventDefault();
         const {id,pw1,pw2,name,birth,phone,postcode,address1,address2} = e.target;
@@ -59,8 +58,7 @@ function Register() {
             document.getElementById('pw2').focus();
             return false;
         }
-        let newUser = user;
-        newUser = {
+        let newUser = {
             id:id.value,
             pw:pw1.value,
             name:name.value,

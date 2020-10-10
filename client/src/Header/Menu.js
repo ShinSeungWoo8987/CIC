@@ -1,6 +1,6 @@
 import React from 'react';
-import Login from './Login.js'
-import Register from './Register.js'
+import Login from './Login'
+import Register from './Register'
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 
 
