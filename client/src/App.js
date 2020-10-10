@@ -1,8 +1,9 @@
 import React from 'react';
 import styled, {createGlobalStyle} from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
+import ClientStore from './Store/ClientStore';
 import Header from './Header/Header'
 import MenuBar from './MenuBar/Menubar'
-import ClientStore from './Store/ClientStore';
+import Main from './Main/Main';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <GlobalStyle/>
         <Header/>
         <MenuBar/>
+        <Main/>
       </Container>
     </ClientStore>
   );

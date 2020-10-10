@@ -3,20 +3,34 @@ import Styled from 'styled-components'; // Styled-components 라이브러리를 
 import SearchImg from '../Image/Search.png';
 
 /*
-  검색창 테두리 유무
+  - 검색창 테두리 유무
+  - DB 연결
 */
 
 function Search() {
-    return (
-      <Container>
-        <SubContainer>
-          <Input type='text' />
-          <ImageContainer>
-            <Image src={SearchImg}></Image>
-          </ImageContainer>
-        </SubContainer>
-      </Container>
-    );
+  // Search
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if(document.getElementById('inputSearch').value === ''){
+      return false;
+    }
+    const searchValue = document.getElementById('inputSearch').value;
+    const keyPressValue = e.key; // 검색창 기준, Enter Key
+    const clickIdValue = e.target.id; // 버튼 기준, Click
+    if(keyPressValue === 'Enter' || clickIdValue === 'btnSearch'){
+      console.log(searchValue);
+    }
+  }
+  return (
+    <Container>
+      <SubContainer>
+        <Input id='inputSearch' type='text' onKeyPress={(e) => onSubmit(e)} placeholder='단어를 입력해주세요.'/>
+        <ImageContainer>
+          <Image id='btnSearch' src={SearchImg}  onClick={(e) => onSubmit(e)}></Image>
+        </ImageContainer>
+      </SubContainer>
+    </Container>
+  );
   }
   export default Search;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
