@@ -129,7 +129,10 @@ function Register() {
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form onSubmit={(e)=>onSubmit(e)}>
-                    <InputId id='id' type='text' placeholder="아이디" required pattern="[A-Za-z0-9]{3,12}" onChange={(e)=>checkId(e)}/><br/>
+                    {/* RealTime Id Valid Check */}
+                    {/* <InputId id='id' type='text' placeholder="아이디" required pattern="[A-Za-z0-9]{3,12}" onChange={(e)=>checkId(e)}/><br/> */}
+                    {/* Lost Focus, Id Valid Check */}
+                    <InputId id='id' type='text' placeholder="아이디" required pattern="[A-Za-z0-9]{3,12}" onBlur={(e)=>checkId(e)}/><br/>
                     <SpanText>{idMessage}</SpanText><br/>
                     <InputPw id='pw1' type='password' placeholder="비밀번호" required onChange={(e)=>checkPassword(e)}/><br/>
                     <SpanText>{passwordMessage}</SpanText><br/>
