@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
+import Funding from '../Project/Funding';
 
 function Main() {
     const {globalState, globalStateDispatch} = useContext(Store);
@@ -54,6 +55,7 @@ function Main() {
             <Menu>
                 {menu}      
             </Menu>
+            <Funding/>
         </Container>
     );
 }
@@ -63,9 +65,9 @@ const Left = Styled.div`
     float: left;
 `
 const Container = Styled(Left)`
-    width: 87.5%;
-    height: 1000px;
-    // background-color: lime;
+    width: 1665px;
+    height: 919px;
+    //  background-color: lime;
     text-align: center;
 `
 const Menu = Styled.div`

@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react';
-import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
+import Styled from "styled-components"; // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import Store from '../Store/Store';
-import { post } from 'axios'
+import { post } from 'axios';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
@@ -69,7 +69,7 @@ function Login() {
     }
     return(
         <Container>
-            <LinkModal href='login'  onClick={(e)=>openLoginModal(e)}>{login}</LinkModal>
+            <LinkModal onClick={(e)=>openLoginModal(e)}>{login}</LinkModal>
             <Modal 
                 isOpen={modalState}
                 style={ModalStyle}
@@ -82,9 +82,9 @@ function Login() {
                     <SpanText>{Message}</SpanText><br/>
                     <InputSubmit type="submit" value="로그인"/>
                     <Find>
-                        <A href='#'>아이디 찾기</A>
+                        <A>아이디 찾기</A>
                         <Blank>|</Blank>
-                        <A href='#'>비밀번호 찾기</A><br/>
+                        <A>비밀번호 찾기</A><br/>
                     </Find>
                 </Form>
             </Modal>
@@ -99,6 +99,7 @@ const Container = Styled.div`
 `
 const LinkModal = Styled.a`
     color: #A3A3A3;
+    cursor: pointer;
 
     &:hover {
         color: black;

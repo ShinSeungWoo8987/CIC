@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import Store from '../Store/Store';
-import Main from './Main';
+import Main from '../Main/Main';
 
 function MainView() {
     const { globalState } = useContext(Store);
@@ -9,7 +9,6 @@ function MainView() {
     // Page View Setting
     let mainView = '';
     var i = 0;
-    console.log(mainPage.length);
     while (i<mainPage.length){
         if(mainPage[i] === globalState.main){
             mainView = <Main/>
