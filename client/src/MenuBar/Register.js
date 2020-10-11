@@ -154,7 +154,7 @@ function Register() {
                         <DaumPostcode
                             onComplete={handleComplete}
                         />
-                    </Modal><br/>
+                    </Modal>
                     <InputSubmit type="submit" value="회원가입"/>
                 </Form>
             </Modal>

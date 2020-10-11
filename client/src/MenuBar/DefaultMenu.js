@@ -35,27 +35,27 @@ function Menu() {
         if(globalState.main === menuList[i].id){
             menu.push(
                 <A id={menuList[i].id} onClick={(e)=>changeState(e)}>
-                <SelectMenuContainer>
+                  <SelectMenuContainer>
                     <ImageContainer>
-                    <Image src={menuList[i].select}/>
+                      <Image src={menuList[i].select}/>
                     </ImageContainer>
                     <TextContainer>
-                    <Text>{menuList[i].title}</Text>
+                      <Text>{menuList[i].title}</Text>
                     </TextContainer><br/>
-                </SelectMenuContainer>
+                  </SelectMenuContainer>
                 </A>
             )
         }else{
             menu.push(
                 <A id={menuList[i].id} onClick={(e)=>changeState(e)}>
-                <MenuContainer >
-                    <ImageContainer>
-                    <Image src={menuList[i].img}/>
-                    </ImageContainer>
-                    <TextContainer>
-                    <Text>{menuList[i].title}</Text>
-                    </TextContainer><br/>
-                </MenuContainer>
+                  <MenuContainer >
+                      <ImageContainer>
+                        <Image src={menuList[i].img}/>
+                      </ImageContainer>
+                      <TextContainer>
+                        <Text>{menuList[i].title}</Text>
+                      </TextContainer><br/>
+                  </MenuContainer>
                 </A>
             )
         }

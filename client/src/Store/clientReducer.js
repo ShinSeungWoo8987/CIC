@@ -1,22 +1,4 @@
 // const ..Reducer = (state, { payload }) => payload
-const _user = {
-    id: null,
-    pw: null,
-    name: null,
-    birth: null,
-    phone: null,
-    postcode: null,
-    address1: null,
-    address2: null
-}
-const userReducer = (state, { type, payload }) => {
-    switch (type) {
-        default:
-            return _user;
-        case 'INFORMATION':
-            return payload;
-    }
-}
 const _session = {
     state: false,
     id: null,
@@ -42,6 +24,17 @@ const globalStateReducer = (state, {type, payload}) => {
             return payload;
     }
 }
+const _selectAddressState = {
+    state: 'default'
+}
+const selectAddressStateReducer = (state, {type, payload}) => {
+    switch (type) {
+        default:
+            return _selectAddressState;
+        case 'CHANGE':
+            return payload;
+    }
+}
 export {
-    _user, userReducer, _session, sessionReducer, _globalState, globalStateReducer
+    _session, sessionReducer, _globalState, globalStateReducer, _selectAddressState, selectAddressStateReducer
 };

@@ -67,7 +67,6 @@ const Left = Styled.div`
 const Container = Styled(Left)`
     width: 1665px;
     height: 919px;
-    //  background-color: lime;
     text-align: center;
 `
 const Menu = Styled.div`

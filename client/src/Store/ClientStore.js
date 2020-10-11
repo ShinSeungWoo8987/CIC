@@ -1,16 +1,16 @@
 import React, { useReducer } from 'react';
 import Store from './Store';
-import { _user, userReducer, _session, sessionReducer, _globalState, globalStateReducer} from './clientReducer';
+import { _session, sessionReducer, _globalState, globalStateReducer, _selectAddressState, selectAddressStateReducer} from './clientReducer';
 
 function ClientStore(props) {
 
     // const [ .. , ..Dispatch] = useReducer( Reducer, '');
-    const [user, userDispatch] = useReducer(userReducer, _user);
     const [session, sessionDispatch] = useReducer(sessionReducer, _session);
     const [globalState, globalStateDispatch] = useReducer(globalStateReducer, _globalState);
+    const [selectAddressState, selectAddressStateDispatch] = useReducer(selectAddressStateReducer, _selectAddressState);
 
     return (
-        <Store.Provider value={ { user, userDispatch, session, sessionDispatch, globalState, globalStateDispatch } }>
+        <Store.Provider value={ { session, sessionDispatch, globalState, globalStateDispatch, selectAddressState, selectAddressStateDispatch } }>
             {props.children}
         </Store.Provider>
     );
