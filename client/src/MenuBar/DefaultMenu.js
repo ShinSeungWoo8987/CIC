@@ -16,7 +16,7 @@ import SelectNotice from '../Image/SelectNotice.png';
 import Center from '../Image/Center.png';
 import SelectCenter from '../Image/SelectCenter.png';
 
-function Menu() {
+function DefaultMenu() {
     const {globalState, globalStateDispatch} = useContext(Store);
     // Menu List
     const menuList = [
@@ -34,7 +34,7 @@ function Menu() {
     while(i<menuList.length){
         if(globalState.main === menuList[i].id){
             menu.push(
-                <A id={menuList[i].id} onClick={(e)=>changeState(e)}>
+                <A key={i+7} id={menuList[i].id} onClick={(e)=>changeState(e)}>
                   <SelectMenuContainer>
                     <ImageContainer>
                       <Image src={menuList[i].select}/>
@@ -47,7 +47,7 @@ function Menu() {
             )
         }else{
             menu.push(
-                <A id={menuList[i].id} onClick={(e)=>changeState(e)}>
+                <A key={i+7} id={menuList[i].id} onClick={(e)=>changeState(e)}>
                   <MenuContainer >
                       <ImageContainer>
                         <Image src={menuList[i].img}/>
@@ -61,7 +61,7 @@ function Menu() {
         }
         if(i === 3 || i === menuList.length-1){
             menu.push(
-                <BottomLine/>
+                <BottomLine key={i}/>
             )
         }
         i += 1;
@@ -76,13 +76,9 @@ function Menu() {
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }
-    return (
-        <span>
-            {menu}
-        </span>
-    );
+    return menu;
 }
-export default Menu;
+export default DefaultMenu;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Left = Styled.div`
   float: left;

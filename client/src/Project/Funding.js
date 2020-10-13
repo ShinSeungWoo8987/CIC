@@ -4,19 +4,29 @@ import Modal from 'react-modal';
 import Store from '../Store/Store';
 import DaumPostcode from 'react-daum-postcode';
 import ProgressBar from 'react-percent-bar'
+import { post } from 'axios';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Funding() {
-    const { session } = useContext(Store);
-    // Funding Modal Setting
-    const [fundingModalState, setFundingModalState] = useState(true)
-    const openFundingModal = (e) => {
+    const { session, sessionDispatch } = useContext(Store);
+    // When Login & Non-Login, Modal Setting
+    const [fundingModalState, setFundingModalState] = useState(false);
+    const [loginModalState, setLoginModalState] = useState(false);
+    const openModal = (e) => {
         e.preventDefault();
-        setFundingModalState(true);
+        if( session.state === 'true') {
+            setFundingModalState(true);    
+        }else{
+            setLoginModalState(true);
+        }
     }
-    const closeFundingModal = () => {
-        setFundingModalState(false);
+    const closeModal = () => {
+        if( session.state === 'true') {
+            setFundingModalState(false);    
+        }else{
+            setLoginModalState(false);
+        }
     }
     // Format - (###,###,###)
     const changeFormat = (source) => {
@@ -42,27 +52,6 @@ function Funding() {
     const dDay = 30;
     // ProgressBar Setting
     let progress = <ProgressBar width='250px' height='10px' fillColor='lime' percent={percent}/>;
-    // Login & Non-Login Setting
-    const login =   <Modal 
-                        isOpen={ fundingModalState }
-                        style={ FundingModalStyle }
-                        onRequestClose={(e) => closeFundingModal()}
-                        // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
-                    >
-                    </Modal>
-    const nonLogin = <Modal 
-                        isOpen={ fundingModalState }
-                        style={ MessageModalStyle }
-                        onRequestClose={(e) => closeFundingModal()}
-                        // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
-                    >
-                    </Modal>
-    let modal = '';
-    if(session.state === false){
-        modal = login;
-    }else{
-        modal = nonLogin;
-    }
     // Postcode Modal Setting
     const [postcodeModalState, setPostcodeModalState] = useState(false);
     const changePostcodeModalState = (e) => {
@@ -77,55 +66,111 @@ function Funding() {
         setAddress1(data.address);
         setPostcodeModalState(false);
     };
+    // Funding & Login Submit
+    const [Message, setMessage] = useState('');
+    const onLoginSubmit = (e) => {
+        e.preventDefault();
+        const id = e.target.id.value;
+        const pw = e.target.pw.value;
+        // Restricted Charater
+        if(id.indexOf(" ") !== -1 || pw.indexOf(" ") !== -1 ||
+           id.indexOf("=") !== -1 || pw.indexOf("=") !== -1){
+            setMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
+            return false;   
+        }
+        let newLogin = {
+            id: id,
+            pw: pw
+        }
+        const url = '/login';
+        const data = newLogin;
+        post(url,data).then(res=>{
+            if(res.data.length===1){
+                setMessage(res.data[0])
+            }else{
+                let newSession = session;
+                newSession = {
+                    state: res.data[0],
+                    id: res.data[1],
+                    grade: res.data[2]
+                }
+                closeModal();
+                sessionDispatch( { type: 'SESSION', payload: newSession} );
+            }
+        })
+    }
+    const onFundingSubmit = (e) => {
+        e.preventDefault();
+        console.log("펀딩 테스트");
+        console.log(e.target.name.value);
+    }      
     return (
         <Container>
-            <LinkModal  onClick={(e)=>openFundingModal(e)}>펀딩하기</LinkModal>
+            <LinkModal  onClick={(e)=>openModal(e)}>펀딩하기</LinkModal>
             <Modal 
-                    isOpen= { fundingModalState }
-                    style={ FundingModalStyle }
-                    onRequestClose={(e) => closeFundingModal()}
-                    // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
-                >
-                    <Form>
-                        <Title>이 자리는 제목이 들어갈 자리입니다.</Title>
-                        <CurrentStateContainer>
-                            <Text>모인금액</Text><br/>
-                            <SubContainer>
-                                <Value>{saveMoneyStr}</Value><BottomText>원</BottomText><PercentText>{percent+'%'}</PercentText><br/><br/>
-                                {progress}
-                            </SubContainer><br/>
-                            <Text>참여인원</Text><br/>
-                            <SubContainer>
-                                <Value>{fundingCnt}</Value><BottomText>명</BottomText>
-                            </SubContainer><br/>
-                            <Text>남은기간</Text><br/>
-                            <SubContainer>
-                                <Value>{dDay}</Value><BottomText>일</BottomText>
-                            </SubContainer>
-                        </CurrentStateContainer>
-                        <DeliveryAddressContainer>
-                            <SubTitle>배송지 정보</SubTitle><br/>
-                            <InputText id='name' type='text' placeholder="이름" required/>
-                            <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
-                            <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={postcode} required readOnly/>
-                            <BtnPostcode type='submit' value='우편번호 검색' onClick={(e)=>changePostcodeModalState(e)}/><br/>
-                            <InputText id="address1" type="text" placeholder="도로명 주소" value={address1} required readOnly/><br/>
-                            <InputText id="address2" type="text" placeholder="상세 주소" /><br/>
-                            <Writing/><br/>
-                            <InputSubmit type="submit" value="펀딩하기"/>
-                            <Modal 
-                                isOpen={postcodeModalState}
-                                style={PostcodeModalStyle}
-                                onRequestClose={(e) => setPostcodeModalState(false)}
-                                // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
-                            >
-                                <DaumPostcode
-                                    onComplete={handleComplete}
-                                />
-                            </Modal>
-                        </DeliveryAddressContainer>
-                    </Form>
-                </Modal>
+                isOpen= { fundingModalState }
+                style={ FundingModalStyle }
+                onRequestClose={(e) => closeModal()}
+                // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
+            >
+                <Form onSubmit={(e)=>onFundingSubmit(e)}>
+                    <Title>이 자리는 제목이 들어갈 자리입니다.</Title>
+                    <CurrentStateContainer>
+                        <Text>모인금액</Text><br/>
+                        <SubContainer>
+                            <Value>{saveMoneyStr}</Value><BottomText>원</BottomText><PercentText>{percent+'%'}</PercentText><br/><br/>
+                            {progress}
+                        </SubContainer><br/>
+                        <Text>참여인원</Text><br/>
+                        <SubContainer>
+                            <Value>{fundingCnt}</Value><BottomText>명</BottomText>
+                        </SubContainer><br/>
+                        <Text>남은기간</Text><br/>
+                        <SubContainer>
+                            <Value>{dDay}</Value><BottomText>일</BottomText>
+                        </SubContainer>
+                    </CurrentStateContainer>
+                    <DeliveryAddressContainer>
+                        <SubTitle>배송지 정보</SubTitle><br/>
+                        <InputText id='name' type='text' placeholder="이름" required/>
+                        <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
+                        <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={postcode} required readOnly/>
+                        <BtnPostcode type='submit' value='우편번호 검색' onClick={(e)=>changePostcodeModalState(e)}/><br/>
+                        <InputText id="address1" type="text" placeholder="도로명 주소" value={address1} required readOnly/><br/>
+                        <InputText id="address2" type="text" placeholder="상세 주소" /><br/>
+                        <Modal 
+                            isOpen={postcodeModalState}
+                            style={PostcodeModalStyle}
+                            onRequestClose={(e) => setPostcodeModalState(false)}
+                            // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
+                        >
+                            <DaumPostcode
+                                onComplete={handleComplete}
+                            />
+                        </Modal>
+                    </DeliveryAddressContainer>
+                    <Writing id='supportMessage' placeholder='응원글을 입력해주세요!'/><br/>
+                    <InputSubmit type="submit" value="펀딩하기"/>
+                </Form>
+            </Modal>
+            <Modal 
+                isOpen={ loginModalState }
+                style={ LoginModalStyle }
+                onRequestClose={(e) => closeModal()}
+                // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
+            >
+                <LoginForm onSubmit={(e)=>onLoginSubmit(e)}>
+                    <LoginId id='id' type='text' placeholder="아이디" required/><br/>
+                    <LoginPw id='pw' type='password' placeholder="비밀번호" required/><br/>
+                    <SpanText>{Message}</SpanText><br/>
+                    <LoginSubmit type="submit" value="로그인"/>
+                    <Find>
+                        <A>아이디 찾기</A>
+                        <Blank>|</Blank>
+                        <A>비밀번호 찾기</A><br/>
+                    </Find>
+                </LoginForm>
+            </Modal>
         </Container>
     );
 }
@@ -146,7 +191,7 @@ const LinkModal = Styled.a`
         font-weight: bold;
     }
 `
-const Form = Styled.div`
+const Form = Styled.form`
     text-align: center;
 `
 const Title = Styled.div`
@@ -223,12 +268,13 @@ const Writing = Styled.textarea`
     width: 765px;
     height: 75px;
     margin: 40px 0 0 0;
+    text-indent: 5px;
     border: 1px solid #E0E0E0;
     border-radius: 5px;
     resize: none;
 `
 const InputSubmit = Styled(Input)`
-    left: -40%;
+    left: -10px;
     width: 306px;  
     height: 50px;
     font-size: 20px;
@@ -240,10 +286,72 @@ const InputSubmit = Styled(Input)`
     color: white;
     margin: 40px 0 0 0;
     background-color: #83E538;
+    
 
     &:hover {
         box-shadow: 1px 1px 9px #8C8C8C; 
     }
+`
+const LoginForm = Styled.form`
+    padding: 25px 0 0 0;
+`
+const LoginInput = Styled.input`
+    position: relative;
+    left: 14%;
+    height: 50px;
+    width: 300px;
+    font-size: 15px;
+    text-indent: 15px;
+    border-radius: 10px;
+    border: 1px solid #E0E0E0;
+`
+const LoginId = Styled(LoginInput)`
+    margin: 0 0 20px 0;
+`
+const LoginPw = Styled(LoginInput)`
+`
+const SpanText = Styled.span`
+    position: relative;
+    left: 18%;
+    bottom: 4px;
+    font-size: 5px;
+    color: red;
+`
+const LoginSubmit = Styled(LoginInput)`
+    width: 306px;  
+    font-size: 20px;
+    font-weight: bold;
+    text-indent: 0px;
+    text-shadow: 1px 1px 7px #BDBDBD; 
+    box-shadow: 1px 1px 7px #BDBDBD;
+    border: none;
+    color: white;
+    margin: 20px 0 0 0;
+    background-color: #83E538;
+
+    &:hover {
+        box-shadow: 1px 1px 9px #8C8C8C; 
+    }
+`
+const Find = Styled.div`
+    position: relative;
+    left: 27.5%;
+    width: 75%;
+    font-size: 12.5px;
+    margin: 10px 0 0 0;
+`
+const A = Styled.a`
+    float: left;
+    color: #9A9A9A;
+
+    &:hover {
+        font-weight: bold;
+        color: black;
+    }
+`
+const Blank = Styled.div`
+    float: left;
+    margin: 0 20px;
 `
 const FundingModalStyle = {
     overlay: {
@@ -261,21 +369,6 @@ const FundingModalStyle = {
         boxShadow: '9px 9px 10px #4E4E4E'
     }
 }
-const MessageModalStyle = {
-    overlay: {
-        backgroundColor: 'rgba(140,140,140,0.9)',
-        zIndex: 3               
-    },
-    content: {
-        position: "absolute",
-        left: '40%',
-        top: '27.5%',
-        width: '17.5%',
-        height: '290px',
-        borderRadius: 10,
-        boxShadow: '9px 9px 10px #4E4E4E'
-    }
-}
 const PostcodeModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.9)',
@@ -287,6 +380,21 @@ const PostcodeModalStyle = {
         top: '22.5%',
         width: '500px',
         height: '450px',
+        borderRadius: 10,
+        boxShadow: '9px 9px 10px #4E4E4E'
+    }
+}
+const LoginModalStyle = {
+    overlay: {
+        backgroundColor: 'rgba(140,140,140,0.9)',
+        zIndex: 3               
+    },
+    content: {
+        position: "absolute",
+        left: '40%',
+        top: '27.5%',
+        width: '425px',
+        height: '290px',
         borderRadius: 10,
         boxShadow: '9px 9px 10px #4E4E4E'
     }

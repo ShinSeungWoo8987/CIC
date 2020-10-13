@@ -1,7 +1,6 @@
 import React, {useContext} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
-import Funding from '../Project/Funding';
 
 function Main() {
     const {globalState, globalStateDispatch} = useContext(Store);
@@ -18,7 +17,7 @@ function Main() {
     while(i <menuList.length){
         if(globalState.sub === menuList[i].id){
             menu.push(
-                <A id={menuList[i].id} onClick={(e)=>changeState(e)}>
+                <A key={i} id={menuList[i].id} onClick={(e)=>changeState(e)}>
                 <SelectMenuContainer>
                     <TextContainer>
                     <Text>{menuList[i].title}</Text>
@@ -28,7 +27,7 @@ function Main() {
             )
         }else{
             menu.push(
-                <A id={menuList[i].id} onClick={(e)=>changeState(e)}>
+                <A key={i} id={menuList[i].id} onClick={(e)=>changeState(e)}>
                 <MenuContainer >
                     <TextContainer>
                     <Text>{menuList[i].title}</Text>
@@ -55,7 +54,6 @@ function Main() {
             <Menu>
                 {menu}      
             </Menu>
-            <Funding/>
         </Container>
     );
 }

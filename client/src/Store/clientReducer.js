@@ -24,17 +24,18 @@ const globalStateReducer = (state, {type, payload}) => {
             return payload;
     }
 }
-const _selectAddressState = {
-    state: 'default'
+const _selectAddressValue = {
+    postcode: '테스트 우편번호',
+    address: '테스트 주소'
 }
-const selectAddressStateReducer = (state, {type, payload}) => {
+const selectAddressValueReducer = (state, {type, payload}) => {
     switch (type) {
         default:
-            return _selectAddressState;
+            return _selectAddressValue;
         case 'CHANGE':
             return payload;
     }
 }
 export {
-    _session, sessionReducer, _globalState, globalStateReducer, _selectAddressState, selectAddressStateReducer
+    _session, sessionReducer, _globalState, globalStateReducer, _selectAddressValue, selectAddressValueReducer
 };

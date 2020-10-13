@@ -59,7 +59,7 @@ function MyInformation() {
     while(i <currentGrade.length){
         if(globalState.main === currentGrade[i].id){
             myInformation.push(
-                <A id={currentGrade[i].id} onClick={(e)=>changeState(e)}>
+                <A key={i} id={currentGrade[i].id} onClick={(e)=>changeState(e)}>
                 <SelectMenuContainer>
                     <ImageContainer>
                     <Image src={currentGrade[i].select}/>
@@ -72,7 +72,7 @@ function MyInformation() {
             )
         }else{
             myInformation.push(
-                <A id={currentGrade[i].id} onClick={(e)=>changeState(e)}>
+                <A key={i} id={currentGrade[i].id} onClick={(e)=>changeState(e)}>
                 <MenuContainer >
                     <ImageContainer>
                     <Image src={currentGrade[i].img}/>
@@ -97,11 +97,7 @@ function MyInformation() {
         console.log(newGlobalState);
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }
-    return(
-        <span>
-            {myInformation}
-        </span>
-    );
+    return myInformation
 }
 export default MyInformation;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

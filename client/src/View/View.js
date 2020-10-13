@@ -15,10 +15,6 @@ function MainView() {
         }
         i += 1;
     }
-    return(
-        <span>
-            {mainView}
-        </span>
-    );
+    return mainView
 }
 export default MainView;
