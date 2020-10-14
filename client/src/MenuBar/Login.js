@@ -1,15 +1,20 @@
 import React, {useContext, useState} from 'react';
 import Styled from "styled-components"; // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
+import AuthenticationService from '../Jwt/AuthenticationService.js'
 import Store from '../Store/Store';
 import { post } from 'axios';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Login() {
-    const {session, sessionDispatch} = useContext(Store);
+    const [session, setSession] = useState({
+        username: localStorage.getItem("authenticatedUser") || '',
+        password: '',
+        token: localStorage.getItem("token") || ''
+    });
     const [LoginMessage, setLoginMessage] = useState('');
-    const sessionState=session.state?'로그아웃':'로그인';
+    // const [sessionState, setSessionState] = useState(session.token !== ''?'로그아웃':'로그인');
     const [loginModalState, setLoginModalState] = useState(false);
     // Login Submit
     const onLoginSubmit = (e) => {
@@ -20,43 +25,33 @@ function Login() {
         if(id.indexOf(" ") !== -1 || pw.indexOf(" ") !== -1 ||
            id.indexOf("=") !== -1 || pw.indexOf("=") !== -1 ||
            id.indexOf("'") !== -1 || pw.indexOf("'") !== -1){
-            LoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
+            setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
             return false;   
         }
-        let newLogin = {
-            id: id,
-            pw: pw
-        }
-        const url = '/authenticate';
-        const data = newLogin;
-        post(url,data).then(res=>{
-            if(res.data.length===1){
-                LoginMessage(res.data[0])
-            }else{
-                let newSession = session;
-                newSession = {
-                    state: res.data[0],
-                    id: res.data[1],
-                    grade: res.data[2]
-                }
-                closeLoginModal();
-                sessionDispatch( { type: 'SESSION', payload: newSession} );
-            }
+        AuthenticationService
+        .executeJwtAuthenticationService(id, pw)
+        .then((response) => {
+            session.token = response.data.token;
+            AuthenticationService.registerSuccessfulLoginForJwt(id, session.token);
+            closeLoginModal();
+        }).catch( () =>{
+            setLoginMessage("executeJwtAuthenticationService Error")
+            console.log("executeJwtAuthenticationService Error");
         })
     }
     // Login Modal Setting
     const openLoginModal = (e) => {
         e.preventDefault();
-        if(sessionState === '로그인'){
+        if(session.token === ''){
             setLoginModalState(true);
         }else{
-            let newSession = session;
-            newSession = {
-                state: false,
-                id: null,
-                grade: null
-            }
-            sessionDispatch( { type: 'SESSION', payload: newSession} );
+            // AuthenticationService.logout();
+            console.log(session.token);
+            console.log('로그아웃');
+            setSession(Object.assign(session, {token:''}));
+            console.log(session.token);
+            // localStorage.removeItem("authenticatedUser");
+            // localStorage.removeItem("token");
         }
     }
     const closeLoginModal = () => {
@@ -65,7 +60,7 @@ function Login() {
     }
     return(
         <Container>
-            <LinkModal onClick={(e)=>openLoginModal(e)}>{sessionState}</LinkModal>
+            <LinkModal onClick={(e)=>openLoginModal(e)}>{session.token !== ''?'로그아웃':'로그인'}</LinkModal>
             <Modal 
                 isOpen={loginModalState}
                 style={LoginModalStyle}
