@@ -1,20 +1,22 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import Styled from "styled-components"; // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import AuthenticationService from '../Jwt/AuthenticationService.js'
-import Store from '../Store/Store';
-import { post } from 'axios';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Login() {
-    const [session, setSession] = useState({
+    const [loginState, setLoginState] = useState('로그인');
+    let session = {
         username: localStorage.getItem("authenticatedUser") || '',
         password: '',
         token: localStorage.getItem("token") || ''
-    });
+    };
+    // console.log("session.token");
+    // console.log(session.token);
+    // console.log("localstorage.getItem(token)");
+    // console.log(localStorage.getItem("token"));
     const [LoginMessage, setLoginMessage] = useState('');
-    // const [sessionState, setSessionState] = useState(session.token !== ''?'로그아웃':'로그인');
     const [loginModalState, setLoginModalState] = useState(false);
     // Login Submit
     const onLoginSubmit = (e) => {
@@ -33,6 +35,7 @@ function Login() {
         .then((response) => {
             session.token = response.data.token;
             AuthenticationService.registerSuccessfulLoginForJwt(id, session.token);
+            setLoginState('로그아웃');
             closeLoginModal();
         }).catch( () =>{
             setLoginMessage("executeJwtAuthenticationService Error")
@@ -42,16 +45,11 @@ function Login() {
     // Login Modal Setting
     const openLoginModal = (e) => {
         e.preventDefault();
-        if(session.token === ''){
+        if(localStorage.getItem('token') === null){
             setLoginModalState(true);
         }else{
-            // AuthenticationService.logout();
-            console.log(session.token);
-            console.log('로그아웃');
-            setSession(Object.assign(session, {token:''}));
-            console.log(session.token);
-            // localStorage.removeItem("authenticatedUser");
-            // localStorage.removeItem("token");
+            setLoginState('로그인');
+            AuthenticationService.logout();
         }
     }
     const closeLoginModal = () => {
@@ -60,7 +58,8 @@ function Login() {
     }
     return(
         <Container>
-            <LinkModal onClick={(e)=>openLoginModal(e)}>{session.token !== ''?'로그아웃':'로그인'}</LinkModal>
+            {/* <LinkModal onClick={(e)=>openLoginModal(e)}>{AuthenticationService.isUserLoggedIn()?'로그아웃':'로그인'}</LinkModal> */}
+            <LinkModal onClick={(e)=>openLoginModal(e)}>{loginState}</LinkModal>
             <Modal 
                 isOpen={loginModalState}
                 style={LoginModalStyle}

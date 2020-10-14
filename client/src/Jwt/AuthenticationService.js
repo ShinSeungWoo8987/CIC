@@ -60,8 +60,8 @@ class AuthenticationService {
         
         //let user = sessionStorage.getItem('authenticatedUser')
         const token = localStorage.getItem('token');
-        console.log("===UserloggedInCheck===");
-        console.log(token);
+        // console.log("===UserloggedInCheck===");
+        // console.log(token);
 
         if (token) {
             return true;
