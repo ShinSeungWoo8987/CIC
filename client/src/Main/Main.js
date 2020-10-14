@@ -3,46 +3,45 @@ import Styled from "styled-components" // styled-components 라이브러리를 �
 import Store from '../Store/Store';
 
 function Main() {
+    var idx;
     const {globalState, globalStateDispatch} = useContext(Store);
-    // Menu List
     const menuList = [
         {id: 'all', title: '전체'},
         {id: 'new', title: '신규'},
         {id: 'closeSoon', title: '마감임박'},
         {id: 'close', title: '마감'}
     ]
-    // Menu List Setting
     const menu = [];
-    var i = 0;
-    while(i <menuList.length){
-        if(globalState.sub === menuList[i].id){
+    // Menu List Setting
+    idx=0;
+    while(idx<menuList.length){
+        if(globalState.sub === menuList[idx].id){
             menu.push(
-                <A key={i} id={menuList[i].id} onClick={(e)=>changeState(e)}>
+                <A key={idx} id={menuList[idx].id} onClick={(e)=>changMenuState(e)}>
                 <SelectMenuContainer>
                     <TextContainer>
-                    <Text>{menuList[i].title}</Text>
+                    <Text>{menuList[idx].title}</Text>
                     </TextContainer><br/>
                 </SelectMenuContainer>
                 </A>
             )
         }else{
             menu.push(
-                <A key={i} id={menuList[i].id} onClick={(e)=>changeState(e)}>
+                <A key={idx} id={menuList[idx].id} onClick={(e)=>changMenuState(e)}>
                 <MenuContainer >
                     <TextContainer>
-                    <Text>{menuList[i].title}</Text>
+                    <Text>{menuList[idx].title}</Text>
                     </TextContainer><br/>
                 </MenuContainer>
                 </A>
             )
         }
-        i += 1;
+        idx += 1;
     }
     // Selected Menu Setting
-    const changeState = (e) => {
+    const changMenuState = (e) => {
         e.preventDefault();
-        let newGlobalState;
-        newGlobalState = {
+        const newGlobalState = {
             main: globalState.main,
             sub: e.currentTarget.id
         }

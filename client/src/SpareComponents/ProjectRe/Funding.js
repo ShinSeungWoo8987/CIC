@@ -1,19 +1,43 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
-import Store from '../Store/Store';
 import DaumPostcode from 'react-daum-postcode';
 import ProgressBar from 'react-percent-bar'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Funding() {
-    useEffect( ()=>{
-        console.log('componentDidMount')
-    } );
-    const { session } = useContext(Store);
+    const [fundingModalState, setFundingModalState] = useState(true); // Funding Modal
+    const targetMoney = 1000000; // Funding Information
+    const saveMoney = 500000; // Funding Information
+    const saveMoneyStr = changeFormat(saveMoney); // Funding Information
+    const percent = ((saveMoney/targetMoney)*100); // Funding Information
+    const fundingCnt = changeFormat(1000); // Funding Information
+    const dDay = 30; // Funding Information
+    const progress = <ProgressBar width='250px' height='10px' fillColor='lime' percent={percent}/>;
+    const [postcodeModalState, setPostcodeModalState] = useState(false); // postcode Modal
+    const [postcode, setPostcode] = useState('');
+    const [address1, setAddress1] = useState(''); 
+    const defaultAddress =  <span>
+                                <LeftInputRadio type='radio' id='default' name='address' defaultChecked/>
+                                <Label>기존 배송지</Label>
+                                <RightInputRadio type='radio' id='new' name='address' onClick={(e)=>changeDeliveryAddress(e)}/>
+                                <Label>신규 배송지</Label>
+                            </span>;
+    let newAddress =  <span>
+                            <LeftInputRadio type='radio' id='default' name='address' onClick={(e)=>changeDeliveryAddress(e)}/>
+                            <Label>기존 배송지</Label>
+                            <RightInputRadio type='radio' id='new' name='address' />
+                            <Label>신규 배송지</Label>
+                            <InputText id='name' type='text' placeholder="이름" required/>
+                            <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
+                            <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={postcode} required readOnly/>
+                            <BtnPostcode type='submit' value='우편번호 검색' onClick={(e)=>changePostcodeModalState(e)}/><br/>
+                            <InputText id="address1" type="text" placeholder="도로명 주소" value={address1} required readOnly/><br/>
+                            <InputText id="address2" type="text" placeholder="상세 주소" /><br/>
+                        </span>;
+    const [deliveryAddress, setDeliveryAddress] = useState('default');
     // Funding Modal Setting
-    const [fundingModalState, setFundingModalState] = useState(true)
     const openFundingModal = (e) => {
         e.preventDefault();
         setFundingModalState(true);
@@ -36,53 +60,18 @@ function Funding() {
         }
         return String(result).split("").reverse().join("");
     }
-    // Funding Information Setting
-    const targetMoney = 1000000;
-    const saveMoney = 500000;
-    const saveMoneyStr = changeFormat(saveMoney);
-    const percent = ((saveMoney/targetMoney)*100);
-    const fundingCnt = changeFormat(1000);  // DB 연결하기 전, 임의의 펀딩인원(1000) 지정
-    const dDay = 30;
-    // ProgressBar Setting
-    let progress = <ProgressBar width='250px' height='10px' fillColor='lime' percent={percent}/>;
-    // Login & Non-Login Setting
-    const login = '';
-    const nonLogin = '';
     // Postcode Modal Setting
-    const [postcodeModalState, setPostcodeModalState] = useState(false);
     const changePostcodeModalState = (e) => {
         e.preventDefault();
         setPostcodeModalState(true);
     };
     // Postcode & Address Value Setting
-    const [postcode, setPostcode] = useState('');
-    const [address1, setAddress1] = useState('');
-    console.log(postcode);
     const handleComplete = (data) => {
         setPostcode(data.zonecode);
         setAddress1(data.address);
         setPostcodeModalState(false);
     };
     // Select Delivery Address
-    const defaultAddress =  <span>
-                                <LeftInputRadio type='radio' id='default' name='address' defaultChecked/>
-                                <Label>기존 배송지</Label>
-                                <RightInputRadio type='radio' id='new' name='address' onClick={(e)=>changeDeliveryAddress(e)}/>
-                                <Label>신규 배송지</Label>
-                            </span>;
-    let newAddress =  <span>
-                            <LeftInputRadio type='radio' id='default' name='address' onClick={(e)=>changeDeliveryAddress(e)}/>
-                            <Label>기존 배송지</Label>
-                            <RightInputRadio type='radio' id='new' name='address' />
-                            <Label>신규 배송지</Label>
-                            <InputText id='name' type='text' placeholder="이름" required/>
-                            <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
-                            <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={postcode} required readOnly/>
-                            <BtnPostcode type='submit' value='우편번호 검색' onClick={(e)=>changePostcodeModalState(e)}/><br/>
-                            <InputText id="address1" type="text" placeholder="도로명 주소" value={address1} required readOnly/><br/>
-                            <InputText id="address2" type="text" placeholder="상세 주소" /><br/>
-                        </span>;
-    const [deliveryAddress, setDeliveryAddress] = useState('default');
     const changeDeliveryAddress = (e) => {
         const deliveryAddressState = e.target.id;
         setDeliveryAddress(deliveryAddressState)

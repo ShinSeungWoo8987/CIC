@@ -7,21 +7,17 @@ import { put, post } from 'axios'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
-/*
-    - 실시간 아이디 중복체크
-    - 실시간 비밀번호 동일 유무 체크
-    - 실시간 아이디 및 비밀번호 제한된 문자 체크
-    - 우편번호
-    - DB 연결
-    - 모달창 종료 시 메세지 초기화
-*/
-
 function Register() {
-    // Login State
-    const { session } = useContext(Store);
+    const { session } = useContext(Store); // Login State
     const register=session.state?'':'회원가입';
+    const [registerModalState, setRegisterModalState] = useState(false); // Register Modal
+    const [postcodeModalState, setPostcodeModalState] = useState(false); // Postcode Modal
+    const [postcode, setPostcode] = useState(''); // Postcode Value
+    const [address1, setAddress1] = useState(''); // Address1 Value
+    const [passwordMessage, setPasswordMessage] = useState(''); // Password Valid Check Message
+    const [passwordConfirmMessage, setPasswordConfirmMessage] = useState(''); // Password Equal Check Message
+    const [idMessage, setIdMessage] = useState(''); // Id Valid Check Message
     // Register Modal Setting
-    const [registerModalState, setRegisterModalState] = useState(false);
     const openRegisterModal = (e) => {
         e.preventDefault();
         if(register === '회원가입'){
@@ -37,14 +33,11 @@ function Register() {
         setRegisterModalState(false);
     }
     // Postcode Modal Setting
-    const [postcodeModalState, setPostcodeModalState] = useState(false);
     const changePostcodeModalState = (e) => {
         e.preventDefault();
         setPostcodeModalState(true);
     };
     // Postcode & Address Value Setting
-    const [postcode, setPostcode] = useState('');
-    const [address1, setAddress1] = useState('');
     const handleComplete = (data) => {
         setPostcode(data.zonecode);
         setAddress1(data.address);
@@ -78,7 +71,6 @@ function Register() {
         closeRegisterModal();
     };
     // Password Valid Check
-    const [passwordMessage, setPasswordMessage] = useState('');
     const checkPassword = (e) => {
         e.preventDefault();
         const pw = e.target.value;
@@ -90,7 +82,6 @@ function Register() {
         }
     }
     // Password Equal Check
-    const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
     const checkPasswordConfirm = (e) => {
         e.preventDefault();
         var pw1 = document.getElementById('pw1').value
@@ -102,7 +93,6 @@ function Register() {
         }
     }
     // Id Valid Check
-    const [idMessage, setIdMessage] = useState('');
     const checkId = (e) => {
         e.preventDefault();
         const id = e.target.value;

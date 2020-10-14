@@ -17,6 +17,7 @@ import UserList from '../Image/UserList.png';
 import SelectUserList from '../Image/SelectUserList.png';
 
 function MyInformation() {
+    var idx=0;
     const {globalState, globalStateDispatch} = useContext(Store);
     const { session } = useContext(Store);
     // Grade Per Menu List
@@ -38,9 +39,9 @@ function MyInformation() {
         {id: 'adminGradeUp', img: GradeUp, select: SelectGradeUp, title: '창작자승인'},
         {id: 'projectListAll', img: ProjectList, select: SelectProjectList, title: '프로젝트목록'},
     ]
-    // My Information Setting
-    const myInformation = [];
-    let currentGrade = [];
+    const myInformation = []; // My Information Setting
+    let currentGrade = []; // Login User Grade
+    // Login User Grade Setting
     switch(session.grade){
             default:
             currentGrade = [];
@@ -55,36 +56,36 @@ function MyInformation() {
             currentGrade = admin
         break;
     }
-    var i = 0;
-    while(i <currentGrade.length){
-        if(globalState.main === currentGrade[i].id){
+    idx = 0;
+    while(idx <currentGrade.length){
+        if(globalState.main === currentGrade[idx].id){
             myInformation.push(
-                <A key={i} id={currentGrade[i].id} onClick={(e)=>changeState(e)}>
+                <A key={idx} id={currentGrade[idx].id} onClick={(e)=>changeState(e)}>
                 <SelectMenuContainer>
                     <ImageContainer>
-                    <Image src={currentGrade[i].select}/>
+                    <Image src={currentGrade[idx].select}/>
                     </ImageContainer>
                     <TextContainer>
-                    <Text>{currentGrade[i].title}</Text>
+                    <Text>{currentGrade[idx].title}</Text>
                     </TextContainer><br/>
                 </SelectMenuContainer>
                 </A>
             )
         }else{
             myInformation.push(
-                <A key={i} id={currentGrade[i].id} onClick={(e)=>changeState(e)}>
+                <A key={idx} id={currentGrade[idx].id} onClick={(e)=>changeState(e)}>
                 <MenuContainer >
                     <ImageContainer>
-                    <Image src={currentGrade[i].img}/>
+                    <Image src={currentGrade[idx].img}/>
                     </ImageContainer>
                     <TextContainer>
-                    <Text>{currentGrade[i].title}</Text>
+                    <Text>{currentGrade[idx].title}</Text>
                     </TextContainer><br/>
                 </MenuContainer>
                 </A>
             )
         }
-        i += 1;
+        idx += 1;
     }
     // Selected Menu Setting
     const changeState = (e) => {

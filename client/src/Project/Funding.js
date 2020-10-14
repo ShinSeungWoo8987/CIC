@@ -10,9 +10,20 @@ Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속
 
 function Funding() {
     const { session, sessionDispatch } = useContext(Store);
+    const [fundingModalState, setFundingModalState] = useState(false); // Login Modal
+    const [loginModalState, setLoginModalState] = useState(false); // Non-Login Modal
+    const targetMoney = 1000000; // Funding Information
+    const saveMoney = 500000; // Funding Information
+    const saveMoneyStr = changeFormat(saveMoney); // Funding Information
+    const percent = ((saveMoney/targetMoney)*100); // Funding Information
+    const fundingCnt = changeFormat(1000);  // Funding Information
+    const dDay = 30; // Funding Information
+    const progress = <ProgressBar width='250px' height='10px' fillColor='lime' percent={percent}/>;
+    const [postcodeModalState, setPostcodeModalState] = useState(false); // Postcode Modal
+    const [postcode, setPostcode] = useState(''); // postcode Value
+    const [address1, setAddress1] = useState(''); // address1 Value
+    const [Message, setMessage] = useState(''); // Login & Funding Submit Message;
     // When Login & Non-Login, Modal Setting
-    const [fundingModalState, setFundingModalState] = useState(false);
-    const [loginModalState, setLoginModalState] = useState(false);
     const openModal = (e) => {
         e.preventDefault();
         if( session.state === 'true') {
@@ -43,31 +54,18 @@ function Funding() {
         }
         return String(result).split("").reverse().join("");
     }
-    // Funding Information Setting
-    const targetMoney = 1000000;
-    const saveMoney = 500000;
-    const saveMoneyStr = changeFormat(saveMoney);
-    const percent = ((saveMoney/targetMoney)*100);
-    const fundingCnt = changeFormat(1000);  // DB 연결하기 전, 임의의 펀딩인원(1000) 지정
-    const dDay = 30;
-    // ProgressBar Setting
-    let progress = <ProgressBar width='250px' height='10px' fillColor='lime' percent={percent}/>;
     // Postcode Modal Setting
-    const [postcodeModalState, setPostcodeModalState] = useState(false);
     const changePostcodeModalState = (e) => {
         e.preventDefault();
         setPostcodeModalState(true);
     };
     // Postcode & Address Value Setting
-    const [postcode, setPostcode] = useState('');
-    const [address1, setAddress1] = useState('');
     const handleComplete = (data) => {
         setPostcode(data.zonecode);
         setAddress1(data.address);
         setPostcodeModalState(false);
     };
-    // Funding & Login Submit
-    const [Message, setMessage] = useState('');
+    // Login Submit
     const onLoginSubmit = (e) => {
         e.preventDefault();
         const id = e.target.id.value;
@@ -99,6 +97,7 @@ function Funding() {
             }
         })
     }
+    // Funding Submit
     const onFundingSubmit = (e) => {
         e.preventDefault();
         console.log("펀딩 테스트");

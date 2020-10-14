@@ -2,13 +2,8 @@ import React from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import SearchImg from '../Image/Search.png';
 
-/*
-  - 검색창 테두리 유무
-  - DB 연결
-*/
-
 function Search() {
-  // Search
+  // Search Submit
   const onSubmit = (e) => {
     e.preventDefault();
     if(document.getElementById('inputSearch').value === ''){

@@ -1,12 +1,12 @@
 import React from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
-import Img from '../Image/Logo.png';
+import LogoImg from '../Image/Logo.png';
 
 function Logo() {
     return (
-      <Container href="#">
+      <Container>
         <ImageContainer>
-          <Image src={Img} />
+          <Image src={LogoImg} />
         </ImageContainer>
         <TextContainer>
           <Text>CIC</Text>

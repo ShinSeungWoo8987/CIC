@@ -17,8 +17,8 @@ import Center from '../Image/Center.png';
 import SelectCenter from '../Image/SelectCenter.png';
 
 function DefaultMenu() {
+    var idx;
     const {globalState, globalStateDispatch} = useContext(Store);
-    // Menu List
     const menuList = [
         {id: 'all', img: All, select: SelectAll, title: '전체'},
         {id: 'tech', img: Tech, select: SelectTech, title: '테크·가전'},
@@ -28,49 +28,48 @@ function DefaultMenu() {
         {id: 'notice', img: Notice, select: SelectNotice, title: '공지사항'},
         {id: 'center', img: Center, select: SelectCenter, title: '고객센터'}
     ]
-    // Menu List Setting
     const menu = [];
-    var i = 0;
-    while(i<menuList.length){
-        if(globalState.main === menuList[i].id){
+    // Menu List Setting
+    idx=0;
+    while(idx<menuList.length){
+        if(globalState.main === menuList[idx].id){
             menu.push(
-                <A key={i+7} id={menuList[i].id} onClick={(e)=>changeState(e)}>
+                <A key={idx+7} id={menuList[idx].id} onClick={(e)=>changeDefaultMenuState(e)}>
                   <SelectMenuContainer>
                     <ImageContainer>
-                      <Image src={menuList[i].select}/>
+                      <Image src={menuList[idx].select}/>
                     </ImageContainer>
                     <TextContainer>
-                      <Text>{menuList[i].title}</Text>
+                      <Text>{menuList[idx].title}</Text>
                     </TextContainer><br/>
                   </SelectMenuContainer>
                 </A>
             )
         }else{
             menu.push(
-                <A key={i+7} id={menuList[i].id} onClick={(e)=>changeState(e)}>
+                <A key={idx+7} id={menuList[idx].id} onClick={(e)=>changeDefaultMenuState(e)}>
                   <MenuContainer >
                       <ImageContainer>
-                        <Image src={menuList[i].img}/>
+                        <Image src={menuList[idx].img}/>
                       </ImageContainer>
                       <TextContainer>
-                        <Text>{menuList[i].title}</Text>
+                        <Text>{menuList[idx].title}</Text>
                       </TextContainer><br/>
                   </MenuContainer>
                 </A>
             )
         }
-        if(i === 3 || i === menuList.length-1){
+        if(idx === 3 || idx === menuList.length-1){
             menu.push(
-                <BottomLine key={i}/>
+                <BottomLine key={idx}/>
             )
         }
-        i += 1;
+        idx += 1;
     }
-    // Selected Menu Setting
-    const changeState = (e) => {
+    // Selected DefaultMenu Setting
+    const changeDefaultMenuState = (e) => {
         e.preventDefault();
-        let newGlobalState
-        newGlobalState = {
+        const newGlobalState = {
             main: e.currentTarget.id,
             sub: globalState.sub
         }

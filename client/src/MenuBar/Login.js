@@ -6,22 +6,21 @@ import { post } from 'axios';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
-/*
-    - DB 연결
-    - 모달창 종료 시 메세지 초기화
-*/
 function Login() {
-    // Login Information Setting
     const {session, sessionDispatch} = useContext(Store);
-    const [Message, setMessage] = useState('');
-    const onSubmit = (e) => {
+    const [LoginMessage, setLoginMessage] = useState('');
+    const sessionState=session.state?'로그아웃':'로그인';
+    const [loginModalState, setLoginModalState] = useState(false);
+    // Login Submit
+    const onLoginSubmit = (e) => {
         e.preventDefault();
         const id = e.target.id.value;
         const pw = e.target.pw.value;
         // Restricted Charater
         if(id.indexOf(" ") !== -1 || pw.indexOf(" ") !== -1 ||
-           id.indexOf("=") !== -1 || pw.indexOf("=") !== -1){
-            setMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
+           id.indexOf("=") !== -1 || pw.indexOf("=") !== -1 ||
+           id.indexOf("'") !== -1 || pw.indexOf("'") !== -1){
+            LoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
             return false;   
         }
         let newLogin = {
@@ -32,7 +31,7 @@ function Login() {
         const data = newLogin;
         post(url,data).then(res=>{
             if(res.data.length===1){
-                setMessage(res.data[0])
+                LoginMessage(res.data[0])
             }else{
                 let newSession = session;
                 newSession = {
@@ -45,14 +44,11 @@ function Login() {
             }
         })
     }
-    // Login State
-    const login=session.state?'로그아웃':'로그인'
     // Login Modal Setting
-    const [modalState, setModalState] = useState(false)
     const openLoginModal = (e) => {
         e.preventDefault();
-        if(login === '로그인'){
-            setModalState(true);
+        if(sessionState === '로그인'){
+            setLoginModalState(true);
         }else{
             let newSession = session;
             newSession = {
@@ -64,22 +60,22 @@ function Login() {
         }
     }
     const closeLoginModal = () => {
-        setMessage("");
-        setModalState(false);
+        setLoginMessage("");
+        setLoginModalState(false);
     }
     return(
         <Container>
-            <LinkModal onClick={(e)=>openLoginModal(e)}>{login}</LinkModal>
+            <LinkModal onClick={(e)=>openLoginModal(e)}>{sessionState}</LinkModal>
             <Modal 
-                isOpen={modalState}
-                style={ModalStyle}
+                isOpen={loginModalState}
+                style={LoginModalStyle}
                 onRequestClose={(e) => closeLoginModal()}
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
-                <Form onSubmit={(e)=>onSubmit(e)}>
+                <Form onSubmit={(e)=>onLoginSubmit(e)}>
                     <InputId id='id' type='text' placeholder="아이디" required/><br/>
                     <InputPw id='pw' type='password' placeholder="비밀번호" required/><br/>
-                    <SpanText>{Message}</SpanText><br/>
+                    <SpanText>{LoginMessage}</SpanText><br/>
                     <InputSubmit type="submit" value="로그인"/>
                     <Find>
                         <A>아이디 찾기</A>
@@ -167,7 +163,7 @@ const Blank = Styled.div`
     float: left;
     margin: 0 20px;
 `
-const ModalStyle = {
+const LoginModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.9)',
         zIndex: 3               
