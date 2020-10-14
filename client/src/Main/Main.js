@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
+import Item from './Item';
 
 function Main() {
     var idx;
@@ -50,9 +51,11 @@ function Main() {
     }
     return(
         <Container>
+            <LeftSide></LeftSide>
             <Menu>
                 {menu}      
             </Menu>
+            <RightSide></RightSide>
         </Container>
     );
 }
@@ -63,7 +66,7 @@ const Left = Styled.div`
 `
 const Container = Styled(Left)`
     width: 1665px;
-    height: 919px;
+    height: 869px;
     text-align: center;
 `
 const Menu = Styled.div`
@@ -90,5 +93,14 @@ font-size: 17.5px;
 `
 const A = Styled.a`
   cursor: pointer;
+`
+const LeftSide = Styled(Left)`
+  float: left;
+  width: 100px;
+  height: 869px;
+  background-color: lime;
+`
+const RightSide = Styled(LeftSide)`
+  float: right;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

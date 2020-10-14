@@ -24,7 +24,7 @@ const Left = Styled.div`
 const Container = Styled(Left)`
   float: left;
   width: 12.5%;
-  height: 908px;
+  height: 858px;
   margin: 10px 0 0 0;
   background-color: #FAFAFA;
 `
