@@ -8,12 +8,12 @@ import { put, post } from 'axios'
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Register() {
-    const { session } = useContext(Store); // Login State
+    const { session } = useContext(Store);
     const register=session.state?'':'회원가입';
-    const [registerModalState, setRegisterModalState] = useState(false); // Register Modal
-    const [postcodeModalState, setPostcodeModalState] = useState(false); // Postcode Modal
-    const [postcode, setPostcode] = useState(''); // Postcode Value
-    const [address1, setAddress1] = useState(''); // Address1 Value
+    const [registerModalState, setRegisterModalState] = useState(false);
+    const [postcodeModalState, setPostcodeModalState] = useState(false);
+    const [postcode, setPostcode] = useState('');
+    const [address1, setAddress1] = useState('');
     const [passwordMessage, setPasswordMessage] = useState(''); // Password Valid Check Message
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState(''); // Password Equal Check Message
     const [idMessage, setIdMessage] = useState(''); // Id Valid Check Message
@@ -75,7 +75,7 @@ function Register() {
         e.preventDefault();
         const pw = e.target.value;
         // Restricted Charater
-        if(pw.indexOf(" ") !== -1 || pw.indexOf("=") !== -1){
+        if(pw.indexOf(" ") !== -1 || pw.indexOf("=") !== -1 || pw.indexOf("'") !== -1 ){
             setPasswordMessage("사용할 수 없는 비밀번호입니다.");
         }else{
             setPasswordMessage('');
@@ -97,7 +97,7 @@ function Register() {
         e.preventDefault();
         const id = e.target.value;
         // Restricted Charater
-        if(id.indexOf(" ") !== -1 || id.indexOf("=") !== -1){
+        if(id.indexOf(" ") !== -1 || id.indexOf("=") !== -1 || id.indexOf("'") !== -1){
             setIdMessage("사용할 수 없는 아이디입니다.");
             return false;   
         }

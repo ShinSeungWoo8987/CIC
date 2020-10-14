@@ -12,17 +12,32 @@ function Funding() {
     const { session, sessionDispatch } = useContext(Store);
     const [fundingModalState, setFundingModalState] = useState(false); // Login Modal
     const [loginModalState, setLoginModalState] = useState(false); // Non-Login Modal
-    const targetMoney = 1000000; // Funding Information
-    const saveMoney = 500000; // Funding Information
-    const saveMoneyStr = changeFormat(saveMoney); // Funding Information
-    const percent = ((saveMoney/targetMoney)*100); // Funding Information
-    const fundingCnt = changeFormat(1000);  // Funding Information
-    const dDay = 30; // Funding Information
+    const targetMoney = 1000000;
+    const saveMoney = 500000;
+    const percent = ((saveMoney/targetMoney)*100);
+    const dDay = 30;
     const progress = <ProgressBar width='250px' height='10px' fillColor='lime' percent={percent}/>;
-    const [postcodeModalState, setPostcodeModalState] = useState(false); // Postcode Modal
-    const [postcode, setPostcode] = useState(''); // postcode Value
-    const [address1, setAddress1] = useState(''); // address1 Value
+    const [postcodeModalState, setPostcodeModalState] = useState(false);
+    const [postcode, setPostcode] = useState(''); 
+    const [address1, setAddress1] = useState('');
     const [Message, setMessage] = useState(''); // Login & Funding Submit Message;
+    // Format - (###,###,###)
+    const changeFormat = (source) => {
+        const reverseSource = String(source).split("").reverse().join("");
+        let result = '';
+        var i=0;
+        while(i<String(reverseSource).length){
+            if(i%3 === 2 && i !== String(reverseSource).length-1){
+                result += String(reverseSource)[i] + ',';
+            }else{
+                result += String(reverseSource)[i]
+            }
+            i++;
+        }
+        return String(result).split("").reverse().join("");
+    }
+    const saveMoneyStr = changeFormat(saveMoney);
+    const fundingCnt = changeFormat(1000);
     // When Login & Non-Login, Modal Setting
     const openModal = (e) => {
         e.preventDefault();
@@ -38,21 +53,6 @@ function Funding() {
         }else{
             setLoginModalState(false);
         }
-    }
-    // Format - (###,###,###)
-    const changeFormat = (source) => {
-        const reverseSource = String(source).split("").reverse().join("");
-        let result = '';
-        var i=0;
-        while(i<String(reverseSource).length){
-            if(i%3 === 2 && i !== String(reverseSource).length-1){
-                result += String(reverseSource)[i] + ',';
-            }else{
-                result += String(reverseSource)[i]
-            }
-            i++;
-        }
-        return String(result).split("").reverse().join("");
     }
     // Postcode Modal Setting
     const changePostcodeModalState = (e) => {

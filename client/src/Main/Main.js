@@ -1,10 +1,12 @@
 import React, {useContext} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
-import Item from './Item';
+import Item from './Items';
+import LeftButton from '../Image/LeftMainButton.png';
+import RightButton from '../Image/RightMainButton.png';
+import Funding from '../Project/Funding';
 
 function Main() {
-    var idx;
     const {globalState, globalStateDispatch} = useContext(Store);
     const menuList = [
         {id: 'all', title: '전체'},
@@ -14,7 +16,7 @@ function Main() {
     ]
     const menu = [];
     // Menu List Setting
-    idx=0;
+    var idx=0;
     while(idx<menuList.length){
         if(globalState.sub === menuList[idx].id){
             menu.push(
@@ -49,13 +51,32 @@ function Main() {
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         console.log(newGlobalState);
     }
+    // Next Page
+    const moveMainPage = (e, direction) => {
+        e.preventDefault();
+        if(direction==='left'){
+            console.log('왼쪽');
+        }else{
+            console.log("오른쪽");
+        }
+    }
     return(
         <Container>
-            <LeftSide></LeftSide>
             <Menu>
-                {menu}      
-            </Menu>
-            <RightSide></RightSide>
+                {menu}   
+            </Menu><br/>
+            <SubContainer>
+                <LeftSide>
+                    <Image src={LeftButton} onClick={(e)=>moveMainPage(e, 'left')}></Image>
+                </LeftSide>
+                <ItemContainer>
+                    <Item/>
+                    <Funding/>
+                </ItemContainer>
+                <RightSide>
+                <Image src={RightButton} onClick={(e)=>moveMainPage(e, 'right')}></Image>
+                </RightSide>
+            </SubContainer>
         </Container>
     );
 }
@@ -71,7 +92,7 @@ const Container = Styled(Left)`
 `
 const Menu = Styled.div`
     display: inline-block;
-    margin: 0 auto;
+    margin: 0 auto 0 auto;
 `
 const MenuContainer = Styled(Left)`
   padding: 0 50px 0 0;
@@ -94,13 +115,23 @@ font-size: 17.5px;
 const A = Styled.a`
   cursor: pointer;
 `
+const SubContainer = Styled(Left)`
+
+`
+const Image = Styled.img`
+  width: 60px;
+  vertical-align: middle;
+  cursor: pointer;
+`
 const LeftSide = Styled(Left)`
-  float: left;
   width: 100px;
-  height: 869px;
-  background-color: lime;
+  height: 865px;
+  line-height: 800px;
+`
+const ItemContainer = Styled(Left)`
+  width: 1465px;
+  height: 100px;
 `
 const RightSide = Styled(LeftSide)`
-  float: right;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

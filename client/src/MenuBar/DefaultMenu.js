@@ -17,7 +17,6 @@ import Center from '../Image/Center.png';
 import SelectCenter from '../Image/SelectCenter.png';
 
 function DefaultMenu() {
-    var idx;
     const {globalState, globalStateDispatch} = useContext(Store);
     const menuList = [
         {id: 'all', img: All, select: SelectAll, title: '전체'},
@@ -30,7 +29,7 @@ function DefaultMenu() {
     ]
     const menu = [];
     // Menu List Setting
-    idx=0;
+    var idx=0;
     while(idx<menuList.length){
         if(globalState.main === menuList[idx].id){
             menu.push(
@@ -107,7 +106,6 @@ const ImageContainer = Styled(Left)`
 const Image = Styled.img`
   width: 30px;
   vertical-align: middle;
-  
 `
 const TextContainer = Styled(Left)`
   height: 50px;

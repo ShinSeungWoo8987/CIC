@@ -27,7 +27,7 @@ function Login() {
             id: id,
             pw: pw
         }
-        const url = '/login';
+        const url = '/authenticate';
         const data = newLogin;
         post(url,data).then(res=>{
             if(res.data.length===1){

@@ -36,7 +36,7 @@ public class CICController {
         return list; 
     }
 	@GetMapping("/project")
-    public List<Project> getProjectList() throws Exception { 
+    public List<Project> getProjectList() throws Exception {
         List<Project> list = this.cicService.getProjectList();
         return list; 
     }

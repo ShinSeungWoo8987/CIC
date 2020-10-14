@@ -17,10 +17,8 @@ import UserList from '../Image/UserList.png';
 import SelectUserList from '../Image/SelectUserList.png';
 
 function MyInformation() {
-    var idx=0;
     const {globalState, globalStateDispatch} = useContext(Store);
     const { session } = useContext(Store);
-    // Grade Per Menu List
     const common = [
         {id: 'updateUser', img: UpdateUser, select: SelectUpdateUser, title: '정보수정'},
         {id: 'fundingList', img: FundingList, select: SelectFundingList, title: '펀딩목록'},
@@ -39,8 +37,8 @@ function MyInformation() {
         {id: 'adminGradeUp', img: GradeUp, select: SelectGradeUp, title: '창작자승인'},
         {id: 'projectListAll', img: ProjectList, select: SelectProjectList, title: '프로젝트목록'},
     ]
-    const myInformation = []; // My Information Setting
-    let currentGrade = []; // Login User Grade
+    let currentGrade = []; // Select, Login User Grade Array
+    const myInformation = []; // My Information Menu List Array
     // Login User Grade Setting
     switch(session.grade){
             default:
@@ -56,7 +54,7 @@ function MyInformation() {
             currentGrade = admin
         break;
     }
-    idx = 0;
+    var idx=0;
     while(idx <currentGrade.length){
         if(globalState.main === currentGrade[idx].id){
             myInformation.push(
