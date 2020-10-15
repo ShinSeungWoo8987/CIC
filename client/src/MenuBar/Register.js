@@ -1,7 +1,6 @@
 import React, {useContext, useState}  from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
-import DaumPostcode from 'react-daum-postcode';
 import Store from '../Store/Store';
 import { post } from 'axios'
 import {executeRegisterService} from '../Jwt/AuthenticationService';
@@ -9,17 +8,13 @@ import {executeRegisterService} from '../Jwt/AuthenticationService';
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Register() {
-    const { session } = useContext(Store);
-    console.log("Register.js");
-    console.log(session);
+    const { session, addressValue, addressValueDispatch, modalStateDispatch } = useContext(Store);
     const register=session.state?'':'회원가입';
     const [registerModalState, setRegisterModalState] = useState(false);
-    const [postcodeModalState, setPostcodeModalState] = useState(false);
-    const [postcode, setPostcode] = useState('');
-    const [address1, setAddress1] = useState('');
     const [passwordMessage, setPasswordMessage] = useState(''); // Password Valid Check Message
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState(''); // Password Equal Check Message
     const [idMessage, setIdMessage] = useState(''); // Id Valid Check Message
+    const restirctedCharacterList = [" ", "=", "'", "\""]; // Restricted Charater
     // Register Modal Setting
     const openRegisterModal = (e) => {
         e.preventDefault();
@@ -31,22 +26,24 @@ function Register() {
         setIdMessage("");
         setPasswordMessage("");
         setPasswordConfirmMessage("");
-        setPostcode("");
-        setAddress1("");
+        const newAddressValue = {
+            postcode: '',
+            address1: ''
+        }
+        addressValueDispatch({type: 'CHANGE_ADDRESS', payload: newAddressValue});
         setRegisterModalState(false);
     }
     // Postcode Modal Setting
-    const changePostcodeModalState = (e) => {
+    const openPostcodeModal = (e) => {
         e.preventDefault();
-        setPostcodeModalState(true);
+        const newModalState = {
+            postcode: true
+        }
+        modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        // 아래의 코드로 실행 시 렌더링이 진행되지 않는다. 왜???
+        // setModalDispatch({type:"CHANGE_MODALSTATE", payload: Object.assign(modalState, {postcode:true})})
     };
-    // Postcode & Address Value Setting
-    const handleComplete = (data) => {
-        setPostcode(data.zonecode);
-        setAddress1(data.address);
-        setPostcodeModalState(false);
-    };
-    // Register Member
+    // Register Submit
     const onSubmit = (e) => {
         e.preventDefault();
         const {id,pw1,pw2,name,birth,phone,postcode,address1,address2} = e.target;
@@ -70,11 +67,15 @@ function Register() {
     const checkPassword = (e) => {
         e.preventDefault();
         const pw = e.target.value;
-        // Restricted Charater
-        if(pw.indexOf(" ") !== -1 || pw.indexOf("=") !== -1 || pw.indexOf("'") !== -1 ){
-            setPasswordMessage("사용할 수 없는 비밀번호입니다.");
-        }else{
-            setPasswordMessage('');
+        var idx = 0;
+        setPasswordMessage('');
+        while(idx<restirctedCharacterList.length){
+            // 비밀번호 입력값에 제한된 문자 리스트의 목록이 없는 경우 -1 반환
+            if(pw.indexOf(restirctedCharacterList[idx]) !== -1){
+                setPasswordMessage("사용할 수 없는 비밀번호입니다.");
+                break;
+            }
+            idx++;
         }
     }
     // Password Equal Check
@@ -92,10 +93,15 @@ function Register() {
     const checkId = (e) => {
         e.preventDefault();
         const id = e.target.value;
-        // Restricted Charater
-        if(id.indexOf(" ") !== -1 || id.indexOf("=") !== -1 || id.indexOf("'") !== -1){
-            setIdMessage("사용할 수 없는 아이디입니다.");
-            return false;   
+        var idx = 0;
+        setIdMessage('');
+        while(idx<restirctedCharacterList.length){
+            // 비밀번호 입력값에 제한된 문자 리스트의 목록이 없는 경우 -1 반환
+            if(id.indexOf(restirctedCharacterList[idx]) !== -1){
+                setIdMessage("사용할 수 없는 아이디입니다.");
+                return false;
+            }
+            idx++;
         }
         const url = '/memberList';
         const data = {
@@ -111,7 +117,7 @@ function Register() {
             <Modal 
                 isOpen={registerModalState}
                 style={RegisterModalStyle}
-                onRequestClose={(e) => closeRegisterModal()}
+                onRequestClose={(e) => closeRegisterModal(e)}
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form onSubmit={(e)=>onSubmit(e)}>
@@ -120,27 +126,17 @@ function Register() {
                     {/* Lost Focus, Id Valid Check */}
                     <InputId id='id' type='text' placeholder="아이디" required pattern="[A-Za-z0-9]{3,12}" onBlur={(e)=>checkId(e)}/><br/>
                     <SpanText>{idMessage}</SpanText><br/>
-                    <InputPw id='pw1' type='password' placeholder="비밀번호" required onChange={(e)=>checkPassword(e)}/><br/>
+                    <InputPw id='pw1' type='password' placeholder="비밀번호" required pattern="[A-Za-z0-9]{3,12}" onChange={(e)=>checkPassword(e)}/><br/>
                     <SpanText>{passwordMessage}</SpanText><br/>
                     <InputPw id='pw2' type='password' placeholder="비밀번호 확인" required onChange={(e)=>checkPasswordConfirm(e)}/><br/>
                     <SpanText>{passwordConfirmMessage}</SpanText><br/>
                     <InputText id='name' type='text' placeholder="이름" required/><br/>
                     <InputDate id='birth' type='date' min='1996-01-01' max='2099-12-31' required/><br/>
                     <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
-                    <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={postcode} required readOnly/>
-                    <BtnPostcode type='submit' value='우편번호 검색' onClick={(e)=>changePostcodeModalState(e)}/><br/>
-                    <InputText id="address1" type="text" placeholder="도로명 주소" value={address1} required readOnly/><br/>
+                    <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} required readOnly/>
+                    <BtnPostcode type='button' value='우편번호 검색' onClick={(e)=>openPostcodeModal(e)}/><br/>
+                    <InputText id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} required readOnly/><br/>
                     <InputText id="address2" type="text" placeholder="상세 주소" />
-                    <Modal 
-                        isOpen={postcodeModalState}
-                        style={PostcodeModalStyle}
-                        onRequestClose={(e) => setPostcodeModalState(false)}
-                        // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
-                    >
-                        <DaumPostcode
-                            onComplete={handleComplete}
-                        />
-                    </Modal>
                     <InputSubmit type="submit" value="회원가입"/>
                 </Form>
             </Modal>
@@ -233,7 +229,7 @@ const InputSubmit = Styled(Input)`
 const RegisterModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.9)',
-        zIndex: 3               
+        zIndex: 1            
     },
     content: {
         position: "absolute",
@@ -241,21 +237,6 @@ const RegisterModalStyle = {
         top: '7.5%',
         width: '500px',
         height: '800px',
-        borderRadius: 10,
-        boxShadow: '9px 9px 10px #4E4E4E'
-    }
-}
-const PostcodeModalStyle = {
-    overlay: {
-        backgroundColor: 'rgba(140,140,140,0.9)',
-        zIndex: 3               
-    },
-    content: {
-        position: "absolute",
-        left: '37.5%',
-        top: '22.5%',
-        width: '500px',
-        height: '450px',
         borderRadius: 10,
         boxShadow: '9px 9px 10px #4E4E4E'
     }

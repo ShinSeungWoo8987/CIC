@@ -48,7 +48,6 @@ function Main() {
             sub: e.currentTarget.id
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
-        console.log(newGlobalState);
     }
     // Next Page
     const moveMainPage = (e, direction) => {

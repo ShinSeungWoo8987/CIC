@@ -3,8 +3,7 @@ import Styled from "styled-components" // styled-components 라이브러리를 �
 
 function Footer() {
     return(
-        <Container>
-            
+        <Container>    
         </Container>
     );
 }

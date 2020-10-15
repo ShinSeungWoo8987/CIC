@@ -7,7 +7,7 @@ import {executeJwtAuthenticationService, registerSuccessfulLoginForJwt, logout} 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Login() {
-    const { session, sessionDispatch, modalState, modalStateDispatch } = useContext(Store);
+    const { session, sessionDispatch, loginModalState, setLoginModalDispatch } = useContext(Store);
     const [LoginMessage, setLoginMessage] = useState('');
 
     useEffect(()=>{
@@ -51,10 +51,7 @@ function Login() {
     const openLoginModal = (e) => {
         e.preventDefault();
         if(localStorage.getItem('token') === null){
-            const newModalState = {
-                login: true
-            }
-            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+            setLoginModalDispatch({type:"CHANGE_MODALSTATE", payload:true});
         }else{
             logout();
             sessionDispatch({type:'SESSION', payload: {
@@ -67,16 +64,13 @@ function Login() {
     }
     const closeLoginModal = () => {
         setLoginMessage("");
-        const newModalState = {
-            login: false
-        }
-        modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        setLoginModalDispatch({type:"CHANGE_MODALSTATE", payload:false});
     }
     return(
         <Container>
             <LinkModal onClick={(e)=>openLoginModal(e)}>{session.state?'로그아웃':'로그인'}</LinkModal>
             <Modal 
-                isOpen={modalState.login}
+                isOpen={loginModalState}
                 style={LoginModalStyle}
                 onRequestClose={(e) => closeLoginModal()}
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거

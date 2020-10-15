@@ -25,19 +25,23 @@ const globalStateReducer = (state, {type, payload}) => {
             return payload;
     }
 }
-const _selectAddressValue = {
-    postcode: '테스트 우편번호',
-    address: '테스트 주소'
+const _addressValue = {
+    postcode: '',
+    address1: ''
 }
-const selectAddressValueReducer = (state, {type, payload}) => {
+const addressValueReducer = (state, {type, payload}) => {
     switch (type) {
         default:
-            return _selectAddressValue;
-        case 'CHANGE':
+            return _addressValue;
+        case 'CHANGE_ADDRESS':
             return payload;
     }
 }
-const loginModalReducer = (state, { type, payload }) => {
+const _modalState = {
+    login: false,
+    postcode: false
+}
+const modalStateReducer = (state, { type, payload }) => {
     switch (type) {
         default:
             return false;
@@ -45,7 +49,6 @@ const loginModalReducer = (state, { type, payload }) => {
             return payload;
     }
 }
-
 export {
-    _session, sessionReducer, _globalState, globalStateReducer, _selectAddressValue, selectAddressValueReducer,loginModalReducer
+    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer
 };

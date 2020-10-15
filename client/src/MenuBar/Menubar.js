@@ -4,6 +4,7 @@ import Search from './Search';
 import Menu from './Menu';
 import DefaultMenu from './DefaultMenu';
 import MyInformation from './MyInformation';
+import Postcode from './Postcode';
 
 function MenuBar() {
     return (
@@ -13,6 +14,7 @@ function MenuBar() {
         <BottomLine/>
         <DefaultMenu/>
         <MyInformation/>
+        <Postcode/>
       </Container>
     );
   }
