@@ -1,41 +1,29 @@
 import React, {useContext} from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
-import UpdateUser from '../Image/UpdateUser.png';
-import SelectUpdateUser from '../Image/SelectUpdateUser.png';
-import FundingList from '../Image/FundingList.png';
-import SelectFundingList from '../Image/SelectFundingList.png';
-import GradeUp from '../Image/GradeUp.png';
-import SelectGradeUp from '../Image/SelectGradeUp.png';
-import DeleteUser from '../Image/DeleteUser.png';
-import SelectDeleteUser from '../Image/SelectDeleteUser.png';
-import ProjectList from '../Image/ProjectList.png';
-import SelectProjectList from '../Image/SelectProjectList.png';
-import AddProject from '../Image/AddProject.png';
-import SelectAddProject from '../Image/SelectAddProject.png';
-import UserList from '../Image/UserList.png';
-import SelectUserList from '../Image/SelectUserList.png';
 
 function MyInformation() {
     const {globalState, globalStateDispatch} = useContext(Store);
     const { session } = useContext(Store);
+    const url = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
+    
     const common = [
-        {id: 'updateUser', img: UpdateUser, select: SelectUpdateUser, title: '정보수정'},
-        {id: 'fundingList', img: FundingList, select: SelectFundingList, title: '펀딩목록'},
-        {id: 'gradeUp', img: GradeUp, select: SelectGradeUp, title: '창작자신청'},
-        {id: 'deleteUser', img: DeleteUser, select: SelectDeleteUser, title: '회원탈퇴'}
+        {id: 'updateUser', img: url+'UpdateUser.png', select: url+ 'SelectUpdateUser.png', title: '정보수정'},
+        {id: 'fundingList', img: url+'FundingList.png', select: url+ 'SelectFundingList.png', title: '펀딩목록'},
+        {id: 'gradeUp', img: url+'GradeUp.png', select: url+ 'SelectGradeUp.png', title: '창작자신청'},
+        {id: 'deleteUser', img: url+'DeleteUser.png', select: url+ 'SelectDeleteUser.png', title: '회원탈퇴'}
     ]
     const creator = [
-        {id: 'updateUser', img: UpdateUser, select: SelectUpdateUser, title: '정보수정'},
-        {id: 'fundingList', img: FundingList, select: SelectFundingList, title: '펀딩목록'},
-        {id: 'projectList', img: ProjectList, select: SelectProjectList, title: '프로젝트목록'},
-        {id: 'addProject', img: AddProject, select: SelectAddProject, title: '프로젝트등록'},
-        {id: 'deleteUser', img: DeleteUser, select: SelectDeleteUser, title: '회원탈퇴'}
+        {id: 'updateUser', img: url+'UpdateUser.png', select: url+ 'SelectUpdateUser.png', title: '정보수정'},
+        {id: 'fundingList', img: url+'FundingList.png', select: url+ 'SelectFundingList.png', title: '펀딩목록'},
+        {id: 'projectList', img: url+'ProjectList.png', select: url+ 'SelectProjectList.png', title: '프로젝트목록'},
+        {id: 'addProject', img: url+'AddProject.png', select: url+ 'SelectAddProject.png', title: '프로젝트등록'},
+        {id: 'deleteUser', img: url+'DeleteUser.png', select: url+ 'SelectDeleteUser.png', title: '회원탈퇴'}
     ]
     const admin = [
-        {id: 'userList', img: UserList, select: SelectUserList, title: '회원목록'},
-        {id: 'adminGradeUp', img: GradeUp, select: SelectGradeUp, title: '창작자승인'},
-        {id: 'projectListAll', img: ProjectList, select: SelectProjectList, title: '프로젝트목록'},
+        {id: 'userList', img: url+'UserList.png', select: url+ 'SelectUserList.png', title: '회원목록'},
+        {id: 'adminGradeUp', img: url+'GradeUp.png', select: url+ 'SelectGradeUp.png', title: '창작자승인'},
+        {id: 'projectListAll', img: url+'ProjectList.png', select: url+ 'SelectProjectList.png', title: '프로젝트목록'},
     ]
     let currentGrade = []; // Select, Login User Grade Array
     const myInformation = []; // My Information Menu List Array

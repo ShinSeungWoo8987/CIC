@@ -1,44 +1,43 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Styled from "styled-components"; // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
-import AuthenticationService from '../Jwt/AuthenticationService.js'
+import Store from '../Store/Store';
+import {executeJwtAuthenticationService, registerSuccessfulLoginForJwt, logout} from '../Jwt/AuthenticationService.js'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Login() {
-    const [loginState, setLoginState] = useState('로그인');
-    let session = {
-        username: localStorage.getItem("authenticatedUser") || '',
-        password: '',
-        token: localStorage.getItem("token") || ''
-    };
-    // console.log("session.token");
-    // console.log(session.token);
-    // console.log("localstorage.getItem(token)");
-    // console.log(localStorage.getItem("token"));
+    const { session, sessionDispatch, loginModalState, setLoginModalDispatch } = useContext(Store);
     const [LoginMessage, setLoginMessage] = useState('');
-    const [loginModalState, setLoginModalState] = useState(false);
+
+    useEffect(()=>{
+        let _session = {
+            state:session.state,
+            username: localStorage.getItem("authenticatedUser") || '',
+            password: '',
+            token: localStorage.getItem("token") || ''
+        };
+        sessionDispatch({type:"SESSION", payload:_session});
+    },[])
+
     // Login Submit
     const onLoginSubmit = (e) => {
         e.preventDefault();
         const id = e.target.id.value;
         const pw = e.target.pw.value;
         // Restricted Charater
-        if(id.indexOf(" ") !== -1 || pw.indexOf(" ") !== -1 ||
-           id.indexOf("=") !== -1 || pw.indexOf("=") !== -1 ||
-           id.indexOf("'") !== -1 || pw.indexOf("'") !== -1){
+        if(id.indexOf(" ") !== -1 || pw.indexOf(" ") !== -1 || id.indexOf("=") !== -1 || pw.indexOf("=") !== -1 || id.indexOf("'") !== -1 || pw.indexOf("'") !== -1){
             setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
-            return false;   
+            return false;
         }
-        AuthenticationService
-        .executeJwtAuthenticationService(id, pw)
+        executeJwtAuthenticationService(id, pw)
         .then((response) => {
             session.token = response.data.token;
-            AuthenticationService.registerSuccessfulLoginForJwt(id, session.token);
-            setLoginState('로그아웃');
+            registerSuccessfulLoginForJwt(id, session.token);
+            sessionDispatch({type:'SESSION', payload: Object.assign(session, {state:true} ) });
             closeLoginModal();
         }).catch( () =>{
-            setLoginMessage("executeJwtAuthenticationService Error")
+            setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.")
             console.log("executeJwtAuthenticationService Error");
         })
     }
@@ -46,20 +45,25 @@ function Login() {
     const openLoginModal = (e) => {
         e.preventDefault();
         if(localStorage.getItem('token') === null){
-            setLoginModalState(true);
+            setLoginModalDispatch({type:"CHANGE_MODALSTATE", payload:true});
         }else{
-            setLoginState('로그인');
-            AuthenticationService.logout();
+            logout();
+            sessionDispatch({type:'SESSION', payload: {
+                state: false,
+                username: localStorage.getItem("authenticatedUser") || '',
+                password: '',
+                token: localStorage.getItem("token") || ''
+            } });
         }
     }
     const closeLoginModal = () => {
         setLoginMessage("");
-        setLoginModalState(false);
+        setLoginModalDispatch({type:"CHANGE_MODALSTATE", payload:false});
     }
+    console.log(session.state);
     return(
         <Container>
-            {/* <LinkModal onClick={(e)=>openLoginModal(e)}>{AuthenticationService.isUserLoggedIn()?'로그아웃':'로그인'}</LinkModal> */}
-            <LinkModal onClick={(e)=>openLoginModal(e)}>{loginState}</LinkModal>
+            <LinkModal onClick={(e)=>openLoginModal(e)}>{session.state?'로그아웃':'로그인'}</LinkModal>
             <Modal 
                 isOpen={loginModalState}
                 style={LoginModalStyle}

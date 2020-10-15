@@ -6,9 +6,9 @@ import Store from '../Store/Store';
 
 
 function Menu() {
+  const { session } = useContext(Store);
   const login = <LoginContainer><Login/><Register/></LoginContainer>; // When Non-Login, View
   const logout = <LogoutContainer><Login/></LogoutContainer>; // When Login, View
-  const { session } = useContext(Store); // Login State
   const menu=session.state?logout:login;
     return menu;
   }

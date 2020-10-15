@@ -4,54 +4,31 @@ import Modal from 'react-modal';
 import Store from '../Store/Store';
 import DaumPostcode from 'react-daum-postcode';
 import ProgressBar from 'react-percent-bar'
-import { post } from 'axios';
+import Util from '../Util/Util.js';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Funding() {
-    const { session, sessionDispatch } = useContext(Store);
-    const [fundingModalState, setFundingModalState] = useState(false); // Login Modal
-    const [loginModalState, setLoginModalState] = useState(false); // Non-Login Modal
+    const { session, setLoginModalDispatch } = useContext(Store);
+    const [fundingModalState, setFundingModalState] = useState(false);
     const targetMoney = 1000000;
     const saveMoney = 500000;
+    // 퍼센트 부분 나중에 메소드로 처리할 것 - 퍼센트가 100퍼센트를 넘어가는 경우 퍼센트바 또한 초과되어 해결해줄 필요가 있음
     const percent = ((saveMoney/targetMoney)*100);
     const dDay = 30;
     const progress = <ProgressBar width='250px' height='10px' fillColor='lime' percent={percent}/>;
     const [postcodeModalState, setPostcodeModalState] = useState(false);
     const [postcode, setPostcode] = useState(''); 
     const [address1, setAddress1] = useState('');
-    const [Message, setMessage] = useState(''); // Login & Funding Submit Message;
-    // Format - (###,###,###)
-    const changeFormat = (source) => {
-        const reverseSource = String(source).split("").reverse().join("");
-        let result = '';
-        var i=0;
-        while(i<String(reverseSource).length){
-            if(i%3 === 2 && i !== String(reverseSource).length-1){
-                result += String(reverseSource)[i] + ',';
-            }else{
-                result += String(reverseSource)[i]
-            }
-            i++;
-        }
-        return String(result).split("").reverse().join("");
-    }
-    const saveMoneyStr = changeFormat(saveMoney);
-    const fundingCnt = changeFormat(1000);
+    const saveMoneyStr = Util.moneyFormat(saveMoney);
+    const fundingCnt = Util.moneyFormat(1000);
     // When Login & Non-Login, Modal Setting
     const openModal = (e) => {
         e.preventDefault();
-        if( session.state === 'true') {
+        if( session.state) { //로그인상태
             setFundingModalState(true);    
-        }else{
-            setLoginModalState(true);
-        }
-    }
-    const closeModal = () => {
-        if( session.state === 'true') {
-            setFundingModalState(false);    
-        }else{
-            setLoginModalState(false);
+        }else{ //로그아웃상태
+            setLoginModalDispatch({type: "CHANGE_MODALSTATE", payload:true})
         }
     }
     // Postcode Modal Setting
@@ -65,38 +42,6 @@ function Funding() {
         setAddress1(data.address);
         setPostcodeModalState(false);
     };
-    // Login Submit
-    const onLoginSubmit = (e) => {
-        e.preventDefault();
-        const id = e.target.id.value;
-        const pw = e.target.pw.value;
-        // Restricted Charater
-        if(id.indexOf(" ") !== -1 || pw.indexOf(" ") !== -1 ||
-           id.indexOf("=") !== -1 || pw.indexOf("=") !== -1){
-            setMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
-            return false;   
-        }
-        let newLogin = {
-            id: id,
-            pw: pw
-        }
-        const url = '/login';
-        const data = newLogin;
-        post(url,data).then(res=>{
-            if(res.data.length===1){
-                setMessage(res.data[0])
-            }else{
-                let newSession = session;
-                newSession = {
-                    state: res.data[0],
-                    id: res.data[1],
-                    grade: res.data[2]
-                }
-                closeModal();
-                sessionDispatch( { type: 'SESSION', payload: newSession} );
-            }
-        })
-    }
     // Funding Submit
     const onFundingSubmit = (e) => {
         e.preventDefault();
@@ -109,7 +54,7 @@ function Funding() {
             <Modal 
                 isOpen= { fundingModalState }
                 style={ FundingModalStyle }
-                onRequestClose={(e) => closeModal()}
+                onRequestClose={(e) => setFundingModalState(false)}
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form onSubmit={(e)=>onFundingSubmit(e)}>
@@ -151,24 +96,6 @@ function Funding() {
                     <Writing id='supportMessage' placeholder='응원글을 입력해주세요!'/><br/>
                     <InputSubmit type="submit" value="펀딩하기"/>
                 </Form>
-            </Modal>
-            <Modal 
-                isOpen={ loginModalState }
-                style={ LoginModalStyle }
-                onRequestClose={(e) => closeModal()}
-                // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
-            >
-                <LoginForm onSubmit={(e)=>onLoginSubmit(e)}>
-                    <LoginId id='id' type='text' placeholder="아이디" required/><br/>
-                    <LoginPw id='pw' type='password' placeholder="비밀번호" required/><br/>
-                    <SpanText>{Message}</SpanText><br/>
-                    <LoginSubmit type="submit" value="로그인"/>
-                    <Find>
-                        <A>아이디 찾기</A>
-                        <Blank>|</Blank>
-                        <A>비밀번호 찾기</A><br/>
-                    </Find>
-                </LoginForm>
             </Modal>
         </Container>
     );
@@ -291,67 +218,6 @@ const InputSubmit = Styled(Input)`
         box-shadow: 1px 1px 9px #8C8C8C; 
     }
 `
-const LoginForm = Styled.form`
-    padding: 25px 0 0 0;
-`
-const LoginInput = Styled.input`
-    position: relative;
-    left: 14%;
-    height: 50px;
-    width: 300px;
-    font-size: 15px;
-    text-indent: 15px;
-    border-radius: 10px;
-    border: 1px solid #E0E0E0;
-`
-const LoginId = Styled(LoginInput)`
-    margin: 0 0 20px 0;
-`
-const LoginPw = Styled(LoginInput)`
-`
-const SpanText = Styled.span`
-    position: relative;
-    left: 18%;
-    bottom: 4px;
-    font-size: 5px;
-    color: red;
-`
-const LoginSubmit = Styled(LoginInput)`
-    width: 306px;  
-    font-size: 20px;
-    font-weight: bold;
-    text-indent: 0px;
-    text-shadow: 1px 1px 7px #BDBDBD; 
-    box-shadow: 1px 1px 7px #BDBDBD;
-    border: none;
-    color: white;
-    margin: 20px 0 0 0;
-    background-color: #83E538;
-
-    &:hover {
-        box-shadow: 1px 1px 9px #8C8C8C; 
-    }
-`
-const Find = Styled.div`
-    position: relative;
-    left: 27.5%;
-    width: 75%;
-    font-size: 12.5px;
-    margin: 10px 0 0 0;
-`
-const A = Styled.a`
-    float: left;
-    color: #9A9A9A;
-
-    &:hover {
-        font-weight: bold;
-        color: black;
-    }
-`
-const Blank = Styled.div`
-    float: left;
-    margin: 0 20px;
-`
 const FundingModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.9)',
@@ -379,21 +245,6 @@ const PostcodeModalStyle = {
         top: '22.5%',
         width: '500px',
         height: '450px',
-        borderRadius: 10,
-        boxShadow: '9px 9px 10px #4E4E4E'
-    }
-}
-const LoginModalStyle = {
-    overlay: {
-        backgroundColor: 'rgba(140,140,140,0.9)',
-        zIndex: 3               
-    },
-    content: {
-        position: "absolute",
-        left: '40%',
-        top: '27.5%',
-        width: '425px',
-        height: '290px',
         borderRadius: 10,
         boxShadow: '9px 9px 10px #4E4E4E'
     }

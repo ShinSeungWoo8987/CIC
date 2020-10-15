@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 import Store from './Store';
-import { _session, sessionReducer, _globalState, globalStateReducer, _selectAddressValue, selectAddressValueReducer} from './clientReducer';
+import { _session, sessionReducer, _globalState, globalStateReducer, _selectAddressValue, selectAddressValueReducer, loginModalReducer} from './clientReducer';
 
 function ClientStore(props) {
 
@@ -8,9 +8,13 @@ function ClientStore(props) {
     const [session, sessionDispatch] = useReducer(sessionReducer, _session);
     const [globalState, globalStateDispatch] = useReducer(globalStateReducer, _globalState);
     const [selectAddressValue, selectAddressValueDispatch] = useReducer(selectAddressValueReducer, _selectAddressValue);
+    const [loginModalState, setLoginModalDispatch] = useReducer(loginModalReducer,false);
 
     return (
-        <Store.Provider value={ { session, sessionDispatch, globalState, globalStateDispatch, selectAddressValue, selectAddressValueDispatch } }>
+        <Store.Provider value={ {
+            session, sessionDispatch, globalState, globalStateDispatch, selectAddressValue, selectAddressValueDispatch,
+            loginModalState, setLoginModalDispatch } }>
+                
             {props.children}
         </Store.Provider>
     );

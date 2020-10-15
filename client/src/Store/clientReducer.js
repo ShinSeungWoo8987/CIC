@@ -1,8 +1,9 @@
 // const ..Reducer = (state, { payload }) => payload
 const _session = {
     state: false,
-    id: null,
-    grade: null
+    username: localStorage.getItem("authenticatedUser") || '',
+    password: '',
+    token: localStorage.getItem("token") || ''
 }
 const sessionReducer = (state, { type, payload }) => {
     switch (type) {
@@ -36,6 +37,15 @@ const selectAddressValueReducer = (state, {type, payload}) => {
             return payload;
     }
 }
+const loginModalReducer = (state, { type, payload }) => {
+    switch (type) {
+        default:
+            return false;
+        case 'CHANGE_MODALSTATE':
+            return payload;
+    }
+}
+
 export {
-    _session, sessionReducer, _globalState, globalStateReducer, _selectAddressValue, selectAddressValueReducer
+    _session, sessionReducer, _globalState, globalStateReducer, _selectAddressValue, selectAddressValueReducer,loginModalReducer
 };

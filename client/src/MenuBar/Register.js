@@ -3,12 +3,15 @@ import Styled from "styled-components" // styled-components 라이브러리를 �
 import Modal from 'react-modal';
 import DaumPostcode from 'react-daum-postcode';
 import Store from '../Store/Store';
-import { put, post } from 'axios'
+import { post } from 'axios'
+import {executeRegisterService} from '../Jwt/AuthenticationService';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Register() {
     const { session } = useContext(Store);
+    console.log("Register.js");
+    console.log(session);
     const register=session.state?'':'회원가입';
     const [registerModalState, setRegisterModalState] = useState(false);
     const [postcodeModalState, setPostcodeModalState] = useState(false);
@@ -51,23 +54,16 @@ function Register() {
             document.getElementById('pw2').focus();
             return false;
         }
-        let newUser = {
-            id:id.value,
-            pw:pw1.value,
-            name:name.value,
-            birth:birth.value,
-            phone:phone.value,
-            postcode:postcode.value,
-            address1:address1.value,
-            address2:address2.value
-        };
-        const url = '/register';
-        const data = newUser;
-        put(url,data).then(res=>{
-            if(res.data === 'Fail'){
-                return false;
-            }
-        });
+        executeRegisterService(
+            id.value,
+            pw1.value,
+            name.value,
+            birth.value,
+            phone.value,
+            postcode.value,
+            address1.value,
+            address2.value
+        ).then(res=>console.log(res));
         closeRegisterModal();
     };
     // Password Valid Check

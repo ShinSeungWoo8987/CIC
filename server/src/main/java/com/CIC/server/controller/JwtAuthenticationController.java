@@ -50,8 +50,10 @@ public class JwtAuthenticationController {
     
     BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
     
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.PUT)
     public String register(@RequestBody JwtRegisterRequest registerRequest) {
+    	
+    	System.out.println(registerRequest.getUsername()+" / "+ registerRequest.getPassword());
     	try { // 아이디 중복하는 체크
     		authenticate(registerRequest.getUsername(), registerRequest.getPassword());
         	final UserDetails userDetails = userDetailsService

@@ -9,6 +9,7 @@ import Footer from './Footer/Footer';
 function App() {
   return (
     <ClientStore>
+      {/* <img src="https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/SelectUpdateUser.png"/> */}
       <Container>
         <GlobalStyle/>
         <Header/>

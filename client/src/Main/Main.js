@@ -2,11 +2,10 @@ import React, {useContext} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
 import Item from './Items';
-import LeftButton from '../Image/LeftMainButton.png';
-import RightButton from '../Image/RightMainButton.png';
 import Funding from '../Project/Funding';
 
 function Main() {
+    const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
     const {globalState, globalStateDispatch} = useContext(Store);
     const menuList = [
         {id: 'all', title: '전체'},
@@ -67,14 +66,14 @@ function Main() {
             </Menu><br/>
             <SubContainer>
                 <LeftSide>
-                    <Image src={LeftButton} onClick={(e)=>moveMainPage(e, 'left')}></Image>
+                    <Image src={buttonImg+'LeftMainButton.png'} onClick={(e)=>moveMainPage(e, 'left')}></Image>
                 </LeftSide>
                 <ItemContainer>
                     <Item/>
                     <Funding/>
                 </ItemContainer>
                 <RightSide>
-                <Image src={RightButton} onClick={(e)=>moveMainPage(e, 'right')}></Image>
+                <Image src={buttonImg+'RightMainButton.png'} onClick={(e)=>moveMainPage(e, 'right')}></Image>
                 </RightSide>
             </SubContainer>
         </Container>

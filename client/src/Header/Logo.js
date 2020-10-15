@@ -1,8 +1,8 @@
 import React from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
-import LogoImg from '../Image/Logo.png';
 
 function Logo() {
+    const LogoImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/Logo.png`;
     return (
       <Container>
         <ImageContainer>

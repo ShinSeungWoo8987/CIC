@@ -1,31 +1,19 @@
 import React, {useContext} from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
-import All from '../Image/All.png';
-import SelectAll from '../Image/SelectAll.png';
-import Tech from '../Image/Tech.png';
-import SelectTech from '../Image/SelectTech.png';
-import Travel from '../Image/Travel.png';
-import SelectTravel from '../Image/SelectTravel.png';
-import Fashion from '../Image/Fashion.png';
-import SelectFashion from '../Image/SelectFashion.png';
-import Event from '../Image/Event.png';
-import SelectEvent from '../Image/SelectEvent.png';
-import Notice from '../Image/Notice.png';
-import SelectNotice from '../Image/SelectNotice.png';
-import Center from '../Image/Center.png';
-import SelectCenter from '../Image/SelectCenter.png';
+
 
 function DefaultMenu() {
+  const url = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`
     const {globalState, globalStateDispatch} = useContext(Store);
     const menuList = [
-        {id: 'all', img: All, select: SelectAll, title: '전체'},
-        {id: 'tech', img: Tech, select: SelectTech, title: '테크·가전'},
-        {id: 'travel', img: Travel, select: SelectTravel, title: '여행·레저'},
-        {id: 'fashion', img: Fashion, select: SelectFashion, title: '패션·잡화'},
-        {id: 'event', img: Event, select: SelectEvent, title: '이벤트'},
-        {id: 'notice', img: Notice, select: SelectNotice, title: '공지사항'},
-        {id: 'center', img: Center, select: SelectCenter, title: '고객센터'}
+        {id: 'all', img: url+'All.png', select: url+'SelectAll.png', title: '전체'},
+        {id: 'tech', img: url+'Tech.png', select: url+'SelectTech.png', title: '테크·가전'},
+        {id: 'travel', img: url+'Travel.png', select: url+'SelectTravel.png', title: '여행·레저'},
+        {id: 'fashion', img: url+'Fashion.png', select: url+'SelectFashion.png', title: '패션·잡화'},
+        {id: 'event', img: url+'Event.png', select: url+'SelectEvent.png', title: '이벤트'},
+        {id: 'notice', img: url+'Notice.png', select: url+'SelectNotice.png', title: '공지사항'},
+        {id: 'center', img: url+'Center.png', select: url+'SelectCenter.png', title: '고객센터'},
     ]
     const menu = [];
     // Menu List Setting
