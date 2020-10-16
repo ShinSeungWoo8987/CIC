@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
 
@@ -25,22 +25,22 @@ function MyInformation() {
         {id: 'adminGradeUp', img: url+'GradeUp.png', select: url+ 'SelectGradeUp.png', title: '창작자승인'},
         {id: 'projectListAll', img: url+'ProjectList.png', select: url+ 'SelectProjectList.png', title: '프로젝트목록'},
     ]
-    let currentGrade = []; // Select, Login User Grade Array
+    let currentGrade = ''; // Select, Login User Grade Array
     const myInformation = []; // My Information Menu List Array
     // Login User Grade Setting
-    switch(session.grade){
-            default:
-            currentGrade = [];
-        break;
-            case('0'):
-            currentGrade = common
-        break;
-            case('1'):
-            currentGrade = creator
-        break;
-            case('2'):
-            currentGrade = admin
-        break;
+    switch(session.authority){
+        default:
+            currentGrade = '';
+            break;
+        case(0):
+            currentGrade = common;
+            break;
+        case(1):
+            currentGrade = creator;
+            break;
+        case(2):
+            currentGrade = admin;
+            break;
     }
     var idx=0;
     while(idx <currentGrade.length){
@@ -81,7 +81,6 @@ function MyInformation() {
             main: e.currentTarget.id,
             sub: globalState.sub
         }
-        console.log(newGlobalState);
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }
     return myInformation

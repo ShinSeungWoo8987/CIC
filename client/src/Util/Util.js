@@ -21,4 +21,9 @@ const percentFormat = (saveMoney, targetMoney) =>{
     result = (saveMoney/targetMoney)*100;
     return parseInt(result);
 }
-export { moneyFormat, percentFormat };
+const getRandom = (max, min) => {
+    max = Math.floor(max);
+    min = Math.ceil(min);
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+export { moneyFormat, percentFormat, getRandom };

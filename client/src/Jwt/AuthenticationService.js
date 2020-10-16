@@ -27,10 +27,12 @@ const executeHelloService = ()=> {
     return axios.get('http://localhost:5000/hello');        
 }
 
-const registerSuccessfulLoginForJwt = (username, token)=>{
-    console.log("===registerSuccessfulLoginForJwt===")
+const registerSuccessfulLoginForJwt = (username, authority, token)=>{
+    // console.log("===registerSuccessfulLoginForJwt===")
     localStorage.setItem('token', token);
     localStorage.setItem('authenticatedUser', username);
+    localStorage.setItem('authority', authority);
+    console.log("localStorage.getItem('authority') : ",localStorage.getItem('authority'));
     setupAxiosInterceptors();
 }
 
@@ -53,6 +55,7 @@ const logout = ()=>{
     //sessionStorage.removeItem('authenticatedUser');
     localStorage.removeItem("authenticatedUser");
     localStorage.removeItem("token");
+    localStorage.removeItem("authority");
 }
 
 const isUserLoggedIn=()=>{

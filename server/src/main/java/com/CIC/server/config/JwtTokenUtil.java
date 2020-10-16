@@ -1,7 +1,6 @@
 package com.CIC.server.config;
 
 import java.io.Serializable;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,11 +58,10 @@ public class JwtTokenUtil implements Serializable {
 //3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
 //   compaction of the JWT to a URL-safe string
     private String doGenerateToken(Map<String, Object> claims, String subject) {
-    	String encodedString = Base64.getEncoder().encodeToString(secret.getBytes());
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
             //.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
             .setExpiration(new Date(System.currentTimeMillis() + 5 * 1000))
-            .signWith(SignatureAlgorithm.HS512, encodedString).compact();
+            .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
 
     //validate token

@@ -3,6 +3,7 @@ const _session = {
     state: false,
     username: localStorage.getItem("authenticatedUser") || '',
     password: '',
+    
     token: localStorage.getItem("token") || ''
 }
 const sessionReducer = (state, { type, payload }) => {

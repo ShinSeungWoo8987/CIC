@@ -2,20 +2,19 @@ import React, {useContext, useState} from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import Store from '../Store/Store';
-import ProgressBar from 'react-percent-bar'
-import { moneyFormat } from '../Util/Util.js';
+import PercentBar from '../Project/PercentBar'
+import { getRandom, moneyFormat, percentFormat } from '../Util/Util.js';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Funding() {
-    const { session, addressValue, addressValueDispatch, modalStateDispatch } = useContext(Store);
+    console.log("Funding Start");
+    const { session, addressValue, addressValueDispatch, modalState, modalStateDispatch } = useContext(Store);
     const [fundingModalState, setFundingModalState] = useState(false);
-    const targetMoney = 1000000;
-    const saveMoney = 5000000;
-    const percent = ((saveMoney/targetMoney)*100);
-    const percentView = percent>100?100:percent;
+    const targetMoney = getRandom(10000000, 1000000)
+    const saveMoney = getRandom(12000000, 500000)
+    const percent = percentFormat(saveMoney,targetMoney);
     const dDay = 30;
-    const progress = <ProgressBar width='250px' height='10px' fillColor='lime' percent={percentView}/>;
     const saveMoneyStr = moneyFormat(saveMoney);
     const fundingCount = 1000;
     // When Login & Non-Login, Modal Setting
@@ -25,7 +24,8 @@ function Funding() {
             setFundingModalState(true);    
         }else{ //로그아웃상태
             const newModalState = {
-                login: true
+                login: true,
+                postcode: modalState.postcode
             }
             modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
         }
@@ -44,6 +44,7 @@ function Funding() {
     const openPostcodeModal = (e) => {
         e.preventDefault();
         const newModalState = {
+            login: modalState.login,
             postcode: true
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
@@ -68,7 +69,9 @@ function Funding() {
                         <Text>모인금액</Text><br/>
                         <SubContainer>
                             <Value>{saveMoneyStr}</Value><BottomText>원</BottomText><PercentText>{percent+'%'}</PercentText><br/><br/>
-                            {progress}
+                            <PercentContainer>
+                                <PercentBar width='250px' height='15px' borderColor='white' percent={percent}/>
+                            </PercentContainer>
                         </SubContainer><br/>
                         <Text>참여인원</Text><br/>
                         <SubContainer>
@@ -144,6 +147,13 @@ const Value = Styled(Left)`
     font-size: 30px;
     font-weight: bold;
     color: #80C72D;
+`
+const PercentContainer = Styled(Left)`
+    width: 250px;
+    height: 15px;
+    border: none;
+    border-radius: 10px;
+    background-color: #E1E1E1 ;
 `
 const DeliveryAddressContainer = Styled(CurrentStateContainer)`
     text-align: left;

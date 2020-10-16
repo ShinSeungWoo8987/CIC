@@ -8,7 +8,7 @@ import {executeRegisterService} from '../Jwt/AuthenticationService';
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Register() {
-    const { session, addressValue, addressValueDispatch, modalStateDispatch } = useContext(Store);
+    const { session, addressValue, addressValueDispatch, modalState, modalStateDispatch } = useContext(Store);
     const register=session.state?'':'회원가입';
     const [registerModalState, setRegisterModalState] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState(''); // Password Valid Check Message
@@ -37,11 +37,10 @@ function Register() {
     const openPostcodeModal = (e) => {
         e.preventDefault();
         const newModalState = {
+            login:modalState.login,
             postcode: true
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
-        // 아래의 코드로 실행 시 렌더링이 진행되지 않는다. 왜???
-        // setModalDispatch({type:"CHANGE_MODALSTATE", payload: Object.assign(modalState, {postcode:true})})
     };
     // Register Submit
     const onSubmit = (e) => {

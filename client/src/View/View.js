@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
-
-import Main from '../Main/Main';
 import Store from '../Store/Store';
+import Main from '../Main/Main';
 
 function MainView() {
     const { globalState } = useContext(Store);

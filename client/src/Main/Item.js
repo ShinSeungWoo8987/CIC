@@ -1,28 +1,15 @@
 import React, { useContext } from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
-import ProgressBar from 'react-percent-bar'
+import ProgressBar from '../Project/PercentBar';
 import { moneyFormat, percentFormat } from '../Util/Util';
 
 function Item(props){
-    const { projectInfomation, projectInfomationDispatch } = useContext(Store);
-    // const targetMoneyStr = moneyFormat(projectInfomation.targetMoney);
-    // const saveMoneyStr = moneyFormat(projectInfomation.saveMoney);
-    // const percent = (projectInfomation.saveMoney/projectInfomation.targetMoney)*100;
+    const { projectInfomation } = useContext(Store);
     const targetMoneyStr = moneyFormat(props.targetMoney);
     const saveMoneyStr = moneyFormat(props.saveMoney);
     const percent = percentFormat(props.saveMoney,props.targetMoney);
-    const percentView = percent>100?100:percent;
     const dDayText = projectInfomation.dDay<0?'마감':'일 남음';
-    let percentBarColor = '';
-    // PercentBar Color Setting
-    if(percent>70){
-        percentBarColor = 'lime';
-    }else if(percent>40){
-        percentBarColor = 'orange';
-    }else{
-        percentBarColor = 'black';
-    }
     return(
         <Container>
             <ItemImage/>
@@ -33,7 +20,7 @@ function Item(props){
             <CurrentStateContainer>
                 <TargetMoney>{targetMoneyStr}</TargetMoney><TargetMoneyText>원 목표</TargetMoneyText><br/>
                 <PercentBarContainer>
-                    <ProgressBar width='270px' height='12.5px' fillColor={percentBarColor} borderColor='color' percent={percentView}/>
+                    <ProgressBar width='270px' height='12px' borderColor='white' percent={percent}/>
                     <PercentBarText>{percent}%</PercentBarText>
                 </PercentBarContainer>
                 <SaveMoneyContainer>
@@ -41,7 +28,7 @@ function Item(props){
                     <SaveMoneyValue>{saveMoneyStr}원</SaveMoneyValue>                    
                 </SaveMoneyContainer>
                 <FundingCountContainer>
-                    <_Text>참여자</_Text>
+                    <FundingText>참여자</FundingText>
                     <Value>{props.fundingCount}명</Value>                    
                 </FundingCountContainer>
                 <PercentContainer>
@@ -50,32 +37,6 @@ function Item(props){
                 </PercentContainer>
             </CurrentStateContainer>
         </Container>
-        // <Container>
-        //     <ItemImage/>
-        //     <ItemLogo/>
-        //     <Creator>{projectInfomation.name}</Creator>
-        //     <DDayText>{dDayText}</DDayText><Dday>{projectInfomation.dDay}</Dday>
-        //     <Title>{projectInfomation.title}</Title>
-        //     <CurrentStateContainer>
-        //         <TargetMoney>{targetMoneyStr}</TargetMoney><TargetMoneyText>원 목표</TargetMoneyText><br/>
-        //         <PercentBarContainer>
-        //             <ProgressBar width='270px' height='12.5px' fillColor={percentBarColor} borderColor='color' percent={percentView}/>
-        //             <PercentText>{percent}%</PercentText>
-        //         </PercentBarContainer>
-        //         <SaveMoneyContainer>
-        //             <Text>달성금액</Text><br/>
-        //             <SaveMoneyValue>{saveMoneyStr}원</SaveMoneyValue>                    
-        //         </SaveMoneyContainer>
-        //         <FundingCountContainer>
-        //             <_Text>참여자</_Text>
-        //             <Value>{projectInfomation.fundingCount}명</Value>                    
-        //         </FundingCountContainer>
-        //         <PercentContainer>
-        //             <Text>달성률</Text><br/>
-        //             <PercentValue>{percent}%</PercentValue>                    
-        //         </PercentContainer>
-        //     </CurrentStateContainer>
-        // </Container>
     );
 }
 export default Item;
@@ -102,7 +63,6 @@ const Container = Styled(Left)`
         }
         to {
             margin: -5px 0 45px 50px;
-            animation-fill-mode: forward;
         }
     }
 `
@@ -169,7 +129,7 @@ const PercentBarContainer = Styled(Left)`
 `
 const PercentBarText = Styled.div`
     text-align: left;
-    margin: -13px 0 0 5px;
+    margin: -14px 0 0 5px;
     font-size: 10px;
     color: white;
 `
@@ -180,7 +140,7 @@ const SaveMoneyContainer = Styled(Left)`
 const Text = Styled(Creator)`
     margin: 0 0 0 0;
 `
-const _Text = Styled(Creator)`
+const FundingText = Styled(Creator)`
     float: none;
     margin: 0 0 5px 0;
 `

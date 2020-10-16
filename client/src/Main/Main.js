@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
 import Item from './Item';
-import Funding from '../Project/Funding';
+import { getRandom } from '../Util/Util';
 
 function Main() {
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
@@ -15,15 +15,26 @@ function Main() {
     ];
     const menu = [];
     const [page, setPage] = useState(1);
+    // Test
+    // const itemList = [
+    //     {name: 'CIC', dDay: 30, title:'정신병이 생길 것 같아요', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(150000000, 0), fundingCount: 1000},
+    //     {name: 'Joker', dDay: 150, title:'정신병이 생길 것 같아요', targetMoney: getRandom(100000000, 1000000), saveMoney: 0, fundingCount: 0},
+    //     {name: 'Hello', dDay: 20, title:'정신병이 생길 것 같아요', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 3000},
+    //     {name: 'CIC', dDay: 60, title:'정신병이 생길 것 같아요', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 1500},
+    //     {name: 'Hell', dDay: 10, title:'정신병이 생길 것 같아요', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 2400},
+    //     {name: 'CIC', dDay: 5, title:'정신병이 생길 것 같아요', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 20},
+    //     {name: 'SOS', dDay: 300, title:'정신병이 생길 것 같아요', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 500},
+    //     {name: 'CIC', dDay: 124, title:'정신병이 생길 것 같아요', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 90}
+    // ];
     const itemList = [
-        {name: 'CIC', dDay: 30, title:'정신병이 생길 것 같아요', targetMoney: 10000000, saveMoney: 500555000, fundingCount: 1000},
-        {name: 'Joker', dDay: 150, title:'정신병이 생길 것 같아요', targetMoney: 100000, saveMoney: 0, fundingCount: 0},
-        {name: 'Hello', dDay: 20, title:'정신병이 생길 것 같아요', targetMoney: 70000000, saveMoney: 555000000, fundingCount: 3000},
-        {name: 'CIC', dDay: 60, title:'정신병이 생길 것 같아요', targetMoney: 10451000, saveMoney: 120000, fundingCount: 1500},
-        {name: 'Hell', dDay: 10, title:'정신병이 생길 것 같아요', targetMoney: 102220000, saveMoney: 41060000, fundingCount: 2400},
-        {name: 'CIC', dDay: 5, title:'정신병이 생길 것 같아요', targetMoney: 7005000, saveMoney: 100000, fundingCount: 20},
-        {name: 'SOS', dDay: 300, title:'정신병이 생길 것 같아요', targetMoney: 40000000, saveMoney: 200000000, fundingCount: 500},
-        {name: 'CIC', dDay: 124, title:'정신병이 생길 것 같아요', targetMoney: 10200000, saveMoney: 5000000, fundingCount: 90}
+        {name: 'CIC', dDay: 30, title:'정신병이 생길 것 같아요', targetMoney: 100000000, saveMoney: 80000000, fundingCount: 1000},
+        {name: 'Joker', dDay: 150, title:'정신병이 생길 것 같아요', targetMoney: 750000000, saveMoney: 2000000, fundingCount: 0},
+        {name: 'Hello', dDay: 20, title:'정신병이 생길 것 같아요', targetMoney: 400000000, saveMoney: 1000000, fundingCount: 3000},
+        {name: 'CIC', dDay: 60, title:'정신병이 생길 것 같아요', targetMoney: 100000000, saveMoney: 15500000, fundingCount: 1500},
+        {name: 'Hell', dDay: 10, title:'정신병이 생길 것 같아요', targetMoney: 100000000, saveMoney: 1000000, fundingCount: 2400},
+        {name: 'CIC', dDay: 5, title:'정신병이 생길 것 같아요', targetMoney: 100000000, saveMoney: 0, fundingCount: 20},
+        {name: 'SOS', dDay: 300, title:'정신병이 생길 것 같아요', targetMoney: 100000000, saveMoney: 100000000, fundingCount: 500},
+        {name: 'CIC', dDay: 124, title:'정신병이 생길 것 같아요', targetMoney: 100000000, saveMoney: 2005000, fundingCount: 90}
     ];
     var idx=0;
     let item = [];
@@ -35,7 +46,10 @@ function Main() {
             }
             break;
         case 2:
-            item= <ItemContainer><Item/><Item/><Item/><Item/><Item/></ItemContainer>
+            while(idx<6) {
+                item.push(<Item key={idx} name={itemList[idx].name} dDay={itemList[idx].dDay} title={itemList[idx].title} targetMoney={itemList[idx].targetMoney} saveMoney={itemList[idx].saveMoney} fundingCount={itemList[idx].fundingCount}/>);    
+                idx++;
+            }
             break;
         default :
             break;
@@ -100,9 +114,6 @@ function Main() {
                 <ItemContainer>
                     {item}
                 </ItemContainer>
-                {/* <ItemContainer>
-                    <Item/>
-                </ItemContainer> */}
                 <RightSide>
                 <Image src={buttonImg+'RightMainButton.png'} onClick={(e)=>moveMainPage(e, 'right')}></Image>
                 </RightSide>

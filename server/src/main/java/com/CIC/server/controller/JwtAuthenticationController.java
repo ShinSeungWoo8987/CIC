@@ -64,8 +64,19 @@ public class JwtAuthenticationController {
     	} catch (Exception e) { // 중복되는 아이디가 없다면, 등록하기.
     		String username = registerRequest.getUsername();
     		String password = bcrypt.encode(registerRequest.getPassword()); // 암호화
+    		System.out.println("암호화된 pw : " + password);
     		
     		// 회원가입 진행
+    		System.out.println(registerRequest);
+    		// System.out.println(registerRequest.getUsername());
+    		// System.out.println(registerRequest.getPassword());
+    		// System.out.println(registerRequest.getName());
+    		// System.out.println(registerRequest.getBirth());
+    		// System.out.println(registerRequest.getPhone());
+    		// System.out.println(registerRequest.getPostcode());
+    		// System.out.println(registerRequest.getAddress1());
+    		// System.out.println(registerRequest.getAddress2());
+    		
     		try {
     			Member member = Member.builder()
 						.mem_id(username)
@@ -96,8 +107,6 @@ public class JwtAuthenticationController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-    	String password = bcrypt.encode(authenticationRequest.getPassword()); // 암호화
-		System.out.println("암호화된 pw : " + password);
     	// 디테일.패스워드 값이 노출되지 않도록 위쪽에 선언
     	authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         // req로 받은 username을 통해 userDetails를 가져오고, 

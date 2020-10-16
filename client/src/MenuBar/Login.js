@@ -16,10 +16,11 @@ function Login() {
 
     useEffect(()=>{
         let _session = {
-            state:session.state,
+            state: session.state,
             username: localStorage.getItem("authenticatedUser") || '',
             password: '',
-            token: localStorage.getItem("token") || ''
+            token: localStorage.getItem("token") || '',
+            authority: session.authority
         };
         sessionDispatch({type:"SESSION", payload:_session});
     },[])
@@ -42,10 +43,12 @@ function Login() {
         }
         executeJwtAuthenticationService(id, pw)
         .then((response) => {
+            console.log("response.data.authority : ",response.data.authority);
             session.token = response.data.token;
-            registerSuccessfulLoginForJwt(id, session.token);
+            session.authority = response.data.authority;
+            console.log("session.authority : ",session.authority);
+            registerSuccessfulLoginForJwt(id, session.token, session.authority);
             sessionDispatch({type:'SESSION', payload: Object.assign(session, {state:true} ) });
-            console.log(session.token);
             closeLoginModal();
         }).catch( () =>{
             setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.")
@@ -57,7 +60,8 @@ function Login() {
         e.preventDefault();
         if(localStorage.getItem('token') === null){
             const newModalState = {
-                login: true
+                login: true,
+                postcode: modalState.postcode
             }
             modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
         }else{
@@ -66,6 +70,7 @@ function Login() {
                 state: false,
                 username: localStorage.getItem("authenticatedUser") || '',
                 password: '',
+                authority: '',
                 token: localStorage.getItem("token") || ''
             } });
         }
@@ -73,7 +78,8 @@ function Login() {
     const closeLoginModal = () => {
         setLoginMessage("");
         const newModalState = {
-            login: false
+            login: false,
+            postcode: modalState.postcode
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     }
