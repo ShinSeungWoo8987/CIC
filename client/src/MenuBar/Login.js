@@ -6,6 +6,10 @@ import {executeJwtAuthenticationService, registerSuccessfulLoginForJwt, logout} 
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
+/*
+    회원 등급 저장
+*/ 
+
 function Login() {
     const { session, sessionDispatch, modalState, modalStateDispatch } = useContext(Store);
     const [LoginMessage, setLoginMessage] = useState('');
@@ -41,6 +45,7 @@ function Login() {
             session.token = response.data.token;
             registerSuccessfulLoginForJwt(id, session.token);
             sessionDispatch({type:'SESSION', payload: Object.assign(session, {state:true} ) });
+            console.log(session.token);
             closeLoginModal();
         }).catch( () =>{
             setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.")

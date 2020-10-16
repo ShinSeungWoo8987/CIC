@@ -49,6 +49,22 @@ const modalStateReducer = (state, { type, payload }) => {
             return payload;
     }
 }
+const _projectInfomation = {
+    name: '기업명 / 이름',
+    title: '이곳은 제목이 작성될 자리입니다.',
+    dDay: 30,
+    fundingCount: 1000,
+    targetMoney: 500000,
+    saveMoney: 50000000
+}
+const projectInfomationReducer = (state, {type, payload}) => {
+    switch (type) {
+        default:
+            return false;
+        case 'CHANGE_INFOMATION':
+            return payload;
+    }
+}
 export {
-    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer
+    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _projectInfomation, projectInfomationReducer
 };

@@ -1,7 +1,7 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
-import Item from './Items';
+import Item from './Item';
 import Funding from '../Project/Funding';
 
 function Main() {
@@ -12,10 +12,36 @@ function Main() {
         {id: 'new', title: '신규'},
         {id: 'closeSoon', title: '마감임박'},
         {id: 'close', title: '마감'}
-    ]
+    ];
     const menu = [];
-    // Menu List Setting
+    const [page, setPage] = useState(1);
+    const itemList = [
+        {name: 'CIC', dDay: 30, title:'정신병이 생길 것 같아요', targetMoney: 10000000, saveMoney: 500555000, fundingCount: 1000},
+        {name: 'Joker', dDay: 150, title:'정신병이 생길 것 같아요', targetMoney: 100000, saveMoney: 0, fundingCount: 0},
+        {name: 'Hello', dDay: 20, title:'정신병이 생길 것 같아요', targetMoney: 70000000, saveMoney: 555000000, fundingCount: 3000},
+        {name: 'CIC', dDay: 60, title:'정신병이 생길 것 같아요', targetMoney: 10451000, saveMoney: 120000, fundingCount: 1500},
+        {name: 'Hell', dDay: 10, title:'정신병이 생길 것 같아요', targetMoney: 102220000, saveMoney: 41060000, fundingCount: 2400},
+        {name: 'CIC', dDay: 5, title:'정신병이 생길 것 같아요', targetMoney: 7005000, saveMoney: 100000, fundingCount: 20},
+        {name: 'SOS', dDay: 300, title:'정신병이 생길 것 같아요', targetMoney: 40000000, saveMoney: 200000000, fundingCount: 500},
+        {name: 'CIC', dDay: 124, title:'정신병이 생길 것 같아요', targetMoney: 10200000, saveMoney: 5000000, fundingCount: 90}
+    ];
     var idx=0;
+    let item = [];
+    switch(page){
+        case 1:
+            while(idx<itemList.length) {
+                item.push(<Item key={idx} name={itemList[idx].name} dDay={itemList[idx].dDay} title={itemList[idx].title} targetMoney={itemList[idx].targetMoney} saveMoney={itemList[idx].saveMoney} fundingCount={itemList[idx].fundingCount}/>);    
+                idx++;
+            }
+            break;
+        case 2:
+            item= <ItemContainer><Item/><Item/><Item/><Item/><Item/></ItemContainer>
+            break;
+        default :
+            break;
+    }
+    // Menu List Setting
+    idx=0;
     while(idx<menuList.length){
         if(globalState.sub === menuList[idx].id){
             menu.push(
@@ -51,12 +77,16 @@ function Main() {
     }
     // Next Page
     const moveMainPage = (e, direction) => {
+        item = [];
         e.preventDefault();
+        let pageNumber = page;
         if(direction==='left'){
-            console.log('왼쪽');
+            setPage(pageNumber-1);
         }else{
-            console.log("오른쪽");
+            setPage(pageNumber+1);
         }
+        console.log(direction);
+        console.log(page);
     }
     return(
         <Container>
@@ -68,9 +98,11 @@ function Main() {
                     <Image src={buttonImg+'LeftMainButton.png'} onClick={(e)=>moveMainPage(e, 'left')}></Image>
                 </LeftSide>
                 <ItemContainer>
-                    <Item/>
-                    <Funding/>
+                    {item}
                 </ItemContainer>
+                {/* <ItemContainer>
+                    <Item/>
+                </ItemContainer> */}
                 <RightSide>
                 <Image src={buttonImg+'RightMainButton.png'} onClick={(e)=>moveMainPage(e, 'right')}></Image>
                 </RightSide>
@@ -85,12 +117,11 @@ const Left = Styled.div`
 `
 const Container = Styled(Left)`
     width: 1665px;
-    height: 869px;
     text-align: center;
 `
 const Menu = Styled.div`
     display: inline-block;
-    margin: 0 auto 0 auto;
+    margin: 0 0 10px 0;
 `
 const MenuContainer = Styled(Left)`
   padding: 0 50px 0 0;
@@ -104,8 +135,8 @@ const SelectMenuContainer = Styled(MenuContainer)`
   text-shadow: 1px 1px 2px gray;
 `
 const TextContainer = Styled(Left)`
-  height: 50px;
-  line-height :50px;
+  height: 40px;
+  line-height: 40px;
 `
 const Text = Styled.div`
 font-size: 17.5px;

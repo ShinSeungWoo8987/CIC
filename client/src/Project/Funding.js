@@ -3,25 +3,25 @@ import Styled from 'styled-components'; // Styled-components 라이브러리를 
 import Modal from 'react-modal';
 import Store from '../Store/Store';
 import ProgressBar from 'react-percent-bar'
-import Util from '../Util/Util.js';
+import { moneyFormat } from '../Util/Util.js';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Funding() {
-    const { session, addressValue, addressValueDispatch, modalState, modalStateDispatch } = useContext(Store);
+    const { session, addressValue, addressValueDispatch, modalStateDispatch } = useContext(Store);
     const [fundingModalState, setFundingModalState] = useState(false);
     const targetMoney = 1000000;
-    const saveMoney = 500000;
-    // 퍼센트 부분 나중에 메소드로 처리할 것 - 퍼센트가 100퍼센트를 넘어가는 경우 퍼센트바 또한 초과되어 해결해줄 필요가 있음
+    const saveMoney = 5000000;
     const percent = ((saveMoney/targetMoney)*100);
+    const percentView = percent>100?100:percent;
     const dDay = 30;
-    const progress = <ProgressBar width='250px' height='10px' fillColor='lime' percent={percent}/>;
-    const saveMoneyStr = Util.moneyFormat(saveMoney);
-    const fundingCnt = Util.moneyFormat(1000);
+    const progress = <ProgressBar width='250px' height='10px' fillColor='lime' percent={percentView}/>;
+    const saveMoneyStr = moneyFormat(saveMoney);
+    const fundingCount = 1000;
     // When Login & Non-Login, Modal Setting
     const openModal = (e) => {
         e.preventDefault();
-        if( session.state ) { //로그인상태
+        if( !session.state ) { //로그인상태
             setFundingModalState(true);    
         }else{ //로그아웃상태
             const newModalState = {
@@ -72,7 +72,7 @@ function Funding() {
                         </SubContainer><br/>
                         <Text>참여인원</Text><br/>
                         <SubContainer>
-                            <Value>{fundingCnt}</Value><BottomText>명</BottomText>
+                            <Value>{fundingCount}</Value><BottomText>명</BottomText>
                         </SubContainer><br/>
                         <Text>남은기간</Text><br/>
                         <SubContainer>
@@ -135,8 +135,9 @@ const BottomText = Styled(Text)`
     top: 20px;
 `
 const PercentText = Styled(BottomText)`
+    float: right;
     font-weight: bold;
-    margin: 0 0 0 87px;
+    margin: 0 135px 0 0;
     color: #80C72D;
 `
 const Value = Styled(Left)`
