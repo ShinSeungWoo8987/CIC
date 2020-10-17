@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
+import Store from '../Store/Store';
 import Item from './Item';
 import { getRandom } from '../Util/Util';
 
 function Main() {
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
+    const {globalState, globalStateDispatch} = useContext(Store);
+    const menuList = [
+        {id: 'all', title: '전체'},
+        {id: 'new', title: '신규'},
+        {id: 'closeSoon', title: '마감임박'},
+        {id: 'close', title: '마감'}
+    ];
+    const menu = [];
     const [page, setPage] = useState(1);
     // Test
     const itemList = [
@@ -35,6 +44,41 @@ function Main() {
         default :
             break;
     }
+    // Menu List Setting
+    idx=0;
+    while(idx<menuList.length){
+        if(globalState.sub === menuList[idx].id){
+            menu.push(
+                <A key={idx} id={menuList[idx].id} onClick={(e)=>changMenuState(e)}>
+                <SelectMenuContainer>
+                    <TextContainer>
+                    <Text>{menuList[idx].title}</Text>
+                    </TextContainer><br/>
+                </SelectMenuContainer>
+                </A>
+            )
+        }else{
+            menu.push(
+                <A key={idx} id={menuList[idx].id} onClick={(e)=>changMenuState(e)}>
+                <MenuContainer >
+                    <TextContainer>
+                    <Text>{menuList[idx].title}</Text>
+                    </TextContainer><br/>
+                </MenuContainer>
+                </A>
+            )
+        }
+        idx += 1;
+    }
+    // Selected Menu Setting
+    const changMenuState = (e) => {
+        e.preventDefault();
+        const newGlobalState = {
+            main: globalState.main,
+            sub: e.currentTarget.id
+        }
+        globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+    }
     // Next Page
     const moveMainPage = (e, direction) => {
         item = [];
@@ -45,18 +89,25 @@ function Main() {
         }else{
             setPage(pageNumber+1);
         }
+        console.log(direction);
+        console.log(page);
     }
     return(
         <Container>
-            <LeftSide>
-                <Image src={buttonImg+'LeftMainButton.png'} onClick={(e)=>moveMainPage(e, 'left')}></Image>
-            </LeftSide>
-            <ItemContainer>
-                {item}
-            </ItemContainer>
-            <RightSide>
-            <Image src={buttonImg+'RightMainButton.png'} onClick={(e)=>moveMainPage(e, 'right')}></Image>
-            </RightSide>
+            <Menu>
+                {menu}   
+            </Menu><br/>
+            <SubContainer>
+                <LeftSide>
+                    <Image src={buttonImg+'LeftMainButton.png'} onClick={(e)=>moveMainPage(e, 'left')}></Image>
+                </LeftSide>
+                <ItemContainer>
+                    {item}
+                </ItemContainer>
+                <RightSide>
+                <Image src={buttonImg+'RightMainButton.png'} onClick={(e)=>moveMainPage(e, 'right')}></Image>
+                </RightSide>
+            </SubContainer>
         </Container>
     );
 }
@@ -69,8 +120,36 @@ const Container = Styled(Left)`
     postion: relative;
     width: 1665px;
     height: 2000px;
-    margin: 60px 0 0 0;
+    // margin: -45px 0 0 0;
     text-align: center;
+`
+const Menu = Styled.div`
+    display: inline-block;
+    margin: 0 0 10px 0;
+`
+const MenuContainer = Styled(Left)`
+  padding: 0 50px 0 0;
+
+  &:hover {
+    font-weight: bold;
+  }
+`
+const SelectMenuContainer = Styled(MenuContainer)`  
+  font-weight: bold;
+  text-shadow: 1px 1px 2px gray;
+`
+const TextContainer = Styled(Left)`
+  height: 40px;
+  line-height: 40px;
+`
+const Text = Styled.div`
+font-size: 17.5px;
+`
+const A = Styled.a`
+  cursor: pointer;
+`
+const SubContainer = Styled(Left)`
+
 `
 const Image = Styled.img`
   width: 60px;

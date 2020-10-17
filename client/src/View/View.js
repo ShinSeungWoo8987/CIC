@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import Store from '../Store/Store';
 import Main from '../Main/Main';
+import Event from '../Main/Event';
+import Styled from 'styled-components';
 
 function MainView() {
     const { globalState } = useContext(Store);
@@ -11,10 +13,21 @@ function MainView() {
     var i = 0;
     while (i<mainPage.length){
         if(mainPage[i] === globalState.main){
-            mainView = <Main/>
+            return <Container><Main/></Container>;
+            // mainView = <Main/>
         }
         i += 1;
     }
-    return mainView
+    if(globalState.main==='event'){
+        return <Event/>;
+    }
+    return (
+        mainView    
+    );
 }
 export default MainView;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const Container = Styled.div`
+    margin-left: 12.5%;
+`
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

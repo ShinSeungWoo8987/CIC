@@ -4,7 +4,6 @@ import ClientStore from './Store/ClientStore';
 import Header from './Header/Header';
 import MenuBar from './MenuBar/Menubar';
 import View from './View/View';
-import Footer from './Footer/Footer';
 
 function App() {
   return (
@@ -15,7 +14,6 @@ function App() {
         <Header/>
         <MenuBar/>
         <View/>
-        <Footer/>
       </Container>
     </ClientStore>
   );

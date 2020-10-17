@@ -100,7 +100,7 @@ const TextContainer = Styled(Left)`
   line-height :50px;
 `
 const Text = Styled.div`
-font-size: 17.5px;
+  font-size: 17.5px;
 `
 const A = Styled.a`
   cursor: pointer;
