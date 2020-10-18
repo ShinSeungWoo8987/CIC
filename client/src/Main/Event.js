@@ -1,6 +1,5 @@
-import React, {useContext, useState} from 'react';
+import React from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
-import Store from '../Store/Store';
 
 function Event() {
     return(
@@ -15,5 +14,10 @@ const Left = Styled.div`
     float: left;
 `
 const Container = Styled(Left)`
+    width: 1405px;
+    height: 2000px;
+    margin: 60px 0 0 15%;
+    // width: 1665px;
+    // margin: 60px 0 0 12.5%;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

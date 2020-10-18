@@ -6,17 +6,14 @@ import Styled from 'styled-components';
 
 function MainView() {
     const { globalState } = useContext(Store);
-    // Main Page Menu List
-    const mainPage = ['all', 'tech', 'travel', 'fashion'];
-    // Page View Setting
-    let mainView = '';
-    var i = 0;
-    while (i<mainPage.length){
-        if(mainPage[i] === globalState.main){
+    const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
+    let mainView = ''; // Page View Setting
+    var idx = 0;
+    while (idx<mainPage.length){
+        if(mainPage[idx] === globalState.main){
             return <Container><Main/></Container>;
-            // mainView = <Main/>
         }
-        i += 1;
+        idx += 1;
     }
     if(globalState.main==='event'){
         return <Event/>;

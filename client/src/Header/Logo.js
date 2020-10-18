@@ -20,8 +20,9 @@ const Left = Styled.div`
   float: left;
 `
 const Container = Styled.a`
-  width: 12.5%;
+  position: fixed;
   float: left;
+  width: 12.5%;
 `
 const ImageContainer = Styled(Left)`
   width: 50px;
