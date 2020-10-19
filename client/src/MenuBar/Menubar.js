@@ -7,6 +7,7 @@ import MyInformation from './MyInformation';
 import Postcode from './Postcode';
 import Funding from '../Project/Funding'
 import UpdateUser from './UpdateUser';
+import DeleteUser from './DeleteUser';
 
 function MenuBar() {
     return (
@@ -19,25 +20,26 @@ function MenuBar() {
         <Postcode/>
         <Funding/>
         <UpdateUser/>
+        <DeleteUser/>
       </Container>
     );
   }
 export default MenuBar;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Left = Styled.div`
-  float: left;
+    float: left;
 `
 const Container = Styled(Left)`
-  position: fixed;
-  top: 50px;
-  float: left;
-  width: 237.5px;
-  height: 910px;
-  margin: 10px 0 0 0;
-  background-color: #FAFAFA;
+    position: fixed;
+    top: 50px;
+    float: left;
+    width: 237.5px;
+    height: 910px;
+    margin: 10px 0 0 0;
+    background-color: #FAFAFA;
 `
 const BottomLine = Styled(Left)`
-  width: 100%;
-  border-bottom: 1px solid #E1E1E1;
+    width: 100%;
+    border-bottom: 1px solid #E1E1E1;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

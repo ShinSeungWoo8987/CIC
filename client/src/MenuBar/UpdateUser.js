@@ -4,7 +4,7 @@ import Store from '../Store/Store';
 import Modal from 'react-modal';
 
 function UpdateUser() {
-    const { modalState, addressValue, modalStateDispatch } = useContext(Store);
+    const { modalState, modalStateDispatch, addressValue, addressValueDispatch } = useContext(Store);
     // updateUser Submit
     const onUpdateUserSubmit = (e) => {
         console.log("Change Update User");
@@ -17,6 +17,11 @@ function UpdateUser() {
             updateUser: false
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        const newAddressValue = {
+            postcode: '',
+            address1: ''
+        }
+        addressValueDispatch({type: 'CHANGE_ADDRESS', payload: newAddressValue});
     }
     // Postcode Modal Setting
     const openPostcodeModal = (e) => {

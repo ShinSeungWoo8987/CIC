@@ -41,7 +41,8 @@ const addressValueReducer = (state, {type, payload}) => {
 const _modalState = {
     login: false,
     postcode: false,
-    updateUser: false
+    updateUser: false,
+    deleteUser: false
 }
 const modalStateReducer = (state, { type, payload }) => {
     switch (type) {

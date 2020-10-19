@@ -72,12 +72,17 @@ function MyInformation() {
         }
         idx += 1;
     }
-    // Selected Menu Setting
+    // Selected GlobalState Setting
     const changeState = (e) => {
         e.preventDefault();
         if(e.currentTarget.id === 'updateUser'){
             const newModalState = {
                 updateUser: true
+            }
+            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        }else if(e.currentTarget.id === 'deleteUser'){
+            const newModalState = {
+                deleteUser: true
             }
             modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
         }else if(e.currentTarget.id === 'fundingList'){
@@ -99,35 +104,34 @@ function MyInformation() {
 export default MyInformation;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Left = Styled.div`
-  float: left;
+    float: left;
 `
 const MenuContainer = Styled(Left)`
-  width: 220px;
-  padding: 0 0 0 17.5px;
+    width: 220px;
+    padding: 0 0 0 17.5px;
 `
 const SelectMenuContainer = Styled(MenuContainer)`
-  font-weight: bold;
-  text-shadow: 1px 1px 2px gray;  
-  background-color: #A3A3A3;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px gray;  
+    background-color: #A3A3A3;
 `
 const ImageContainer = Styled(Left)`
-  width: 50px;
-  line-height: 50px;
-  margin: -2px 50px 0 0;
+    width: 50px;
+    line-height: 50px;
+    margin: -2px 50px 0 0;
 `
 const Image = Styled.img`
-  width: 30px;
-  vertical-align: middle;
-  
+    width: 30px;
+    vertical-align: middle;
 `
 const TextContainer = Styled(Left)`
-  height: 50px;
-  line-height :50px;
+    height: 50px;
+    line-height :50px;
 `
 const Text = Styled.div`
-font-size: 17.5px;
+    font-size: 17.5px;
 `
 const A = Styled.a`
-  cursor: pointer;
+    cursor: pointer;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
