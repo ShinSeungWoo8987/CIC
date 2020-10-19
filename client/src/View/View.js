@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import Store from '../Store/Store';
 import Main from '../Main/Main';
 import Event from '../Main/Event';
+import ProjectDetails from '../ProjectDetails/ProjectDetails';
 import Styled from 'styled-components';
 
 function MainView() {
@@ -10,7 +11,8 @@ function MainView() {
     var idx = 0;
     while (idx<mainPage.length){
         if(mainPage[idx] === globalState.main){
-            return <Container><Main/></Container>;
+            // return <Container><Main/></Container>;
+            return <ProjectDetails/>;
         }
         idx += 1;
     }

@@ -68,6 +68,14 @@ const projectInfomationReducer = (state, {type, payload}) => {
             return payload;
     }
 }
+const detailMainHeaderReducer = (state, { type, payload }) => {
+    switch (type) {
+        default:
+            return 1;
+        case 'CHANGE':
+            return payload;
+    }
+}
 export {
-    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _projectInfomation, projectInfomationReducer
+    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _projectInfomation, projectInfomationReducer, detailMainHeaderReducer
 };
