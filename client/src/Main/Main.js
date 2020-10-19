@@ -119,50 +119,48 @@ const Left = Styled.div`
 const Container = Styled(Left)`
     postion: relative;
     width: 1665px;
-    margin: -45px 0 0 0;
     text-align: center;
 `
 const Menu = Styled.div`
     display: inline-block;
-    margin: 0 0 10px 0;
+    margin:  10px 0;
 `
 const MenuContainer = Styled(Left)`
-  padding: 0 50px 0 0;
-
-  &:hover {
-    font-weight: bold;
-  }
+    padding: 0 50px 0 0;
+    &:hover {
+        font-weight: bold;
+    }
 `
 const SelectMenuContainer = Styled(MenuContainer)`  
-  font-weight: bold;
-  text-shadow: 1px 1px 2px gray;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px gray;
 `
 const TextContainer = Styled(Left)`
-  height: 40px;
-  line-height: 40px;
+    height: 40px;
+    line-height: 40px;
 `
 const Text = Styled.div`
-font-size: 17.5px;
+    font-size: 17.5px;
 `
 const A = Styled.a`
-  cursor: pointer;
+    cursor: pointer;
 `
 const SubContainer = Styled(Left)`
 
 `
 const Image = Styled.img`
-  width: 60px;
-  vertical-align: middle;
-  cursor: pointer;
+    width: 60px;
+    vertical-align: middle;
+    cursor: pointer;
 `
 const LeftSide = Styled(Left)`
-  width: 100px;
-  height: 865px;
-  line-height: 800px;
+    width: 100px;
+    height: 865px;
+    line-height: 800px;
 `
 const ItemContainer = Styled(Left)`
-  width: 1465px;
-  height: 100px;
+    width: 1465px;
+    height: 100px;
 `
 const RightSide = Styled(LeftSide)`
 `
