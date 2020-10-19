@@ -4,48 +4,30 @@ import Store from '../Store/Store';
 import Item from './Item';
 import { getRandom } from '../Util/Util';
 
-function Main() {
+function FundingList() {
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
     const {globalState, globalStateDispatch} = useContext(Store);
-    const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
-    let menuList = [];
-    var idx=0;
-    const menu = [];
-    const [pageNumber, setPageNumber] = useState(1);
-    // Test
-    const itemList = [
-        {name: 'CIC', dDay: 30, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(150000000, 0), fundingCount: 1000},
-        {name: 'Joker', dDay: 150, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: 0, fundingCount: 0},
-        {name: 'Hello', dDay: 20, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 3000},
-        {name: 'CIC', dDay: 60, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 1500},
-        {name: 'Hell', dDay: 10, title:'하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 2400},
-        {name: 'CIC', dDay: 5, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 20},
-        {name: 'SOS', dDay: 300, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 500},
-        {name: 'CIC', dDay: 124, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 90}
+    const menuList = [
+        {id: 'continue', title: '진행중'},
+        {id: 'close', title: '종료'}
     ];
-    // Main Page Sub Menu Setting
-    while(idx<mainPage.length){
-        if(mainPage[idx]===globalState.main){
-            menuList = [
-                {id: 'all', title: '전체'},
-                {id: 'new', title: '신규'},
-                {id: 'closeSoon', title: '마감임박'},
-                {id: 'close', title: '마감'}
-            ];
-        }
-        idx++;
-    }
-    // Funding List Sub Menu Setting
-    if(globalState.main==='fundingList'){
-        menuList = [
-            {id: 'continue', title: '진행중'},
-            {id: 'close', title: '종료'}
-        ]
-    }
-    // Item List Setting
-    idx=0;
+    const menu = [];
+    const [page, setPage] = useState(1);
+    // Test
+    const title = '정신병이 생길 것 같아요';
+    const itemList = [
+        {name: 'CIC', dDay: 30, title:{title}, targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(150000000, 0), fundingCount: 1000},
+        {name: 'Joker', dDay: 150, title:{title}, targetMoney: getRandom(100000000, 1000000), saveMoney: 0, fundingCount: 0},
+        {name: 'Hello', dDay: 20, title:{title}, targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 3000},
+        {name: 'CIC', dDay: 60, title:{title}, targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 1500},
+        {name: 'Hell', dDay: 10, title:{title}, targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 2400},
+        {name: 'CIC', dDay: 5, title:{title}, targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 20},
+        {name: 'SOS', dDay: 300, title:{title}, targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 500},
+        {name: 'CIC', dDay: 124, title:{title}, targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 90}
+    ];
+    var idx=0;
     let item = [];
-    switch(pageNumber){
+    switch(page){
         case 1:
             while(idx<itemList.length) {
                 item.push(<Item key={idx} name={itemList[idx].name} dDay={itemList[idx].dDay} title={itemList[idx].title} targetMoney={itemList[idx].targetMoney} saveMoney={itemList[idx].saveMoney} fundingCount={itemList[idx].fundingCount}/>);    
@@ -53,7 +35,7 @@ function Main() {
             }
             break;
         case 2:
-            while(idx<6) {
+            while(idx<2) {
                 item.push(<Item key={idx} name={itemList[idx].name} dDay={itemList[idx].dDay} title={itemList[idx].title} targetMoney={itemList[idx].targetMoney} saveMoney={itemList[idx].saveMoney} fundingCount={itemList[idx].fundingCount}/>);    
                 idx++;
             }
@@ -61,7 +43,7 @@ function Main() {
         default :
             break;
     }
-    // Sub Menu List Setting
+    // Menu List Setting
     idx=0;
     while(idx<menuList.length){
         if(globalState.sub === menuList[idx].id){
@@ -87,7 +69,7 @@ function Main() {
         }
         idx += 1;
     }
-    // Selected Sub Menu Setting
+    // Selected Menu Setting
     const changMenuState = (e) => {
         e.preventDefault();
         const newGlobalState = {
@@ -99,15 +81,15 @@ function Main() {
     // Next Page
     const moveMainPage = (e, direction) => {
         item = [];
-        let newPageNumber = pageNumber
         e.preventDefault();
+        let pageNumber = page;
         if(direction==='left'){
-            setPageNumber(newPageNumber-1);
+            setPage(pageNumber-1);
         }else{
-            setPageNumber(newPageNumber+1);
+            setPage(pageNumber+1);
         }
         console.log(direction);
-        console.log(pageNumber);
+        console.log(page);
     }
     return(
         <Container>
@@ -143,7 +125,7 @@ const Menu = Styled.div`
     margin:  10px 0;
 `
 const MenuContainer = Styled(Left)`
-    padding: 0 25px;
+    padding: 0 50px 0 0;
     &:hover {
         font-weight: bold;
     }

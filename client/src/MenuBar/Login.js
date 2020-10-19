@@ -6,10 +6,6 @@ import {executeJwtAuthenticationService, registerSuccessfulLoginForJwt, logout} 
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
-/*
-    회원 등급 저장
-*/ 
-
 function Login() {
     const { session, sessionDispatch, modalState, modalStateDispatch } = useContext(Store);
     const [LoginMessage, setLoginMessage] = useState('');

@@ -6,8 +6,7 @@ import Styled from 'styled-components';
 
 function MainView() {
     const { globalState } = useContext(Store);
-    const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
-    let mainView = ''; // Page View Setting
+    const mainPage = ['all', 'tech', 'travel', 'fashion', 'fundingList']; // Main Page Menu List
     var idx = 0;
     while (idx<mainPage.length){
         if(mainPage[idx] === globalState.main){
@@ -18,9 +17,13 @@ function MainView() {
     if(globalState.main==='event'){
         return <Event/>;
     }
-    return (
-        mainView    
-    );
+    if(globalState.main==='notice'){
+        return <Event/>;
+    }
+    if(globalState.main==='center'){
+        return <Event/>;
+    }
+    return <Event/>;
 }
 export default MainView;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

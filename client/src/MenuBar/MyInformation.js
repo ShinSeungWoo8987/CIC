@@ -3,10 +3,8 @@ import Styled from 'styled-components'; // Styled-components 라이브러리를 
 import Store from '../Store/Store';
 
 function MyInformation() {
-    const {globalState, globalStateDispatch} = useContext(Store);
-    const { session } = useContext(Store);
+    const { session, modalStateDispatch, globalState, globalStateDispatch} = useContext(Store);
     const url = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
-    
     const common = [
         {id: 'updateUser', img: url+'UpdateUser.png', select: url+ 'SelectUpdateUser.png', title: '정보수정'},
         {id: 'fundingList', img: url+'FundingList.png', select: url+ 'SelectFundingList.png', title: '펀딩목록'},
@@ -43,6 +41,7 @@ function MyInformation() {
             break;
     }
     var idx=0;
+    // Login User Grade Per Information Menu Setting
     while(idx <currentGrade.length){
         if(globalState.main === currentGrade[idx].id){
             myInformation.push(
@@ -76,12 +75,24 @@ function MyInformation() {
     // Selected Menu Setting
     const changeState = (e) => {
         e.preventDefault();
-        let newGlobalState;
-        newGlobalState = {
-            main: e.currentTarget.id,
-            sub: globalState.sub
+        if(e.currentTarget.id === 'updateUser'){
+            const newModalState = {
+                updateUser: true
+            }
+            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        }else if(e.currentTarget.id === 'fundingList'){
+            const newGlobalState = {
+                main: e.currentTarget.id,
+                sub: 'continue'
+            }
+            globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+        }else{
+            const newGlobalState = {
+                main: e.currentTarget.id,
+                sub: globalState.sub
+            }
+            globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         }
-        globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }
     return myInformation
 }

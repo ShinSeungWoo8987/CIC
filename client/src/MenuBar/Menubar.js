@@ -6,6 +6,7 @@ import DefaultMenu from './DefaultMenu';
 import MyInformation from './MyInformation';
 import Postcode from './Postcode';
 import Funding from '../Project/Funding'
+import UpdateUser from './UpdateUser';
 
 function MenuBar() {
     return (
@@ -17,6 +18,7 @@ function MenuBar() {
         <MyInformation/>
         <Postcode/>
         <Funding/>
+        <UpdateUser/>
       </Container>
     );
   }

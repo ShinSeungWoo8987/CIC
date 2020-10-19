@@ -32,7 +32,7 @@ function Item(props){
                     <Value>{props.fundingCount}명</Value>                    
                 </FundingCountContainer>
                 <PercentContainer>
-                    <Text>달성률</Text><br/>
+                    <PercentText>달성률</PercentText><br/>
                     <PercentValue>{percent}%</PercentValue>                    
                 </PercentContainer>
             </CurrentStateContainer>
@@ -171,7 +171,12 @@ const PercentContainer = Styled(SaveMoneyContainer)`
     float: right;
     width: auto;
 `
+const PercentText = Styled(Text)`
+    float: right;
+    text-align: right;
+`
 const PercentValue = Styled(Value)`
     float: right;
+    text-align: right;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

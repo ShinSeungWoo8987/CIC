@@ -3,7 +3,7 @@ const _session = {
     state: false,
     username: localStorage.getItem("authenticatedUser") || '',
     password: '',
-    
+    authority: 0,
     token: localStorage.getItem("token") || ''
 }
 const sessionReducer = (state, { type, payload }) => {
@@ -40,7 +40,8 @@ const addressValueReducer = (state, {type, payload}) => {
 }
 const _modalState = {
     login: false,
-    postcode: false
+    postcode: false,
+    updateUser: false
 }
 const modalStateReducer = (state, { type, payload }) => {
     switch (type) {
