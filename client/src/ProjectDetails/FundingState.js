@@ -1,49 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import Styled from 'styled-components';
-import Store from '../Store/Store';
-import PercentBar from '../Components/PercentBar'
+import ProgressBar from 'react-percent-bar'
 import { moneyFormat } from '../Util/Util';
 
 function FundingState(props) {
-    const { session, modalStateDispatch } = useContext(Store);
+    const [fundingModalState, setFundingModalState] = useState(false);
     const targetMoney = 1000000;
     const saveMoney = 5000000;
     const percent = ((saveMoney / targetMoney) * 100);
+    const percentView = percent > 100 ? 100 : percent;
     const dDay = 30;
-    const progress = <PercentBar width='300px' height='10px' borderColor='white' percent={percent}/>;
+    const progress = <ProgressBar width='250px' height='10px' fillColor='lime' percent={percentView} />;
     const saveMoneyStr = moneyFormat(saveMoney);
     const fundingCount = 1000;
-    // When Login & Non-Login, Modal Setting
-    const openModal = (e) => {
-        e.preventDefault();
-        if( !session.state ) { //로그인상태
-            const newModalState = {
-                funding: true
-            }
-            modalStateDispatch({type: 'CHANGE_MODALSTATE', payload: newModalState});
-        }else{ //로그아웃상태
-            const newModalState = {
-                login: true
-            }
-            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
-        }
-    }
-    return  <CurrentStateContainer>
-                <Text>모인금액</Text><br />
-                    <SubContainer>
-                        <Value>{saveMoneyStr}</Value><BottomText>원</BottomText><PercentText>{percent + '%'}</PercentText><br /><br />
-                        {progress}
-                    </SubContainer><br />
-                <Text>참여인원</Text><br />
-                    <SubContainer>
-                        <Value>{fundingCount}</Value><BottomText>명</BottomText>
-                    </SubContainer><br />
-                <Text>남은기간</Text><br />
-                    <SubContainer>
-                        <Value>{dDay}</Value><BottomText>일</BottomText>
-                    </SubContainer>
-                <FundingBtn onClick={(e)=>openModal(e)}>펀딩하기</FundingBtn>
-            </CurrentStateContainer>;
+
+    return <CurrentStateContainer>
+            <Text>모인금액</Text><br />
+            <SubContainer>
+                <Value>{saveMoneyStr}</Value><BottomText>원</BottomText><PercentText>{percent + '%'}</PercentText><br /><br />
+                {progress}
+            </SubContainer><br />
+            <Text>참여인원</Text><br />
+            <SubContainer>
+                <Value>{fundingCount}</Value><BottomText>명</BottomText>
+            </SubContainer><br />
+            <Text>남은기간</Text><br />
+            <SubContainer>
+                <Value>{1}</Value><BottomText>일</BottomText>
+            </SubContainer>
+            <FundingBtn>펀딩하기</FundingBtn>
+        </CurrentStateContainer>;
 }
 
 export default FundingState;
@@ -52,10 +38,8 @@ const Left = Styled.div`
     float: left;
 `
 const CurrentStateContainer = Styled(Left)`
-    position: fixed;
-    width: 300px;
-    margin: 57px 0 0 0;
-    transition-daly: 10s;
+    margin-top: 70px;
+    width: 306px;
 `
 const Text = Styled(Left)`
     font-size: 15px;
@@ -76,18 +60,27 @@ const BottomText = Styled(Text)`
 const PercentText = Styled(BottomText)`
     float: right;
     font-weight: bold;
+    margin: 0 135px 0 0;
     color: #80C72D;
 `
-const FundingBtn = Styled.button`
+const Button = Styled.button`
     left: 14%;
     width: 300px;
+    height: 35px;
+    font-size: 15px;
+    text-indent: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 10px;
+    color: #717171;
+`
+const FundingBtn = Styled(Button)`
+    width: 306px;
     height: 50px;
     font-size: 20px;
     font-weight: bold;
     text-shadow: 1px 1px 7px #BDBDBD; 
     box-shadow: 1px 1px 7px #BDBDBD;
     border: none;
-    border-radius: 10px;
     color: white;
     margin-top: 20px;
     background-color: #83E538;

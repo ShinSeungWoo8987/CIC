@@ -3,6 +3,7 @@ import Styled from 'styled-components';
 import Store from '../Store/Store';
 import Main from '../DefaultMenuPage/Main';
 import Event from '../DefaultMenuPage/Event';
+import RegisterProject from '../RegisterProject/RegisterProject';
 import ProjectDetails from '../ProjectDetails/ProjectDetails';
 
 function MainView() {
@@ -12,7 +13,9 @@ function MainView() {
     var idx = 0;
     while (idx<mainPage.length){
         if(mainPage[idx] === globalState.main){
-            return <Container><Main/></Container>;
+            // return <Container><Main/></Container>;
+            // return <ProjectDetails/>;
+            return <RegisterProject/>;
         }
         idx += 1;
     }

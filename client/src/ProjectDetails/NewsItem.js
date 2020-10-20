@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import Store from '../Store/Store';
 
 function NewsItem({title,name,date}) {
     return (
         <Container>
             <Upside>{title}</Upside>
             <Downside><Left>{name}</Left> <Right>{date}</Right> </Downside>
+            
+            
         </Container>
     );
 }

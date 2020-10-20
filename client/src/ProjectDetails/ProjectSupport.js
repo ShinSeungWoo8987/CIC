@@ -9,7 +9,7 @@ function ProjectSupport(props) {
         {title: 'Title', name: '내가내다', date: '2020.10.20'},
         {title: 'Title', name: '신승우', date: '2020.11.20'}
     ];
-    const [ supportItem ] = useState(_supportItem);
+    const [supportItem, setSupportItem] = useState(_supportItem);
 
     const content = supportItem.map( ({title,name,date}, idx)=>{
         return <SupportItem key={idx} title={title} name={name} date={date} />;

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Styled from 'styled-components';
 
-function DetailMainContent() {
-    const [ project ] = useState({
+function DetailMainContent(props) {
+    const [project, setProject] = useState({
         title:'[더 무겁고 더 따뜻한 워크웨어] 튜뮤의 14포켓 헤링본 해비워크수트',
         img:'https://crowdincreative.s3.ap-northeast-2.amazonaws.com/test_project/title_img.jpg',
         subDescription:`[워크웨어] 임무에 따라 장시간 적은 움직임으로 추위를 견뎌야하는 모든 직업을 위한 워크웨어 브랜드 튜뮤의 '14포켓 헤링본 해비워크수트'를 소개합니다.`,

@@ -5,7 +5,9 @@ function SupportItem({title,name,date}) {
     return (
         <Container>
             <Upside><Left>{name}</Left> <Right>{date}</Right></Upside>
-            <Downside>{title}</Downside>  
+            <Downside>{title}</Downside>
+            
+            
         </Container>
     );
 }

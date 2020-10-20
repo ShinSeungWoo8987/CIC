@@ -11,7 +11,7 @@ public class Project {
 	private int PRO_NUMBER;
 	private String PRO_TITLE;
 	private String PRO_SUBDESCRIPTION;
-	private String PRO_TARTGET;
+	private String PRO_TARGET;
 	private String PRO_THUMBNAIL;
 	private String PRO_LOGO;
 	private String PRO_START;

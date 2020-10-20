@@ -43,7 +43,7 @@ function Login() {
             session.token = response.data.token;
             session.authority = response.data.authority;
             console.log("session.authority : ",session.authority);
-            registerSuccessfulLoginForJwt(id, session.token, session.authority);
+            registerSuccessfulLoginForJwt(id, session.authority, session.token);
             sessionDispatch({type:'SESSION', payload: Object.assign(session, {state:true} ) });
             closeLoginModal();
         }).catch( () =>{
