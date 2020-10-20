@@ -5,6 +5,7 @@ import DetailMainContent from './DetailMainContent';
 import Store from '../Store/Store';
 import ProjectNews from './ProjectNews';
 import ProjectSupport from './ProjectSupport';
+import Funding from './Funding';
 
 function DetailMain(props) {
     const { globalState } = useContext(Store);
@@ -18,6 +19,7 @@ function DetailMain(props) {
         <Container>
             <Upside> <DetailMainHeader/> </Upside>
             <Downside> {content} </Downside>
+            <Funding/>
         </Container>
     );
 }

@@ -5,7 +5,7 @@ import PercentBar from '../Components/PercentBar'
 import { moneyFormat } from '../Util/Util';
 
 function FundingState(props) {
-    const [ session, modalStateDispatch ] = useContext(Store);
+    const { session, modalStateDispatch } = useContext(Store);
     const targetMoney = 1000000;
     const saveMoney = 5000000;
     const percent = ((saveMoney / targetMoney) * 100);
