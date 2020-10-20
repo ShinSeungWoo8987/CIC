@@ -67,16 +67,6 @@ public class JwtAuthenticationController {
     		System.out.println("암호화된 pw : " + password);
     		
     		// 회원가입 진행
-    		System.out.println(registerRequest);
-    		// System.out.println(registerRequest.getUsername());
-    		// System.out.println(registerRequest.getPassword());
-    		// System.out.println(registerRequest.getName());
-    		// System.out.println(registerRequest.getBirth());
-    		// System.out.println(registerRequest.getPhone());
-    		// System.out.println(registerRequest.getPostcode());
-    		// System.out.println(registerRequest.getAddress1());
-    		// System.out.println(registerRequest.getAddress2());
-    		
     		try {
     			Member member = Member.builder()
 						.mem_id(username)
@@ -114,8 +104,16 @@ public class JwtAuthenticationController {
             .loadUserByUsername(authenticationRequest.getUsername());
         // 가져온 userDetails를 통해 토큰을 생성해준다. -> 이후 위에서 실행한 authenticate메소드에 따라 생성된 token과 가져온 값을 비교하여 일치하는지 자동으로 검증된다. 
         final String token = jwtTokenUtil.generateToken(userDetails);
-        
-        return ResponseEntity.ok(new JwtResponse(token));
+        int authority = 0;
+        System.out.println("Creator : "+userDetails.getAuthorities().toString().equals("[ROLE_CREATOR]"));
+        System.out.println("Admin : "+userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]"));
+        if(userDetails.getAuthorities().toString().equals("[ROLE_CREATOR]")){
+        	authority = 1;
+        }else if(userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]")){
+        	authority = 2;
+        }
+        System.out.println("authority : "+authority);
+        return ResponseEntity.ok(new JwtResponse(token,authority));
     }
 
     private void authenticate(String username, String password) throws Exception {

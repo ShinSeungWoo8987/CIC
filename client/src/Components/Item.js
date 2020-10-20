@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
-import ProgressBar from '../Project/PercentBar';
+import ProgressBar from './PercentBar';
 import { moneyFormat, percentFormat } from '../Util/Util';
 
 function Item(props){
-    const { globalState, globalStateDispatch, projectInfomation } = useContext(Store); // 나중에 정리할 것, 임시로 사용
+    const { globalStateDispatch, projectInfomation } = useContext(Store); // 나중에 정리할 것, 임시로 사용
     const targetMoneyStr = moneyFormat(props.targetMoney);
     const saveMoneyStr = moneyFormat(props.saveMoney);
     const percent = percentFormat(props.saveMoney,props.targetMoney);

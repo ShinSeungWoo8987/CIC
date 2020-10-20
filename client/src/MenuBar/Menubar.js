@@ -4,9 +4,9 @@ import Search from './Search';
 import Menu from './Menu';
 import DefaultMenu from './DefaultMenu';
 import MyInformation from './MyInformation';
-import Postcode from './Postcode';
 import UpdateUser from './UpdateUser';
 import DeleteUser from './DeleteUser';
+import Postcode from '../Components/Postcode';
 
 function MenuBar() {
     return (

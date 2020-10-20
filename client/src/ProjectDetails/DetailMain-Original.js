@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import Styled from 'styled-components';
+import Store from '../Store/Store';
 import DetailMainHeader from './DetailMainHeader';
 import DetailMainContent from './DetailMainContent';
-import Store from '../Store/Store';
 import ProjectNews from './ProjectNews';
 import ProjectSupport from './ProjectSupport';
 

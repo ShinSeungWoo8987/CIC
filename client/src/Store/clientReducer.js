@@ -15,10 +15,8 @@ const sessionReducer = (state, { type, payload }) => {
     }
 }
 const _globalState = {
-    // main: 'all',
-    // sub: 'all'
-    main: 'projectDetails',
-    sub: 'introduction'
+    main: 'all',
+    sub: 'all'
 }
 const globalStateReducer = (state, {type, payload}) => {
     switch (type) {
@@ -44,7 +42,8 @@ const _modalState = {
     login: false,
     postcode: false,
     updateUser: false,
-    deleteUser: false
+    deleteUser: false,
+    funding: false
 }
 const modalStateReducer = (state, { type, payload }) => {
     switch (type) {
@@ -54,6 +53,7 @@ const modalStateReducer = (state, { type, payload }) => {
             return payload;
     }
 }
+// projectInformation 임의로 작성한 코드, 나중에 제거할 것
 const _projectInfomation = {
     name: '기업명 / 이름',
     title: '이곳은 제목이 작성될 자리입니다.',
@@ -70,14 +70,6 @@ const projectInfomationReducer = (state, {type, payload}) => {
             return payload;
     }
 }
-const detailMainHeaderReducer = (state, { type, payload }) => {
-    switch (type) {
-        default:
-            return 1;
-        case 'CHANGE':
-            return payload;
-    }
-}
 export {
-    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _projectInfomation, projectInfomationReducer, detailMainHeaderReducer
+    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _projectInfomation, projectInfomationReducer
 };

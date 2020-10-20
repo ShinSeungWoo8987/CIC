@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
-import Item from './Item';
+import Item from '../Components/Item';
 import { getRandom } from '../Util/Util';
 
 function Main() {

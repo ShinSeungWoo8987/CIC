@@ -123,13 +123,13 @@ function Register() {
                     {/* RealTime Id Valid Check */}
                     {/* <InputId id='id' type='text' placeholder="아이디" required pattern="[A-Za-z0-9]{3,12}" onChange={(e)=>checkId(e)}/><br/> */}
                     {/* Lost Focus, Id Valid Check */}
-                    <InputId id='id' type='text' placeholder="아이디" required pattern="[A-Za-z0-9]{3,12}" onBlur={(e)=>checkId(e)}/><br/>
+                    <InputId id='id' type='text' placeholder="아이디" required pattern="{1,}" onBlur={(e)=>checkId(e)}/><br/>
                     <SpanText>{idMessage}</SpanText><br/>
-                    <InputPw id='pw1' type='password' placeholder="비밀번호" required pattern="[A-Za-z0-9]{3,12}" onChange={(e)=>checkPassword(e)}/><br/>
+                    <InputPw id='pw1' type='password' placeholder="비밀번호" required pattern="{1,}" onChange={(e)=>checkPassword(e)}/><br/>
                     <SpanText>{passwordMessage}</SpanText><br/>
                     <InputPw id='pw2' type='password' placeholder="비밀번호 확인" required onChange={(e)=>checkPasswordConfirm(e)}/><br/>
                     <SpanText>{passwordConfirmMessage}</SpanText><br/>
-                    <InputText id='name' type='text' placeholder="이름" required/><br/>
+                    <InputText id='name' type='text' placeholder="이름" required pattern="{1,}"/><br/>
                     <InputDate id='birth' type='date' min='1996-01-01' max='2099-12-31' required/><br/>
                     <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
                     <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} required readOnly/>

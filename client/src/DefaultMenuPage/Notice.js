@@ -4,7 +4,6 @@ import Styled from "styled-components" // styled-components 라이브러리를 �
 function Event() {
     return(
         <Container>
-            
         </Container>
     );
 }
@@ -17,7 +16,5 @@ const Container = Styled(Left)`
     width: 1405px;
     height: 2000px;
     margin: 60px 0 0 15%;
-    // width: 1665px;
-    // margin: 60px 0 0 12.5%;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

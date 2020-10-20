@@ -75,17 +75,7 @@ function MyInformation() {
     // Selected GlobalState Setting
     const changeState = (e) => {
         e.preventDefault();
-        if(e.currentTarget.id === 'updateUser'){
-            const newModalState = {
-                updateUser: true
-            }
-            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
-        }else if(e.currentTarget.id === 'deleteUser'){
-            const newModalState = {
-                deleteUser: true
-            }
-            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
-        }else if(e.currentTarget.id === 'fundingList'){
+        if(e.currentTarget.id === 'fundingList'){
             const newGlobalState = {
                 main: e.currentTarget.id,
                 sub: 'continue'
@@ -97,6 +87,17 @@ function MyInformation() {
                 sub: globalState.sub
             }
             globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+        }
+        if(e.currentTarget.id === 'updateUser'){
+            const newModalState = {
+                updateUser: true
+            }
+            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        }else if(e.currentTarget.id === 'deleteUser'){
+            const newModalState = {
+                deleteUser: true
+            }
+            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
         }
     }
     return myInformation

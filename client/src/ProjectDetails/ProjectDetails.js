@@ -1,7 +1,7 @@
-import React, {useContext, useState} from 'react';
+import React from 'react';
 import Styled from "styled-components";
 import DetailMain from './DetailMain';
-import DetailSub from './DetailSub';
+import _DetailSub from './DetailSub';
 
 function ProjectDetails() {
     return(
@@ -29,5 +29,7 @@ const LeftSide = Styled(Left)`
 `
 const RightSide = Styled(Left)`
     width: 24.5%;
+`
+const DetailSub = Styled(_DetailSub)`
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

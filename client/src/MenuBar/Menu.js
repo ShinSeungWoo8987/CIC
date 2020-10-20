@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
-import Login from './Login'
-import Register from './Register'
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
+import Login from './Login'
+import Register from './Register'
 
 
 function Menu() {

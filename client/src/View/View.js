@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
-import Store from '../Store/Store';
-import Main from '../Main/Main';
-import Event from '../Main/Event';
-import ProjectDetails from '../ProjectDetails/ProjectDetails';
 import Styled from 'styled-components';
+import Store from '../Store/Store';
+import Main from '../DefaultMenuPage/Main';
+import Event from '../DefaultMenuPage/Event';
+import ProjectDetails from '../ProjectDetails/ProjectDetails';
 
 function MainView() {
     const { globalState } = useContext(Store);
@@ -15,6 +15,9 @@ function MainView() {
             return <Container><Main/></Container>;
         }
         idx += 1;
+    }
+    if(globalState.main==='projectDetails'){
+        return <ProjectDetails/>;
     }
     if(globalState.main==='event'){
         return <Event/>;

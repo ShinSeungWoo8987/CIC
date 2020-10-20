@@ -2,34 +2,19 @@ import React, {useContext, useState} from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import Store from '../Store/Store';
-import PercentBar from './PercentBar'
+import PercentBar from '../Components/PercentBar'
 import { getRandom, moneyFormat, percentFormat } from '../Util/Util.js';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Funding() {
-    console.log("Funding Start");
-    const { session, addressValue, addressValueDispatch, modalState, modalStateDispatch } = useContext(Store);
-    const [fundingModalState, setFundingModalState] = useState(false);
+    const { addressValue, addressValueDispatch, modalState, modalStateDispatch } = useContext(Store);
     const targetMoney = getRandom(10000000, 1000000)
     const saveMoney = getRandom(12000000, 500000)
     const percent = percentFormat(saveMoney,targetMoney);
     const dDay = 30;
     const saveMoneyStr = moneyFormat(saveMoney);
     const fundingCount = 1000;
-    // When Login & Non-Login, Modal Setting
-    const openModal = (e) => {
-        e.preventDefault();
-        if( !session.state ) { //로그인상태
-            setFundingModalState(true);    
-        }else{ //로그아웃상태
-            const newModalState = {
-                login: true,
-                postcode: modalState.postcode
-            }
-            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
-        }
-    }
     // Funding Modal Setting
     const closeModal = (e) => {
         e.preventDefault();
@@ -38,14 +23,17 @@ function Funding() {
             address1: ''
         }
         addressValueDispatch({type: 'CHANGE_ADDRESS', payload: newAddressValue});
-        setFundingModalState(false);
+        const newModalState = {
+            funding: false
+        }
+        modalStateDispatch({type: 'CHANGE_MODALSTATE', payload: newModalState});
     }
     // Postcode Modal Setting
     const openPostcodeModal = (e) => {
         e.preventDefault();
         const newModalState = {
-            login: modalState.login,
-            postcode: true
+            postcode: true,
+            funding: modalState.funding
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     };
@@ -56,9 +44,8 @@ function Funding() {
     }      
     return (
         <Container>
-            <LinkModal onClick={(e)=>openModal(e)}>펀딩하기</LinkModal>
             <Modal 
-                isOpen= { fundingModalState }
+                isOpen= { modalState.funding }
                 style={ FundingModalStyle }
                 onRequestClose={(e) => closeModal(e)}
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
