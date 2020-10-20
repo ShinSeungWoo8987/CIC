@@ -15,4 +15,5 @@ public interface CICMapper {
 	public List<Type> getTypeList();
 	public List<Project> getProjectList();
 	public List<String> getMemberIdList();
+	public void addProject(Project project);
 }

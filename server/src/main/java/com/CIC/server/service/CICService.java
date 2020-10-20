@@ -12,4 +12,5 @@ public interface CICService {
 	List<String> getMemberIdList();
 	List<Type> getTypeList();
 	List<Project> getProjectList();
+	void addProject(Project project);
 }

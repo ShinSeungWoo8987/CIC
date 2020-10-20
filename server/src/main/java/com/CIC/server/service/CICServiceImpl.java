@@ -38,4 +38,8 @@ public class CICServiceImpl implements CICService {
 	public Member getMember(String id) {
 		return this.cicMapper.getMember(id);
 	}
+	@Override
+	public void addProject(Project project) {
+		this.cicMapper.addProject(project);
+	}
 }

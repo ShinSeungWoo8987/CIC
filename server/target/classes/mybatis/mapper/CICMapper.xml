@@ -17,5 +17,9 @@
 	<select id="getMember" resultType="com.CIC.server.model.Member">
 		select * from member where mem_id = #{id}
 	</select>
+	<insert id="addProject">
+		insert into project(PRO_TITLE, PRO_TARGET, PRO_THUMBNAIL, PRO_LOGO, PRO_START, PRO_FINISH, MEM_ID, TYP_NUMBER, PRO_SUBDESCRIPTION) 
+		values(#{PRO_TITLE}, #{PRO_TARTGET}, #{PRO_THUMBNAIL}, #{PRO_LOGO}, #{PRO_START}, #{PRO_FINISH}, #{MEM_ID}, #{TYP_NUMBER}, #{PRO_SUBDESCRIPTION})
+	</insert>
 
 </mapper>

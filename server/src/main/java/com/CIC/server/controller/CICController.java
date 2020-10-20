@@ -111,16 +111,21 @@ public class CICController {
 				  .MEM_ID(username)
 				  .PRO_TITLE(project_name)
 				  .TYP_NUMBER( Integer.parseInt(category) )
-				  .PRO_TARGET(target_money)
+				  .PRO_TARGET( Integer.parseInt(target_money) )
 				  .PRO_START(sdate)
 				  .PRO_FINISH(fdate)
 				  .PRO_THUMBNAIL(thumbnail)
 				  .PRO_LOGO(logo)
 				  .PRO_SUBDESCRIPTION(subDescription)
 				  .build();
-		
+		//이거 왜 프로젝트 넘버가 null이 아니고 0으로 뜨지?
 		System.out.println(project);
-
-        return "project_num"; 
+		
+		try {
+			this.cicService.addProject(project);
+			return "Successfully insert project"; 
+		}catch (Exception e) {
+			return "insert project failed"; 
+		}
     }
 }
