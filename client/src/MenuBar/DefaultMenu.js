@@ -58,7 +58,7 @@ function DefaultMenu() {
         e.preventDefault();
         const newGlobalState = {
             main: e.currentTarget.id,
-            sub: globalState.sub
+            sub: 'all'
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }

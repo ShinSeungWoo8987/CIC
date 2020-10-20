@@ -9,8 +9,8 @@ function Postcode() {
     const closePostcodeModal = (e) => {
         e.preventDefault();
         const newModalState = {
-            login: modalState.login,
-            postcode: false
+            postcode: false,
+            updateUser: modalState.updateUser
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     }
@@ -22,8 +22,8 @@ function Postcode() {
         }
         addressValueDispatch({type: 'CHANGE_ADDRESS', payload: newAddressValue});
         const newModalState = {
-            login: modalState.login,
-            postcode: false
+            postcode: false,
+            updateUser: modalState.updateUser
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     };

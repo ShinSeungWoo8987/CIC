@@ -6,8 +6,6 @@ function NewsItem({title,name,date}) {
         <Container>
             <Upside>{title}</Upside>
             <Downside><Left>{name}</Left> <Right>{date}</Right> </Downside>
-            
-            
         </Container>
     );
 }

@@ -7,12 +7,12 @@ import Styled from 'styled-components';
 
 function MainView() {
     const { globalState } = useContext(Store);
+    // 임시로 펀딩목록 및 메인페이지 같이 표현 - 실제로 동일한 코드
     const mainPage = ['all', 'tech', 'travel', 'fashion', 'fundingList']; // Main Page Menu List
     var idx = 0;
     while (idx<mainPage.length){
         if(mainPage[idx] === globalState.main){
-            // return <Container><Main/></Container>;
-            return <ProjectDetails/>;
+            return <Container><Main/></Container>;
         }
         idx += 1;
     }

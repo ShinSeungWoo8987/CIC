@@ -5,13 +5,21 @@ import ProgressBar from '../Project/PercentBar';
 import { moneyFormat, percentFormat } from '../Util/Util';
 
 function Item(props){
-    const { projectInfomation } = useContext(Store);
+    const { globalState, globalStateDispatch, projectInfomation } = useContext(Store); // 나중에 정리할 것, 임시로 사용
     const targetMoneyStr = moneyFormat(props.targetMoney);
     const saveMoneyStr = moneyFormat(props.saveMoney);
     const percent = percentFormat(props.saveMoney,props.targetMoney);
-    const dDayText = projectInfomation.dDay<0?'마감':'일 남음';
+    const dDayText = projectInfomation.dDay<0?'마감':'일 남음'; // 나중에 정리할 것, 임시로 사용
+    const moveProjectDetailes = (e) =>{
+        e.preventDefault();
+        const newGlobalState = {
+            main: e.currentTarget.id,
+            sub: 'introduction'
+        }
+        globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+    }
     return(
-        <Container>
+        <Container id='projectDetails' onClick={(e)=>moveProjectDetailes(e)}>
             <ItemImage/>
             <ItemLogo/>
             <Creator>{props.name}</Creator>

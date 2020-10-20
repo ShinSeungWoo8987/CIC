@@ -6,7 +6,7 @@ import { getRandom } from '../Util/Util';
 
 function Main() {
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
-    const {globalState, globalStateDispatch} = useContext(Store);
+    const { globalState, globalStateDispatch } = useContext(Store);
     const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
     let menuList = [];
     var idx=0;
@@ -134,7 +134,6 @@ const Left = Styled.div`
     float: left;
 `
 const Container = Styled(Left)`
-    postion: relative;
     width: 1665px;
     text-align: center;
 `
@@ -144,6 +143,7 @@ const Menu = Styled.div`
 `
 const MenuContainer = Styled(Left)`
     padding: 0 25px;
+    
     &:hover {
         font-weight: bold;
     }

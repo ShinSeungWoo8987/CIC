@@ -15,8 +15,10 @@ const sessionReducer = (state, { type, payload }) => {
     }
 }
 const _globalState = {
-    main: 'all',
-    sub: 'all'
+    // main: 'all',
+    // sub: 'all'
+    main: 'projectDetails',
+    sub: 'introduction'
 }
 const globalStateReducer = (state, {type, payload}) => {
     switch (type) {

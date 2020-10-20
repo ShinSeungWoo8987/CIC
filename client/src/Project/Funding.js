@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import Store from '../Store/Store';
-import PercentBar from '../Project/PercentBar'
+import PercentBar from './PercentBar'
 import { getRandom, moneyFormat, percentFormat } from '../Util/Util.js';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
