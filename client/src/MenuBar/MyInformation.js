@@ -81,14 +81,7 @@ function MyInformation() {
                 sub: 'continue'
             }
             globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
-        }else{
-            const newGlobalState = {
-                main: e.currentTarget.id,
-                sub: globalState.sub
-            }
-            globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
-        }
-        if(e.currentTarget.id === 'updateUser'){
+        }else if(e.currentTarget.id === 'updateUser'){
             const newModalState = {
                 updateUser: true
             }
@@ -98,6 +91,12 @@ function MyInformation() {
                 deleteUser: true
             }
             modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        }else{
+            const newGlobalState = {
+                main: e.currentTarget.id,
+                sub: globalState.sub
+            }
+            globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         }
     }
     return myInformation

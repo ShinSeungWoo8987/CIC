@@ -3,8 +3,8 @@ import Styled from 'styled-components';
 import Store from '../Store/Store';
 import Main from '../DefaultMenuPage/Main';
 import Event from '../DefaultMenuPage/Event';
-import RegisterProject from '../RegisterProject/RegisterProject';
 import ProjectDetails from '../ProjectDetails/ProjectDetails';
+import AddProject from '../AddProject/AddProject';
 
 function MainView() {
     const { globalState } = useContext(Store);
@@ -13,14 +13,15 @@ function MainView() {
     var idx = 0;
     while (idx<mainPage.length){
         if(mainPage[idx] === globalState.main){
-            // return <Container><Main/></Container>;
-            // return <ProjectDetails/>;
-            return <RegisterProject/>;
+            return <Container><Main/></Container>;
         }
         idx += 1;
     }
     if(globalState.main==='projectDetails'){
         return <ProjectDetails/>;
+    }
+    if(globalState.main==='addProject'){
+        return <AddProject/>;
     }
     if(globalState.main==='event'){
         return <Event/>;

@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import NewsItem from './NewsItem';
 
-function ProjectNews(props) {
+function ProjectNews() {
     let _newsItem = [
         {title: 'Title', name: 'Creator', date: '2020.09.18'},
         {title: 'Title', name: '관리자', date: '2020.09.20'},
         {title: 'Title', name: '내가내다', date: '2020.10.20'},
         {title: 'Title', name: '신승우', date: '2020.11.20'}
     ];
-    const [newsItem, setNewsItem] = useState(_newsItem);
+    const [ newsItem ] = useState(_newsItem);
 
     const content = newsItem.map( ({title,name,date}, idx)=>{
         return <NewsItem key={idx} title={title} name={name} date={date} />;

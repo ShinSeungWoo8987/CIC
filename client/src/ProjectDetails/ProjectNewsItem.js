@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+/*
+    연결할 것
+*/
 function ProjectNews(props) {
     let _news = {title: 'Title', name: 'Creator', date: '2020.09.18', content:'content'};
     const [news, setNews] = useState(_news);

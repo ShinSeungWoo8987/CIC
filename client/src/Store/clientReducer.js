@@ -1,35 +1,10 @@
 // const ..Reducer = (state, { payload }) => payload
-const _viewPage = {
-    viewPage:'', pageState:''
-}
-const _info = {
-    project_name: '', category: '', target_money: '', sdate: '', fdate: '', thumbnail: '', logo: '', subDescription:''
-};
 const _session = {
     state: false,
     username: localStorage.getItem("authenticatedUser") || '',
     password: '',
-    authority: 0,
+    authority: '',
     token: localStorage.getItem("token") || ''
-}
-const _content = [
-    {id:0, head:'text', content:''}
-]
-const infoReducer = (state, { type, payload }) => {
-    switch (type) {
-        default:
-            return _content;
-        case 'CHANGE_INFO':
-            return payload;
-    }
-}
-const contentReducer = (state, { type, payload }) => {
-    switch (type) {
-        default:
-            return _content;
-        case 'CHANGE':
-            return payload;
-    }
 }
 const sessionReducer = (state, { type, payload }) => {
     switch (type) {
@@ -40,9 +15,10 @@ const sessionReducer = (state, { type, payload }) => {
     }
 }
 const _globalState = {
-    main: 'all',
-    sub: 'all',
-    act:''
+    // main: 'all',
+    // sub: 'all'
+    main: 'addProject',
+    sub: 'all'
 }
 const globalStateReducer = (state, {type, payload}) => {
     switch (type) {
@@ -55,14 +31,6 @@ const globalStateReducer = (state, {type, payload}) => {
 const _addressValue = {
     postcode: '',
     address1: ''
-}
-const pageReducer = (state, { type, payload }) => {
-    switch (type) {
-        default:
-            return true;
-        case 'CHANGE_PAGE':
-            return payload;
-    }
 }
 const addressValueReducer = (state, {type, payload}) => {
     switch (type) {
@@ -88,7 +56,7 @@ const modalStateReducer = (state, { type, payload }) => {
     }
 }
 // projectInformation 임의로 작성한 코드, 나중에 제거할 것
-const _projectInfomation = {
+const _projectInformation = {
     name: '기업명 / 이름',
     title: '이곳은 제목이 작성될 자리입니다.',
     dDay: 30,
@@ -96,13 +64,16 @@ const _projectInfomation = {
     targetMoney: 500000,
     saveMoney: 50000000
 }
-const projectInfomationReducer = (state, {type, payload}) => {
+const projectInformationReducer = (state, {type, payload}) => {
     switch (type) {
         default:
             return false;
         case 'CHANGE_INFOMATION':
             return payload;
     }
+}
+const _viewPage = {
+    viewPage:'', pageState:''
 }
 const viewStateReducer = (state, { type, payload }) => {
     switch (type) {
@@ -118,15 +89,38 @@ const viewStateReducer = (state, { type, payload }) => {
             return payload;
     }
 }
-const detailMainHeaderReducer = (state, { type, payload }) => {
+const _info = {
+    project_name: '', category: '', target_money: '', sdate: '', fdate: '', thumbnail: '', logo: '', subDescription:''
+};
+const infoReducer = (state, { type, payload }) => {
     switch (type) {
         default:
-            return 1;
+            return _content;
+        case 'CHANGE_INFO':
+            return payload;
+    }
+}
+const _content = [
+    {id:0, head:'text', content:''}
+]
+const contentReducer = (state, { type, payload }) => {
+    switch (type) {
+        default:
+            return _content;
         case 'CHANGE':
+            return payload;
+    }
+}
+const pageReducer = (state, { type, payload }) => {
+    switch (type) {
+        default:
+            return true;
+        case 'CHANGE_PAGE':
             return payload;
     }
 }
 
 export {
-    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _projectInfomation, projectInfomationReducer, detailMainHeaderReducer, viewStateReducer, _viewPage, _info, _content, infoReducer, contentReducer, pageReducer
+    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _projectInformation, projectInformationReducer,
+    viewStateReducer, _viewPage, _info, _content, infoReducer, contentReducer, pageReducer
 };

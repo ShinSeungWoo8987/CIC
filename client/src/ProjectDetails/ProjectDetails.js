@@ -1,7 +1,7 @@
-import React, {useContext, useState} from 'react';
+import React from 'react';
 import Styled from "styled-components";
 import DetailMain from './DetailMain';
-import DetailSub from './DetailSub';
+import _DetailSub from './DetailSub';
 
 function ProjectDetails() {
     return(
@@ -21,20 +21,15 @@ const Left = Styled.div`
     float: left;
 `
 const Container = Styled(Left)`
-    margin-left:12.5%;
     width: 1665px;
-    text-align: center;
-`
-const Text = Styled.div`
-font-size: 17.5px;
-`
-const A = Styled.a`
-  cursor: pointer;
+    margin: 0 0 0 12.5%;
 `
 const LeftSide = Styled(Left)`
-  width: 75%;
+    width: 75%;
 `
 const RightSide = Styled(Left)`
-  width: 24.5%;
+    width: 24.5%;
+`
+const DetailSub = Styled(_DetailSub)`
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -43,9 +43,12 @@ const setupAxiosInterceptors = ()=> {
             if (token) {
                 config.headers['Authorization'] = 'ShinSeungWoo ' + token;
             }
+            // config.headers['Content-Type'] = 'application/json';
             return config;
         },
-        error => Promise.reject(error));
+        error => {
+            Promise.reject(error)
+        });
 }
 
 const logout = ()=>{

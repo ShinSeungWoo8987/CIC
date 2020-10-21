@@ -1,2 +1,2 @@
-클라이언트->서버(완료)
-서버->DB업로드(남음)
+Register radio버튼 이전으로 갔을때 defaultChecked사용하기.
+프로젝트 넘 가져와서 db에 넣기.

@@ -5,11 +5,11 @@ import ProgressBar from './PercentBar';
 import { moneyFormat, percentFormat } from '../Util/Util';
 
 function Item(props){
-    const { globalStateDispatch, projectInfomation } = useContext(Store); // 나중에 정리할 것, 임시로 사용
+    const { globalStateDispatch, projectInformation } = useContext(Store); // 나중에 정리할 것, 임시로 사용
     const targetMoneyStr = moneyFormat(props.targetMoney);
     const saveMoneyStr = moneyFormat(props.saveMoney);
     const percent = percentFormat(props.saveMoney,props.targetMoney);
-    const dDayText = projectInfomation.dDay<0?'마감':'일 남음'; // 나중에 정리할 것, 임시로 사용
+    const dDayText = projectInformation.dDay<0?'마감':'일 남음'; // 나중에 정리할 것, 임시로 사용
     const moveProjectDetailes = (e) =>{
         e.preventDefault();
         const newGlobalState = {

@@ -4,20 +4,22 @@ import DetailMainHeader from './DetailMainHeader';
 import DetailMainContent from './DetailMainContent';
 import Store from '../Store/Store';
 import ProjectNewsList from './ProjectNewsList';
-import ProjectNewsItem from './ProjectNewsItem';
 import ProjectSupport from './ProjectSupport';
+import Funding from './Funding';
 
 function DetailMain(props) {
-    const {detailMainHeader, detailMainHeaderDispatch} = useContext(Store);
-    let content = <DetailMainContent/>
-    // if(detailMainHeader===2) content = <ProjectNewsList/>
-    if(detailMainHeader===2) content = <ProjectNewsItem/>
-    else if(detailMainHeader===3) content = <ProjectSupport/>
+    const { globalState } = useContext(Store);
+    let content = '';
+    console.log(globalState);
+    if(globalState.sub==='introduction') content = <DetailMainContent/>
+    else if(globalState.sub==='recentlyNews') content = <ProjectNewsList/>
+    else if(globalState.sub==='supportMessage') content = <ProjectSupport/>
 
     return (
         <Container>
             <Upside> <DetailMainHeader/> </Upside>
             <Downside> {content} </Downside>
+            <Funding/>
         </Container>
     );
 }
@@ -27,13 +29,14 @@ const Left = Styled.div`
     float: left;
 `
 const Container = Styled(Left)`
-    width: 100%;
+    width: 1248px;
     text-align: center;
 `
 const Upside = Styled(Left)`
-  width: 100%;
-  height: 50px;
+    width: 100%;
 `
 const Downside = Styled(Left)`
-  width: 100%;
+    width: 100%;
+    height: 3000px;
+    margin: 45px 0 0 0;
 `

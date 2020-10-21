@@ -19,12 +19,12 @@ const Left = Styled.div`
 `
 const LoginContainer = Styled(Left)`
   width: 80%;
-  margin: 40px 0 10px 17.5px;
+  margin: 50px 0 20px 17.5px;
 `
 const LogoutContainer = Styled(LoginContainer)`
   position: relative;
   left: 25%;
   width: 40%;
-  margin: 40px 0 10px 0px;
+  margin: 50px 0 20px 0px;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
