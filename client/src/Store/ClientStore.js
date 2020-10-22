@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import Store from './Store';
 import { _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _searchProject, searchProjectReducer,
+         _mainPageCnt, mainPageCntReducer,
          _viewPage, viewStateReducer, pageReducer, _content, contentReducer, _info, infoReducer } from './clientReducer';
 
 function ClientStore(props) {
@@ -11,6 +12,7 @@ function ClientStore(props) {
     const [addressValue, addressValueDispatch] = useReducer(addressValueReducer, _addressValue);
     const [modalState, modalStateDispatch] = useReducer(modalStateReducer, _modalState);
     const [searchProject, searchProjectDispatch] = useReducer(searchProjectReducer, _searchProject);
+    const [mainPageCnt, mainPageCntDispatch] = useReducer(mainPageCntReducer, _mainPageCnt);
 
     const [viewState, viewStateDispatch] = useReducer(viewStateReducer, _viewPage);
     const [content, contentDispatch] = useReducer(contentReducer, _content);
@@ -20,6 +22,7 @@ function ClientStore(props) {
     return (
         <Store.Provider value={ {
             session, sessionDispatch, globalState, globalStateDispatch, addressValue, addressValueDispatch, modalState, modalStateDispatch, searchProject, searchProjectDispatch,
+            mainPageCnt, mainPageCntDispatch,
             viewState, viewStateDispatch, content, contentDispatch, info, infoDispatch, page, pageDispatch
             } }>
                 

@@ -26,4 +26,10 @@ const getRandom = (max, min) => {
     min = Math.ceil(min);
     return Math.floor(Math.random() * (max - min)) + min;
 }
-export { moneyFormat, percentFormat, getRandom };
+const dDayFormat = (dDay) => {
+    if(dDay<0)
+        return "마감"
+    else
+        return parseInt(dDay)
+}
+export { moneyFormat, percentFormat, getRandom, dDayFormat };

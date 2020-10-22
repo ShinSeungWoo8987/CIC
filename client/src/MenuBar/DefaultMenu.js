@@ -5,7 +5,7 @@ import Store from '../Store/Store';
 
 function DefaultMenu() {
   const url = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`
-    const {globalState, globalStateDispatch} = useContext(Store);
+    const {globalState, globalStateDispatch, searchProjectDispatch} = useContext(Store);
     const menuList = [
         {id: 'all', img: url+'All.png', select: url+'SelectAll.png', title: '전체'},
         {id: 'tech', img: url+'Tech.png', select: url+'SelectTech.png', title: '테크·가전'},
@@ -61,6 +61,11 @@ function DefaultMenu() {
             sub: 'all'
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+        // 왼쪽의 메인 메뉴 클릭 시 검색값 초기화 - 이 부분은 추후 결정할 것
+        const newSearchProject = {
+          value: ''
+        }
+        searchProjectDispatch({type:'SEARCH', payload:newSearchProject});
     }
     return menu;
 }

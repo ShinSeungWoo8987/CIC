@@ -5,34 +5,38 @@ import Item from '../Components/Item';
 import { post } from 'axios'
 
 function Main() {
-    const { globalState, globalStateDispatch, searchProject } = useContext(Store);
-    const [pageNumber, setPageNumber] = useState(1);
-    const [projectList, setProjectList] = useState('');
+    const { globalState, globalStateDispatch, searchProject, mainPageCnt, mainPageCntDispatch } = useContext(Store);
+    const [ projectList, setProjectList ] = useState('');
+    const [ currnetPageProjectCnt, setCurrnetPageProjectCnt] = useState('');
     const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
     let menuList = [];
     const menu = [];
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
+    const projectCnt = 8
     // Get Project List
     useEffect(() => {
         const newProjectList = [];
         const url = '/project/list';
         const data = {
-            page: pageNumber+'',
+            page: mainPageCnt.value+'',
             search: searchProject.value,
             main: globalState.main,
             sub: globalState.sub
         }
         post(url, data).then(res=>{
+            console.log(res.data.length);
+            console.log(res.data);
+            setCurrnetPageProjectCnt(res.data.length);
             var idx=0;
             while(idx<res.data.length){
-                newProjectList.push(<Item key={idx} number={res.data[idx].pro_NUMBER} thumbnail={res.data[idx].pro_THUMBNAIL} logo={res.data[idx].pro_LOGO} 
+                newProjectList.push(<Item key={idx} number={res.data[idx].pro_NUMBER} dDay={res.data[idx].dday} thumbnail={res.data[idx].pro_THUMBNAIL} logo={res.data[idx].pro_LOGO} 
                     creator={res.data[idx].mem_ID} start={res.data[idx].pro_START} finish={res.data[idx].pro_FINISH} title={res.data[idx].pro_TITLE} 
                     targetMoney={res.data[idx].pro_TARGET} saveMoney={100000} fundingCount={1000} />)
                 idx++;
             }
             setProjectList(newProjectList);
         })
-    }, [ globalState, searchProject, pageNumber ]);
+    }, [ globalState, searchProject, mainPageCnt ]);
     // Main Page, Sub Menu Setting
     var idx=0;
     while(idx<mainPage.length){
@@ -87,18 +91,26 @@ function Main() {
             sub: e.currentTarget.id
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+        const newMainPageCnt = {
+            value: 1
+        }
+        mainPageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
     }
     // Page Per, Project List Setting - 프로젝트 목록 불러오기 완성 후 작성할 것
     const moveMainPage = (e, direction) => {
-        let newPageNumber = pageNumber
         e.preventDefault();
-        if(direction==='left' && pageNumber>1){
-            setPageNumber(newPageNumber-1);
+        if(direction==='left' && mainPageCnt.value>1){
+            const newMainPageCnt = {
+                value: mainPageCnt.value-1
+            }
+            mainPageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
         }
-        if(direction==='right'){
-            setPageNumber(newPageNumber+1);
+        if(direction==='right' && currnetPageProjectCnt===projectCnt){
+            const newMainPageCnt = {
+                value: mainPageCnt.value+1
+            }
+            mainPageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
         }
-        console.log(pageNumber);
     }
     return(
         <Container>

@@ -67,6 +67,17 @@ const searchProjectReducer = (state, { type, payload }) => {
     }
 }
 
+const _mainPageCnt = {
+    value: 1
+}
+const mainPageCntReducer = (state, { type, payload }) => {
+    switch (type) {
+        default:
+            return false;
+        case 'MOVE_PAGE':
+            return payload;
+    }
+}
 
 const _viewPage = {
     viewPage:'', pageState:''
@@ -118,5 +129,6 @@ const contentReducer = (state, { type, payload }) => {
 
 export {
     _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _searchProject, searchProjectReducer,
+    _mainPageCnt, mainPageCntReducer,
     _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer
 };

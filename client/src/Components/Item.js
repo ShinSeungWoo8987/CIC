@@ -2,15 +2,15 @@ import React, { useContext } from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
 import ProgressBar from './PercentBar';
-import { moneyFormat, percentFormat } from '../Util/Util';
+import { moneyFormat, percentFormat, dDayFormat } from '../Util/Util';
 
 function Item(props){
     const { globalStateDispatch } = useContext(Store);
     const targetMoneyStr = moneyFormat(props.targetMoney);
     const saveMoneyStr = moneyFormat(props.saveMoney);
     const percent = percentFormat(props.saveMoney,props.targetMoney);
-    const dDay = 30;
-    const dDayText = '일 남음';
+    const dDay = dDayFormat(props.dDay);
+    const dDayText = props.dDay<0?"":"일 남음";
     const moveProjectDetailes = (e) =>{
         e.preventDefault();
         const newGlobalState = {
