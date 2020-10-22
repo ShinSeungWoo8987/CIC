@@ -12,11 +12,9 @@ function Login() {
 
     useEffect(()=>{
         let _session = {
-            state: session.state,
-            username: localStorage.getItem("authenticatedUser") || '',
-            password: '',
-            token: localStorage.getItem("token") || '',
-            authority: session.authority
+            state: localStorage.getItem("token") !== null,
+            authority: parseInt(localStorage.getItem("authority")),
+            token: localStorage.getItem("token")
         };
         sessionDispatch({type:"SESSION", payload:_session});
     },[])
@@ -39,11 +37,9 @@ function Login() {
         }
         executeJwtAuthenticationService(id, pw)
         .then((response) => {
-            console.log("response.data.authority : ",response.data.authority);
             session.token = response.data.token;
             session.authority = response.data.authority;
-            console.log("session.authority : ",session.authority);
-            registerSuccessfulLoginForJwt(id, session.authority, session.token);
+            registerSuccessfulLoginForJwt(session.authority, session.token);
             sessionDispatch({type:'SESSION', payload: Object.assign(session, {state:true} ) });
             closeLoginModal();
         }).catch( () =>{
@@ -57,17 +53,14 @@ function Login() {
         if(localStorage.getItem('token') === null){
             const newModalState = {
                 login: true,
-                postcode: modalState.postcode
             }
             modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
         }else{
             logout();
             sessionDispatch({type:'SESSION', payload: {
                 state: false,
-                username: localStorage.getItem("authenticatedUser") || '',
-                password: '',
                 authority: '',
-                token: localStorage.getItem("token") || ''
+                token: ''
             } });
         }
     }

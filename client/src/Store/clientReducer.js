@@ -1,10 +1,8 @@
 // const ..Reducer = (state, { payload }) => payload
 const _session = {
     state: false,
-    username: localStorage.getItem("authenticatedUser") || '',
-    password: '',
     authority: '',
-    token: localStorage.getItem("token") || ''
+    token: ''
 }
 const sessionReducer = (state, { type, payload }) => {
     switch (type) {
@@ -15,9 +13,7 @@ const sessionReducer = (state, { type, payload }) => {
     }
 }
 const _globalState = {
-    // main: 'all',
-    // sub: 'all'
-    main: 'addProject',
+    main: 'all',
     sub: 'all'
 }
 const globalStateReducer = (state, {type, payload}) => {
@@ -55,23 +51,6 @@ const modalStateReducer = (state, { type, payload }) => {
             return payload;
     }
 }
-// projectInformation 임의로 작성한 코드, 나중에 제거할 것
-const _projectInformation = {
-    name: '기업명 / 이름',
-    title: '이곳은 제목이 작성될 자리입니다.',
-    dDay: 30,
-    fundingCount: 1000,
-    targetMoney: 500000,
-    saveMoney: 50000000
-}
-const projectInformationReducer = (state, {type, payload}) => {
-    switch (type) {
-        default:
-            return false;
-        case 'CHANGE_INFOMATION':
-            return payload;
-    }
-}
 const _viewPage = {
     viewPage:'', pageState:''
 }
@@ -86,6 +65,14 @@ const viewStateReducer = (state, { type, payload }) => {
             return payload;
         case 'CHANGE_PAGESTATE':
             console.log(state);
+            return payload;
+    }
+}
+const pageReducer = (state, { type, payload }) => {
+    switch (type) {
+        default:
+            return true;
+        case 'CHANGE_PAGE':
             return payload;
     }
 }
@@ -111,16 +98,8 @@ const contentReducer = (state, { type, payload }) => {
             return payload;
     }
 }
-const pageReducer = (state, { type, payload }) => {
-    switch (type) {
-        default:
-            return true;
-        case 'CHANGE_PAGE':
-            return payload;
-    }
-}
 
 export {
-    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _projectInformation, projectInformationReducer,
-    viewStateReducer, _viewPage, _info, _content, infoReducer, contentReducer, pageReducer
+    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer,
+    _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer
 };

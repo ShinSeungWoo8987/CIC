@@ -27,12 +27,9 @@ const executeHelloService = ()=> {
     return axios.get('http://localhost:5000/hello');        
 }
 
-const registerSuccessfulLoginForJwt = (username, authority, token)=>{
-    // console.log("===registerSuccessfulLoginForJwt===")
-    localStorage.setItem('token', token);
-    localStorage.setItem('authenticatedUser', username);
+const registerSuccessfulLoginForJwt = (authority, token)=>{
     localStorage.setItem('authority', authority);
-    console.log("localStorage.getItem('authority') : ",localStorage.getItem('authority'));
+    localStorage.setItem('token', token);
     setupAxiosInterceptors();
 }
 

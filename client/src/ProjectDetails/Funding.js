@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext } from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import Store from '../Store/Store';
@@ -92,15 +92,6 @@ const Left = Styled.div`
 `
 const Container = Styled(Left)`
     width: 75px;
-`
-const LinkModal = Styled.a`
-    color: #A3A3A3;
-    cursor: pointer;
-
-    &:hover {
-        color: black;
-        font-weight: bold;
-    }
 `
 const Form = Styled.form`
     text-align: center;
