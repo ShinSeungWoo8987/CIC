@@ -8,9 +8,10 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class Project {
+	private int rnum;
+	private float dDay;
 	private int PRO_NUMBER;
 	private String PRO_TITLE;
-	private String PRO_SUBDESCRIPTION;
 	private int PRO_TARGET;
 	private String PRO_THUMBNAIL;
 	private String PRO_LOGO;

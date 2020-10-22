@@ -32,20 +32,20 @@ public class JwtUserDetailsService implements UserDetailsService {
 			
 			if(member.getGra_number()==1){ // 창작자
                 roles.add(new SimpleGrantedAuthority("ROLE_CREATOR"));
-                System.out.println(roles);
+//                System.out.println(roles);
                 return new User(member.getMem_id(), member.getMem_pw(), roles);
             } else if(member.getGra_number()==2){ // 관리자
                 roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-                System.out.println(roles);
+//                System.out.println(roles);
                 return new User(member.getMem_id(), member.getMem_pw(), roles);
             } else { // 일반회원
                 roles.add(new SimpleGrantedAuthority("ROLE_USER"));
-                System.out.println(roles);
+//                System.out.println(roles);
                 return new User(member.getMem_id(), member.getMem_pw(), roles);
             }
 		}catch (UsernameNotFoundException e) {
 			roles.add(new SimpleGrantedAuthority("ROLE_UNDEFINEDUSER"));
-			System.out.println(roles);
+//			System.out.println(roles);
 			return new User("", " ", roles);
 		}
     }

@@ -4,13 +4,14 @@ import java.util.List;
 
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Project;
+import com.CIC.server.model.SearchProject;
 import com.CIC.server.model.Type;
 
 public interface CICService {
+	List<String> getMemberIdList();
 	void addMember(Member member);
 	Member getMember(String id);
-	List<String> getMemberIdList();
+	List<Project> getProjectList(SearchProject searchProject);
 	List<Type> getTypeList();
-	List<Project> getProjectList();
 	void addProject(Project project);
 }

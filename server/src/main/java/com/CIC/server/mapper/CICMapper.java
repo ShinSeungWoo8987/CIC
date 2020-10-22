@@ -5,15 +5,17 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Project;
+import com.CIC.server.model.SearchProject;
 import com.CIC.server.model.Type;
 
 
 @Mapper
 public interface CICMapper {
+	public List<String> getMemberIdList();
 	public void addMember(Member member);
 	public Member getMember(String id);
+	public List<Project> getProjectList(SearchProject searchProject);
+	
 	public List<Type> getTypeList();
-	public List<Project> getProjectList();
-	public List<String> getMemberIdList();
 	public void addProject(Project project);
 }

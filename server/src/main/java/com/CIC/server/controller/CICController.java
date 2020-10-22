@@ -50,11 +50,11 @@ public class CICController {
         List<Type> list = this.cicService.getTypeList();
         return list; 
     }
-	@GetMapping("/project")
-    public List<Project> getProjectList() throws Exception {
-        List<Project> list = this.cicService.getProjectList();
-        return list; 
-    }
+//	@GetMapping("/project")
+//    public List<Project> getProjectList() throws Exception {
+//        List<Project> list = this.cicService.getProjectList();
+//        return list; 
+//    }
 	@RequestMapping(value="/create_project", method=RequestMethod.PUT, consumes="application/json")
     public String createProject( @RequestBody Map map ) throws Exception {
 		// id가져오기
@@ -116,7 +116,6 @@ public class CICController {
 				  .PRO_FINISH(fdate)
 				  .PRO_THUMBNAIL(thumbnail)
 				  .PRO_LOGO(logo)
-				  .PRO_SUBDESCRIPTION(subDescription)
 				  .build();
 		//이거 왜 프로젝트 넘버가 null이 아니고 0으로 뜨지?
 		System.out.println(project);
