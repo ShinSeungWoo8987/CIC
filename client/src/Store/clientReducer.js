@@ -12,6 +12,7 @@ const sessionReducer = (state, { type, payload }) => {
             return payload;
     }
 }
+
 const _globalState = {
     main: 'all',
     sub: 'all'
@@ -24,6 +25,7 @@ const globalStateReducer = (state, {type, payload}) => {
             return payload;
     }
 }
+
 const _addressValue = {
     postcode: '',
     address1: ''
@@ -36,6 +38,7 @@ const addressValueReducer = (state, {type, payload}) => {
             return payload;
     }
 }
+
 const _modalState = {
     login: false,
     postcode: false,
@@ -51,6 +54,20 @@ const modalStateReducer = (state, { type, payload }) => {
             return payload;
     }
 }
+
+const _searchProject = {
+    value: ''
+}
+const searchProjectReducer = (state, { type, payload }) => {
+    switch (type) {
+        default:
+            return false;
+        case 'SEARCH':
+            return payload;
+    }
+}
+
+
 const _viewPage = {
     viewPage:'', pageState:''
 }
@@ -100,6 +117,6 @@ const contentReducer = (state, { type, payload }) => {
 }
 
 export {
-    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer,
+    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _searchProject, searchProjectReducer,
     _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer
 };

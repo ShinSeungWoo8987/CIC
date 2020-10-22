@@ -1,25 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
+import Store from '../Store/Store';
 
 function Search() {
+  const { searchProjectDispatch } = useContext(Store);
   const SearchImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/Search.png`;
   // Search Submit
   const onSubmit = (e) => {
     e.preventDefault();
-    if(document.getElementById('inputSearch').value === ''){
+    const searchValue = document.getElementById('inputSearch').value;
+    if(searchValue === ''){
       return false;
     }
-    const searchValue = document.getElementById('inputSearch').value;
     const keyPressValue = e.key; // 검색창 기준, Enter Key
     const clickIdValue = e.target.id; // 버튼 기준, Click
     if(keyPressValue === 'Enter' || clickIdValue === 'btnSearch'){
-      console.log(searchValue);
+      const newSearchProject = {
+        value: searchValue
+      }
+      searchProjectDispatch({type:'SEARCH', payload:newSearchProject});
     }
   }
   return (
     <Container>
       <SubContainer>
-        <Input id='inputSearch' type='text' onKeyPress={(e) => onSubmit(e)} placeholder='단어를 입력해주세요.'/>
+        <Input id='inputSearch' type='text' placeholder='단어를 입력해주세요.' onKeyPress={(e) => onSubmit(e)}/>
         <ImageContainer>
           <Image id='btnSearch' src={SearchImg}  onClick={(e) => onSubmit(e)}></Image>
         </ImageContainer>
@@ -47,6 +52,7 @@ const Input = Styled.input`
   text-indent: 10px;
   border: none;
   border-radius: 5px;
+  ime-mode: active;
 `
 const ImageContainer = Styled(Left)`
   float: left;

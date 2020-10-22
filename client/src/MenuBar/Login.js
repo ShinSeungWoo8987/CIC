@@ -10,14 +10,16 @@ function Login() {
     const { session, sessionDispatch, modalState, modalStateDispatch } = useContext(Store);
     const [LoginMessage, setLoginMessage] = useState('');
 
+    // GlobalState 값도 나중에 새로고침했을 때 유지시켜야 됨
+
     useEffect(()=>{
-        let _session = {
+        const _session = {
             state: localStorage.getItem("token") !== null,
             authority: parseInt(localStorage.getItem("authority")),
             token: localStorage.getItem("token")
         };
         sessionDispatch({type:"SESSION", payload:_session});
-    },[])
+    },[sessionDispatch])
 
     // Login Submit
     const onLoginSubmit = (e) => {

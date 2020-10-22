@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import UploadImage from './UploadImage';
 import TextEditor from './TextEditor';
-import { put, post } from 'axios'
+import { put } from 'axios'
 import Store from '../Store/Store';
 
 function SetContent(props) {

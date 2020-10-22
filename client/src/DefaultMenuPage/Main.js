@@ -1,29 +1,40 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
 import Item from '../Components/Item';
-import { getRandom } from '../Util/Util';
+import { post } from 'axios'
 
 function Main() {
-    const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
-    const { globalState, globalStateDispatch } = useContext(Store);
+    const { globalState, globalStateDispatch, searchProject } = useContext(Store);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [projectList, setProjectList] = useState('');
     const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
     let menuList = [];
-    var idx=0;
     const menu = [];
-    const [pageNumber, setPageNumber] = useState(1);
-    // Test
-    const itemList = [
-        {name: 'CIC', dDay: 30, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(150000000, 0), fundingCount: 1000},
-        {name: 'Joker', dDay: 150, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: 0, fundingCount: 0},
-        {name: 'Hello', dDay: 20, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 3000},
-        {name: 'CIC', dDay: 60, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 1500},
-        {name: 'Hell', dDay: 10, title:'하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 2400},
-        {name: 'CIC', dDay: 5, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 20},
-        {name: 'SOS', dDay: 300, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 500},
-        {name: 'CIC', dDay: 124, title: '하루에 0.1씩 시력이 나빠지고 있어요ㅜㅜ', targetMoney: getRandom(100000000, 1000000), saveMoney: getRandom(300000000, 0), fundingCount: 90}
-    ];
-    // Main Page Sub Menu Setting
+    const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
+    // Get Project List
+    useEffect(() => {
+        const newProjectList = [];
+        const url = '/project/list';
+        const data = {
+            page: pageNumber+'',
+            search: searchProject.value,
+            main: globalState.main,
+            sub: globalState.sub
+        }
+        post(url, data).then(res=>{
+            var idx=0;
+            while(idx<res.data.length){
+                newProjectList.push(<Item key={idx} number={res.data[idx].pro_NUMBER} thumbnail={res.data[idx].pro_THUMBNAIL} logo={res.data[idx].pro_LOGO} 
+                    creator={res.data[idx].mem_ID} start={res.data[idx].pro_START} finish={res.data[idx].pro_FINISH} title={res.data[idx].pro_TITLE} 
+                    targetMoney={res.data[idx].pro_TARGET} saveMoney={100000} fundingCount={1000} />)
+                idx++;
+            }
+            setProjectList(newProjectList);
+        })
+    }, [ globalState, searchProject, pageNumber ]);
+    // Main Page, Sub Menu Setting
+    var idx=0;
     while(idx<mainPage.length){
         if(mainPage[idx]===globalState.main){
             menuList = [
@@ -35,31 +46,12 @@ function Main() {
         }
         idx++;
     }
-    // Funding List Sub Menu Setting
+    // Funding List, Sub Menu Setting
     if(globalState.main==='fundingList'){
         menuList = [
             {id: 'continue', title: '진행중'},
             {id: 'close', title: '종료'}
         ]
-    }
-    // Item List Setting
-    idx=0;
-    let item = [];
-    switch(pageNumber){
-        case 1:
-            while(idx<itemList.length) {
-                item.push(<Item key={idx} name={itemList[idx].name} dDay={itemList[idx].dDay} title={itemList[idx].title} targetMoney={itemList[idx].targetMoney} saveMoney={itemList[idx].saveMoney} fundingCount={itemList[idx].fundingCount}/>);    
-                idx++;
-            }
-            break;
-        case 2:
-            while(idx<6) {
-                item.push(<Item key={idx} name={itemList[idx].name} dDay={itemList[idx].dDay} title={itemList[idx].title} targetMoney={itemList[idx].targetMoney} saveMoney={itemList[idx].saveMoney} fundingCount={itemList[idx].fundingCount}/>);    
-                idx++;
-            }
-            break;
-        default :
-            break;
     }
     // Sub Menu List Setting
     idx=0;
@@ -96,17 +88,16 @@ function Main() {
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }
-    // Next Page
+    // Page Per, Project List Setting - 프로젝트 목록 불러오기 완성 후 작성할 것
     const moveMainPage = (e, direction) => {
-        item = [];
         let newPageNumber = pageNumber
         e.preventDefault();
-        if(direction==='left'){
+        if(direction==='left' && pageNumber>1){
             setPageNumber(newPageNumber-1);
-        }else{
+        }
+        if(direction==='right'){
             setPageNumber(newPageNumber+1);
         }
-        console.log(direction);
         console.log(pageNumber);
     }
     return(
@@ -119,7 +110,7 @@ function Main() {
                     <Image src={buttonImg+'LeftMainButton.png'} onClick={(e)=>moveMainPage(e, 'left')}></Image>
                 </LeftSide>
                 <ItemContainer>
-                    {item}
+                    {projectList}
                 </ItemContainer>
                 <RightSide>
                 <Image src={buttonImg+'RightMainButton.png'} onClick={(e)=>moveMainPage(e, 'right')}></Image>
