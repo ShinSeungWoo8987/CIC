@@ -3,7 +3,7 @@ import Styled from 'styled-components'; // Styled-components 라이브러리를 
 import Store from '../Store/Store';
 
 function Search() {
-  const { searchProjectDispatch } = useContext(Store);
+  const { searchProjectDispatch, globalState, globalStateDispatch } = useContext(Store);
   const SearchImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/Search.png`;
   // Search Submit
   const onSubmit = (e) => {
@@ -19,6 +19,11 @@ function Search() {
         value: searchValue
       }
       searchProjectDispatch({type:'SEARCH', payload:newSearchProject});
+      const newGlobalState = {
+        main: globalState.main,
+        sub: 'all'
+      }
+      globalStateDispatch({type: 'GLOBAL', payload: newGlobalState})
     }
   }
   return (

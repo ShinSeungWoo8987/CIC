@@ -5,7 +5,7 @@ import Item from '../Components/Item';
 import { post } from 'axios'
 
 function Main() {
-    const { globalState, globalStateDispatch, searchProject, mainPageCnt, mainPageCntDispatch } = useContext(Store);
+    const { globalState, globalStateDispatch, searchProject, mainPageCnt, mainPageCntDispatch, searchProjectDispatch } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
     const [ currnetPageProjectCnt, setCurrnetPageProjectCnt] = useState('');
     const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
@@ -95,8 +95,11 @@ function Main() {
             value: 1
         }
         mainPageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
+        const newSearchProject = {
+            value: ''
+          }
+          searchProjectDispatch({type:'SEARCH', payload:newSearchProject});
     }
-    // Page Per, Project List Setting - 프로젝트 목록 불러오기 완성 후 작성할 것
     const moveMainPage = (e, direction) => {
         e.preventDefault();
         if(direction==='left' && mainPageCnt.value>1){
