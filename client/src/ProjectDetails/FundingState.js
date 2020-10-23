@@ -5,8 +5,8 @@ import PercentBar from '../Components/PercentBar'
 
 function FundingState(props) {
     const { session, modalStateDispatch, projectInformation } = useContext(Store);
-    // const saveMoneyStr = moneyFormat(projectInformation.save);
-    const dDayText = projectInformation.dDay<0?'':'일';
+    const dDayText = projectInformation.dDay==='마감'?'':'일';
+    const fundingBtn = projectInformation.dDay==='마감'?<CloseFudningBtn>마감</CloseFudningBtn>:<FundingBtn onClick={(e)=>openModal(e)}>펀딩하기</FundingBtn>
     // When Login & Non-Login, Modal Setting
     const openModal = (e) => {
         e.preventDefault();
@@ -26,7 +26,9 @@ function FundingState(props) {
                 <Text>모인금액</Text><br />
                 <SubContainer>
                     <Value>{projectInformation.save}</Value><BottomText>원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
-                    <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent}/>
+                    <PercentBarContainer>
+                        <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent}/>
+                    </PercentBarContainer>
                 </SubContainer><br />
                 <Text>펀딩금액</Text><br />
                 <SubContainer>
@@ -34,13 +36,13 @@ function FundingState(props) {
                 </SubContainer><br />
                 <Text>참여인원</Text><br />
                 <SubContainer>
-                    <Value>{projectInformation.fundingCount}</Value><BottomText>명</BottomText>
+                    <Value>{projectInformation.fundingCnt}</Value><BottomText>명</BottomText>
                 </SubContainer><br />
                 <Text>남은기간</Text><br />
                 <SubContainer>
                     <Value>{projectInformation.dDay}</Value><BottomText>{dDayText}</BottomText>
                 </SubContainer>
-                <FundingBtn onClick={(e)=>openModal(e)}>펀딩하기</FundingBtn>
+                {fundingBtn}
             </CurrentStateContainer>;
 }
 
@@ -53,7 +55,6 @@ const CurrentStateContainer = Styled(Left)`
     position: fixed;
     width: 300px;
     margin: 58px 0 0 0;
-    transition-daly: 10s;
 `
 const Text = Styled(Left)`
     font-size: 15px;
@@ -66,6 +67,11 @@ const Value = Styled(Left)`
     font-size: 30px;
     font-weight: bold;
     color: #80C72D;
+`
+const PercentBarContainer = Styled(Left)`
+    border: none;
+    border-radius: 10px;
+    background-color: #E1E1E1 ;
 `
 const BottomText = Styled(Text)`
     position: relative;
@@ -89,8 +95,12 @@ const FundingBtn = Styled.button`
     color: white;
     margin-top: 20px;
     background-color: #83E538;
+    cursor: pointer;
 
     &:hover {
         box-shadow: 1px 1px 9px #8C8C8C; 
     }
+`
+const CloseFudningBtn = Styled(FundingBtn)`
+    cursor: default;
 `

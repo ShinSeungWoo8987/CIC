@@ -1,14 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import Store from '../Store/Store';
+import { post } from 'axios';
 import PercentBar from '../Components/PercentBar'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Funding() {
     const { addressValue, addressValueDispatch, modalState, modalStateDispatch, projectInformation } = useContext(Store);
-    const dDayText = projectInformation.dDay<0?'':'일';
+    const dDayText = projectInformation.dDay==='마감'?'':'일';
+    // Get User Information
+    useEffect(() => {
+        post()
+    }, [  ]);
     // Funding Modal Setting
     const closeModal = (e) => {
         e.preventDefault();
@@ -51,7 +56,7 @@ function Funding() {
                         <SubContainer>
                             <Value>{projectInformation.save}</Value><BottomText>원</BottomText><PercentText>{projectInformation.percent+'%'}</PercentText><br/><br/>
                             <PercentContainer>
-                                <PercentBar width='250px' height='15px' borderColor='white' percent={projectInformation.percent}/>
+                                <PercentBar width='250px' height='10px' borderColor='white' percent={projectInformation.percent}/>
                             </PercentContainer>
                         </SubContainer><br/>
                         <Text>펀딩금액</Text><br/>
@@ -60,7 +65,7 @@ function Funding() {
                         </SubContainer>
                         <Text>참여인원</Text><br/>
                         <SubContainer>
-                            <Value>{projectInformation.fundingCount}</Value><BottomText>명</BottomText>
+                            <Value>{projectInformation.fundingCnt}</Value><BottomText>명</BottomText>
                         </SubContainer><br/>
                         <Text>남은기간</Text><br/>
                         <SubContainer>
@@ -116,7 +121,7 @@ const BottomText = Styled(Text)`
 const PercentText = Styled(BottomText)`
     float: right;
     font-weight: bold;
-    margin: 0 135px 0 0;
+    margin: 0 130px 0 0;
     color: #80C72D;
 `
 const Value = Styled(Left)`
@@ -126,7 +131,7 @@ const Value = Styled(Left)`
 `
 const PercentContainer = Styled(Left)`
     width: 250px;
-    height: 15px;
+    height: 10px;
     border: none;
     border-radius: 10px;
     background-color: #E1E1E1 ;
@@ -175,7 +180,7 @@ const Writing = Styled.textarea`
     float: right;
     width: 765px;
     height: 75px;
-    margin: 40px 0 0 0;
+    margin: 10px -5px 0 0;
     text-indent: 5px;
     border: 1px solid #E0E0E0;
     border-radius: 5px;
@@ -192,7 +197,7 @@ const InputSubmit = Styled(Input)`
     box-shadow: 1px 1px 7px #BDBDBD;
     border: none;
     color: white;
-    margin: 40px 0 0 0;
+    margin: 30px 0 0 0;
     background-color: #83E538;
     
 
