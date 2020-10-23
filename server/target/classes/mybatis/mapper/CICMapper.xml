@@ -22,7 +22,7 @@
 			   		  			where typ_number like '%'||#{type}||'%' and pro_title like '%'||#{search}||'%' and <![CDATA[sysdate-pro_start > 0]]>
 			   		  		</when>
 			   		  		<when test="subMenu == 'new'">
-			   		  			where typ_number like '%'||#{type}||'%' and pro_title like '%'||#{search}||'%' and <![CDATA[sysdate-pro_start > 0 and sysdate-pro_start < 15]]>
+			   		  			where typ_number like '%'||#{type}||'%' and pro_title like '%'||#{search}||'%' and <![CDATA[sysdate-pro_start > 0 and sysdate-pro_start < 15 and pro_finish-sysdate > 0]]>
 			   		  		</when>
 			   		  		<when test="subMenu == 'closeSoon'">
 			   		  			where typ_number like '%'||#{type}||'%' and pro_title like '%'||#{search}||'%' and <![CDATA[sysdate-pro_start > 0 and pro_finish-sysdate > 0 and pro_finish-sysdate < 15]]>
