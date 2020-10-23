@@ -11,7 +11,7 @@
 	<select id="getMember" resultType="com.CIC.server.model.Member">
 		select * from member where mem_id = #{id}
 	</select>
-	<select id="getProjectList" resultType="com.CIC.server.model.GetMainPage">
+	<select id="getProjectList" resultType="com.CIC.server.model.GetProject">
 	select pro_number, pro_title, pro_target, pro_thumbnail, pro_logo, mem_id, dDay, pro_price
 		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
 			   from ( select *
@@ -35,6 +35,11 @@
 			   		  order by pro_number desc ) a )
 		where rnum between #{startNumber} and #{finishNumber}
 	</select>
+	<select id="getProject" resultType="com.CIC.server.model.GetProject">
+		select pro_number, pro_title, pro_target, pro_thumbnail, pro_logo, mem_id, <![CDATA[pro_finish-sysdate]]> as dDay, pro_price 
+		from project where pro_number = #{projectNumber}
+	</select>
+	
 	<select id="getTypeList" resultType="com.CIC.server.model.Type">
 		select * from TYPE
 	</select> 

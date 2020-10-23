@@ -63,7 +63,7 @@ public class LoginController {
 				return result;
 			}
 		}catch (Exception e) {
-			System.out.println("Error Message : React-Data Error");
+			System.out.println("Error Message : React-Axios Error");
 			result.add("잠시 후에 다시 시도해주세요.");
 			return result;
 		}
