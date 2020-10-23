@@ -15,7 +15,7 @@ function Main() {
     const menu = [];
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
     const projectCnt = 8
-    const fundingCount = 1000;
+    const fundingCount = 1000; // 임의로 지정, 이후에 DB(펀딩 테이블) 연결 후 변경할 것
     // Get Project List
     useEffect(() => {
         const newProjectList = [];

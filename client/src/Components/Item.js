@@ -19,7 +19,16 @@ function Item(props){
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         const newProjectInformation = {
-            number: String(props.number)
+            number: props.number,
+            title: props.title,
+            target: targetMoneyStr,
+            logo: props.logo,
+            creator: props.name,
+            dDay: dDay,
+            price: moneyFormat(props.price),
+            fundingCount: props.fundingCount,
+            save: saveMoneyStr,
+            percent: percent
         }
         projectInformationDispatch( { type: 'PROJECT', payload: newProjectInformation });
     }

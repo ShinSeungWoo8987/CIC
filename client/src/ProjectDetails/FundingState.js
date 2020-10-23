@@ -2,11 +2,10 @@ import React, { useContext } from 'react';
 import Styled from 'styled-components';
 import Store from '../Store/Store';
 import PercentBar from '../Components/PercentBar'
-import { moneyFormat } from '../Util/Util';
 
 function FundingState(props) {
     const { session, modalStateDispatch, projectInformation } = useContext(Store);
-    const saveMoneyStr = moneyFormat(projectInformation.save);
+    // const saveMoneyStr = moneyFormat(projectInformation.save);
     const dDayText = projectInformation.dDay<0?'':'일';
     // When Login & Non-Login, Modal Setting
     const openModal = (e) => {
@@ -26,8 +25,12 @@ function FundingState(props) {
     return  <CurrentStateContainer>
                 <Text>모인금액</Text><br />
                     <SubContainer>
-                        <Value>{saveMoneyStr}</Value><BottomText>원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
+                        <Value>{projectInformation.save}</Value><BottomText>원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
                         <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent}/>
+                    </SubContainer><br />
+                <Text>펀딩금액</Text><br />
+                    <SubContainer>
+                        <Value>{projectInformation.price}</Value><BottomText>원</BottomText>
                     </SubContainer><br />
                 <Text>참여인원</Text><br />
                     <SubContainer>

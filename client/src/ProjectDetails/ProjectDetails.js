@@ -1,8 +1,8 @@
 import React, { useContext, useEffect } from 'react';
 import Styled from "styled-components";
 import Store from '../Store/Store';
-import { dDayFormat, percentFormat } from '../Util/Util';
 import { post } from 'axios';
+import { dDayFormat, percentFormat } from '../Util/Util';
 import DetailMain from './DetailMain';
 import _DetailSub from './DetailSub';
 
