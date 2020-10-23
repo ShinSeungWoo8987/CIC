@@ -36,8 +36,8 @@ function SetContent(props) {
         return put(url, formData, config).then(res => {
             const folderName = 'https://crowdincreative.s3.ap-northeast-2.amazonaws.com/' + res.data.folderName;
             const fileName = [res.data.fileName0, res.data.fileName1, res.data.fileName2, res.data.fileName3, res.data.fileName4];
-            const thumbnail = `<img src='${folderName}/${res.data.thumbnail}' alt='thumbnail' />`
-            const logo = `<img src='${folderName}/${res.data.logo}' alt='logo' />`
+            const thumbnail = `${folderName}/${res.data.thumbnail}`
+            const logo = `${folderName}/${res.data.logo}`
             
             const _info = Object.assign(info, {thumbnail,logo});
             infoDispatch({type:'CHANGE_INFO', payload:_info});

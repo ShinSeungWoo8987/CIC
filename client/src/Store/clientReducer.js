@@ -105,7 +105,7 @@ const pageReducer = (state, { type, payload }) => {
     }
 }
 const _info = {
-    project_name: '', category: '', target_money: '', sdate: '', fdate: '', thumbnail: '', logo: '', subDescription:''
+    project_name: '', category: '', target_money: '', sdate: '', fdate: '', thumbnail: '', logo: '', funding_price:''
 };
 const infoReducer = (state, { type, payload }) => {
     switch (type) {

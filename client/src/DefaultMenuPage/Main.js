@@ -4,6 +4,8 @@ import Store from '../Store/Store';
 import Item from '../Components/Item';
 import { post } from 'axios'
 
+// 나중에 펀딩인원수 계산하여 추가할 것
+
 function Main() {
     const { globalState, globalStateDispatch, searchProject, mainPageCnt, mainPageCntDispatch, searchProjectDispatch } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
@@ -24,14 +26,12 @@ function Main() {
             sub: globalState.sub
         }
         post(url, data).then(res=>{
-            console.log(res.data.length);
-            console.log(res.data);
+            console.log(res.data[0].pro_price);
             setCurrnetPageProjectCnt(res.data.length);
             var idx=0;
             while(idx<res.data.length){
-                newProjectList.push(<Item key={idx} number={res.data[idx].pro_NUMBER} dDay={res.data[idx].dday} thumbnail={res.data[idx].pro_THUMBNAIL} logo={res.data[idx].pro_LOGO} 
-                    creator={res.data[idx].mem_ID} start={res.data[idx].pro_START} finish={res.data[idx].pro_FINISH} title={res.data[idx].pro_TITLE} 
-                    targetMoney={res.data[idx].pro_TARGET} saveMoney={100000} fundingCount={1000} />)
+                newProjectList.push(<Item key={idx} number={res.data[idx].pro_number} dDay={res.data[idx].dday} thumbnail={res.data[idx].pro_thumbnail} logo={res.data[idx].pro_logo} 
+                    creator={res.data[idx].mem_id} title={res.data[idx].pro_title} targetMoney={res.data[idx].pro_target} saveMoney={100000} fundingCount={1000} />)
                 idx++;
             }
             setProjectList(newProjectList);
@@ -100,6 +100,7 @@ function Main() {
           }
           searchProjectDispatch({type:'SEARCH', payload:newSearchProject});
     }
+    // 페이징 관련 문제 해결할 것 - 8개를 기준으로 작성해두었으나 마지막8개만 있는 경우 다음페이지로 이동
     const moveMainPage = (e, direction) => {
         e.preventDefault();
         if(direction==='left' && mainPageCnt.value>1){

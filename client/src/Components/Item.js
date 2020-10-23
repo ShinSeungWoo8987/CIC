@@ -21,8 +21,10 @@ function Item(props){
     }
     return(
         <Container id='projectDetails' onClick={(e)=>moveProjectDetailes(e)}>
-            <ItemImage src={props.thumbnail}/>
-            <ItemLogo src={props.logo}/>
+            {/* <ItemImage src={props.thumbnail}/>
+            <ItemLogo src={props.logo}/> */}
+            <ItemImage />
+            <ItemLogo />
             <Creator>{props.name}</Creator>
             <DDayText>{dDayText}</DDayText><Dday>{dDay}</Dday>
             <Title>{props.title}</Title>
