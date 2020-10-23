@@ -15,7 +15,6 @@ function Main() {
     const menu = [];
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
     const projectCnt = 8
-    const fundingCount = 1000; // 임의로 지정, 이후에 DB(펀딩 테이블) 연결 후 변경할 것
     // Get Project List
     useEffect(() => {
         const newProjectList = [];
@@ -31,7 +30,8 @@ function Main() {
             var idx=0;
             while(idx<res.data.length){
                 newProjectList.push(<Item key={idx} number={res.data[idx].pro_number} dDay={res.data[idx].dday} thumbnail={res.data[idx].pro_thumbnail} logo={res.data[idx].pro_logo} 
-                    creator={res.data[idx].mem_id} title={res.data[idx].pro_title} targetMoney={res.data[idx].pro_target} saveMoney={res.data[idx].pro_price*fundingCount} fundingCount={fundingCount} price={res.data[idx].pro_price}/>)
+                    creator={res.data[idx].mem_id} title={res.data[idx].pro_title} targetMoney={res.data[idx].pro_target} saveMoney={res.data[idx].fundingCnt*res.data[idx].pro_price}
+                    fundingCnt={res.data[idx].fundingCnt} price={res.data[idx].pro_price}/>)
                 idx++;
             }
             setProjectList(newProjectList);

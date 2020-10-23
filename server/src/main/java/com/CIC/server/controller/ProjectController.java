@@ -26,7 +26,7 @@ public class ProjectController {
 	private Util util;
 	
 	@RequestMapping(value="/project", method=RequestMethod.POST, consumes="application/json")
-    public GetProject getProjec(@RequestBody Map map) throws Exception {
+    public GetProject getProject(@RequestBody Map map) throws Exception {
 		List<String> values = new ArrayList<String>();
         map.forEach((k, v) -> {
 			values.add((String)v);

@@ -3,18 +3,12 @@ import Styled from 'styled-components'; // Styled-components 라이브러리를 
 import Modal from 'react-modal';
 import Store from '../Store/Store';
 import PercentBar from '../Components/PercentBar'
-import { getRandom, moneyFormat, percentFormat } from '../Util/Util.js';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Funding() {
-    const { addressValue, addressValueDispatch, modalState, modalStateDispatch } = useContext(Store);
-    const targetMoney = getRandom(10000000, 1000000)
-    const saveMoney = getRandom(12000000, 500000)
-    const percent = percentFormat(saveMoney,targetMoney);
-    const dDay = 30;
-    const saveMoneyStr = moneyFormat(saveMoney);
-    const fundingCount = 1000;
+    const { addressValue, addressValueDispatch, modalState, modalStateDispatch, projectInformation } = useContext(Store);
+    const dDayText = projectInformation.dDay<0?'':'일';
     // Funding Modal Setting
     const closeModal = (e) => {
         e.preventDefault();
@@ -55,18 +49,22 @@ function Funding() {
                     <CurrentStateContainer>
                         <Text>모인금액</Text><br/>
                         <SubContainer>
-                            <Value>{saveMoneyStr}</Value><BottomText>원</BottomText><PercentText>{percent+'%'}</PercentText><br/><br/>
+                            <Value>{projectInformation.save}</Value><BottomText>원</BottomText><PercentText>{projectInformation.percent+'%'}</PercentText><br/><br/>
                             <PercentContainer>
-                                <PercentBar width='250px' height='15px' borderColor='white' percent={percent}/>
+                                <PercentBar width='250px' height='15px' borderColor='white' percent={projectInformation.percent}/>
                             </PercentContainer>
                         </SubContainer><br/>
+                        <Text>펀딩금액</Text><br/>
+                        <SubContainer>
+                            <Value>{projectInformation.price}</Value><BottomText>원</BottomText>
+                        </SubContainer>
                         <Text>참여인원</Text><br/>
                         <SubContainer>
-                            <Value>{fundingCount}</Value><BottomText>명</BottomText>
+                            <Value>{projectInformation.fundingCount}</Value><BottomText>명</BottomText>
                         </SubContainer><br/>
                         <Text>남은기간</Text><br/>
                         <SubContainer>
-                            <Value>{dDay}</Value><BottomText>일</BottomText>
+                            <Value>{projectInformation.dDay}</Value><BottomText>{dDayText}</BottomText>
                         </SubContainer>
                     </CurrentStateContainer>
                     <DeliveryAddressContainer>

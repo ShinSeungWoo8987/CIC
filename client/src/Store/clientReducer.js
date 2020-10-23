@@ -88,7 +88,7 @@ const _projectInformation = {
     creator: '',
     dDay: '',
     price: '',
-    fundingCount: 1000,
+    fundingCnt: '',
     save: '',
     percent: ''
 }

@@ -12,7 +12,7 @@
 		select * from member where mem_id = #{id}
 	</select>
 	<select id="getProjectList" resultType="com.CIC.server.model.GetProject">
-	select pro_number, pro_title, pro_target, pro_thumbnail, pro_logo, mem_id, dDay, pro_price
+	select pro_number, pro_title, pro_target, pro_thumbnail, pro_logo, mem_id, dDay, pro_price, nvl(fundingCnt,0)
 		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
 			   from ( select *
 			   		  from project
@@ -33,6 +33,9 @@
 			   		  	</choose>
 			   		  </if>
 			   		  order by pro_number desc ) a )
+			   	left join ( select pro_number, count(joi_number) fundingCnt
+			   	   			from join 
+			   	   			group by pro_number) using(pro_number)
 		where rnum between #{startNumber} and #{finishNumber}
 	</select>
 	<select id="getProject" resultType="com.CIC.server.model.GetProject">

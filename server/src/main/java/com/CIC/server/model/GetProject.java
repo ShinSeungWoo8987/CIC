@@ -16,4 +16,5 @@ public class GetProject {
 	private String mem_id;
 	private float dDay;
 	private String pro_price;
+	private int fundingCnt;
 }

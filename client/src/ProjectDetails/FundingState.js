@@ -24,22 +24,22 @@ function FundingState(props) {
     }
     return  <CurrentStateContainer>
                 <Text>모인금액</Text><br />
-                    <SubContainer>
-                        <Value>{projectInformation.save}</Value><BottomText>원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
-                        <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent}/>
-                    </SubContainer><br />
+                <SubContainer>
+                    <Value>{projectInformation.save}</Value><BottomText>원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
+                    <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent}/>
+                </SubContainer><br />
                 <Text>펀딩금액</Text><br />
-                    <SubContainer>
-                        <Value>{projectInformation.price}</Value><BottomText>원</BottomText>
-                    </SubContainer><br />
+                <SubContainer>
+                    <Value>{projectInformation.price}</Value><BottomText>원</BottomText>
+                </SubContainer><br />
                 <Text>참여인원</Text><br />
-                    <SubContainer>
-                        <Value>{projectInformation.fundingCount}</Value><BottomText>명</BottomText>
-                    </SubContainer><br />
+                <SubContainer>
+                    <Value>{projectInformation.fundingCount}</Value><BottomText>명</BottomText>
+                </SubContainer><br />
                 <Text>남은기간</Text><br />
-                    <SubContainer>
-                        <Value>{projectInformation.dDay}</Value><BottomText>{dDayText}</BottomText>
-                    </SubContainer>
+                <SubContainer>
+                    <Value>{projectInformation.dDay}</Value><BottomText>{dDayText}</BottomText>
+                </SubContainer>
                 <FundingBtn onClick={(e)=>openModal(e)}>펀딩하기</FundingBtn>
             </CurrentStateContainer>;
 }

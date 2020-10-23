@@ -13,11 +13,6 @@ function Item(props){
     const dDayText = props.dDay<0?"":"일 남음";
     const moveProjectDetailes = (e) =>{
         e.preventDefault();
-        const newGlobalState = {
-            main: e.currentTarget.id,
-            sub: 'introduction',
-        }
-        globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         const newProjectInformation = {
             number: props.number,
             title: props.title,
@@ -26,11 +21,16 @@ function Item(props){
             creator: props.name,
             dDay: dDay,
             price: moneyFormat(props.price),
-            fundingCount: props.fundingCount,
+            fundingCnt: props.fundingCnt,
             save: saveMoneyStr,
             percent: percent
         }
         projectInformationDispatch( { type: 'PROJECT', payload: newProjectInformation });
+        const newGlobalState = {
+            main: e.currentTarget.id,
+            sub: 'introduction',
+        }
+        globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }
     return(
         <Container id='projectDetails' onClick={(e)=>moveProjectDetailes(e)}>
@@ -53,7 +53,7 @@ function Item(props){
                 </SaveMoneyContainer>
                 <FundingCountContainer>
                     <FundingText>참여자</FundingText>
-                    <Value>{props.fundingCount}명</Value>                    
+                    <Value>{props.fundingCnt}명</Value>                    
                 </FundingCountContainer>
                 <PercentContainer>
                     <PercentText>달성률</PercentText><br/>

@@ -13,7 +13,7 @@ public interface CICService {
 	void addMember(Member member);
 	Member getMember(String id);
 	List<Project> getProjectList(SearchProject searchProject);
-	public GetProject getProject(int projectNumber);
+	GetProject getProject(int projectNumber);
 	
 	List<Type> getTypeList();
 	void addProject(Project project);
