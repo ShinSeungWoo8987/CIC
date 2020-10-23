@@ -10,7 +10,6 @@ import Funding from './Funding';
 function DetailMain(props) {
     const { globalState } = useContext(Store);
     let content = '';
-    console.log(globalState);
     if(globalState.sub==='introduction') content = <DetailMainContent/>
     else if(globalState.sub==='recentlyNews') content = <ProjectNewsList/>
     else if(globalState.sub==='supportMessage') content = <ProjectSupport/>

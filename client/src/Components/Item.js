@@ -5,7 +5,7 @@ import ProgressBar from './PercentBar';
 import { moneyFormat, percentFormat, dDayFormat } from '../Util/Util';
 
 function Item(props){
-    const { globalStateDispatch } = useContext(Store);
+    const { globalStateDispatch, projectInformationDispatch } = useContext(Store);
     const targetMoneyStr = moneyFormat(props.targetMoney);
     const saveMoneyStr = moneyFormat(props.saveMoney);
     const percent = percentFormat(props.saveMoney,props.targetMoney);
@@ -15,9 +15,13 @@ function Item(props){
         e.preventDefault();
         const newGlobalState = {
             main: e.currentTarget.id,
-            sub: 'introduction'
+            sub: 'introduction',
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+        const newProjectInformation = {
+            number: String(props.number)
+        }
+        projectInformationDispatch( { type: 'PROJECT', payload: newProjectInformation });
     }
     return(
         <Container id='projectDetails' onClick={(e)=>moveProjectDetailes(e)}>

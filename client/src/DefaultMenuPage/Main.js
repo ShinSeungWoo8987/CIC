@@ -15,6 +15,7 @@ function Main() {
     const menu = [];
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
     const projectCnt = 8
+    const fundingCount = 1000;
     // Get Project List
     useEffect(() => {
         const newProjectList = [];
@@ -26,12 +27,11 @@ function Main() {
             sub: globalState.sub
         }
         post(url, data).then(res=>{
-            console.log(res.data[0].pro_price);
             setCurrnetPageProjectCnt(res.data.length);
             var idx=0;
             while(idx<res.data.length){
                 newProjectList.push(<Item key={idx} number={res.data[idx].pro_number} dDay={res.data[idx].dday} thumbnail={res.data[idx].pro_thumbnail} logo={res.data[idx].pro_logo} 
-                    creator={res.data[idx].mem_id} title={res.data[idx].pro_title} targetMoney={res.data[idx].pro_target} saveMoney={100000} fundingCount={1000} />)
+                    creator={res.data[idx].mem_id} title={res.data[idx].pro_title} targetMoney={res.data[idx].pro_target} saveMoney={res.data[idx].pro_price*fundingCount} fundingCount={fundingCount} price={res.data[idx].pro_price}/>)
                 idx++;
             }
             setProjectList(newProjectList);

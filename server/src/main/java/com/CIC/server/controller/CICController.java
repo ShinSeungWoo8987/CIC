@@ -37,7 +37,7 @@ public class CICController {
 	String fdate = "";
 	String thumbnail = "";
 	String logo = "";
-	String subDescription = "";
+	String funding_price = "";
 	ArrayList<Map> content;
 	
 	Authentication authentication;
@@ -96,8 +96,8 @@ public class CICController {
 				case "logo":
 					logo = (String)v;
 					break;
-				case "subDescription":
-					subDescription = (String)v;
+				case "funding_price":
+					funding_price = (String)v;
 					break;
 				default:
 					System.out.println("Something Error");
@@ -112,6 +112,7 @@ public class CICController {
 				  .PRO_TITLE(project_name)
 				  .TYP_NUMBER( Integer.parseInt(category) )
 				  .PRO_TARGET( Integer.parseInt(target_money) )
+				  .PRO_PRICE( Integer.parseInt(funding_price) )
 				  .PRO_START(sdate)
 				  .PRO_FINISH(fdate)
 				  .PRO_THUMBNAIL(thumbnail)

@@ -15,7 +15,9 @@ const sessionReducer = (state, { type, payload }) => {
 
 const _globalState = {
     main: 'all',
-    sub: 'all'
+    sub: 'all',
+    action: '',
+
 }
 const globalStateReducer = (state, {type, payload}) => {
     switch (type) {
@@ -78,6 +80,26 @@ const mainPageCntReducer = (state, { type, payload }) => {
             return payload;
     }
 }
+const _projectInformation = {
+    number: '',
+    title: '',
+    target: '',
+    logo: '',
+    creator: '',
+    dDay: '',
+    price: '',
+    fundingCount: 1000,
+    save: '',
+    percent: ''
+}
+const projectInformationReducer = (state, { type, payload }) => {
+    switch (type) {
+        default:
+            return false;
+        case 'PROJECT':
+            return payload;
+    }
+}
 
 const _viewPage = {
     viewPage:'', pageState:''
@@ -129,6 +151,6 @@ const contentReducer = (state, { type, payload }) => {
 
 export {
     _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _searchProject, searchProjectReducer,
-    _mainPageCnt, mainPageCntReducer,
+    _mainPageCnt, mainPageCntReducer, _projectInformation, projectInformationReducer,
     _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer
 };

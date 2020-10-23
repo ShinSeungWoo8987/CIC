@@ -5,18 +5,13 @@ import PercentBar from '../Components/PercentBar'
 import { moneyFormat } from '../Util/Util';
 
 function FundingState(props) {
-    const { session, modalStateDispatch } = useContext(Store);
-    const targetMoney = 1000000;
-    const saveMoney = 5000000;
-    const percent = ((saveMoney / targetMoney) * 100);
-    const dDay = 30;
-    const progress = <PercentBar width='300px' height='10px' borderColor='white' percent={percent}/>;
-    const saveMoneyStr = moneyFormat(saveMoney);
-    const fundingCount = 1000;
+    const { session, modalStateDispatch, projectInformation } = useContext(Store);
+    const saveMoneyStr = moneyFormat(projectInformation.save);
+    const dDayText = projectInformation.dDay<0?'':'일';
     // When Login & Non-Login, Modal Setting
     const openModal = (e) => {
         e.preventDefault();
-        if( !session.state ) { //로그인상태
+        if( session.state ) { //로그인상태
             const newModalState = {
                 funding: true
             }
@@ -31,16 +26,16 @@ function FundingState(props) {
     return  <CurrentStateContainer>
                 <Text>모인금액</Text><br />
                     <SubContainer>
-                        <Value>{saveMoneyStr}</Value><BottomText>원</BottomText><PercentText>{percent + '%'}</PercentText><br /><br />
-                        {progress}
+                        <Value>{saveMoneyStr}</Value><BottomText>원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
+                        <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent}/>
                     </SubContainer><br />
                 <Text>참여인원</Text><br />
                     <SubContainer>
-                        <Value>{fundingCount}</Value><BottomText>명</BottomText>
+                        <Value>{projectInformation.fundingCount}</Value><BottomText>명</BottomText>
                     </SubContainer><br />
                 <Text>남은기간</Text><br />
                     <SubContainer>
-                        <Value>{dDay}</Value><BottomText>일</BottomText>
+                        <Value>{projectInformation.dDay}</Value><BottomText>{dDayText}</BottomText>
                     </SubContainer>
                 <FundingBtn onClick={(e)=>openModal(e)}>펀딩하기</FundingBtn>
             </CurrentStateContainer>;

@@ -23,9 +23,10 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @RestController
 public class FileUploadController{
-	String accessKey = "...";
-	String secretKey = "...";
-	AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+	String k1 = "...";
+	String k2 = "...";
+	
+	AWSCredentials credentials = new BasicAWSCredentials(k1, k2);
 	
 	AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
 	        .withCredentials(new AWSStaticCredentialsProvider(credentials))
