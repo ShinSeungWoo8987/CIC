@@ -20,7 +20,7 @@ public class RegisterController {
 	private CICService cicService;
 
 	// ID Valid Check
-	@RequestMapping(value="/memberList", method=RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value="/member/idList", method=RequestMethod.POST, consumes="application/json")
 	public String memberList(@RequestBody Map map) throws Exception {
 		String mem_id;
 		List<String> list = new ArrayList<String>();

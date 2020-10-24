@@ -4,13 +4,16 @@
 	<select id="getMemberIdList" resultType="String">
 		select mem_id from member
 	</select>
+	
 	<insert id="addMember">
 		insert into member(mem_id, mem_pw, mem_name, mem_phone, mem_birth, mem_postcode, mem_address1, mem_address2) 
 		values(#{mem_id}, #{mem_pw}, #{mem_name}, #{mem_phone}, #{mem_birth}, #{mem_postcode}, #{mem_address1}, #{mem_address2})
 	</insert>
+	
 	<select id="getMember" resultType="com.CIC.server.model.Member">
 		select * from member where mem_id = #{id}
 	</select>
+	
 	<select id="getProjectList" resultType="com.CIC.server.model.GetProject">
 	select pro_number, pro_title, pro_target, pro_thumbnail, pro_logo, mem_id, dDay, pro_price, nvl(fundingCnt,0)
 		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
@@ -38,9 +41,31 @@
 			   	   			group by pro_number) using(pro_number)
 		where rnum between #{startNumber} and #{finishNumber}
 	</select>
+	
 	<select id="getProject" resultType="com.CIC.server.model.GetProject">
 		select pro_number, pro_title, pro_target, pro_thumbnail, pro_logo, mem_id, <![CDATA[pro_finish-sysdate]]> as dDay, pro_price 
 		from project where pro_number = #{projectNumber}
+	</select>
+	
+	<select id="getProjectCnt" resultType="int">
+		select count(pro_number)
+	   	from project
+			<if test="subMenu != null">
+		   		<choose>
+			  		<when test="subMenu == 'all'">
+			  			where typ_number like '%'||#{type}||'%' and pro_title like '%'||#{search}||'%' and <![CDATA[sysdate-pro_start > 0]]>
+			  		</when>
+			  		<when test="subMenu == 'new'">
+			  			where typ_number like '%'||#{type}||'%' and pro_title like '%'||#{search}||'%' and <![CDATA[sysdate-pro_start > 0 and sysdate-pro_start < 15 and pro_finish-sysdate > 0]]>
+			  		</when>
+			  		<when test="subMenu == 'closeSoon'">
+			  			where typ_number like '%'||#{type}||'%' and pro_title like '%'||#{search}||'%' and <![CDATA[sysdate-pro_start > 0 and pro_finish-sysdate > 0 and pro_finish-sysdate < 15]]>
+			  		</when>
+			  		<when test="subMenu == 'close'">
+			  			where typ_number like '%'||#{type}||'%' and pro_title like '%'||#{search}||'%' and <![CDATA[pro_finish-sysdate < 0]]>
+			  		</when>
+				</choose>
+			</if>
 	</select>
 	
 	<select id="getTypeList" resultType="com.CIC.server.model.Type">

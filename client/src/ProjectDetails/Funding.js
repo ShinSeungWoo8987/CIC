@@ -7,12 +7,16 @@ import PercentBar from '../Components/PercentBar'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
+/*
+    CurrentStateContainer - Value, Text Marign 변경 필요 
+*/
+
 function Funding() {
     const { addressValue, addressValueDispatch, modalState, modalStateDispatch, projectInformation } = useContext(Store);
     const dDayText = projectInformation.dDay==='마감'?'':'일';
     // Get User Information
     useEffect(() => {
-        post()
+        console.log("펀딩신청 기능구현 필요");
     }, [  ]);
     // Funding Modal Setting
     const closeModal = (e) => {

@@ -36,6 +36,39 @@ public class ProjectController {
         return project;
 	}
 	
+	@RequestMapping(value="/project/maxPage", method=RequestMethod.POST, consumes="application/json")
+    public int getMaxPage(@RequestBody Map map) throws Exception {
+		try {
+			List<String> values = new ArrayList<String>();
+	        map.forEach((k, v) -> {
+				values.add((String)v);
+			});
+	        try {
+	        	SearchProject searchProject = SearchProject.builder()
+	            		.search(values.get(0))
+	            		.type(this.util.getType(values.get(1)))
+	            		.subMenu(values.get(2))
+	            		.build();
+	        	try {
+	        		int projectCnt = this.cicService.getProjectCnt(searchProject);
+	        		try {
+	        			int maxPage = this.util.getMaxPage(projectCnt);
+	        			return maxPage;
+	        		}catch (Exception e) {
+	        			System.out.println("Error Message : Method-getMaxPage Error");
+					}
+	        	}catch (Exception e) {
+	        		System.out.println("Error Message : Method-getProjectCnt Error");
+				}
+	        }catch (Exception e) {
+	        	System.out.println("Error Message : Model-Builder Error");
+			}
+		}catch (Exception e) {
+			System.out.println("Error Message : React-Axios Error");
+		}
+        return 0;
+	}
+	
 	@RequestMapping(value="/project/list", method=RequestMethod.POST, consumes="application/json")
     public List<Project> getProjectList(@RequestBody Map map) throws Exception {
 		try {
@@ -50,7 +83,7 @@ public class ProjectController {
 	            		.startNumber((1+(page-1)*listCnt)+"")
 	            		.finishNumber((page*listCnt)+"")
 	            		.search(values.get(1))
-	            		.type(this.util.convertType(values.get(2)))
+	            		.type(this.util.getType(values.get(2)))
 	            		.subMenu(values.get(3))
 	            		.build();
 	            try {

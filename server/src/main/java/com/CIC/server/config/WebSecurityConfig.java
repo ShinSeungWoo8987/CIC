@@ -59,10 +59,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             	.antMatchers("/register").permitAll()
             	.antMatchers("/authenticate").permitAll()
-            	.antMatchers("/memberList").permitAll()
+            	.antMatchers("/member/idList").permitAll()
+            	.antMatchers("/member").permitAll()
             	.antMatchers("/project/list").permitAll()
+            	.antMatchers("/project/maxPage").permitAll()
             	.antMatchers("/project").permitAll()
-            	.antMatchers("/fundingCnt").permitAll()
             	.antMatchers("/").permitAll()
             // all other requests need to be authenticated
                 .anyRequest().hasRole("USER").and().

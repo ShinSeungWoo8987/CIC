@@ -39,6 +39,10 @@ public class CICServiceImpl implements CICService {
 	public GetProject getProject(int projectNumber) {
 		return this.cicMapper.getProject(projectNumber);
 	}
+	@Override
+	public int getProjectCnt(SearchProject searchProject) {
+		return this.cicMapper.getProjectCnt(searchProject);
+	}
 	
 	@Override
 	public List<Type> getTypeList() {

@@ -17,6 +17,7 @@ public interface CICService {
 	Member getMember(String id);
 	List<Project> getProjectList(SearchProject searchProject);
 	GetProject getProject(int projectNumber);
+	public int getProjectCnt(SearchProject searchProject);
 	
 	List<Type> getTypeList();
 	void addProject(Project project);

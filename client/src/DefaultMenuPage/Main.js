@@ -4,17 +4,26 @@ import Store from '../Store/Store';
 import Item from '../Components/Item';
 import { post } from 'axios'
 
-// 나중에 펀딩인원수 계산하여 추가할 것
-
 function Main() {
     const { globalState, globalStateDispatch, searchProject, mainPageCnt, mainPageCntDispatch, searchProjectDispatch } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
-    const [ currnetPageProjectCnt, setCurrnetPageProjectCnt] = useState('');
+    const [ maxPage, setMaxPage ] = useState('');
     const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
     let menuList = [];
     const menu = [];
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
-    const projectCnt = 8
+    // Get Max Page
+    useEffect(() => {
+        const url = '/project/maxPage';
+        const data = {
+            search: searchProject.value,
+            main: globalState.main,
+            sub: globalState.sub
+        }
+        post(url, data).then(res=>{
+            setMaxPage(res.data)
+        })
+    }, [ globalState, searchProject ]);
     // Get Project List
     useEffect(() => {
         const newProjectList = [];
@@ -26,7 +35,6 @@ function Main() {
             sub: globalState.sub
         }
         post(url, data).then(res=>{
-            setCurrnetPageProjectCnt(res.data.length);
             var idx=0;
             while(idx<res.data.length){
                 newProjectList.push(<Item key={idx} number={res.data[idx].pro_number} dDay={res.data[idx].dday} thumbnail={res.data[idx].pro_thumbnail} logo={res.data[idx].pro_logo} 
@@ -109,7 +117,7 @@ function Main() {
             }
             mainPageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
         }
-        if(direction==='right' && currnetPageProjectCnt===projectCnt){
+        if(direction==='right' && mainPageCnt.value<maxPage){
             const newMainPageCnt = {
                 value: mainPageCnt.value+1
             }

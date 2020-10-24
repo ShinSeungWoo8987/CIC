@@ -20,6 +20,7 @@ public interface CICMapper {
 	public Member getMember(String id);
 	public List<Project> getProjectList(SearchProject searchProject);
 	public GetProject getProject(int projectNumber);
+	public int getProjectCnt(SearchProject searchProject);
 	
 	public List<Type> getTypeList();
 	public void addProject(Project project);
