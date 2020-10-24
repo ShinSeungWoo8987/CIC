@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.CIC.server.model.EventFileUploadRes;
 import com.CIC.server.model.FileUploadRes;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
@@ -57,7 +58,7 @@ public class FileUploadController{
 	
 	@RequestMapping( value = "/upload", method = RequestMethod.PUT, consumes = "multipart/form-data")
 	@CrossOrigin//(origins = {"http://localhost:3000"})
-	public FileUploadRes fileUpload( //ArrayList<FileUploadRes>
+	public FileUploadRes projectFileUpload( //ArrayList<FileUploadRes>
 			@RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
 			@RequestParam(value = "logo", required = false) MultipartFile logo,
 			@RequestParam(value = "file0", required = false) MultipartFile file0,
@@ -83,5 +84,20 @@ public class FileUploadController{
 			FileUploadRes res = new FileUploadRes(folderName,thumbnailName,logoName,"","","","","");
 			return res;
 		}
+	}
+	
+	@RequestMapping( value = "/event/uploadfile", method = RequestMethod.PUT, consumes = "multipart/form-data")
+	@CrossOrigin//(origins = {"http://localhost:3000"})
+	public EventFileUploadRes eventFileUpload( //ArrayList<FileUploadRes>
+			@RequestParam(value = "image", required = false) MultipartFile image,
+			@RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail
+			) throws IOException {
+		String folderName = UUID.randomUUID().toString();
+		
+		String imageName = image == null ? "" : uploadS3(folderName, convert(image));
+		String thumbnailName = thumbnail==null? "" : uploadS3(folderName, convert(thumbnail));
+		
+		EventFileUploadRes res = new EventFileUploadRes(folderName, imageName, thumbnailName);
+		return res;
 	}
 }

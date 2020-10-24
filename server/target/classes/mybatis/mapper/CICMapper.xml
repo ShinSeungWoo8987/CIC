@@ -55,5 +55,37 @@
        INSERT INTO PROJECT (PRO_NUMBER, PRO_TITLE, PRO_TARGET, PRO_THUMBNAIL, PRO_LOGO, PRO_START, PRO_FINISH, MEM_ID, TYP_NUMBER, PRO_PRICE) 
       values( #{PRO_NUMBER}, #{PRO_TITLE}, #{PRO_TARGET}, #{PRO_THUMBNAIL}, #{PRO_LOGO}, #{PRO_START}, #{PRO_FINISH}, #{MEM_ID}, #{TYP_NUMBER}, #{PRO_PRICE} )
    </insert>
+   
+   <insert id="addEvent" keyProperty="EVE_NUMBER">
+       <selectKey keyProperty="EVE_NUMBER" resultType="int" order="BEFORE">
+          select coalesce(MAX(eve_number), 0) + 1 as EVE_NUMBER
+            from event
+       </selectKey>
+       INSERT INTO EVENT (EVE_NUMBER, EVE_TITLE, EVE_DESCRIPTION, EVE_THUMBNAIL, EVE_IMAGE, MEM_ID)
+       VALUES (#{EVE_NUMBER}, #{EVE_TITLE}, #{EVE_DESCRIPTION}, #{EVE_THUMBNAIL}, #{EVE_IMAGE}, #{MEM_ID})
+   </insert>
+   
+   <insert id="addNotice" keyProperty="NOT_NUMBER">
+       <selectKey keyProperty="NOT_NUMBER" resultType="int" order="BEFORE">
+          select coalesce(MAX(not_number), 0) + 1 as NOT_NUMBER
+            from notice
+       </selectKey>
+       INSERT INTO NOTICE (NOT_NUMBER, NOT_TITLE, NOT_DESCRIPTION, MEM_ID)
+       VALUES ( #{NOT_NUMBER}, #{NOT_TITLE}, #{NOT_DESCRIPTION}, #{MEM_ID} )
+   </insert>
+   
+   <insert id="addServiceCenter" keyProperty="SER_NUMBER">
+       <selectKey keyProperty="SER_NUMBER" resultType="int" order="BEFORE">
+          select coalesce(MAX(ser_number), 0) + 1 as SER_NUMBER
+            from SERVICECENTER
+       </selectKey>
+       INSERT INTO SERVICECENTER ( SER_NUMBER, SER_TITLE, SER_DESCRIPTION, MEM_ID )
+       VALUES ( #{SER_NUMBER}, #{SER_TITLE}, #{SER_DESCRIPTION}, #{MEM_ID} )
+   </insert>
+
+   
+   
+   
+   
 
 </mapper>

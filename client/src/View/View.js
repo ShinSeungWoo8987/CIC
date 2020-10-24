@@ -5,6 +5,7 @@ import Main from '../DefaultMenuPage/Main';
 import Event from '../DefaultMenuPage/Event';
 import ProjectDetails from '../ProjectDetails/ProjectDetails';
 import AddProject from '../AddProject/AddProject';
+import AddBoard from '../Board/AddBoard';
 
 function MainView() {
     const { globalState } = useContext(Store);
@@ -22,6 +23,9 @@ function MainView() {
     }
     if(globalState.main==='addProject'){
         return <AddProject/>;
+    }
+    if(globalState.main==='addEvent' || globalState.main==='addNotice' || globalState.main==='addServiceCenter'){
+        return <AddBoard/>;
     }
     if(globalState.main==='event'){
         return <Event/>;

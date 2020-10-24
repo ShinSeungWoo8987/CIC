@@ -20,8 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.CIC.server.model.Project;
+import com.CIC.server.model.ServiceCenter;
 import com.CIC.server.model.Content;
+import com.CIC.server.model.Event;
 import com.CIC.server.model.Member;
+import com.CIC.server.model.Notice;
 import com.CIC.server.model.Type;
 import com.CIC.server.service.CICService;
 
@@ -38,6 +41,11 @@ public class CICController {
 	String thumbnail = "";
 	String logo = "";
 	String funding_price = "";
+	
+	String title="";
+	String image="";
+	String description="";
+	
 	ArrayList<Map> content;
 	
 	Authentication authentication;
@@ -123,6 +131,123 @@ public class CICController {
 		
 		try {
 			this.cicService.addProject(project);
+			return "Successfully insert project"; 
+		}catch (Exception e) {
+			return "insert project failed"; 
+		}
+    }
+	
+	@RequestMapping(value="/event/add", method=RequestMethod.PUT, consumes="application/json")
+    public String addEvent( @RequestBody Map map ) throws Exception {
+		// id가져오기
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String username = userDetails.getUsername();
+
+        map.forEach((k, v) -> {
+        	//System.out.println(k + ": " + v);
+			switch ( (String)k ) {
+				case "image":
+					image = (String)v;
+					break;
+				case "thumbnail":
+					thumbnail = (String)v;
+					break;
+				case "title":
+					title = (String)v;
+					break;
+				case "description":
+					description = (String)v;
+					break;
+				default:
+					System.out.println("Something Error");
+					break;
+			}
+        });
+		
+		Event event = Event.builder()
+				  .MEM_ID(username)
+				  .EVE_TITLE(title)
+				  .EVE_THUMBNAIL(thumbnail)
+				  .EVE_IMAGE(image)
+				  .EVE_DESCRIPTION(description)
+				  .build();
+		
+		try {
+			System.out.println(event);
+			this.cicService.addEvent(event);
+			return "Successfully insert project"; 
+		}catch (Exception e) {
+			return "insert project failed"; 
+		}
+    }
+	
+	@RequestMapping(value="/notice/add", method=RequestMethod.PUT, consumes="application/json")
+    public String addNotice( @RequestBody Map map ) throws Exception {
+		// id가져오기
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String username = userDetails.getUsername();
+
+        map.forEach((k, v) -> {
+        	//System.out.println(k + ": " + v);
+			switch ( (String)k ) {
+				case "title":
+					title = (String)v;
+					break;
+				case "description":
+					description = (String)v;
+					break;
+				default:
+					System.out.println("Something Error");
+					break;
+			}
+        });
+		
+		Notice notice = Notice.builder()
+				  .MEM_ID(username)
+				  .NOT_TITLE(title)
+				  .NOT_DESCRIPTION(description)
+				  .build();
+		try {
+			System.out.println(notice);
+			this.cicService.addNotice(notice);
+			return "Successfully insert project"; 
+		}catch (Exception e) {
+			return "insert project failed"; 
+		}
+    }
+	
+	@RequestMapping(value="/service_center/add", method=RequestMethod.PUT, consumes="application/json")
+    public String addServiceCenter( @RequestBody Map map ) throws Exception {
+		// id가져오기
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String username = userDetails.getUsername();
+
+        map.forEach((k, v) -> {
+			switch ( (String)k ) {
+				case "title":
+					title = (String)v;
+					break;
+				case "description":
+					description = (String)v;
+					break;
+				default:
+					System.out.println("Something Error");
+					break;
+			}
+        });
+		
+		ServiceCenter serviceCenter = ServiceCenter.builder()
+				  .MEM_ID(username)
+				  .SER_TITLE(title)
+				  .SER_DESCRIPTION(description)
+				  .build();
+		this.cicService.addServiceCenter(serviceCenter);
+		try {
+			System.out.println(serviceCenter);
+			
 			return "Successfully insert project"; 
 		}catch (Exception e) {
 			return "insert project failed"; 
