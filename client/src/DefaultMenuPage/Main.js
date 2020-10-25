@@ -131,11 +131,13 @@ function Main() {
     if(globalState.main==='tech') _category='테크·가전';
     if(globalState.main==='travel') _category='여행·레저';
     if(globalState.main==='fasion') _category='패션·잡화';
+    if(globalState.main==='fundingList') _category=`내정보 > 펀딩목록`;
 
     if(globalState.sub==='all') _period='전체기간';
     if(globalState.sub==='new') _period='신규';
     if(globalState.sub==='closeSoon') _period='마감임박';
     if(globalState.sub==='close') _period='마감';
+    if(globalState.sub==='close') _period='진행중';
 
     return(
         <Container>

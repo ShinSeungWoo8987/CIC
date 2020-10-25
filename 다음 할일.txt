@@ -6,7 +6,7 @@
 
 무한스크롤 코드
 const [fetching, setFetching] = useState(false); // 추가 데이터를 로드하는지 아닌지를 담기위한 state
-  
+
 const fetchMoreInstaFeeds = async () => {
   // 추가 데이터를 로드하는 상태로 전환
   setFetching(true);

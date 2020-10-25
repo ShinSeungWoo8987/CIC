@@ -3,7 +3,7 @@ import Styled from 'styled-components'; // Styled-components 라이브러리를 
 import Store from '../Store/Store';
 
 function Search() {
-  const { searchProjectDispatch, globalState, globalStateDispatch } = useContext(Store);
+  const { session, searchProjectDispatch, globalState, globalStateDispatch } = useContext(Store);
   const [displayInput, setDisplayInput] = useState(false);
   const searchRef = useRef();
   const SearchImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/Search.png`;
@@ -26,7 +26,7 @@ function Search() {
     }
   }
   return (
-    <Container>
+    <Container margin={session.state?'50%':'58%'} >
       <SubContainer>
           {displayInput? <Input id='inputSearch' type='text' placeholder='단어를 입력해주세요.' ref={searchRef}/>:<NullBox>&nbsp;</NullBox>}
           <ImageContainer>
@@ -42,7 +42,7 @@ const Left = Styled.div`
   float: left;
 `
 const Container = Styled(Left)`
-  margin-left: 50%;
+  margin-left: ${({margin})=>margin};
   width: 235px;
   height: 46px;
 `
