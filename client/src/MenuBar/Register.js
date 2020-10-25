@@ -18,6 +18,14 @@ function Register() {
     // Register Modal Setting
     const openRegisterModal = (e) => {
         e.preventDefault();
+        const payload = {
+            login: false,
+            postcode: false,
+            updateUser: false,
+            deleteUser: false,
+            funding: false
+        }
+        
         if(register === '회원가입'){
             setRegisterModalState(true);
         }
@@ -148,7 +156,6 @@ export default Register;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Container = Styled.div`
     float: left;
-    width: 75px;
 `
 const LinkModal = Styled.a`
     color: #A3A3A3;
@@ -227,8 +234,8 @@ const InputSubmit = Styled(Input)`
 `
 const RegisterModalStyle = {
     overlay: {
-        backgroundColor: 'rgba(140,140,140,0.9)',
-        zIndex: 1            
+        backgroundColor: 'rgba(140,140,140,0.0)',
+        zIndex: 99            
     },
     content: {
         position: "absolute",

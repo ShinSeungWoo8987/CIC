@@ -69,8 +69,9 @@ const Left = Styled.div`
     float: left;
 `
 const Container = Styled(Left)`
+cursor: pointer;
     width: 300px;
-    height: 390px;
+    height: 370px;
     border: 1px solid lightgrey;
     border-radius: 10px;
     margin: 0 0 40px 50px;
@@ -125,7 +126,7 @@ const DDayText = Styled(Dday)`
 `
 const Title = Styled(Left)`
     width: 90%;
-    height: 75px;
+    height: 55px;
     font-size: 17.5px;
     font-weight: bold;
     margin: 10px 0 5px 5%;

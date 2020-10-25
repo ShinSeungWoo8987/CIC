@@ -42,7 +42,7 @@ const Container = Styled.div`
     position: fixed;
     width: 1248px;
     padding: 10px 0;
-    background-color: white;
+    background-color: #F9F9F9;
     opacity: 0.8;
 `
 const Text = Styled.span`

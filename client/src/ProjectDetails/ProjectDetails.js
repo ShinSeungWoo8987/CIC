@@ -22,10 +22,10 @@ const Left = Styled.div`
 `
 const Container = Styled(Left)`
     width: 1665px;
-    margin: 0 0 0 12.5%;
+    margin: 0 0 0 0;
 `
 const LeftSide = Styled(Left)`
-    width: 75%;
+    width: 74%;
 `
 const RightSide = Styled(Left)`
     width: 24.5%;

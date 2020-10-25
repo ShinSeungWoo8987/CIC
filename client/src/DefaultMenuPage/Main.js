@@ -124,11 +124,25 @@ function Main() {
             mainPageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
         }
     }
+    let _category = '전체';
+    let _period = '전체기간';
+    
+    if(globalState.main==='all') _category='전체';
+    if(globalState.main==='tech') _category='테크·가전';
+    if(globalState.main==='travel') _category='여행·레저';
+    if(globalState.main==='fasion') _category='패션·잡화';
+
+    if(globalState.sub==='all') _period='전체기간';
+    if(globalState.sub==='new') _period='신규';
+    if(globalState.sub==='closeSoon') _period='마감임박';
+    if(globalState.sub==='close') _period='마감';
+
     return(
         <Container>
             <Menu>
                 {menu}   
             </Menu><br/>
+            <Navigation>{_category}&nbsp;>&nbsp;{_period}</Navigation>
             <SubContainer>
                 <LeftSide>
                     <Image src={buttonImg+'LeftMainButton.png'} onClick={(e)=>moveMainPage(e, 'left')}></Image>
@@ -154,7 +168,14 @@ const Container = Styled(Left)`
 `
 const Menu = Styled.div`
     display: inline-block;
-    margin:  10px 0;
+    margin:  20px 0;
+`
+const Navigation = Styled.div`
+font-size: 15px;
+color: #777777;
+margin-left: 150px;
+margin-bottom: 6px;
+text-align: left;
 `
 const MenuContainer = Styled(Left)`
     padding: 0 25px;
@@ -168,8 +189,8 @@ const SelectMenuContainer = Styled(MenuContainer)`
     text-shadow: 1px 1px 2px gray;
 `
 const TextContainer = Styled(Left)`
-    height: 40px;
-    line-height: 40px;
+    height: 14px;
+    line-height: 14px;
 `
 const Text = Styled.div`
     font-size: 17.5px;
