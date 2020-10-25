@@ -52,7 +52,7 @@ export default More;
 
 const Container = styled.div`
   float: left;
-  margin-left: 2%;
+  margin-left: 3%;
   height: 46px;
   font-size: 16px;
   line-height: 46px;

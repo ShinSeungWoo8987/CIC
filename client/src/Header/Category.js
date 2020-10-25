@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Store from '../Store/Store';
 
 function Category(props) {
-    const [showMore, setShowMore] = useState(false)
+    const [showMore, setShowMore] = useState(false);
     const {globalStateDispatch, searchProjectDispatch, mainPageCntDispatch} = useContext(Store);
     const handleClick = e=>{
         e.preventDefault();

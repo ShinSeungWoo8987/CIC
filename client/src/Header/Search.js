@@ -42,7 +42,7 @@ const Left = Styled.div`
   float: left;
 `
 const Container = Styled(Left)`
-  margin-left: 53%;
+  margin-left: 50%;
   width: 235px;
   height: 46px;
 `

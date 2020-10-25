@@ -14,7 +14,7 @@ const sessionReducer = (state, { type, payload }) => {
 }
 
 const _globalState = {
-    main: 'event',
+    main: 'all',
     sub: 'all',
     action: '',
 

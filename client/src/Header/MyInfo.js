@@ -9,7 +9,7 @@ function MyInfo(props) {
         e.preventDefault();
         setShowMore(!showMore);
     }
-    const [menu, setMenu] = useState([{id: '', title: ''}]);
+    const [moreList, setMoreList] = useState([{id: '', title: ''}]);
     const common = [
         {id: 'updateUser', title: '정보수정'},
         {id: 'fundingList', title: '펀딩목록'},
@@ -33,16 +33,16 @@ function MyInfo(props) {
         // Login User Grade Setting
         switch(session.authority){
             default:
-                setMenu([]);
+                setMoreList([]);
                 break;
             case(0):
-                setMenu(common);
+                setMoreList(common);
                 break;
             case(1):
-                setMenu(creator);
+                setMoreList(creator);
                 break;
             case(2):
-                setMenu(admin);
+                setMoreList(admin);
                 break;
         }
     },[session]);
@@ -78,12 +78,12 @@ function MyInfo(props) {
     return (
         <Container>
             {!showMore?
-            <A onClick={e=>handleClick(e)}>내정보</A>
+            <A onClick={e=>handleClick(e)}>더보기</A>
             :
             <>
                 <A onClick={e=>handleClick(e)}>내정보</A>
                 <Ul>
-                    {menu.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeState(e)}><A>{i.title}</A></Li> )}
+                    {moreList.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeState(e)}><A>{i.title}</A></Li> )}
                 </Ul>
             </>
             }
@@ -95,7 +95,7 @@ export default MyInfo;
 
 const Container = styled.div`
   float: left;
-  margin-left: 2%;
+  margin-left: 3%;
   height: 46px;
   font-size: 16px;
   line-height: 46px;
