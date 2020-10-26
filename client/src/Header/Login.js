@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import Styled from "styled-components"; // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import Store from '../Store/Store';
@@ -9,6 +9,7 @@ Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속
 
 function Login() {
     const { session, sessionDispatch, modalState, modalStateDispatch } = useContext(Store);
+    const [idRef, pwRef] = [useRef(), useRef()];
     const [LoginMessage, setLoginMessage] = useState('');
 
     // GlobalState 값도 나중에 새로고침했을 때 유지시켜야 됨
@@ -26,12 +27,13 @@ function Login() {
     // Login Submit
     const onLoginSubmit = (e) => {
         e.preventDefault();
-        const id = e.target.id.value;
-        const pw = e.target.pw.value;
+        const id = idRef.current.value;
+        const pw = pwRef.current.value;
         // Restricted Character
         const restirctedCharacterList = [" ", "=", "'", "\""]
         var idx = 0;
         while(idx<restirctedCharacterList.length){
+            //여기 Ref에 맞게 바꿔주어야 함.
             // 아이디 또는 비밀번호 입력값에 제한된 문자 리스트의 목록이 없는 경우 -1 반환
             if(id.indexOf(restirctedCharacterList[idx]) !== -1 || pw.indexOf(restirctedCharacterList[idx]) !== -1){
                 setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
@@ -85,18 +87,18 @@ function Login() {
                 onRequestClose={(e) => closeLoginModal()}
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
-                <Form onSubmit={(e)=>onLoginSubmit(e)}>
-                    <InputId id='id' type='text' placeholder="아이디" required/><br/>
-                    <InputPw id='pw' type='password' placeholder="비밀번호" required/><br/>
-                    <SpanText>{LoginMessage}</SpanText><br/>
-                    <InputSubmit type="submit" value="로그인"/>
-                    <Find>
-                        <A><Register/></A>
-                        <Blank>|</Blank>
-                        <A>아이디 찾기</A>
-                        <Blank>|</Blank>
-                        <A>비밀번호 찾기</A><br/>
-                    </Find>
+                <Form>
+                <InputId ref={idRef} type='text' placeholder="아이디" required/><br/>
+                <InputPw ref={pwRef} type='password' placeholder="비밀번호" required/><br/>
+                <SpanText>{LoginMessage}</SpanText><br/>
+                <InputSubmit  onClick={(e)=>onLoginSubmit(e)}>로그인</InputSubmit>
+                <Find>
+                    <A><Register/></A>
+                    <Blank>|</Blank>
+                    <A>아이디 찾기</A>
+                    <Blank>|</Blank>
+                    <A>비밀번호 찾기</A><br/>
+                </Find>
                 </Form>
             </Modal>
         </Container>
@@ -118,7 +120,7 @@ const LinkModal = Styled.a`
         font-weight: bold;
     }
 `
-const Form = Styled.form`
+const Form = Styled.div`
     padding: 25px 0 0 0;
 `
 const Input = Styled.input`
@@ -143,7 +145,12 @@ const SpanText = Styled.span`
     font-size: 5px;
     color: red;
 `
-const InputSubmit = Styled(Input)`
+const InputSubmit = Styled.button`
+    position: relative;
+    left: 14%;
+    height: 50px;
+    border-radius: 10px;
+    border: 1px solid #E0E0E0;
     width: 306px;  
     font-size: 20px;
     font-weight: bold;

@@ -26,7 +26,7 @@ function MainView() {
     if(globalState.main==='addProject'){
         return <AddProject/>;
     }
-    if(globalState.main==='addEvent' || globalState.main==='addNotice' || globalState.main==='addServiceCenter'){
+    if(globalState.main==='addEvent' || globalState.main==='addNotice' || globalState.main==='addCenter'){
         return <AddBoard/>;
     }
     if(globalState.main==='event'){

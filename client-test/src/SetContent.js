@@ -3,7 +3,7 @@ import UploadImage from './UploadImage';
 import TextEditor from './TextEditor';
 import { put, post } from 'axios'
 import Store from './store/store';
-import  parse  from  'html-react-parser'
+import parse from  'html-react-parser';
 
 function SetContent(props) {
     const { info, infoDispatch, pageDispatch, content, contentDispatch } = useContext(Store);

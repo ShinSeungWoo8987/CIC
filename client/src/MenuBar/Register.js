@@ -26,6 +26,7 @@ function Register() {
             funding: false
         }
         
+        
         if(register === '회원가입'){
             setRegisterModalState(true);
         }
@@ -51,7 +52,7 @@ function Register() {
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     };
     // Register Submit
-    const onSubmit = (e) => {
+    const handelRegisterSubmit = (e) => {
         e.preventDefault();
         const {id,pw1,pw2,name,birth,phone,postcode,address1,address2} = e.target;
         if(pw1.value !== pw2.value){
@@ -127,7 +128,7 @@ function Register() {
                 onRequestClose={(e) => closeRegisterModal(e)}
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
-                <Form onSubmit={(e)=>onSubmit(e)}>
+                <Form onSubmit={(e)=>handelRegisterSubmit(e)}>
                     {/* RealTime Id Valid Check */}
                     {/* <InputId id='id' type='text' placeholder="아이디" required pattern="[A-Za-z0-9]{3,12}" onChange={(e)=>checkId(e)}/><br/> */}
                     {/* Lost Focus, Id Valid Check */}
@@ -235,7 +236,7 @@ const InputSubmit = Styled(Input)`
 const RegisterModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.0)',
-        zIndex: 99            
+        zIndex: 98            
     },
     content: {
         position: "absolute",

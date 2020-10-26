@@ -3,16 +3,19 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import CKeditor from '@ckeditor/ckeditor5-react';
 import Store from '../Store/Store';
 import {put} from 'axios';
+import parse from  'html-react-parser';
 
 function AddBoardForm(props) {
     const {globalState} = useContext(Store);
     const [data, setData] = useState();
+    const [_content, set_Content] = useState();
     const [titleRef, thumbnailRef, imageRef] = [useRef(),useRef(),useRef(),useRef()];
     const handleCKeditorState = (event, editor) => {
         const _data = editor.getData();
+        console.log(_data);
         setData(_data);
+        set_Content(parse (_data));
     }
-
     const onSubmit = (e) => {
         e.preventDefault();
 
@@ -44,7 +47,7 @@ function AddBoardForm(props) {
         } else {
             let url = '';
             if(globalState.main==='addNotice') url='/notice/add'
-            if(globalState.main==='addServiceCenter') url='/service_center/add'
+            if(globalState.main==='addCenter') url='/service_center/add'
             
             const sendContent = {
                 title: titleRef.current.value,
@@ -84,6 +87,7 @@ function AddBoardForm(props) {
                 }}
             />
             <button type="submit">Upload</button>
+            {_content}
         </form>
     );
 }

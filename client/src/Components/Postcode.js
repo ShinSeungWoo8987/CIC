@@ -5,13 +5,16 @@ import Store from '../Store/Store';
 
 function Postcode() {
     const { addressValueDispatch, modalState, modalStateDispatch } = useContext(Store);
+    const newModalState = {
+        login: true,
+        postcode: false,
+        updateUser: false,
+        deleteUser: false,
+        funding: false
+    }
     // Postcode Modal Setting
     const closePostcodeModal = (e) => {
         e.preventDefault();
-        const newModalState = {
-            postcode: false,
-            updateUser: modalState.updateUser
-        }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     }
     // Postcode & Address Value Setting
@@ -21,10 +24,6 @@ function Postcode() {
             address1: data.address
         }
         addressValueDispatch({type: 'CHANGE_ADDRESS', payload: newAddressValue});
-        const newModalState = {
-            postcode: false,
-            updateUser: modalState.updateUser
-        }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     };
     return(
@@ -44,8 +43,8 @@ export default Postcode;
 
 const PostcodeModalStyle = {
     overlay: {
-        backgroundColor: 'rgba(140,140,140,0.9)',
-        zIndex: 2          
+        backgroundColor: 'rgba(140,140,140,0)',
+        zIndex: 99
     },
     content: {
         position: "absolute",

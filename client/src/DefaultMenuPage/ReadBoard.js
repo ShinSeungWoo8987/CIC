@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
 import BoardItem from './BoardItem';
+import {get} from 'axios';
 
-function Event() {
+function ReadBoard() {
     const { globalState, globalStateDispatch } = useContext(Store);
     
     let selected = '';
@@ -53,6 +54,26 @@ function Event() {
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }
+    let _main = 'Event';
+    if(globalState.main==='notice') _main = 'Notice'
+    if(globalState.main==='center') _main = 'Center'
+    
+    const writeBoard = (e)=>{
+        e.preventDefault();
+        globalStateDispatch({type:'GLOBAL', payload: {
+            main: `add${_main}`,
+            sub: 'all',
+            action: ''
+        }})
+    }
+    const deleteBoard = (e)=>{
+        e.preventDefault();
+        globalStateDispatch({type:'GLOBAL', payload: {
+            main: `delete${_main}`,
+            sub: 'all',
+            action: ''
+        }})
+    }
 
     return(
         <Container>
@@ -67,6 +88,10 @@ function Event() {
                     {_boardItem}
                 </List>
                 <Search>
+                    <EditBoard>
+                        <button onClick={e=>writeBoard(e)}>글작성</button>
+                        <button onClick={e=>deleteBoard(e)}>삭제</button>
+                    </EditBoard>
                     <SearchDiv>
                         <SearchInput type="text" placeholder="검색어 입력"/>
                         <SearchButton>검색</SearchButton>
@@ -78,7 +103,7 @@ function Event() {
         </Container>
     );
 }
-export default Event;
+export default ReadBoard;
 
 const Left = Styled.div`
     float: left;
@@ -138,6 +163,10 @@ margin: 15px auto 0 auto;
 width: 100%;
 height: 100px;
 text-align: center;
+`
+const EditBoard = styled.div`
+text-align: right;
+width: 100%;
 `
 const SearchDiv = styled.div`
 margin: 0 auto;
