@@ -1,22 +1,34 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import Store from '../Store/Store';
-import { post } from 'axios';
+import { get, post } from 'axios';
 import PercentBar from '../Components/PercentBar'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 /*
-    CurrentStateContainer - Value, Text Marign 변경 필요 
-*/
+    배송지 관련 신규/기존 구분해야 할 듯
+*/ 
 
 function Funding() {
     const { addressValue, addressValueDispatch, modalState, modalStateDispatch, projectInformation } = useContext(Store);
+    const [ userInformation, setUserInformation] = useState('');
     const dDayText = projectInformation.dDay==='마감'?'':'일';
     // Get User Information
     useEffect(() => {
-        console.log("펀딩신청 기능구현 필요");
+        const url = '/member'
+        get(url).then(res=>{
+            console.log(res.data);
+            setUserInformation({
+                id: res.data[0],
+                name: res.data[1],
+                phone: res.data[2],
+                postcode: res.data[3],
+                address1: res.data[4],
+                address2: res.data[5]
+            })
+        })
     }, [  ]);
     // Funding Modal Setting
     const closeModal = (e) => {
@@ -78,8 +90,8 @@ function Funding() {
                     </CurrentStateContainer>
                     <DeliveryAddressContainer>
                         <SubTitle>배송지 정보</SubTitle><br/>
-                        <InputText id='name' type='text' placeholder="이름" required/>
-                        <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
+                        <InputText id='name' type='text' placeholder="이름" value={userInformation.id} required/>
+                        <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" value={userInformation.phone} pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"/><br/>
                         <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} required readOnly/>
                         <BtnPostcode type='submit' value='우편번호 검색' onClick={(e)=>openPostcodeModal(e)}/><br/>
                         <InputText id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} required readOnly/><br/>

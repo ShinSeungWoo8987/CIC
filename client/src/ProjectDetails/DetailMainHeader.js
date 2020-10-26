@@ -15,6 +15,7 @@ function DetailMainHeader(props) {
     }
     let header = [];
 
+    // 가운데 정렬 기준을 바꿔야할 것 같다
     if(globalState.sub === 'introduction') header = [
             <SelectText key={1} >소개</SelectText>,
             <Text key={2} id='recentlyNews' onClick={(e)=>handleClick(e)}>최근 소식</Text>,

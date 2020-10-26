@@ -110,7 +110,6 @@ function Main() {
           }
           searchProjectDispatch({type:'SEARCH', payload:newSearchProject});
     }
-    // 페이징 관련 문제 해결할 것 - 8개를 기준으로 작성해두었으나 마지막8개만 있는 경우 다음페이지로 이동
     const moveMainPage = (e, direction) => {
         e.preventDefault();
         if(direction==='left' && mainPageCnt.value>1){
@@ -133,9 +132,9 @@ function Main() {
     if(globalState.main==='tech') _category='테크·가전';
     if(globalState.main==='travel') _category='여행·레저';
     if(globalState.main==='fasion') _category='패션·잡화';
-    if(globalState.main==='fundingList') _category=`내정보 > 펀딩목록`;
+    if(globalState.main==='fundingList') _category=`내정보 > 펀딩목록`; // 분리 할 예정
 
-    if(globalState.sub==='all') _period='전체기간';
+    if(globalState.sub==='all') _period='전체';
     if(globalState.sub==='new') _period='신규';
     if(globalState.sub==='closeSoon') _period='마감임박';
     if(globalState.sub==='close') _period='마감';
@@ -146,7 +145,7 @@ function Main() {
             <Menu>
                 {menu}   
             </Menu><br/>
-            <Navigation>{_category}&nbsp;>&nbsp;{_period}</Navigation>
+            <Navigation>{_category}&nbsp;&gt;&nbsp;{_period}</Navigation>
             <SubContainer>
                 <LeftSide>
                     <Image src={buttonImg+'LeftMainButton.png'} onClick={(e)=>moveMainPage(e, 'left')}></Image>

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.CIC.server.model.GetProject;
+import com.CIC.server.model.JwtRequest;
+import com.CIC.server.model.Member;
 import com.CIC.server.model.Project;
 import com.CIC.server.model.SearchProject;
 import com.CIC.server.service.CICService;

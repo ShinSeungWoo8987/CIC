@@ -7,6 +7,10 @@ import Postcode from '../Components/Postcode';
 import UpdateUser from '../MenuBar/UpdateUser';
 import DeleteUser from '../MenuBar/DeleteUser';
 
+/*
+    fixed 둘다 줘야 하는거 아닌가?
+*/
+
 function Head(props) {
     const { session, globalState, modalStateDispatch, globalStateDispatch, searchProjectDispatch, mainPageCntDispatch } = useContext(Store);
     const [showMore, setShowMore] = useState(false);
@@ -135,7 +139,7 @@ function Head(props) {
                 <UlCenter>
                     {myInfoList.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeState(e)}><A>{i.title}</A></Li> )}
                 </UlCenter>}
-                <UlRight margin={session.state?"212px":"118px"}>
+                <UlRight margin={session.state?"208px":"113px"}>
                     {moreList.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeDefaultMenuState(e)}><A>{i.title}</A></Li> )}
                 </UlRight>
             </>
@@ -162,13 +166,13 @@ function Head(props) {
 export default Head;
 
 const Container = styled.div`
-    margin: 4px 0;
     font-size: 26px;
     font-weight: bold;
 `
 const Logo = styled.div`
     float: left;
     cursor: pointer;
+    margin: 4px 0 0 0;
 `
 
 const Category = styled.div`
@@ -192,14 +196,16 @@ z-index: 2;
 position: fixed;
 margin-top: 0px;
 margin-left: -378px;
-padding: 10px 0 26px 384px;
+padding: 10px 0 26px 378px;
 text-align: left;
 width: 100%;
+height: 150px;
+box-shadow: 0px 5px 5px lightgrey;
 `
 const UlCenter = styled.ul`
 font-size: 14px;
-background-color: white;
-margin: 0px 0 0 116px;
+// background-color: white; 굳이 ? 색깔을 넣어야 하는것인가?
+margin: 0px 0 0 112px;
 padding: 10px 0 26px 0;
 list-style-type : none;
 z-index: 4;
