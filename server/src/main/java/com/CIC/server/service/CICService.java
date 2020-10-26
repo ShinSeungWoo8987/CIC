@@ -26,4 +26,14 @@ public interface CICService {
 	void addNotice(Notice notice);
 	void addServiceCenter(ServiceCenter serviceCenter);
 	
+	String getNoticeCnt();
+	List<Notice> getNoticeList();
+	
+	String getEventCnt();
+	List<Event> getEventList();
+	
+	String getServiceCenterCnt();
+	List<ServiceCenter> getServiceCenterList();
+	
+	
 }

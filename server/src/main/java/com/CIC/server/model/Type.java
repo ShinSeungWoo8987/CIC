@@ -10,5 +10,4 @@ import lombok.Data;
 public class Type {
 	private int typ_number;
 	private String typ_name;
-	private String typ_logo;
 }

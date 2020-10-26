@@ -96,7 +96,9 @@ function Main() {
         e.preventDefault();
         const newGlobalState = {
             main: globalState.main,
-            sub: e.currentTarget.id
+            sub: e.currentTarget.id,
+            action: 1,
+            num:0
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         const newMainPageCnt = {

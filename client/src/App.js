@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { createGlobalStyle } from "styled-components"; // styled-components 라이브러리를 사용하기 위해 선언
 import ClientStore from './Store/ClientStore';
 import Head from './Header/Head';
-import View from './Main/View';
+import View from './View/View';
 
 function App() {
     return (

@@ -29,6 +29,8 @@ function Item(props){
         const newGlobalState = {
             main: e.currentTarget.id,
             sub: 'introduction',
+            action: 1,
+            num:0
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }

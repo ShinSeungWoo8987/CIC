@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
@@ -6,7 +6,22 @@ import BoardItem from './BoardItem';
 import {get} from 'axios';
 
 function ReadBoard() {
-    const { globalState, globalStateDispatch } = useContext(Store);
+    const { globalState, globalStateDispatch, boardItemList, boardItemListDispatch } = useContext(Store);
+    const [itemCnt, setItemCnt] = useState(1);
+    useEffect(()=>{
+        get(`http://localhost:5000/${globalState.main}Cnt`)
+            .then( ({data}) => {
+                console.log(data);
+                setItemCnt( parseInt( Number(data)/7 )+1 );
+            })
+            .catch(err=>console.log(err));
+
+        get(`http://localhost:5000/${globalState.main}list/${globalState.action}`)
+            .then( ({data}) => {
+                boardItemListDispatch( {type:'CHANGE', payload:data.slice(0, 7)} );
+            })
+            .catch(err=>console.log(err));
+    },[globalState]);
     
     let selected = '';
     let navItem = [
@@ -33,24 +48,20 @@ function ReadBoard() {
             <LineSection key='3' id='center'>&nbsp;고객센터&nbsp;</LineSection>
         ]
     }
-    
-    const boardItemList = [
-        {title: 'Title', name: 'Creator', date: '2020.09.18'},
-        {title: 'Title', name: '관리자', date: '2020.09.20'},
-        {title: 'Title', name: '내가내다', date: '2020.10.20'},
-        {title: 'Title', name: '신승우', date: '2020.11.20'},
-        {title: 'Title', name: '신승우', date: '2020.11.20'},
-        {title: 'Title', name: '신승우', date: '2020.11.20'},
-        {title: 'Title', name: '신승우', date: '2020.11.20'}
-    ]
-    const _boardItem = boardItemList.map( ({title,name,date}, idx)=>{
-        return <BoardItem key={idx} title={title} name={name} date={date} />;
-    });
+
+    let _boardItem = '';
+    if(boardItemList){
+        if(globalState.main==='event') _boardItem = boardItemList.map( ({eve_NUMBER,eve_THUMBNAIL, eve_TITLE,mem_ID,eve_REGISTER}, idx)=><BoardItem key={idx} id={eve_NUMBER} image={eve_THUMBNAIL} title={eve_TITLE} name={mem_ID} date={eve_REGISTER} />);
+        if(globalState.main==='notice') _boardItem = boardItemList.map( ({not_NUMBER,image,not_TITLE,mem_ID,not_REGISTER}, idx)=><BoardItem key={idx} id={not_NUMBER} image={image} title={not_TITLE} name={mem_ID} date={not_REGISTER} />);
+        if(globalState.main==='center') _boardItem = boardItemList.map( ({ser_NUMBER,image,ser_TITLE,mem_ID,ser_REGISTER}, idx)=><BoardItem key={idx} id={ser_NUMBER} image={image} title={ser_TITLE} name={mem_ID} date={ser_REGISTER} />);
+    }
     const changeGlobalState = e=>{
         e.preventDefault();
         const newGlobalState = {
             main: e.target.id,
             sub: 'all',
+            action: 1,
+            num:0
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }
@@ -63,7 +74,8 @@ function ReadBoard() {
         globalStateDispatch({type:'GLOBAL', payload: {
             main: `add${_main}`,
             sub: 'all',
-            action: ''
+            action: 1,
+            num: 0
         }})
     }
     const deleteBoard = (e)=>{
@@ -71,8 +83,27 @@ function ReadBoard() {
         globalStateDispatch({type:'GLOBAL', payload: {
             main: `delete${_main}`,
             sub: 'all',
-            action: ''
+            action: 1,
+            num: 0
         }})
+    }
+    const changePage = e=>{
+        e.preventDefault();
+        globalStateDispatch({type:'GLOBAL', payload: {
+            main: globalState.main,
+            sub: globalState.sub,
+            action: Number( e.target.pathname.split('/')[1] ),
+            num: globalState.num
+        }})
+    }
+    const setPaging = []
+    for(var k=1; k<=itemCnt; k++){
+        if(globalState.action===k) setPaging.push(
+            <SelectedA href={k} onClick={e=>e.preventDefault()}> [{k}] </SelectedA>
+        );
+        else setPaging.push(
+            <A href={k} onClick={e=>changePage(e)}> [{k}] </A>
+        );
     }
 
     return(
@@ -97,7 +128,7 @@ function ReadBoard() {
                         <SearchButton>검색</SearchButton>
                     </SearchDiv>
                     <br/>
-                    [이전] [1] [2] [3] [4] [다음]
+                    {setPaging}
                 </Search>
             </Center>
         </Container>
@@ -196,4 +227,9 @@ color: white;
 font-size: 16px;
 font-weight: bold;
 background-color: #A6A6A6;
+`
+const A = styled.a`
+`
+const SelectedA = styled.a`
+    font-weight: bold;
 `

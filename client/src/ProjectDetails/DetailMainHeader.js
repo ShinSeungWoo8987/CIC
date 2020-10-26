@@ -7,7 +7,9 @@ function DetailMainHeader(props) {
     const handleClick = (e)=>{
         const newGlobalState = {
             main: globalState.main,
-            sub: e.target.id
+            sub: e.target.id,
+            action: 1,
+            num: 0
         }
         globalStateDispatch({type:'GLOBAL', payload: newGlobalState});
     }

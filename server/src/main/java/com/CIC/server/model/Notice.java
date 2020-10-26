@@ -8,9 +8,9 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class Notice {
-	private String MEM_ID;
 	private int NOT_NUMBER;
 	private String NOT_TITLE;
     private String NOT_DESCRIPTION;
     private String NOT_REGISTER;
+    private String MEM_ID;
 }

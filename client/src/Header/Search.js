@@ -20,7 +20,9 @@ function Search() {
       searchProjectDispatch({type:'SEARCH', payload:newSearchProject});
       const newGlobalState = {
         main: globalState.main,
-        sub: 'all'
+        sub: 'all',
+        action: 1,
+        num:0
       }
       globalStateDispatch({type: 'GLOBAL', payload: newGlobalState})
     }

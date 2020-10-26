@@ -70,7 +70,7 @@
 	
 	<select id="getTypeList" resultType="com.CIC.server.model.Type">
 		select * from TYPE
-	</select> 
+	</select>
 	
    <insert id="addProject" keyProperty="PRO_NUMBER">
        <selectKey keyProperty="PRO_NUMBER" resultType="int" order="BEFORE">
@@ -107,6 +107,30 @@
        INSERT INTO SERVICECENTER ( SER_NUMBER, SER_TITLE, SER_DESCRIPTION, MEM_ID )
        VALUES ( #{SER_NUMBER}, #{SER_TITLE}, #{SER_DESCRIPTION}, #{MEM_ID} )
    </insert>
+   
+   <select id="getNoticeCnt" resultType="String">
+		SELECT count(*) FROM NOTICE
+   </select>
+	
+   <select id="getNoticeList" resultType="com.CIC.server.model.Notice">
+		SELECT * FROM Notice order by NOT_NUMBER desc
+   </select>
+   
+   <select id="getEventCnt" resultType="String">
+		SELECT count(*) FROM Event
+   </select>
+	
+   <select id="getEventList" resultType="com.CIC.server.model.Event">
+		SELECT * FROM Event order by EVE_NUMBER desc
+   </select>
+   
+   <select id="getServiceCenterCnt" resultType="String">
+		SELECT count(*) FROM ServiceCenter
+   </select>
+	
+   <select id="getServiceCenterList" resultType="com.CIC.server.model.ServiceCenter">
+		SELECT * FROM ServiceCenter order by SER_NUMBER desc
+   </select>
 
    
    

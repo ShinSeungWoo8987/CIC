@@ -16,7 +16,8 @@ const sessionReducer = (state, { type, payload }) => {
 const _globalState = {
     main: 'notice',
     sub: 'all',
-    action: '',
+    action: 1,
+    num: 0
 }
 const globalStateReducer = (state, {type, payload}) => {
     switch (type) {
@@ -147,9 +148,17 @@ const contentReducer = (state, { type, payload }) => {
             return payload;
     }
 }
+const boardItemListReducer = (state, {type, payload})=>{
+    switch (type) {
+        default:
+            return _content;
+        case 'CHANGE':
+            return payload;
+    }
+}
 
 export {
     _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _searchProject, searchProjectReducer,
     _mainPageCnt, mainPageCntReducer, _projectInformation, projectInformationReducer,
-    _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer
+    _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer, boardItemListReducer
 };

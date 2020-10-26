@@ -8,10 +8,10 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class ServiceCenter {
-	private String MEM_ID;
 	private int SER_NUMBER;
 	private String SER_TITLE;
     private String SER_DESCRIPTION;
     private String SER_SOLUTION;
     private String SER_REGISTER;
+    private String MEM_ID;
 }

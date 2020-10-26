@@ -68,4 +68,32 @@ public class CICServiceImpl implements CICService {
 	public void addServiceCenter(ServiceCenter serviceCenter) {
 		this.cicMapper.addServiceCenter(serviceCenter);
 	}
+	
+	@Override
+	public List<Notice> getNoticeList() {
+		return this.cicMapper.getNoticeList();
+	}
+	
+	@Override
+	public String getNoticeCnt() {
+		return this.cicMapper.getNoticeCnt();
+	}
+	
+	@Override
+	public String getEventCnt() {
+		return this.cicMapper.getEventCnt();
+	}
+	@Override
+	public List<Event> getEventList() {
+		return this.cicMapper.getEventList();
+	}
+	@Override
+	public String getServiceCenterCnt() {
+		return this.cicMapper.getServiceCenterCnt();
+	}
+	@Override
+	public List<ServiceCenter> getServiceCenterList() {
+		return this.cicMapper.getServiceCenterList();
+	}
+	
 }

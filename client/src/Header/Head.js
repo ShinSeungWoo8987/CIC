@@ -71,7 +71,9 @@ function Head(props) {
         setShowMore(!showMore);
         const newGlobalState = {
             main: e.currentTarget.id,
-            sub: 'all'
+            sub: 'all',
+            action: 1,
+            num:0
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         // 왼쪽의 메인 메뉴 클릭 시 검색값 초기화 - 이 부분은 추후 결정할 것
@@ -91,7 +93,9 @@ function Head(props) {
         if(e.currentTarget.id === 'fundingList'){
             const newGlobalState = {
                 main: e.currentTarget.id,
-                sub: 'continue'
+                sub: 'continue',
+                action: 1,
+            num:0
             }
             globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         }else if(e.currentTarget.id === 'updateUser'){
@@ -107,7 +111,9 @@ function Head(props) {
         }else{
             const newGlobalState = {
                 main: e.currentTarget.id,
-                sub: globalState.sub
+                sub: globalState.sub,
+                action: 1,
+                num:0
             }
             globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         }

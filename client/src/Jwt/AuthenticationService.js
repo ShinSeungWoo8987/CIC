@@ -24,7 +24,7 @@ const executeJwtAuthenticationService = (username, password)=>{
 
 const executeHelloService = ()=> {
     console.log("===executeHelloService===")
-    return axios.get('http://localhost:5000/hello');        
+    return axios.get('http://localhost:5000/hello');
 }
 
 const registerSuccessfulLoginForJwt = (authority, token)=>{

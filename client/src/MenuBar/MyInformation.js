@@ -78,7 +78,9 @@ function MyInformation() {
         if(e.currentTarget.id === 'fundingList'){
             const newGlobalState = {
                 main: e.currentTarget.id,
-                sub: 'continue'
+                sub: 'continue',
+                action: 1,
+                num: 0
             }
             globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         }else if(e.currentTarget.id === 'updateUser'){
@@ -94,7 +96,9 @@ function MyInformation() {
         }else{
             const newGlobalState = {
                 main: e.currentTarget.id,
-                sub: globalState.sub
+                sub: globalState.sub,
+                action: 1,
+                num: 0
             }
             globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         }

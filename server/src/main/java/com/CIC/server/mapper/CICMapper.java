@@ -28,4 +28,14 @@ public interface CICMapper {
 	public void addEvent(Event event);
 	public void addNotice(Notice notice);
 	public void addServiceCenter(ServiceCenter serviceCenter);
+	
+	public String getNoticeCnt();
+	public List<Notice> getNoticeList();
+	
+	public String getEventCnt();
+	public List<Event> getEventList();
+	
+	public String getServiceCenterCnt();
+	public List<ServiceCenter> getServiceCenterList();
+	
 }
