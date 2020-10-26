@@ -3,6 +3,7 @@ import UploadImage from './UploadImage';
 import TextEditor from './TextEditor';
 import { put, post } from 'axios'
 import Store from './store/store';
+import  parse  from  'html-react-parser'
 
 function SetContent(props) {
     const { info, infoDispatch, pageDispatch, content, contentDispatch } = useContext(Store);
@@ -62,6 +63,12 @@ function SetContent(props) {
                 }).catch((err) => console.log(err));
         });
     }
+    let _content = []
+    content.map( (i,idx)=>{
+        if(idx%2===0){
+            _content.push( parse (i.content) );
+        }
+    })
     return (
         <>
             <form onSubmit={e => onSubmit(e)}>
@@ -74,6 +81,7 @@ function SetContent(props) {
                 <button type="submit">Upload</button>
                 <button onClick={() => pageDispatch({ type: 'CHANGE_PAGE', payload: 'writeInfo' })}>이전</button>
             </form>
+            {_content}
         </>
     );
 }
