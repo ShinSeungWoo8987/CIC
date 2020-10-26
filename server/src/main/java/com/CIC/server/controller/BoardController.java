@@ -170,12 +170,6 @@ public class BoardController {
 		}
     }
 	
-//	@GetMapping("/eventlist/{eventNum}")
-//    public List<Type> getEventList(@PathVariable String eventNum) throws Exception {
-//		System.out.println(eventNum);
-//        // List<Type> list = this.cicService.getEventList();
-//        return list; 
-//    }
 	
 	@GetMapping("/noticeCnt")
     public String getNoticeCnt() throws Exception {

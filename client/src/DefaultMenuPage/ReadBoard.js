@@ -1,112 +1,119 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
+import Styled from "styled-components"
 import Store from '../Store/Store';
 import BoardItem from './BoardItem';
-import {get} from 'axios';
+import { get } from 'axios';
+import BoardDetails from './BoardDetails';
 
 function ReadBoard() {
     const { globalState, globalStateDispatch, boardItemList, boardItemListDispatch } = useContext(Store);
     const [itemCnt, setItemCnt] = useState(1);
-    useEffect(()=>{
+    useEffect(() => {
         get(`http://localhost:5000/${globalState.main}Cnt`)
-            .then( ({data}) => {
+            .then(({ data }) => {
                 console.log(data);
-                setItemCnt( parseInt( Number(data)/7 )+1 );
+                setItemCnt(parseInt(Number(data) / 7) + 1);
             })
-            .catch(err=>console.log(err));
+            .catch(err => console.log(err));
 
         get(`http://localhost:5000/${globalState.main}list/${globalState.action}`)
-            .then( ({data}) => {
-                boardItemListDispatch( {type:'CHANGE', payload:data.slice(0, 7)} );
+            .then(({ data }) => {
+                boardItemListDispatch({ type: 'CHANGE', payload: data.slice(0, 7) });
             })
-            .catch(err=>console.log(err));
-    },[globalState]);
-    
+            .catch(err => console.log(err));
+    }, [globalState]);
+
     let selected = '';
     let navItem = [
         <LineSection key='1' id='event'>&nbsp;&nbsp;이벤트&nbsp;&nbsp;</LineSection>,
-        <Section key='2' id='notice' onClick={e=>changeGlobalState(e)}>&nbsp;공지사항&nbsp;</Section>,
-        <Section key='3' id='center' onClick={e=>changeGlobalState(e)}>&nbsp;고객센터&nbsp;</Section>
+        <Section key='2' id='notice' onClick={e => changeGlobalState(e)}>&nbsp;공지사항&nbsp;</Section>,
+        <Section key='3' id='center' onClick={e => changeGlobalState(e)}>&nbsp;고객센터&nbsp;</Section>
     ]
-    if(globalState.main==='event') {
+    if (globalState.main === 'event') {
         selected = '이벤트';
     }
-    if(globalState.main==='notice') {
+    if (globalState.main === 'notice') {
         selected = '공지사항';
         navItem = [
-            <Section key='1' id='event' onClick={e=>changeGlobalState(e)}>&nbsp;&nbsp;이벤트&nbsp;&nbsp;</Section>,
+            <Section key='1' id='event' onClick={e => changeGlobalState(e)}>&nbsp;&nbsp;이벤트&nbsp;&nbsp;</Section>,
             <LineSection key='2' id='notice'>&nbsp;공지사항&nbsp;</LineSection>,
-            <Section key='3' id='center' onClick={e=>changeGlobalState(e)}>&nbsp;고객센터&nbsp;</Section>
+            <Section key='3' id='center' onClick={e => changeGlobalState(e)}>&nbsp;고객센터&nbsp;</Section>
         ]
     }
-    if(globalState.main==='center') {
+    if (globalState.main === 'center') {
         selected = '고객센터';
         navItem = [
-            <Section key='1' id='event' onClick={e=>changeGlobalState(e)}>&nbsp;&nbsp;이벤트&nbsp;&nbsp;</Section>,
-            <Section key='2' id='notice' onClick={e=>changeGlobalState(e)}>&nbsp;공지사항&nbsp;</Section>,
+            <Section key='1' id='event' onClick={e => changeGlobalState(e)}>&nbsp;&nbsp;이벤트&nbsp;&nbsp;</Section>,
+            <Section key='2' id='notice' onClick={e => changeGlobalState(e)}>&nbsp;공지사항&nbsp;</Section>,
             <LineSection key='3' id='center'>&nbsp;고객센터&nbsp;</LineSection>
         ]
     }
 
     let _boardItem = '';
-    if(boardItemList){
-        if(globalState.main==='event') _boardItem = boardItemList.map( ({eve_NUMBER,eve_THUMBNAIL, eve_TITLE,mem_ID,eve_REGISTER}, idx)=><BoardItem key={idx} id={eve_NUMBER} image={eve_THUMBNAIL} title={eve_TITLE} name={mem_ID} date={eve_REGISTER} />);
-        if(globalState.main==='notice') _boardItem = boardItemList.map( ({not_NUMBER,image,not_TITLE,mem_ID,not_REGISTER}, idx)=><BoardItem key={idx} id={not_NUMBER} image={image} title={not_TITLE} name={mem_ID} date={not_REGISTER} />);
-        if(globalState.main==='center') _boardItem = boardItemList.map( ({ser_NUMBER,image,ser_TITLE,mem_ID,ser_REGISTER}, idx)=><BoardItem key={idx} id={ser_NUMBER} image={image} title={ser_TITLE} name={mem_ID} date={ser_REGISTER} />);
+    if (boardItemList) {
+        if (globalState.main === 'event') _boardItem = boardItemList.map(({ eve_NUMBER, eve_THUMBNAIL, eve_TITLE, mem_ID, eve_REGISTER }, idx) => <BoardItem key={idx} id={eve_NUMBER} image={eve_THUMBNAIL} title={eve_TITLE} name={mem_ID} date={eve_REGISTER} />);
+        if (globalState.main === 'notice') _boardItem = boardItemList.map(({ not_NUMBER, image, not_TITLE, mem_ID, not_REGISTER }, idx) => <BoardItem key={idx} id={not_NUMBER} image={image} title={not_TITLE} name={mem_ID} date={not_REGISTER} />);
+        if (globalState.main === 'center') _boardItem = boardItemList.map(({ ser_NUMBER, image, ser_TITLE, mem_ID, ser_REGISTER }, idx) => <BoardItem key={idx} id={ser_NUMBER} image={image} title={ser_TITLE} name={mem_ID} date={ser_REGISTER} />);
     }
-    const changeGlobalState = e=>{
+    const changeGlobalState = e => {
         e.preventDefault();
         const newGlobalState = {
             main: e.target.id,
             sub: 'all',
             action: 1,
-            num:0
+            num: 0
         }
-        globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+        globalStateDispatch({ type: 'GLOBAL', payload: newGlobalState });
     }
     let _main = 'Event';
-    if(globalState.main==='notice') _main = 'Notice'
-    if(globalState.main==='center') _main = 'Center'
-    
-    const writeBoard = (e)=>{
+    if (globalState.main === 'notice') _main = 'Notice'
+    if (globalState.main === 'center') _main = 'Center'
+
+    const writeBoard = (e) => {
         e.preventDefault();
-        globalStateDispatch({type:'GLOBAL', payload: {
-            main: `add${_main}`,
-            sub: 'all',
-            action: 1,
-            num: 0
-        }})
+        globalStateDispatch({
+            type: 'GLOBAL', payload: {
+                main: `add${_main}`,
+                sub: 'all',
+                action: 1,
+                num: 0
+            }
+        })
     }
-    const deleteBoard = (e)=>{
+    const deleteBoard = (e) => {
         e.preventDefault();
-        globalStateDispatch({type:'GLOBAL', payload: {
-            main: `delete${_main}`,
-            sub: 'all',
-            action: 1,
-            num: 0
-        }})
+        globalStateDispatch({
+            type: 'GLOBAL', payload: {
+                main: `delete${_main}`,
+                sub: 'all',
+                action: 1,
+                num: 0
+            }
+        })
     }
-    const changePage = e=>{
+    const changePage = e => {
         e.preventDefault();
-        globalStateDispatch({type:'GLOBAL', payload: {
-            main: globalState.main,
-            sub: globalState.sub,
-            action: Number( e.target.pathname.split('/')[1] ),
-            num: globalState.num
-        }})
+        globalStateDispatch({
+            type: 'GLOBAL', payload: {
+                main: globalState.main,
+                sub: globalState.sub,
+                action: Number(e.target.pathname.split('/')[1]),
+                num: globalState.num
+            }
+        })
     }
     const setPaging = []
-    for(var k=1; k<=itemCnt; k++){
-        if(globalState.action===k) setPaging.push(
-            <SelectedA href={k} onClick={e=>e.preventDefault()}> [{k}] </SelectedA>
+    for (var k = 1; k <= itemCnt; k++) {
+        if (globalState.action === k) setPaging.push(
+            <SelectedA href={k} onClick={e => e.preventDefault()}> [{k}] </SelectedA>
         );
         else setPaging.push(
-            <A href={k} onClick={e=>changePage(e)}> [{k}] </A>
+            <A href={k} onClick={e => changePage(e)}> [{k}] </A>
         );
     }
 
-    return(
+    return (
         <Container>
             <Center>
                 <Nav>
@@ -115,21 +122,27 @@ function ReadBoard() {
                         {navItem}
                     </NavItem>
                 </Nav>
-                <List>
-                    {_boardItem}
-                </List>
-                <Search>
-                    <EditBoard>
-                        <button onClick={e=>writeBoard(e)}>글작성</button>
-                        <button onClick={e=>deleteBoard(e)}>삭제</button>
-                    </EditBoard>
-                    <SearchDiv>
-                        <SearchInput type="text" placeholder="검색어 입력"/>
-                        <SearchButton>검색</SearchButton>
-                    </SearchDiv>
-                    <br/>
-                    {setPaging}
-                </Search>
+                {globalState.sub === 'all' ?
+                    <>
+                        <List>
+                            {_boardItem}
+                        </List>
+                        <Search>
+                            <EditBoard>
+                                <button onClick={e => writeBoard(e)}>글작성</button>
+                                <button onClick={e => deleteBoard(e)}>삭제</button>
+                            </EditBoard>
+                            <SearchDiv>
+                                <SearchInput type="text" placeholder="검색어 입력" />
+                                <SearchButton>검색</SearchButton>
+                            </SearchDiv>
+                            <br />
+                            {setPaging}
+                        </Search>
+                    </>
+                    :<BoardDetails/>
+                }
+
             </Center>
         </Container>
     );

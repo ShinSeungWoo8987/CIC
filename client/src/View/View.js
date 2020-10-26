@@ -29,8 +29,7 @@ function MainView() {
         return <AddBoard/>;
     }
     if(globalState.main==='event' || globalState.main==='notice' || globalState.main==='center'){
-        if(globalState.sub==='all') return <ReadBoard/>;
-        if(globalState.sub==='selected') return <BoardDetails/>;
+        return <ReadBoard/>;
     }
     return <ReadBoard/>;
 }

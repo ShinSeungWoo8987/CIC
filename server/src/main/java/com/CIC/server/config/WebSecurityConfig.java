@@ -64,6 +64,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.antMatchers("/project/list").permitAll()
             	.antMatchers("/project/maxPage").permitAll()
             	.antMatchers("/project").permitAll()
+            	.antMatchers("/noticeCnt").permitAll()
+            	.antMatchers("/noticelist/{num}").permitAll()
+            	.antMatchers("/eventCnt").permitAll()
+            	.antMatchers("/eventlist/{num}").permitAll()
+            	.antMatchers("/centerCnt").permitAll()
+            	.antMatchers("/centerlist/{num}").permitAll()
             	.antMatchers("/").permitAll()
             // all other requests need to be authenticated
                 .anyRequest().hasRole("USER").and().

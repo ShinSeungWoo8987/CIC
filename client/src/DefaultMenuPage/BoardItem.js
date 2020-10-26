@@ -10,17 +10,19 @@ function BoardItem({ id, image, title, name, date }) {
     action: globalState.action, // sub가 all일때, 페이지로 사용됨.
     num: id //sub가 selected일때 선택된 아이디
   }
+  let _date = date;
+  if(date) _date=date.substr(0,10);
   return (
     <Container onClick={() => globalStateDispatch( {type: 'GLOBAL', payload} )}>
-      {globalState.main !== 'event' ? '' :
-        <LeftSide>
-          <Img>{image}</Img>
-        </LeftSide>
-      }
-      <RightSide>
+      <LeftSide>
         <Upside>{title}</Upside>
-        <Downside><Left>{name}</Left> <Right>{date}</Right> </Downside>
-      </RightSide>
+        <Downside><Left>{name}</Left> <Right>{_date}</Right> </Downside>
+      </LeftSide>
+      {globalState.main !== 'event' ? '' :
+        <RightSide>
+          <Img src={image}/>
+        </RightSide>
+      }
     </Container>
   );
 }
@@ -36,7 +38,6 @@ const Container = styled.div`
 const Upside = styled.div`
     padding-left: 20px;
     padding-top: 10px;
-    font-weight: bold;
     font-size: 28px;
     height: 40px;
 `
@@ -46,17 +47,18 @@ const Downside = styled.div`
     height: 40px;
 `
 const LeftSide = styled.div`
-  margin-left: 20px;
-  padding-top: 3px;
   float: left;
-`
-const Img = styled.div`
-  border: 1px solid grey;
-  width: 106.6px;
-  height: 80px;
+  width: 85%
 `
 const RightSide = styled.div`
   float: left;
+  padding: 3px 20px 0 0;
+  width: 12.7%
+`
+const Img = styled.img`
+  border: 1px solid lightgrey;
+  width: 106.6px;
+  height: 80px;
 `
 const Left = styled.div`
   float: left;
