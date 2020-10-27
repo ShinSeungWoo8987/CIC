@@ -29,13 +29,22 @@ public class ProjectController {
 	
 	@RequestMapping(value="/project", method=RequestMethod.POST, consumes="application/json")
     public GetProject getProject(@RequestBody Map map) throws Exception {
-		List<String> values = new ArrayList<String>();
-        map.forEach((k, v) -> {
-			values.add((String)v);
-		});
-        int projectNumber = Integer.parseInt(values.get(0));
-        GetProject project = this.cicService.getProject(projectNumber);
-        return project;
+		try {
+			List<String> values = new ArrayList<String>();
+	        map.forEach((k, v) -> {
+				values.add((String)v);
+			});
+	        int projectNumber = Integer.parseInt(values.get(0));
+	        try {
+	        	GetProject project = this.cicService.getProject(projectNumber);
+	            return project;
+	        }catch (Exception e) {
+	        	System.out.println("Error Message : Method-getProject Error");
+			}
+		}catch (Exception e) {
+			System.out.println("Error Message : React-Axios Error");
+		}
+        return null;
 	}
 	
 	@RequestMapping(value="/project/maxPage", method=RequestMethod.POST, consumes="application/json")

@@ -58,8 +58,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // dont authenticate this particular request
             .authorizeRequests()
             	.antMatchers("/register").permitAll()
+            	.antMatchers("/authenticate/pw").hasAnyRole("USER","CREATOR","ADMIN")
             	.antMatchers("/authenticate").permitAll()
+            	.antMatchers("/member/update").hasAnyRole("USER","CREATOR","ADMIN")
             	.antMatchers("/member/idList").permitAll()
+            	.antMatchers("/member").hasAnyRole("USER","CREATOR","ADMIN")
+            	.antMatchers("/funding").hasAnyRole("USER","CREATOR","ADMIN")
             	.antMatchers("/project/list").permitAll()
             	.antMatchers("/project/maxPage").permitAll()
             	.antMatchers("/project").permitAll()
@@ -72,9 +76,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.antMatchers("/centerCnt").permitAll()
             	.antMatchers("/centerlist/{num}").permitAll()
             	.antMatchers("/centerlist/{num}/{key}").permitAll()
+            	.antMatchers("/notice/update/{num}").permitAll()
             	.antMatchers("/").permitAll()
             // all other requests need to be authenticated
-                .anyRequest().hasRole("USER").and().
+            	.anyRequest().hasAnyRole("USER","ADMIN").and().
             // make sure we use stateless session; session won't be used to
             // store user's state.
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()

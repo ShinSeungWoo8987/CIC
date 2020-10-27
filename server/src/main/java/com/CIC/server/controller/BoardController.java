@@ -245,7 +245,112 @@ public class BoardController {
         List<ServiceCenter> list = this.cicService.searchServiceCenterList(startNum,endNum,key);
         return list; 
     }
+
+	@RequestMapping(value="/notice/update/{num}", method=RequestMethod.POST, consumes="application/json")
+    public String updateNotice( @PathVariable String num, @RequestBody Map map ) throws Exception {
+        map.forEach((k, v) -> {
+        	//System.out.println(k + ": " + v);
+			switch ( (String)k ) {
+				case "title":
+					title = (String)v;
+					break;
+				case "description":
+					description = (String)v;
+					break;
+				default:
+					System.out.println("Something Error");
+					break;
+			}
+        });
+		
+		Notice notice = Notice.builder()
+				  .NOT_NUMBER( Integer.parseInt(num) )
+				  .NOT_TITLE(title)
+				  .NOT_DESCRIPTION(description)
+				  .build();
+		System.out.println(notice);
+		try {
+			this.cicService.updateNotice(notice);
+			return "Successfully update data"; 
+		}catch (Exception e) {
+			return "Update data failed"; 
+		}
+    }
 	
+	@RequestMapping(value="/service_center/update/{num}", method=RequestMethod.POST, consumes="application/json")
+    public String updateServiceCenter( @PathVariable String num, @RequestBody Map map ) throws Exception {
+        map.forEach((k, v) -> {
+        	//System.out.println(k + ": " + v);
+			switch ( (String)k ) {
+				case "title":
+					title = (String)v;
+					break;
+				case "description":
+					description = (String)v;
+					break;
+				default:
+					System.out.println("Something Error");
+					break;
+			}
+        });
+		
+        ServiceCenter center = ServiceCenter.builder()
+				  .SER_NUMBER( Integer.parseInt(num) )
+				  .SER_TITLE(title)
+				  .SER_DESCRIPTION(description)
+				  .build();
+		System.out.println(center);
+		try {
+			this.cicService.updateServiceCenter(center);
+			return "Successfully update data"; 
+		}catch (Exception e) {
+			return "Update data failed"; 
+		}
+    }
 	
+	@RequestMapping(value="/event/update/{num}", method=RequestMethod.POST, consumes="application/json")
+    public String updateEvent( @PathVariable String num, @RequestBody Map map ) throws Exception {
+
+        map.forEach((k, v) -> {
+        	//System.out.println(k + ": " + v);
+			switch ( (String)k ) {
+				case "image":
+					image = (String)v;
+					break;
+				case "thumbnail":
+					thumbnail = (String)v;
+					break;
+				case "title":
+					title = (String)v;
+					break;
+				case "description":
+					description = (String)v;
+					break;
+				default:
+					System.out.println("Something Error");
+					break;
+			}
+        });
+		
+		Event event = Event.builder()
+				  .EVE_NUMBER( Integer.parseInt(num) )
+				  .EVE_TITLE(title)
+				  .EVE_THUMBNAIL(thumbnail)
+				  .EVE_IMAGE(image)
+				  .EVE_DESCRIPTION(description)
+				  .build();
+		
+		try {
+			System.out.println(event);
+			this.cicService.updateEvent(event);
+			return "Successfully update data"; 
+		}catch (Exception e) {
+			return "Update data failed"; 
+		}
+    }
 	
+	// 남은거
+	// /event/delete/{num}
+	// /notice/delete/{num}
+	// /service_center/delete/{num}
 }

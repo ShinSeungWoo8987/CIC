@@ -14,6 +14,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -125,5 +126,32 @@ public class JwtAuthenticationController {
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
+    }
+    
+    @RequestMapping(value = "/authenticate/pw", method = RequestMethod.POST, consumes="application/json")
+    public String checkPw(@RequestBody Map map) throws Exception {
+    	try {
+	    	List<String> values = new ArrayList<String>();
+			map.forEach((k, v) -> {
+				values.add((String)v);
+			});
+			String inputPw = values.get(0);
+			try {
+				Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				UserDetails userDetails = (UserDetails)principal;
+				try {
+					authenticate(userDetails.getUsername(), values.get(0));
+					final String token = jwtTokenUtil.generateToken(userDetails);
+					return "Success";
+				}catch (Exception e) {
+					return "Fail";
+				}
+			}catch (Exception e) {
+				System.out.println("Error Message : JWT Error");
+			}
+    	}catch (Exception e) {
+			System.out.println("Error Message : React-Axios Error");
+		}
+    	return "Fail";
     }
 }

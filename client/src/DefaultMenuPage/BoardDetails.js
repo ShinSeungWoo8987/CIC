@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Store from '../Store/Store';
 import styled from "styled-components"
-import parse from  'html-react-parser';
+import parse from 'html-react-parser';
+import axios from 'axios';
 
 function BoardDetails(props) {
-    const { boardItemList, globalState, globalStateDispatch } = useContext(Store);
+    const { session, boardItemList, globalState, globalStateDispatch } = useContext(Store);
     const [selectedItem, setSelectedItem] = useState({
-        title:'', name:'', date:'', image:'', description:''
+        title: '', name: '', date: '', image: '', description: ''
     });
     const payload = {
         main: globalState.main,
@@ -14,26 +15,59 @@ function BoardDetails(props) {
         action: globalState.action,
         num: globalState.num
     }
-    const handleClick = (e) =>{
+    const handleClick = (e) => {
         e.preventDefault();
-        globalStateDispatch( {type: 'GLOBAL', payload} )
+        globalStateDispatch({ type: 'GLOBAL', payload })
     }
 
-    console.log(selectedItem);
-    useEffect(()=>{
+    let _main = 'Event';
+    if (globalState.main === 'notice') _main = 'Notice'
+    if (globalState.main === 'center') _main = 'Center'
+
+    const updateBoard = (e) => {
+        e.preventDefault();
+        globalStateDispatch({
+            type: 'GLOBAL', payload: {
+                main: `add${_main}`,
+                sub: 'all',
+                action: 1,
+                num: globalState.num
+            }
+        })
+    }
+
+    const deleteBoard = (e) => {
+        e.preventDefault();
+        let _main = 'event';
+        if (globalState.main === 'notice') _main = 'notice';
+        if (globalState.main === 'center') _main = 'service_center';
+        console.log(selectedItem.id);
+        axios.delete(`/${globalState.main}/delete/${selectedItem.id}`).then(res=>console.log(res)).catch(err=>console.log(err));
+        globalStateDispatch({
+            type: 'GLOBAL', payload: {
+                main: globalState.main,
+                sub: 'all',
+                action: globalState.action,
+                num: globalState.num
+            }
+        })
+    }
+
+    useEffect(() => {
         let _main = '';
-        if(globalState.main==='event') _main='eve';
-        if(globalState.main==='notice') _main='not';
-        if(globalState.main==='center') _main='ser';
-        const _boardItemList = boardItemList.filter(i=>i[`${_main}_NUMBER`]===globalState.num);
+        if (globalState.main === 'event') _main = 'eve';
+        if (globalState.main === 'notice') _main = 'not';
+        if (globalState.main === 'center') _main = 'ser';
+        const _boardItemList = boardItemList.filter(i => i[`${_main}_NUMBER`] === globalState.num);
         setSelectedItem({
-            title:_boardItemList[0][`${_main}_TITLE`],
-            name:_boardItemList[0][`mem_ID`],
-            date:_boardItemList[0][`${_main}_REGISTER`],
-            image:_boardItemList[0][`${_main}_IMAGE`] || '',
-            description:_boardItemList[0][`${_main}_DESCRIPTION`]
+            id: _boardItemList[0][`${_main}_NUMBER`],
+            title: _boardItemList[0][`${_main}_TITLE`],
+            name: _boardItemList[0][`mem_ID`],
+            date: _boardItemList[0][`${_main}_REGISTER`],
+            image: _boardItemList[0][`${_main}_IMAGE`] || '',
+            description: _boardItemList[0][`${_main}_DESCRIPTION`]
         });
-    },[]);
+    }, []);
     return (
         <Container>
             <Title>
@@ -41,21 +75,32 @@ function BoardDetails(props) {
                     {selectedItem.title}
                 </TitleUp>
                 <TitleDown>
-                    <LeftSide><BackButton onClick={e=>handleClick(e)}>돌아가기</BackButton></LeftSide>
+                    <LeftSide><BackButton onClick={e => handleClick(e)}>돌아가기</BackButton></LeftSide>
                     <RightSide>
                         <Quarter>등록일</Quarter>
-                        <Quarter>{selectedItem.date.substr(0,10)}</Quarter>
+                        <Quarter>{selectedItem.date.substr(0, 10)}</Quarter>
                         <Quarter>등록자</Quarter>
                         <Quarter>{selectedItem.name}</Quarter>
-                           
+
                     </RightSide>
                 </TitleDown>
             </Title>
             <Content>
-                {selectedItem.image}
-                {parse(selectedItem.description)}
+                <Up>
+                    {selectedItem.image}
+                    {parse(selectedItem.description)}
+                </Up>
+                <Down>
+                    {session.authority === 2 ?
+                    <Admin>
+                        <button onClick={e => updateBoard(e)}>수정</button>
+                        &nbsp;&nbsp;
+                        <button onClick={e => deleteBoard(e)}>삭제</button>
+                    </Admin> : ''
+                    }
+                </Down>
             </Content>
-            <Bottom> <Button onClick={e=>handleClick(e)}>돌아가기</Button> </Bottom>
+            <Bottom> <Button onClick={e => handleClick(e)}>돌아가기</Button> </Bottom>
         </Container>
     );
 }
@@ -112,6 +157,18 @@ const Content = styled.div`
     width: 96%;
     min-height: 550px;
     font-size: 18px;
+`
+const Up = styled.div`
+width: 100%;
+min-height: 550px;
+`
+const Down = styled.div`
+width: 100%;
+`
+const Admin = styled.div`
+text-align: right;
+width: 100%;
+bottom:0;
 `
 const Bottom = styled.div`
 margin-top: 20px;

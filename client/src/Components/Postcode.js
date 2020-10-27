@@ -6,11 +6,11 @@ import Store from '../Store/Store';
 function Postcode() {
     const { addressValueDispatch, modalState, modalStateDispatch } = useContext(Store);
     const newModalState = {
-        login: true,
+        login: modalState.login,
         postcode: false,
-        updateUser: false,
-        deleteUser: false,
-        funding: false
+        updateUser: modalState.updateUser,
+        deleteUser: modalState.deleteUser,
+        funding: modalState.funding
     }
     // Postcode Modal Setting
     const closePostcodeModal = (e) => {

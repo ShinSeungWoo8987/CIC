@@ -45,7 +45,7 @@ const _modalState = {
     login: false,
     postcode: false,
     updateUser: false,
-    deleteUser: false,
+    authority: false,
     funding: false
 }
 const modalStateReducer = (state, { type, payload }) => {

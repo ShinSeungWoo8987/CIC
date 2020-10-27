@@ -3,6 +3,7 @@ package com.CIC.server.service;
 import java.util.List;
 
 import com.CIC.server.model.Event;
+import com.CIC.server.model.Funding;
 import com.CIC.server.model.GetProject;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Notice;
@@ -17,13 +18,17 @@ public interface CICService {
 	Member getMember(String id);
 	List<Project> getProjectList(SearchProject searchProject);
 	GetProject getProject(int projectNumber);
-	public int getProjectCnt(SearchProject searchProject);
+	int getProjectCnt(SearchProject searchProject);
+	void addFunding(Funding funding);
+	void updateMember(Member member);
+	
 	
 	List<Type> getTypeList();
 	void addProject(Project project);
 	
 	void addEvent(Event event);
 	void addNotice(Notice notice);
+	
 	void addServiceCenter(ServiceCenter serviceCenter);
 	
 	String getNoticeCnt();
@@ -37,6 +42,10 @@ public interface CICService {
 	String getServiceCenterCnt();
 	List<ServiceCenter> getServiceCenterList(int startNum, int endNum);
 	List<ServiceCenter> searchServiceCenterList(int startNum, int endNum, String key);
+	
+	void updateNotice(Notice notice);
+	void updateServiceCenter(ServiceCenter center);
+	void updateEvent(Event event);
 	
 	
 }

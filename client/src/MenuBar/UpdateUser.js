@@ -1,20 +1,54 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
+import { get, post } from 'axios';
 import Modal from 'react-modal';
 
 function UpdateUser() {
-    const { modalState, modalStateDispatch, addressValue, addressValueDispatch } = useContext(Store);
+    const { session, modalState, modalStateDispatch, addressValue, addressValueDispatch } = useContext(Store);
+    const [ userInformation, setUserInformation] = useState('');
+    // Get User Information & Setting
+    useEffect(() => {
+        const url = '/member'
+        get(url).then(res=>{
+            const newAddressValue = {
+                postcode: res.data[3],
+                address1: res.data[4]
+            }
+            addressValueDispatch({type: 'CHANGE_ADDRESS', payload: newAddressValue})
+            setUserInformation({
+                id: res.data[0],
+                name: res.data[1],
+                phone: res.data[2],
+                address2: res.data[5]
+            })
+        })
+    }, [ session.token, modalState.updateUser ]);
     // updateUser Submit
     const onUpdateUserSubmit = (e) => {
-        console.log("Change Update User");
+        e.preventDefault();
+        const url = '/member/update'
+        const data = {
+            id: e.target.id.value,
+            pw: e.target.pw.value,
+            name: e.target.name.value,
+            phone: e.target.phone.value,
+            postcode: addressValue.postcode,
+            address1: addressValue.address1,
+            address2: e.target.address2.value
+        }
+        post(url, data).then(res=>{
+        })
+        closeUpdateUserModal();
     }
     // updateUser Modal Setting
     const closeUpdateUserModal = () => {
         const newModalState = {
             login: modalState.login,
             postcode: modalState.postcode,
-            updateUser: false
+            updateUser: false,
+            authority: modalState.authority,
+            funding: modalState.funding
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
         const newAddressValue = {
@@ -42,13 +76,14 @@ function UpdateUser() {
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form onSubmit={(e)=>onUpdateUserSubmit(e)}>
-                    <InputText id='id' type='text' placeholder="아이디" required pattern="[A-Za-z0-9]{3,12}" readOnly/><br/>
-                    <InputText id='name' type='text' placeholder="이름" required/><br/>
-                    <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
-                    <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} required readOnly/>
+                    <InputText id='id' type='text' placeholder="아이디" value={userInformation.id} readOnly/><br/>
+                    <InputText id='pw' type='password' placeholder="비밀번호" /><br/>
+                    <InputText id='name' type='text' placeholder="이름" defaultValue={userInformation.name} required/><br/>
+                    <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" defaultValue={userInformation.phone} pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required/><br/>
+                    <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} readOnly/>
                     <BtnPostcode type='button' value='우편번호 검색' onClick={(e)=>openPostcodeModal(e)}/><br/>
-                    <InputText id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} required readOnly/><br/>
-                    <InputText id="address2" type="text" placeholder="상세 주소" />
+                    <InputText id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} readOnly/><br/>
+                    <InputText id="address2" type="text" placeholder="상세 주소" defaultValue={userInformation.address2}/>
                     <InputSubmit type="submit" value="정보수정"/>
                 </Form>
             </Modal>
@@ -121,9 +156,9 @@ const UpdateUserModalStyle = {
     content: {
         position: "absolute",
         left: '37.5%',
-        top: '15%',
+        top: '12.5%',
         width: '500px',
-        height: '600px',
+        height: '675px',
         borderRadius: 10,
         boxShadow: '9px 9px 10px #4E4E4E'
     }

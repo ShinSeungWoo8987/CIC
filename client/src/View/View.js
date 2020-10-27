@@ -6,10 +6,9 @@ import ReadBoard from '../DefaultMenuPage/ReadBoard';
 import ProjectDetails from '../ProjectDetails/ProjectDetails';
 import AddProject from '../AddProject/AddProject';
 import AddBoard from '../Board/AddBoard';
-import BoardDetails from '../DefaultMenuPage/BoardDetails';
 
 function MainView() {
-    const { globalState, modalState } = useContext(Store);
+    const { globalState } = useContext(Store);
     // 임시로 펀딩목록 및 메인페이지 같이 표현 - 실제로 동일한 코드
     const mainPage = ['all', 'tech', 'travel', 'fashion', 'fundingList']; // Main Page Menu List
     var idx = 0;

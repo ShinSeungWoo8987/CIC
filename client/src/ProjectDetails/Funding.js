@@ -2,34 +2,32 @@ import React, { useContext, useEffect, useState } from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import Store from '../Store/Store';
-import { get, post } from 'axios';
+import { get, put } from 'axios';
 import PercentBar from '../Components/PercentBar'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
-/*
-    배송지 관련 신규/기존 구분해야 할 듯
-*/ 
-
 function Funding() {
-    const { addressValue, addressValueDispatch, modalState, modalStateDispatch, projectInformation } = useContext(Store);
+    const { session, addressValue, addressValueDispatch, modalState, modalStateDispatch, projectInformation } = useContext(Store);
     const [ userInformation, setUserInformation] = useState('');
     const dDayText = projectInformation.dDay==='마감'?'':'일';
-    // Get User Information
+    // Get User Information & Setting
     useEffect(() => {
         const url = '/member'
         get(url).then(res=>{
-            console.log(res.data);
+            const newAddressValue = {
+                postcode: res.data[3],
+                address1: res.data[4]
+            }
+            addressValueDispatch({type: 'CHANGE_ADDRESS', payload: newAddressValue})
             setUserInformation({
                 id: res.data[0],
                 name: res.data[1],
                 phone: res.data[2],
-                postcode: res.data[3],
-                address1: res.data[4],
                 address2: res.data[5]
             })
         })
-    }, [  ]);
+    }, [ session.token ]);
     // Funding Modal Setting
     const closeModal = (e) => {
         e.preventDefault();
@@ -38,6 +36,12 @@ function Funding() {
             address1: ''
         }
         addressValueDispatch({type: 'CHANGE_ADDRESS', payload: newAddressValue});
+        setUserInformation({
+            id: '',
+            name: '',
+            phone: '',
+            address2: ''
+        })
         const newModalState = {
             funding: false
         }
@@ -47,15 +51,31 @@ function Funding() {
     const openPostcodeModal = (e) => {
         e.preventDefault();
         const newModalState = {
+            login: modalState.login,
             postcode: true,
+            updateUser: modalState.updateUser,
+            deleteUser: modalState.deleteUser,
             funding: modalState.funding
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     };
     // Funding Submit
     const onFundingSubmit = (e) => {
-        console.log("펀딩 테스트");
-        console.log(e.target.name.value);
+        e.preventDefault();
+        const url = '/funding'
+        const data = {
+            id: userInformation.id,
+            name: e.target.name.value,
+            phone: e.target.phone.value,
+            postcode: `${addressValue.postcode}`,
+            address1: addressValue.address1,
+            address2: e.target.address2.value,
+            description: e.target.supportMessage.value,
+            number: `${projectInformation.number}`
+        }
+        put(url, data).then(res=>{
+        })
+        closeModal();
     }      
     return (
         <Container>
@@ -66,7 +86,7 @@ function Funding() {
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form onSubmit={(e)=>onFundingSubmit(e)}>
-                    <Title>이 자리는 제목이 들어갈 자리입니다.</Title>
+                    <Title>{projectInformation.title}</Title>
                     <CurrentStateContainer>
                         <Text>모인금액</Text><br/>
                         <SubContainer>
@@ -90,12 +110,12 @@ function Funding() {
                     </CurrentStateContainer>
                     <DeliveryAddressContainer>
                         <SubTitle>배송지 정보</SubTitle><br/>
-                        <InputText id='name' type='text' placeholder="이름" value={userInformation.id} required/>
-                        <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" value={userInformation.phone} pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"/><br/>
+                        <InputText id='name' type='text' placeholder="이름" defaultValue={userInformation.name} required/>
+                        <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" defaultValue={userInformation.phone} pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"/><br/>
                         <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} required readOnly/>
                         <BtnPostcode type='submit' value='우편번호 검색' onClick={(e)=>openPostcodeModal(e)}/><br/>
                         <InputText id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} required readOnly/><br/>
-                        <InputText id="address2" type="text" placeholder="상세 주소" /><br/>
+                        <InputText id="address2" type="text" placeholder="상세 주소" defaultValue={userInformation.address2}/><br/>
                     </DeliveryAddressContainer>
                     <Writing id='supportMessage' placeholder='응원글을 입력해주세요!'/><br/>
                     <InputSubmit type="submit" value="펀딩하기"/>

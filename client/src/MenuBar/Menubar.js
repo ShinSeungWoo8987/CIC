@@ -5,7 +5,7 @@ import Menu from './Menu';
 import DefaultMenu from './DefaultMenu';
 import MyInformation from './MyInformation';
 import UpdateUser from './UpdateUser';
-import DeleteUser from './DeleteUser';
+import Authority from './Authority';
 import Postcode from '../Components/Postcode';
 
 function MenuBar() {
@@ -18,7 +18,7 @@ function MenuBar() {
         <MyInformation/>
         <Postcode/>
         <UpdateUser/>
-        <DeleteUser/>
+        <Authority/>
       </Container>
     );
   }

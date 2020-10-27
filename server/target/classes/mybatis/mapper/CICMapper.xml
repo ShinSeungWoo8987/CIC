@@ -36,8 +36,8 @@
 			   		  	</choose>
 			   		  </if>
 			   		  order by pro_number desc ) a )
-			   	left join ( select pro_number, count(joi_number) fundingCnt
-			   	   			from join 
+			   	left join ( select pro_number, count(fun_number) fundingCnt
+			   	   			from funding 
 			   	   			group by pro_number) using(pro_number)
 		where rnum between #{startNumber} and #{finishNumber}
 	</select>
@@ -67,6 +67,29 @@
 				</choose>
 			</if>
 	</select>
+	
+	<insert id="addFunding" keyProperty="fun_number">
+		<selectKey keyProperty="fun_number" resultType="int" order="BEFORE">
+			select coalesce(MAX(fun_number), 0) + 1 as fun_number
+            from funding
+		</selectKey>
+		insert into funding (fun_number, fun_name, fun_phone, fun_postcode, fun_address1, fun_address2, fun_description, mem_id, pro_number) 
+		values(#{fun_number}, #{fun_name}, #{fun_phone}, #{fun_postcode}, #{fun_address1}, #{fun_address2}, #{fun_description}, #{mem_id}, #{pro_number})
+	</insert>
+	
+	<update id="updateMember">
+		update member 
+		<if test="mem_pw!=null">
+			set mem_pw=#{mem_pw}, mem_name=#{mem_name}, mem_phone=#{mem_phone}, mem_postcode=#{mem_postcode}, mem_address1=#{mem_address1}, mem_address2=#{mem_address2}
+		</if>
+		<if test="mem_pw==null">
+			set mem_name=#{mem_name}, mem_phone=#{mem_phone}, mem_postcode=#{mem_postcode}, mem_address1=#{mem_address1}, mem_address2=#{mem_address2}
+		</if>
+		where mem_id = #{mem_id}
+	</update>
+	
+	
+	
 	
 	<select id="getTypeList" resultType="com.CIC.server.model.Type">
 		select * from TYPE
@@ -152,6 +175,19 @@
 			) a
 		) where rnum between #{startNum} and #{endNum}
    </select>
+
+   <update id="updateNotice" parameterType="com.CIC.server.model.Notice">
+       UPDATE NOTICE SET NOT_TITLE=#{NOT_TITLE}, NOT_DESCRIPTION=#{NOT_DESCRIPTION} WHERE NOT_NUMBER=#{NOT_NUMBER}
+   </update>
+   
+   <update id="updateServiceCenter" parameterType="com.CIC.server.model.ServiceCenter">
+       UPDATE SERVICECENTER SET SER_TITLE=#{SER_TITLE}, SER_DESCRIPTION=#{SER_DESCRIPTION} WHERE SER_NUMBER=#{SER_NUMBER}
+   </update>
+   
+   <insert id="updateEvent">
+   	   UPDATE EVENT SET EVE_TITLE=#{EVE_TITLE}, EVE_DESCRIPTION=#{EVE_DESCRIPTION}, EVE_THUMBNAIL=#{EVE_THUMBNAIL}, EVE_IMAGE=#{EVE_IMAGE}
+   	   WHERE EVE_NUMBER=#{EVE_NUMBER}
+   </insert>
 
    
    

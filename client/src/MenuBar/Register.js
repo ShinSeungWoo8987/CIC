@@ -18,15 +18,6 @@ function Register() {
     // Register Modal Setting
     const openRegisterModal = (e) => {
         e.preventDefault();
-        const payload = {
-            login: false,
-            postcode: false,
-            updateUser: false,
-            deleteUser: false,
-            funding: false
-        }
-        
-        
         if(register === '회원가입'){
             setRegisterModalState(true);
         }
@@ -158,8 +149,9 @@ export default Register;
 const Container = Styled.div`
     float: left;
 `
-const LinkModal = Styled.a`
+const LinkModal = Styled.div`
     color: #A3A3A3;
+    cursor: pointer;
 
     &:hover {
         color: black;

@@ -2,10 +2,10 @@ import React, { useContext, useRef, useState } from 'react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import CKeditor from '@ckeditor/ckeditor5-react';
 import Store from '../Store/Store';
-import {put} from 'axios';
+import {put, post} from 'axios';
 import parse from  'html-react-parser';
 
-function AddBoardForm(props) {
+function AddBoardForm({id,title,description}) {
     const {globalState} = useContext(Store);
     const [data, setData] = useState();
     const [_content, set_Content] = useState();
@@ -16,9 +16,9 @@ function AddBoardForm(props) {
         setData(_data);
         set_Content(parse (_data));
     }
+
     const onSubmit = (e) => {
         e.preventDefault();
-
         if(globalState.main==='addEvent'){
             const formData = new FormData();
             const config = { headers: { 'content-type': 'multipart/form-data' } }
@@ -38,11 +38,19 @@ function AddBoardForm(props) {
                     title: titleRef.current.value,
                     description: data
                 }
-
-                put('/event/add', sendContent)
+                
+                if(id){ // 기존 글 수정
+                    post(`/event/update/${id}`, sendContent)
                     .then((res) => {
                         console.log(res);
                     }).catch((err) => console.log(err));
+                }else{ // 신규 글 작성
+                    put('/event/add', sendContent)
+                    .then((res) => {
+                        console.log(res);
+                    }).catch((err) => console.log(err));
+                }
+                
             });
         } else {
             let url = '';
@@ -53,17 +61,27 @@ function AddBoardForm(props) {
                 title: titleRef.current.value,
                 description: data
             }
-            return put(url, sendContent)
+            if(id){ // 기존 글 수정
+                if(globalState.main==='addNotice') url=`/notice/update/${id}`
+                if(globalState.main==='addCenter') url=`/service_center/update/${id}`
+                
+                return post(url, sendContent)
                     .then((res) => {
                         console.log(res);
                     }).catch((err) => console.log(err));
+            }else{ // 신규 글 작성
+                return put(url, sendContent)
+                    .then((res) => {
+                        console.log(res);
+                    }).catch((err) => console.log(err));
+            }
         }
     }
 
     return (
         <form onSubmit={e => onSubmit(e)}>
             제목 : <br/>
-            <input type="text" ref={titleRef}/>
+            <input type="text" ref={titleRef} defaultValue={title}/>
             {globalState.main!=='addEvent'?''
             :<>
                 <br/>썸네일 : <br/>
@@ -77,6 +95,7 @@ function AddBoardForm(props) {
                 onChange={(event, editor) => {
                     handleCKeditorState(event, editor); // console.log(editor.sourceElement.parentNode.id)
                 }}
+                data={description}
                 config={{
                     toolbar: [
                         "heading", "|", "bold", "italic", "link", "bulletedList",

@@ -3,7 +3,7 @@ import Styled from 'styled-components'; // Styled-components 라이브러리를 
 import Store from '../Store/Store';
 
 function Search() {
-  const { session, searchProjectDispatch, globalState, globalStateDispatch } = useContext(Store);
+  const { searchProjectDispatch, globalStateDispatch } = useContext(Store);
   const [displayInput, setDisplayInput] = useState(false);
   // globalState 값 변경 시 검색값 초기화 유무 결정 필요 & KeyPress 제거?
   const searchRef = useRef();
@@ -29,7 +29,8 @@ function Search() {
     }
   }
   return (
-    <Container margin={session.state?'50%':'58%'} >
+    // <Container margin={session.state?'60%':'60%'} >
+    <Container>
       <SubContainer>
           {displayInput? <Input id='inputSearch' type='text' placeholder='단어를 입력해주세요.' ref={searchRef}/>:<NullBox>&nbsp;</NullBox>}
           <ImageContainer>
@@ -45,7 +46,9 @@ const Left = Styled.div`
   float: left;
 `
 const Container = Styled(Left)`
-  margin-left: ${({margin})=>margin};
+  position: fixed;
+  // margin-left: ${({margin})=>margin};
+  margin-left: 60%;
   width: 235px;
   height: 46px;
 `

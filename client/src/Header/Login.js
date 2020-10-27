@@ -33,7 +33,6 @@ function Login() {
         const restirctedCharacterList = [" ", "=", "'", "\""]
         var idx = 0;
         while(idx<restirctedCharacterList.length){
-            //여기 Ref에 맞게 바꿔주어야 함.
             // 아이디 또는 비밀번호 입력값에 제한된 문자 리스트의 목록이 없는 경우 -1 반환
             if(id.indexOf(restirctedCharacterList[idx]) !== -1 || pw.indexOf(restirctedCharacterList[idx]) !== -1){
                 setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
@@ -107,8 +106,8 @@ function Login() {
 export default Login;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Container = Styled.div`
-    float: left;
-    margin-left: 20px;
+    position: fixed;
+    margin-left: 73%;
 `
 const LinkModal = Styled.a`
     font-size: 16px;

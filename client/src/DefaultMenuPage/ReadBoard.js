@@ -7,14 +7,13 @@ import { get } from 'axios';
 import BoardDetails from './BoardDetails';
 
 function ReadBoard() {
-    const { globalState, globalStateDispatch, boardItemList, boardItemListDispatch } = useContext(Store);
+    const { session, globalState, globalStateDispatch, boardItemList, boardItemListDispatch } = useContext(Store);
     const [itemCnt, setItemCnt] = useState(1);
     const searchRef = useRef();
     const [keyword, setKeyword] = useState();
     useEffect(() => {
         get(`http://localhost:5000/${globalState.main}Cnt`)
             .then(({ data }) => {
-                console.log(data);
                 setItemCnt(parseInt(Number(data) / 7) + 1);
             })
             .catch(err => console.log(err));
@@ -66,7 +65,9 @@ function ReadBoard() {
             action: 1,
             num: 0
         }
+        document.getElementById('searchBox').value = null;
         globalStateDispatch({ type: 'GLOBAL', payload: newGlobalState });
+        setKeyword();
     }
     let _main = 'Event';
     if (globalState.main === 'notice') _main = 'Notice'
@@ -77,17 +78,6 @@ function ReadBoard() {
         globalStateDispatch({
             type: 'GLOBAL', payload: {
                 main: `add${_main}`,
-                sub: 'all',
-                action: 1,
-                num: 0
-            }
-        })
-    }
-    const deleteBoard = (e) => {
-        e.preventDefault();
-        globalStateDispatch({
-            type: 'GLOBAL', payload: {
-                main: `delete${_main}`,
                 sub: 'all',
                 action: 1,
                 num: 0
@@ -134,12 +124,13 @@ function ReadBoard() {
                             {_boardItem}
                         </List>
                         <Search>
-                            <EditBoard>
-                                <button onClick={e => writeBoard(e)}>글작성</button>
-                                <button onClick={e => deleteBoard(e)}>삭제</button>
-                            </EditBoard>
+                            {session.authority===2?
+                                <EditBoard>
+                                    <button onClick={e => writeBoard(e)}>글작성</button>
+                                </EditBoard>:''
+                            }
                             <SearchDiv>
-                                <SearchInput ref={searchRef} type="text" placeholder="검색어 입력" />
+                                <SearchInput id="searchBox" ref={searchRef} type="text" placeholder="검색어 입력" />
                                 <SearchButton onClick={e=>handleSearch(e)}>검색</SearchButton>
                             </SearchDiv>
                             <br />
@@ -148,7 +139,6 @@ function ReadBoard() {
                     </>
                     :<BoardDetails/>
                 }
-
             </Center>
         </Container>
     );

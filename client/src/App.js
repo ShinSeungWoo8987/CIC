@@ -43,10 +43,8 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 const Header = styled.div`
-background-color: #E6E6E6;
 width: 1460px;
 height: 46px;
-padding: 0 230.2px;
 z-index: 1;
 `
 const Main = styled.div`
