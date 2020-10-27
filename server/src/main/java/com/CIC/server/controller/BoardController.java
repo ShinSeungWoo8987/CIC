@@ -240,6 +240,7 @@ public class BoardController {
     public List<ServiceCenter> searchServiceCenterList(@PathVariable String num, @PathVariable String key) throws Exception {
 		int startNum = ( Integer.parseInt(num) -1)*7+1;
 		int endNum = Integer.parseInt(num)*7;
+		System.out.println(key);
 		
         List<ServiceCenter> list = this.cicService.searchServiceCenterList(startNum,endNum,key);
         return list; 

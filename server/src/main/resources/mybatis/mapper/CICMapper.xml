@@ -116,7 +116,11 @@
 		select * from (select ROWNUM as rnum, a.* from (SELECT * FROM notice order by not_NUMBER desc) a) where rnum between #{startNum} and #{endNum}
    </select>
    <select id="searchNoticeList" resultType="com.CIC.server.model.Notice">
-		select * from ( select ROWNUM as rnum, a.* from ( SELECT * FROM notice order by not_NUMBER desc where NOT_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' ) a ) where rnum between #{startNum} and #{endNum}
+		select * from (
+			select ROWNUM as rnum, a.* from (
+				SELECT * FROM notice where NOT_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' order by not_NUMBER desc 
+			) a
+		) where rnum between #{startNum} and #{endNum}
    </select>
    
    
@@ -127,7 +131,11 @@
 		select * from (select ROWNUM as rnum, a.* from (SELECT * FROM EVENT order by eve_NUMBER desc) a) where rnum between #{startNum} and #{endNum}
    </select>
    <select id="searchEventList" resultType="com.CIC.server.model.Event">
-		select * from ( select ROWNUM as rnum, a.* from ( SELECT * FROM EVENT order by eve_NUMBER desc where EVE_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' ) a ) where rnum between #{startNum} and #{endNum}
+		select * from (
+			select ROWNUM as rnum, a.* from (
+				SELECT * FROM EVENT like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' order by eve_NUMBER desc where EVE_TITLE
+			) a
+		) where rnum between #{startNum} and #{endNum}
    </select>
    
    
@@ -138,7 +146,11 @@
 		select * from (select ROWNUM as rnum, a.* from (SELECT * FROM SERVICECENTER order by ser_NUMBER desc) a) where rnum between #{startNum} and #{endNum}
    </select>
    <select id="searchServiceCenterList" resultType="com.CIC.server.model.ServiceCenter">
-		select * from ( select ROWNUM as rnum, a.* from ( SELECT * FROM SERVICECENTER order by ser_NUMBER desc where SER_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' ) a ) where rnum between #{startNum} and #{endNum}
+		select * from (
+			select ROWNUM as rnum, a.* from (
+				SELECT * FROM SERVICECENTER where SER_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' order by ser_NUMBER desc
+			) a
+		) where rnum between #{startNum} and #{endNum}
    </select>
 
    

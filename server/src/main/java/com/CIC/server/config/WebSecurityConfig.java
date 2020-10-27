@@ -68,8 +68,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.antMatchers("/noticelist/{num}/{key}").permitAll()
             	.antMatchers("/eventCnt").permitAll()
             	.antMatchers("/eventlist/{num}").permitAll()
+            	.antMatchers("/eventlist/{num}/{key}").permitAll()
             	.antMatchers("/centerCnt").permitAll()
             	.antMatchers("/centerlist/{num}").permitAll()
+            	.antMatchers("/centerlist/{num}/{key}").permitAll()
             	.antMatchers("/").permitAll()
             // all other requests need to be authenticated
                 .anyRequest().hasRole("USER").and().
