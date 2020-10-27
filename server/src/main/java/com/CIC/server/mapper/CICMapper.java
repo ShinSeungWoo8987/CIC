@@ -30,12 +30,15 @@ public interface CICMapper {
 	public void addServiceCenter(ServiceCenter serviceCenter);
 	
 	public String getNoticeCnt();
-	public List<Notice> getNoticeList();
+	public List<Notice> getNoticeList(int startNum, int endNum);
+	public List<Notice> searchNoticeList(int startNum, int endNum, String key);
 	
 	public String getEventCnt();
-	public List<Event> getEventList();
+	public List<Event> getEventList(int startNum, int endNum);
+	public List<Event> searchEventList(int startNum, int endNum, String key);
 	
 	public String getServiceCenterCnt();
-	public List<ServiceCenter> getServiceCenterList();
+	public List<ServiceCenter> getServiceCenterList(int startNum, int endNum);
+	public List<ServiceCenter> searchServiceCenterList(int startNum, int endNum, String key);
 	
 }

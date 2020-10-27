@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import Styled from "styled-components"
 import Store from '../Store/Store';
@@ -9,6 +9,8 @@ import BoardDetails from './BoardDetails';
 function ReadBoard() {
     const { globalState, globalStateDispatch, boardItemList, boardItemListDispatch } = useContext(Store);
     const [itemCnt, setItemCnt] = useState(1);
+    const searchRef = useRef();
+    const [keyword, setKeyword] = useState();
     useEffect(() => {
         get(`http://localhost:5000/${globalState.main}Cnt`)
             .then(({ data }) => {
@@ -17,12 +19,12 @@ function ReadBoard() {
             })
             .catch(err => console.log(err));
 
-        get(`http://localhost:5000/${globalState.main}list/${globalState.action}`)
+        get(`http://localhost:5000/${globalState.main}list/${globalState.action}${keyword?`/${keyword}`:''}`)
             .then(({ data }) => {
                 boardItemListDispatch({ type: 'CHANGE', payload: data.slice(0, 7) });
             })
             .catch(err => console.log(err));
-    }, [globalState]);
+    }, [globalState,keyword]);
 
     let selected = '';
     let navItem = [
@@ -103,6 +105,10 @@ function ReadBoard() {
             }
         })
     }
+    const handleSearch = e=>{
+        e.preventDefault();
+        setKeyword(searchRef.current.value)
+    }
     const setPaging = []
     for (var k = 1; k <= itemCnt; k++) {
         if (globalState.action === k) setPaging.push(
@@ -133,8 +139,8 @@ function ReadBoard() {
                                 <button onClick={e => deleteBoard(e)}>삭제</button>
                             </EditBoard>
                             <SearchDiv>
-                                <SearchInput type="text" placeholder="검색어 입력" />
-                                <SearchButton>검색</SearchButton>
+                                <SearchInput ref={searchRef} type="text" placeholder="검색어 입력" />
+                                <SearchButton onClick={e=>handleSearch(e)}>검색</SearchButton>
                             </SearchDiv>
                             <br />
                             {setPaging}

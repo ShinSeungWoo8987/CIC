@@ -27,13 +27,16 @@ public interface CICService {
 	void addServiceCenter(ServiceCenter serviceCenter);
 	
 	String getNoticeCnt();
-	List<Notice> getNoticeList();
+	List<Notice> getNoticeList(int startNum, int endNum);
+	List<Notice> searchNoticeList(int startNum, int endNum, String key);
 	
 	String getEventCnt();
-	List<Event> getEventList();
+	List<Event> getEventList(int startNum, int endNum);
+	List<Event> searchEventList(int startNum, int endNum, String key);
 	
 	String getServiceCenterCnt();
-	List<ServiceCenter> getServiceCenterList();
+	List<ServiceCenter> getServiceCenterList(int startNum, int endNum);
+	List<ServiceCenter> searchServiceCenterList(int startNum, int endNum, String key);
 	
 	
 }

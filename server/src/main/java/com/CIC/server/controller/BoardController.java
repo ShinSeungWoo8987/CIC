@@ -179,9 +179,10 @@ public class BoardController {
 	
 	@GetMapping("/noticelist/{num}")
     public List<Notice> getNoticeList(@PathVariable String num) throws Exception {
-		System.out.println(num);
+		int startNum = ( Integer.parseInt(num) -1)*7+1;
+		int endNum = Integer.parseInt(num)*7;
 		
-        List<Notice> list = this.cicService.getNoticeList();
+        List<Notice> list = this.cicService.getNoticeList(startNum,endNum);
         return list; 
     }
 	
@@ -194,12 +195,11 @@ public class BoardController {
 	
 	@GetMapping("/eventlist/{num}")
     public List<Event> getEventList(@PathVariable String num) throws Exception {
-		System.out.println(num);
-		
-        List<Event> list = this.cicService.getEventList();
+		int startNum = ( Integer.parseInt(num) -1)*7+1;
+		int endNum = Integer.parseInt(num)*7;
+        List<Event> list = this.cicService.getEventList(startNum,endNum);
         return list; 
     }
-	
 	
 	@GetMapping("/centerCnt")
     public String getServiceCenterCnt() throws Exception {
@@ -209,9 +209,39 @@ public class BoardController {
 	
 	@GetMapping("/centerlist/{num}")
     public List<ServiceCenter> getServiceCenterList(@PathVariable String num) throws Exception {
-		System.out.println(num);
+		int startNum = ( Integer.parseInt(num) -1)*7+1;
+		int endNum = Integer.parseInt(num)*7;
 		
-        List<ServiceCenter> list = this.cicService.getServiceCenterList();
+        List<ServiceCenter> list = this.cicService.getServiceCenterList(startNum,endNum);
+        return list; 
+    }
+	
+	
+	@GetMapping("/noticelist/{num}/{key}")
+    public List<Notice> searchNoticeList(@PathVariable String num, @PathVariable String key) throws Exception {
+		int startNum = ( Integer.parseInt(num) -1)*7+1;
+		int endNum = Integer.parseInt(num)*7;
+		
+		System.out.println(key);
+		
+        List<Notice> list = this.cicService.searchNoticeList(startNum,endNum,key);
+        return list; 
+    }
+	
+	@GetMapping("/eventlist/{num}/{key}")
+    public List<Event> searchEventList(@PathVariable String num, @PathVariable String key) throws Exception {
+		int startNum = ( Integer.parseInt(num) -1)*7+1;
+		int endNum = Integer.parseInt(num)*7;
+        List<Event> list = this.cicService.searchEventList(startNum,endNum,key);
+        return list; 
+    }
+	
+	@GetMapping("/centerlist/{num}/{key}")
+    public List<ServiceCenter> searchServiceCenterList(@PathVariable String num, @PathVariable String key) throws Exception {
+		int startNum = ( Integer.parseInt(num) -1)*7+1;
+		int endNum = Integer.parseInt(num)*7;
+		
+        List<ServiceCenter> list = this.cicService.searchServiceCenterList(startNum,endNum,key);
         return list; 
     }
 	

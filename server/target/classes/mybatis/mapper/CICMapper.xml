@@ -108,28 +108,37 @@
        VALUES ( #{SER_NUMBER}, #{SER_TITLE}, #{SER_DESCRIPTION}, #{MEM_ID} )
    </insert>
    
+   
    <select id="getNoticeCnt" resultType="String">
 		SELECT count(*) FROM NOTICE
    </select>
-	
    <select id="getNoticeList" resultType="com.CIC.server.model.Notice">
-		SELECT * FROM Notice order by NOT_NUMBER desc
+		select * from (select ROWNUM as rnum, a.* from (SELECT * FROM notice order by not_NUMBER desc) a) where rnum between #{startNum} and #{endNum}
    </select>
+   <select id="searchNoticeList" resultType="com.CIC.server.model.Notice">
+		select * from ( select ROWNUM as rnum, a.* from ( SELECT * FROM notice order by not_NUMBER desc where NOT_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' ) a ) where rnum between #{startNum} and #{endNum}
+   </select>
+   
    
    <select id="getEventCnt" resultType="String">
 		SELECT count(*) FROM Event
    </select>
-	
    <select id="getEventList" resultType="com.CIC.server.model.Event">
-		SELECT * FROM Event order by EVE_NUMBER desc
+		select * from (select ROWNUM as rnum, a.* from (SELECT * FROM EVENT order by eve_NUMBER desc) a) where rnum between #{startNum} and #{endNum}
    </select>
+   <select id="searchEventList" resultType="com.CIC.server.model.Event">
+		select * from ( select ROWNUM as rnum, a.* from ( SELECT * FROM EVENT order by eve_NUMBER desc where EVE_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' ) a ) where rnum between #{startNum} and #{endNum}
+   </select>
+   
    
    <select id="getServiceCenterCnt" resultType="String">
 		SELECT count(*) FROM ServiceCenter
    </select>
-	
    <select id="getServiceCenterList" resultType="com.CIC.server.model.ServiceCenter">
-		SELECT * FROM ServiceCenter order by SER_NUMBER desc
+		select * from (select ROWNUM as rnum, a.* from (SELECT * FROM SERVICECENTER order by ser_NUMBER desc) a) where rnum between #{startNum} and #{endNum}
+   </select>
+   <select id="searchServiceCenterList" resultType="com.CIC.server.model.ServiceCenter">
+		select * from ( select ROWNUM as rnum, a.* from ( SELECT * FROM SERVICECENTER order by ser_NUMBER desc where SER_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' ) a ) where rnum between #{startNum} and #{endNum}
    </select>
 
    

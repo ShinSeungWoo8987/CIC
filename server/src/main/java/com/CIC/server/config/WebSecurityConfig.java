@@ -65,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.antMatchers("/project").permitAll()
             	.antMatchers("/noticeCnt").permitAll()
             	.antMatchers("/noticelist/{num}").permitAll()
+            	.antMatchers("/noticelist/{num}/{key}").permitAll()
             	.antMatchers("/eventCnt").permitAll()
             	.antMatchers("/eventlist/{num}").permitAll()
             	.antMatchers("/centerCnt").permitAll()

@@ -70,13 +70,13 @@ public class CICServiceImpl implements CICService {
 	}
 	
 	@Override
-	public List<Notice> getNoticeList() {
-		return this.cicMapper.getNoticeList();
+	public String getNoticeCnt() {
+		return this.cicMapper.getNoticeCnt();
 	}
 	
 	@Override
-	public String getNoticeCnt() {
-		return this.cicMapper.getNoticeCnt();
+	public List<Notice> getNoticeList(int startNum, int endNum) {
+		return this.cicMapper.getNoticeList(startNum, endNum);
 	}
 	
 	@Override
@@ -84,16 +84,30 @@ public class CICServiceImpl implements CICService {
 		return this.cicMapper.getEventCnt();
 	}
 	@Override
-	public List<Event> getEventList() {
-		return this.cicMapper.getEventList();
+	public List<Event> getEventList(int startNum, int endNum) {
+		return this.cicMapper.getEventList(startNum, endNum);
 	}
 	@Override
 	public String getServiceCenterCnt() {
 		return this.cicMapper.getServiceCenterCnt();
 	}
 	@Override
-	public List<ServiceCenter> getServiceCenterList() {
-		return this.cicMapper.getServiceCenterList();
+	public List<ServiceCenter> getServiceCenterList(int startNum, int endNum) {
+		return this.cicMapper.getServiceCenterList(startNum, endNum);
 	}
+	@Override
+	public List<Notice> searchNoticeList(int startNum, int endNum, String key) {
+		return this.cicMapper.searchNoticeList(startNum, endNum, key);
+	}
+	@Override
+	public List<Event> searchEventList(int startNum, int endNum, String key) {
+		return this.cicMapper.searchEventList(startNum, endNum, key);
+	}
+	@Override
+	public List<ServiceCenter> searchServiceCenterList(int startNum, int endNum, String key) {
+		return this.cicMapper.searchServiceCenterList(startNum, endNum, key);
+	}
+	
+	
 	
 }
