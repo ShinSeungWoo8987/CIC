@@ -14,8 +14,8 @@ const sessionReducer = (state, { type, payload }) => {
 }
 
 const _globalState = {
-    main: 'acceptCreator',
-    sub: 'all',
+    main: 'projectListAll',
+    sub: 'continue',
     action: 1,
     num: 0
 }
@@ -68,7 +68,17 @@ const searchProjectReducer = (state, { type, payload }) => {
             return payload;
     }
 }
-
+const _pageCnt = {
+    value: 1
+}
+const pageCntReducer = (state, { type, payload }) => {
+    switch (type) {
+        default:
+            return false;
+        case 'MOVE_PAGE':
+            return payload;
+    }
+}
 const _mainPageCnt = {
     value: 1
 }
@@ -159,6 +169,6 @@ const boardItemListReducer = (state, {type, payload})=>{
 
 export {
     _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _searchProject, searchProjectReducer,
-    _mainPageCnt, mainPageCntReducer, _projectInformation, projectInformationReducer,
+    _pageCnt, pageCntReducer, _mainPageCnt, mainPageCntReducer, _projectInformation, projectInformationReducer,
     _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer, boardItemListReducer
 };

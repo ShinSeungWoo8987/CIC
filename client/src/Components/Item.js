@@ -72,7 +72,7 @@ const Left = Styled.div`
     float: left;
 `
 const Container = Styled(Left)`
-cursor: pointer;
+    cursor: pointer;
     width: 300px;
     height: 370px;
     border: 1px solid lightgrey;
@@ -129,10 +129,14 @@ const DDayText = Styled(Dday)`
 `
 const Title = Styled(Left)`
     width: 90%;
-    height: 55px;
+    height: 45px;
     font-size: 17.5px;
     font-weight: bold;
-    margin: 10px 0 5px 5%;
+    margin: 10px 0 20px 5%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 `
 const CurrentStateContainer = Styled(Left)`
     width: 90%;

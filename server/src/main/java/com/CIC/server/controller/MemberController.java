@@ -152,23 +152,12 @@ public class MemberController {
     }
 	
 	@GetMapping("/memberCnt/{sort}")
-    public int getMemberCnt(@PathVariable String sort) throws Exception {
+    public int getNoticeCnt(@PathVariable String sort) throws Exception {
 		if(sort.equals("all")) {
 			int cnt = this.cicService.getMemberCnt();
 	        return cnt; 
 		}else{
 			int cnt = this.cicService.getCreatorRequestMemberCnt();
-	        return cnt; 
-		}
-    }
-	
-	@GetMapping("/memberCnt/{sort}/{key}")
-    public int searchMemberCnt(@PathVariable String sort, @PathVariable String key) throws Exception {
-		if(sort.equals("all")) {
-			int cnt = this.cicService.searchMemberCnt(key);
-	        return cnt; 
-		}else{
-			int cnt = this.cicService.searchCreatorRequestMemberCnt(key);
 	        return cnt; 
 		}
     }

@@ -14,7 +14,7 @@
 		select * from member where mem_id = #{id}
 	</select>
 	
-	<select id="getProjectList" resultType="ProjectList">
+	<select id="getMainProjectList" resultType="ProjectList">
 	select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
 		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
 			   from ( select *
@@ -42,7 +42,7 @@
 		where rnum between #{startNumber} and #{finishNumber}
 	</select>
 	
-	<select id="getProjectListCnt" resultType="int">
+	<select id="getMainProjectListCnt" resultType="int">
 		select count(pro_number)
 	   	from project
 			<if test="subMenu != null">
@@ -132,6 +132,80 @@
 					  </choose>
 				  </if>
 			 )
+	</select>
+	
+	<select id="getProjectList" resultType="ProjectList">
+		select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
+		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
+			   from ( select *
+			   		  from project
+			   		  <if test="subMenu != null">
+			   		  	<choose>
+			   		  		<when test="subMenu == 'continue'">
+			   		  			where <![CDATA[sysdate-pro_start > 0 and pro_finish-sysdate > 0]]> and mem_id = #{id}
+			   		  		</when>
+			   		  		<when test="subMenu == 'close'">
+			   		  			where <![CDATA[pro_finish-sysdate < 0]]> and mem_id = #{id}
+			   		  		</when>
+			   		  	</choose>
+			   		  </if>
+			   		  order by pro_number desc ) a )
+			   	left join ( select pro_number, count(fun_number) fundingCnt
+			   	   			from funding
+			   	   			group by pro_number) using(pro_number)
+		where rnum between #{startNumber} and #{finishNumber}
+	</select>
+	
+	<select id="getProjectListCnt" resultType="int">
+		select count(pro_number)
+		from project
+	    	<if test="subMenu != null">
+   		    	<choose>
+	  		    	<when test="subMenu == 'continue'">
+  		  				where <![CDATA[sysdate-pro_start > 0 and pro_finish-sysdate > 0]]> and mem_id = #{id}
+  		  		  	</when>
+  		  		  	<when test="subMenu == 'close'">
+  		  				where <![CDATA[pro_finish-sysdate < 0]]> and mem_id = #{id}
+   		  		  	</when>
+			  	</choose>
+		    </if>
+	</select>
+	
+	<select id="getProjectListAll" resultType="ProjectList">
+	select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
+		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
+			   from ( select *
+			   		  from project
+			   		  <if test="subMenu != null">
+ 		    		  	 <choose>
+	  		    			<when test="subMenu == 'continue'">
+  		  						where <![CDATA[sysdate-pro_start > 0 and pro_finish-sysdate > 0]]>
+  		  		  			</when>
+		  		  		  	<when test="subMenu == 'close'">
+		  		  				where <![CDATA[pro_finish-sysdate < 0]]>
+		   		  		  	</when>
+					  	</choose>
+				   	  </if>
+			   		  order by pro_number desc ) a )
+			   	left join ( select pro_number, count(fun_number) fundingCnt
+			   	   			from funding 
+			   	   			group by pro_number) using(pro_number)
+		where rnum between #{startNumber} and #{finishNumber}
+	</select>
+	
+	<select id="getProjectListAllCnt" resultType="int">
+		select count(pro_number)
+	   	from project
+			<if test="subMenu != null">
+	   			<choose>
+		   			<when test="subMenu == 'continue'">
+	  					where <![CDATA[sysdate-pro_start > 0 and pro_finish-sysdate > 0]]>
+	  				</when>
+			  		<when test="subMenu == 'close'">
+			  			where <![CDATA[pro_finish-sysdate < 0]]>
+	 		  		</when>
+		  		</choose>
+	   	  	</if>
 	</select>
 	
 	
@@ -321,15 +395,7 @@
 		SELECT count(*) FROM MEMBER
    </select>
    
-   <select id="searchMemberCnt" resultType="int">
-		select count(*) from member where MEM_ID like '%'||#{key}||'%' or MEM_NAME like '%'||#{key}||'%'
-   </select>
-   
    <select id="getCreatorRequestMemberCnt" resultType="int">
 		SELECT count(*) FROM MEMBER where mem_request=1
-   </select>
-   
-   <select id="searchCreatorRequestMemberCnt" resultType="int">
-		select count(*) from member where MEM_ID like '%'||#{key}||'%' or MEM_NAME like '%'||#{key}||'%' and mem_request=1
    </select>
 </mapper>

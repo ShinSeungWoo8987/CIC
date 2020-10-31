@@ -17,14 +17,18 @@ public interface CICService {
 	List<String> getMemberIdList();
 	void addMember(Member member);
 	Member getMember(String id);
-	List<Project> getProjectList(SearchProject searchProject);
+	List<Project> getMainProjectList(SearchProject searchProject);
+	int getMainProjectListCnt(SearchProject searchProject);
 	ProjectList getProject(int projectNumber);
-	int getProjectListCnt(SearchProject searchProject);
 	void addFunding(Funding funding);
 	void updateMember(Member member);
 	void deleteMember(String id);
 	List<Project> getFundingProjectList(SearchProject searchProject);
 	int getFundingProjectListCnt(SearchProject searchProject);
+	List<Project> getProjectList(SearchProject searchProject);
+	int getProjectListCnt(SearchProject searchProject);
+	List<Project> getProjectListAll(SearchProject searchProject);
+	int getProjectListAllCnt(SearchProject searchProject);
 	
 	
 	
@@ -70,11 +74,7 @@ public interface CICService {
 	List<Member> searchCreatorRequestList(String key, int startNum, int endNum);
 	
 	int getMemberCnt();
-	int searchMemberCnt(String key);
-	
 	int getCreatorRequestMemberCnt();
-	int searchCreatorRequestMemberCnt(String key);
-	
 	
 	
 }

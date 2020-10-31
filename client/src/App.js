@@ -47,5 +47,5 @@ height: 46px;
 `
 const Main = styled.div`
   width: 76%;
-  margin: 70px 0 0 120px;
+  margin: 50px 0 0 120px;
 `

@@ -38,7 +38,7 @@ function Head(props) {
         {id: 'deleteUser', title: '회원탈퇴'}
     ]
     const admin = [
-        {id: 'userList', title: '회원목록'},
+        {id: 'memberList', title: '회원목록'},
         {id: 'adminGradeUp', title: '창작자승인'},
         {id: 'projectListAll', title: '프로젝트목록'},
     ]
@@ -59,7 +59,7 @@ function Head(props) {
                 setMyInfoList(admin);
                 break;
         }
-    },[session.state, session.authority]); // 2020-10-31 - session.authority, admin, common, creator 추가
+    },[session.state, session.authority]); // 2020-10-31 - session.authority 추가
 
     const handleClick = e=>{
         e.preventDefault();
@@ -77,7 +77,6 @@ function Head(props) {
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         // 왼쪽의 메인 메뉴 클릭 시 검색값 초기화 - 이 부분은 추후 결정할 것
-        console.log(e.currentTarget.id);
         const newSearchProject = {
           value: ''
         }
@@ -91,7 +90,7 @@ function Head(props) {
     const changeState = (e) => {
         e.preventDefault();
         setShowMore(!showMore);
-        if(e.currentTarget.id === 'fundingList'){
+        if(e.currentTarget.id === 'fundingList' || e.currentTarget.id === 'projectList' || e.currentTarget.id === 'projectListAll'){
             const newGlobalState = {
                 main: e.currentTarget.id,
                 sub: 'continue',
@@ -169,6 +168,7 @@ export default Head;
 
 const Container = styled.div`
     position: fixed;
+    left: -0px; // 알수없는 CSS의 세계입니다. 이렇게 처리해줘야 FundingList 페이지와 Main 페이지의 헤더가 일치합니다.
     width: 100%;
     font-size: 26px;
     font-weight: bold;
@@ -202,8 +202,8 @@ list-style-type : none;
 z-index: 999;
 position: fixed;
 margin-top: 0px;
-margin-left: -377px;
-padding: 10px 0 26px 378px;
+margin-left: -414.5px;
+padding: 10px 0 26px 415px;
 text-align: left;
 width: 100%;
 box-shadow: 0px 5px 5px lightgrey;
@@ -253,7 +253,6 @@ animation-fill-mode: forwards;
 `
 const UlRight = styled.ul`
 font-size: 14px;
-background-color: white;
 margin: ${({margin}) => "0 0 0 "+margin};
 padding: 10px 0 26px 0;
 list-style-type : none;

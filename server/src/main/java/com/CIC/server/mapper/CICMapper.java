@@ -20,14 +20,18 @@ public interface CICMapper {
 	public List<String> getMemberIdList();
 	public void addMember(Member member);
 	public Member getMember(String id);
-	public List<Project> getProjectList(SearchProject searchProject);
+	public List<Project> getMainProjectList(SearchProject searchProject);
+	public int getMainProjectListCnt(SearchProject searchProject);
 	public ProjectList getProject(int projectNumber);
-	public int getProjectListCnt(SearchProject searchProject);
 	public void addFunding(Funding funding);
 	public void updateMember(Member member);
 	public void deleteMember(String id);
 	public List<Project> getFundingProjectList(SearchProject searchProject);
 	public int getFundingProjectListCnt(SearchProject searchProject);
+	public List<Project> getProjectList(SearchProject searchProject);
+	public int getProjectListCnt(SearchProject searchProject);
+	public List<Project> getProjectListAll(SearchProject searchProject);
+	public int getProjectListAllCnt(SearchProject searchProject);
 	
 	
 	
@@ -72,8 +76,5 @@ public interface CICMapper {
 	public List<Member> searchCreatorRequestList(String key, int startNum, int endNum);
 	
 	public int getMemberCnt();
-	public int searchMemberCnt(String key);
-	
 	public int getCreatorRequestMemberCnt();
-	public int searchCreatorRequestMemberCnt(String key);
 }

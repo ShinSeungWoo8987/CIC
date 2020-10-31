@@ -14,17 +14,20 @@ function MemberList(props) {
     console.log(keyword);
     
     useEffect(()=>{
-        get(`/memberCnt/${globalState.main==='memberList'?'all':'creator_request'}${keyword?`/${keyword}`:''}`)
+        get(`/memberCnt/${globalState.main==='memberList'?'all':'creator_request'}`)
             .then(({ data }) => {
                 setItemCnt(parseInt(Number(data) / 18) + 1);
             })
             .catch(err => console.log(err));
 
+        // get(`/member/${globalState.main==='memberList'?'all':'creator_request'}`)
+        // .then(res=>setMemberList(res.data))
+        // .catch(err=>console.log(err));
+        console.log(`/member/${globalState.main==='memberList'?'all':'creator_request'}/${globalState.action}${keyword?`/${keyword}`:''}`);
         get(`/member/${globalState.main==='memberList'?'all':'creator_request'}/${globalState.action}${keyword?`/${keyword}`:''}`)
         .then(res=>setMemberList(res.data))
         .catch(err=>console.log(err));
-    },[globalState,keyword]);
-
+    },[globalState ,keyword]);
     const handleSearch = e=>{
         e.preventDefault();
         setKeyword(searchRef.current.value);

@@ -5,13 +5,13 @@ import Item from '../Components/Item';
 import { post } from 'axios'
 
 function Main() {
-    const { globalState, searchProject, mainPageCnt, mainPageCntDispatch } = useContext(Store);
+    const { globalState, searchProject, pageCnt, pageCntDispatch } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
     // Get Max Page - 무한 스크롤 구현 후 제거
     useEffect(() => {
-        const url = '/project/maxPage';
+        const url = '/main/maxPage';
         const data = {
             search: searchProject.value,
             main: globalState.main,
@@ -24,9 +24,9 @@ function Main() {
     // Get Project List
     useEffect(() => {
         const newProjectList = [];
-        const url = '/project/list';
+        const url = '/main/list';
         const data = {
-            page: mainPageCnt.value+'',
+            page: pageCnt.value+'',
             search: searchProject.value,
             main: globalState.main,
             sub: globalState.sub
@@ -41,21 +41,21 @@ function Main() {
             }
             setProjectList(newProjectList);
         })
-    }, [ globalState, searchProject, mainPageCnt ]);
+    }, [ globalState, searchProject, pageCnt.value ]);
     // Move Page - 무한 스크롤 구현 후 제거
     const moveMainPage = (e, direction) => {
         e.preventDefault();
-        if(direction==='left' && mainPageCnt.value>1){
+        if(direction==='left' && pageCnt.value>1){
             const newMainPageCnt = {
-                value: mainPageCnt.value-1
+                value: pageCnt.value-1
             }
-            mainPageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
+            pageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
         }
-        if(direction==='right' && mainPageCnt.value<maxPage){
+        if(direction==='right' && pageCnt.value<maxPage){
             const newMainPageCnt = {
-                value: mainPageCnt.value+1
+                value: pageCnt.value+1
             }
-            mainPageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
+            pageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
         }
     }
     let _category = '전체';
