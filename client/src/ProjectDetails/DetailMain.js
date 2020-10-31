@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import Styled from 'styled-components';
-import DetailMainHeader from './DetailMainHeader';
 import DetailMainContent from './DetailMainContent';
 import Store from '../Store/Store';
 import ProjectNewsList from './ProjectNewsList';
@@ -16,8 +15,7 @@ function DetailMain(props) {
 
     return (
         <Container>
-            <Upside> <DetailMainHeader/> </Upside>
-            <Downside> {content} </Downside>
+            {content}
             <Funding/>
         </Container>
     );
@@ -29,13 +27,6 @@ const Left = Styled.div`
 `
 const Container = Styled(Left)`
     width: 1248px;
-    text-align: center;
-`
-const Upside = Styled(Left)`
-    width: 100%;
-`
-const Downside = Styled(Left)`
-    width: 100%;
     height: 3000px;
-    margin: 45px 0 0 0;
+    text-align: center;
 `

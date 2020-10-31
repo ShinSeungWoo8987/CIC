@@ -35,15 +35,15 @@ public class RegisterController {
 						}
 					}
 				}catch (Exception e) {
-					System.out.println("Error Message : Compare Error");
+					System.out.println("RegisterController memberList Error Message : Compare Error");
 					return "Fail";
 				}
 			}catch (Exception e) {
-				System.out.println("Error Message : Method-getMemberIdList Error");
+				System.out.println("RegisterController memberList Error Message : Method-getMemberIdList Error");
 				return "Fail";
 			}
 		}catch (Exception e) {
-			System.out.println("Error Message : React-Data Error");
+			System.out.println("RegisterController memberList Error Message : React-Data Error");
 			return "Fail";
 		}
         return ""; 

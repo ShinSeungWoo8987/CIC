@@ -23,7 +23,7 @@ function UpdateUser() {
                 address2: res.data[5]
             })
         })
-    }, [ session.token, modalState.updateUser ]);
+    }, [ session.token, modalState.updateUser, addressValueDispatch ]); // 2020-10-31 addressValueDispatch 추가
     // updateUser Submit
     const onUpdateUserSubmit = (e) => {
         e.preventDefault();

@@ -10,12 +10,12 @@
 		values(#{mem_id}, #{mem_pw}, #{mem_name}, #{mem_phone}, #{mem_birth}, #{mem_postcode}, #{mem_address1}, #{mem_address2})
 	</insert>
 	
-	<select id="getMember" resultType="com.CIC.server.model.Member">
+	<select id="getMember" resultType="Member">
 		select * from member where mem_id = #{id}
 	</select>
 	
-	<select id="getProjectList" resultType="com.CIC.server.model.GetProject">
-	select pro_number, pro_title, pro_target, pro_thumbnail, pro_logo, mem_id, dDay, pro_price, nvl(fundingCnt,0)
+	<select id="getProjectList" resultType="ProjectList">
+	select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
 		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
 			   from ( select *
 			   		  from project
@@ -42,12 +42,7 @@
 		where rnum between #{startNumber} and #{finishNumber}
 	</select>
 	
-	<select id="getProject" resultType="com.CIC.server.model.GetProject">
-		select pro_number, pro_title, pro_target, pro_thumbnail, pro_logo, mem_id, <![CDATA[pro_finish-sysdate]]> as dDay, pro_price 
-		from project where pro_number = #{projectNumber}
-	</select>
-	
-	<select id="getProjectCnt" resultType="int">
+	<select id="getProjectListCnt" resultType="int">
 		select count(pro_number)
 	   	from project
 			<if test="subMenu != null">
@@ -66,6 +61,11 @@
 			  		</when>
 				</choose>
 			</if>
+	</select>
+	
+	<select id="getProject" resultType="Project">
+		select pro_number, pro_title, pro_target, pro_thumbnail, pro_logo, mem_id, <![CDATA[pro_finish-sysdate]]> as dDay, pro_price 
+		from project where pro_number = #{projectNumber}
 	</select>
 	
 	<insert id="addFunding" keyProperty="fun_number">
@@ -88,10 +88,57 @@
 		where mem_id = #{mem_id}
 	</update>
 	
+	<delete id="deleteMember">
+		delete 
+		from member
+		where mem_id=#{id}	
+	</delete>
+	
+	<select id="getFundingProjectList" resultType="ProjectList">
+	select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
+		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
+			   from ( select *
+			   		  from project
+			   		  <if test="subMenu != null">
+			   		  	<choose>
+			   		  		<when test="subMenu == 'continue'">
+			   		  			where <![CDATA[sysdate-pro_start > 0 and pro_finish-sysdate > 0]]>
+			   		  		</when>
+			   		  		<when test="subMenu == 'close'">
+			   		  			where <![CDATA[pro_finish-sysdate < 0]]>
+			   		  		</when>
+			   		  	</choose>
+			   		  </if>
+			   		  order by pro_number desc ) a )
+			   	join ( select pro_number, count(fun_number) fundingCnt
+			   	   			from funding
+			   	   			where mem_id = #{id}
+			   	   			group by pro_number) using(pro_number)
+		where rnum between #{startNumber} and #{finishNumber}
+	</select>
+	
+	<select id="getFundingProjectListCnt" resultType="int">
+		select count(pro_number)
+		from ( select pro_number
+			   from project join ( select distinct pro_number from funding where mem_id = #{id}) using(pro_number)
+			   <if test="subMenu != null">
+		   		  <choose>
+			  		  <when test="subMenu == 'continue'">
+		  		  			  where <![CDATA[sysdate-pro_start > 0 and pro_finish-sysdate > 0]]>
+		  		  		  </when>
+		  		  		  <when test="subMenu == 'close'">
+		  		  			  where <![CDATA[pro_finish-sysdate < 0]]>
+		   		  		  </when>
+					  </choose>
+				  </if>
+			 )
+	</select>
 	
 	
 	
-	<select id="getTypeList" resultType="com.CIC.server.model.Type">
+	
+	
+	<select id="getTypeList" resultType="Type">
 		select * from TYPE
 	</select>
 	
@@ -131,14 +178,19 @@
        VALUES ( #{SER_NUMBER}, #{SER_TITLE}, #{SER_DESCRIPTION}, #{MEM_ID} )
    </insert>
    
-   
    <select id="getNoticeCnt" resultType="String">
 		SELECT count(*) FROM NOTICE
    </select>
-   <select id="getNoticeList" resultType="com.CIC.server.model.Notice">
+   
+   <select id="searchNoticeCnt" resultType="String">
+		SELECT count(*) FROM NOTICE where NOT_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%'
+   </select>
+   
+   <select id="getNoticeList" resultType="Notice">
 		select * from (select ROWNUM as rnum, a.* from (SELECT * FROM notice order by not_NUMBER desc) a) where rnum between #{startNum} and #{endNum}
    </select>
-   <select id="searchNoticeList" resultType="com.CIC.server.model.Notice">
+   
+   <select id="searchNoticeList" resultType="Notice">
 		select * from (
 			select ROWNUM as rnum, a.* from (
 				SELECT * FROM notice where NOT_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' order by not_NUMBER desc 
@@ -146,17 +198,22 @@
 		) where rnum between #{startNum} and #{endNum}
    </select>
    
-   
    <select id="getEventCnt" resultType="String">
 		SELECT count(*) FROM Event
    </select>
-   <select id="getEventList" resultType="com.CIC.server.model.Event">
+   
+   <select id="searchEventCnt" resultType="String">
+		SELECT count(*) FROM Event where EVE_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%'
+   </select>
+   
+   <select id="getEventList" resultType="Event">
 		select * from (select ROWNUM as rnum, a.* from (SELECT * FROM EVENT order by eve_NUMBER desc) a) where rnum between #{startNum} and #{endNum}
    </select>
-   <select id="searchEventList" resultType="com.CIC.server.model.Event">
+   
+   <select id="searchEventList" resultType="Event">
 		select * from (
 			select ROWNUM as rnum, a.* from (
-				SELECT * FROM EVENT like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' order by eve_NUMBER desc where EVE_TITLE
+				SELECT * FROM EVENT where EVE_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' order by eve_NUMBER desc
 			) a
 		) where rnum between #{startNum} and #{endNum}
    </select>
@@ -165,10 +222,16 @@
    <select id="getServiceCenterCnt" resultType="String">
 		SELECT count(*) FROM ServiceCenter
    </select>
-   <select id="getServiceCenterList" resultType="com.CIC.server.model.ServiceCenter">
+   
+   <select id="searchServiceCenterCnt" resultType="String">
+		SELECT count(*) FROM ServiceCenter where SER_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%'
+   </select>
+   
+   <select id="getServiceCenterList" resultType="ServiceCenter">
 		select * from (select ROWNUM as rnum, a.* from (SELECT * FROM SERVICECENTER order by ser_NUMBER desc) a) where rnum between #{startNum} and #{endNum}
    </select>
-   <select id="searchServiceCenterList" resultType="com.CIC.server.model.ServiceCenter">
+   
+   <select id="searchServiceCenterList" resultType="ServiceCenter">
 		select * from (
 			select ROWNUM as rnum, a.* from (
 				SELECT * FROM SERVICECENTER where SER_TITLE like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' order by ser_NUMBER desc
@@ -176,11 +239,11 @@
 		) where rnum between #{startNum} and #{endNum}
    </select>
 
-   <update id="updateNotice" parameterType="com.CIC.server.model.Notice">
+   <update id="updateNotice" parameterType="Notice">
        UPDATE NOTICE SET NOT_TITLE=#{NOT_TITLE}, NOT_DESCRIPTION=#{NOT_DESCRIPTION} WHERE NOT_NUMBER=#{NOT_NUMBER}
    </update>
    
-   <update id="updateServiceCenter" parameterType="com.CIC.server.model.ServiceCenter">
+   <update id="updateServiceCenter" parameterType="ServiceCenter">
        UPDATE SERVICECENTER SET SER_TITLE=#{SER_TITLE}, SER_DESCRIPTION=#{SER_DESCRIPTION} WHERE SER_NUMBER=#{SER_NUMBER}
    </update>
    
@@ -189,9 +252,84 @@
    	   WHERE EVE_NUMBER=#{EVE_NUMBER}
    </insert>
 
+   <delete id="deleteEvent" parameterType="int">
+   	   Delete from Event WHERE EVE_NUMBER=#{num}
+   </delete>
    
+   <delete id="deleteNotice">
+       Delete from NOTICE WHERE NOT_NUMBER=#{num} 
+   </delete>
    
+   <delete id="deleteServiceCenter">
+       DELETE from SERVICECENTER WHERE SER_NUMBER=#{num}
+   </delete>
    
+   <insert id="addCareer" parameterType="Career">
+       <selectKey keyProperty="car_number" resultType="int" order="BEFORE">
+            select coalesce(MAX(car_number), 0) + 1 as car_number
+            from CAREER
+       </selectKey>
+		{call
+        	declare
+        	begin
+            	INSERT INTO CAREER ( CAR_NUMBER, CAR_ORG, CAR_ACT, CAR_START, CAR_FINISH, MEM_ID )
+       			VALUES ( #{car_number}, #{car_org}, #{car_act}, #{car_start}, #{car_finish}, #{mem_id} );
+            	update member set MEM_REQUEST=1 where mem_id=#{mem_id};
+        	end
+		}
+   </insert>
    
-
+   	<select id="getMemberList" resultType="Member">
+		select * from (
+			select ROWNUM as rnum, a.* from (
+                select MEM_ID, MEM_NAME, MEM_PHONE, MEM_BIRTH, MEM_POSTCODE, MEM_ADDRESS1, MEM_ADDRESS2, MEM_REQUEST, MEM_REGISTER, GRA_NUMBER from Member
+                order by MEM_REGISTER desc
+			) a
+		) where rnum between #{startNum} and #{endNum}
+	</select>
+	
+	<select id="getCreatorRequestList" resultType="Member">
+		select * from (
+			select ROWNUM as rnum, a.* from (
+                select * from (
+                    select MEM_ID, MEM_NAME, MEM_PHONE, MEM_BIRTH, MEM_POSTCODE, MEM_ADDRESS1, MEM_ADDRESS2, MEM_REQUEST, MEM_REGISTER, GRA_NUMBER from Member where MEM_REQUEST=1
+                ) order by MEM_REGISTER desc
+			) a
+		) where rnum between #{startNum} and #{endNum}
+	</select>
+   
+   	<select id="searchMemberList" resultType="Member">
+		select * from (
+			select ROWNUM as rnum, a.* from (
+                select MEM_ID, MEM_NAME, MEM_PHONE, MEM_BIRTH, MEM_POSTCODE, MEM_ADDRESS1, MEM_ADDRESS2, MEM_REQUEST, MEM_REGISTER, GRA_NUMBER from Member
+                where MEM_NAME like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' order by MEM_REGISTER desc
+			) a
+		) where rnum between #{startNum} and #{endNum}
+	</select>
+	
+	<select id="searchCreatorRequestList" resultType="Member">
+		select * from (
+			select ROWNUM as rnum, a.* from (
+                select * from (
+                    select MEM_ID, MEM_NAME, MEM_PHONE, MEM_BIRTH, MEM_POSTCODE, MEM_ADDRESS1, MEM_ADDRESS2, MEM_REQUEST, MEM_REGISTER, GRA_NUMBER from Member where MEM_REQUEST=1
+                ) where MEM_NAME like '%'||#{key}||'%' or MEM_ID like '%'||#{key}||'%' order by MEM_REGISTER desc
+			) a
+		) where rnum between #{startNum} and #{endNum}
+	</select>
+	
+   <select id="getMemberCnt" resultType="int">
+		SELECT count(*) FROM MEMBER
+   </select>
+   
+   <select id="searchMemberCnt" resultType="int">
+		select count(*) from member where MEM_ID like '%'||#{key}||'%' or MEM_NAME like '%'||#{key}||'%'
+   </select>
+   
+   <select id="getCreatorRequestMemberCnt" resultType="int">
+		SELECT count(*) FROM MEMBER where mem_request=1
+   </select>
+   
+   <select id="searchCreatorRequestMemberCnt" resultType="int">
+		select count(*) from member where MEM_ID like '%'||#{key}||'%' or MEM_NAME like '%'||#{key}||'%' and mem_request=1
+   </select>
 </mapper>

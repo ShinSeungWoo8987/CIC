@@ -177,6 +177,12 @@ public class BoardController {
         return cnt; 
     }
 	
+	@GetMapping("/noticeCnt/{key}")
+    public String searchNoticeCnt(@PathVariable String key) throws Exception {
+        String cnt = this.cicService.searchNoticeCnt(key);
+        return cnt; 
+    }
+	
 	@GetMapping("/noticelist/{num}")
     public List<Notice> getNoticeList(@PathVariable String num) throws Exception {
 		int startNum = ( Integer.parseInt(num) -1)*7+1;
@@ -192,6 +198,11 @@ public class BoardController {
         String cnt = this.cicService.getEventCnt();
         return cnt; 
     }
+	@GetMapping("/eventCnt/{key}")
+    public String searchEventCnt(@PathVariable String key) throws Exception {
+        String cnt = this.cicService.searchEventCnt(key);
+        return cnt; 
+    }
 	
 	@GetMapping("/eventlist/{num}")
     public List<Event> getEventList(@PathVariable String num) throws Exception {
@@ -204,6 +215,11 @@ public class BoardController {
 	@GetMapping("/centerCnt")
     public String getServiceCenterCnt() throws Exception {
         String cnt = this.cicService.getServiceCenterCnt();
+        return cnt; 
+    }
+	@GetMapping("/centerCnt/{key}")
+    public String searchServiceCenterCnt(@PathVariable String key) throws Exception {
+        String cnt = this.cicService.searchServiceCenterCnt(key);
         return cnt; 
     }
 	
@@ -350,7 +366,40 @@ public class BoardController {
     }
 	
 	// 남은거
-	// /event/delete/{num}
+	// 
 	// /notice/delete/{num}
 	// /service_center/delete/{num}
+	
+	@RequestMapping(value="/event/delete/{num}", method=RequestMethod.DELETE)
+    public String deleteEvent( @PathVariable String num ) throws Exception {
+		try {
+			System.out.println(num);
+			this.cicService.deleteEvent( Integer.parseInt(num) );
+			return "Successfully delete data"; 
+		}catch (Exception e) {
+			return "Delete data failed"; 
+		}
+    }
+	
+	@RequestMapping(value="/notice/delete/{num}", method=RequestMethod.DELETE)
+    public String deleteNotice( @PathVariable String num ) throws Exception {
+		try {
+			System.out.println(num);
+			this.cicService.deleteNotice( Integer.parseInt(num) );
+			return "Successfully delete data"; 
+		}catch (Exception e) {
+			return "Delete data failed"; 
+		}
+    }
+	
+	@RequestMapping(value="/service_center/delete/{num}", method=RequestMethod.DELETE)
+    public String deleteCenter( @PathVariable String num ) throws Exception {
+		try {
+			System.out.println(num);
+			this.cicService.deleteServiceCenter( Integer.parseInt(num) );
+			return "Successfully delete data"; 
+		}catch (Exception e) {
+			return "Delete data failed"; 
+		}
+    }
 }

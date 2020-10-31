@@ -13,4 +13,6 @@ public class SearchProject {
 	private String search;
 	private String type;
 	private String subMenu;
+	
+	private String id;
 }

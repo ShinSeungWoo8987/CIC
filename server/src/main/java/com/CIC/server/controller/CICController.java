@@ -116,15 +116,15 @@ public class CICController {
         System.out.println("-----------------------------------------");
 		
 		Project project = Project.builder()
-				  .MEM_ID(username)
-				  .PRO_TITLE(project_name)
-				  .TYP_NUMBER( Integer.parseInt(category) )
-				  .PRO_TARGET( Integer.parseInt(target_money) )
-				  .PRO_PRICE( Integer.parseInt(funding_price) )
-				  .PRO_START(sdate)
-				  .PRO_FINISH(fdate)
-				  .PRO_THUMBNAIL(thumbnail)
-				  .PRO_LOGO(logo)
+				  .mem_id(username)
+				  .pro_title(project_name)
+				  .typ_number( Integer.parseInt(category) )
+				  .pro_target( Integer.parseInt(target_money) )
+				  .pro_price( Integer.parseInt(funding_price) )
+				  .pro_start(sdate)
+				  .pro_finish(fdate)
+				  .pro_thumbnail(thumbnail)
+				  .pro_logo(logo)
 				  .build();
 		//이거 왜 프로젝트 넘버가 null이 아니고 0으로 뜨지?
 		System.out.println(project);

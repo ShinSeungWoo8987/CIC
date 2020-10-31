@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import Store from '../Store/Store';
 import Login from './Login';
 import Search from './Search';
-import Store from '../Store/Store';
+import SubMenu from './SubMenu';
 import Postcode from '../Components/Postcode';
 import UpdateUser from '../MenuBar/UpdateUser';
 import Authority from '../MenuBar/Authority';
@@ -58,7 +59,7 @@ function Head(props) {
                 setMyInfoList(admin);
                 break;
         }
-    },[session.state]);
+    },[session.state, session.authority]); // 2020-10-31 - session.authority, admin, common, creator 추가
 
     const handleClick = e=>{
         e.preventDefault();
@@ -100,7 +101,7 @@ function Head(props) {
             globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         }else if(e.currentTarget.id === 'updateUser' || e.currentTarget.id === 'deleteUser'){
             const newGlobalState = {
-                main: globalState.sub,
+                main: globalState.main,
                 sub: globalState.sub,
                 action: e.currentTarget.id,
                 num: globalState.num
@@ -123,37 +124,40 @@ function Head(props) {
 
     return (
         <Container>
-            <Logo> <a href='/'>C I C</a> </Logo>
-            <Category>
-            {!showMore?
-            <A onClick={e=>handleClick(e)}>카테고리</A>
-            :
-            <>
+            <Header>
+                <Logo> <a href='/'>C I C</a> </Logo>
+                <Category>
+                {!showMore?
                 <A onClick={e=>handleClick(e)}>카테고리</A>
-                <UlLeft>
-                    {categoryList.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeDefaultMenuState(e)} ><A>{i.title}</A></Li> )}
-                </UlLeft>
+                :
+                <>
+                    <A onClick={e=>handleClick(e)}>카테고리</A>
+                    <UlLeft>
+                        {categoryList.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeDefaultMenuState(e)} ><A>{i.title}</A></Li> )}
+                    </UlLeft>
+                    {!session.state?'':
+                    <UlCenter>
+                        {myInfoList.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeState(e)}><A>{i.title}</A></Li> )}
+                    </UlCenter>}
+                    <UlRight margin={session.state?"240px":"128px"}>
+                        {moreList.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeDefaultMenuState(e)}><A>{i.title}</A></Li> )}
+                    </UlRight>
+                </>
+                }
+                </Category>
                 {!session.state?'':
-                <UlCenter>
-                    {myInfoList.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeState(e)}><A>{i.title}</A></Li> )}
-                </UlCenter>}
-                <UlRight margin={session.state?"235px":"127px"}>
-                    {moreList.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeDefaultMenuState(e)}><A>{i.title}</A></Li> )}
-                </UlRight>
-            </>
-            }
-            </Category>
-            {!session.state?'':
-            <MyInfoDiv>
-                <A onClick={e=>handleClick(e)}>내정보</A>
-            </MyInfoDiv>
-            }
-            <MoreDiv>
-                <A onClick={e=>handleClick(e)}>더보기</A>
-            </MoreDiv>
+                <MyInfoDiv>
+                    <A onClick={e=>handleClick(e)}>내정보</A>
+                </MyInfoDiv>
+                }
+                <MoreDiv>
+                    <A onClick={e=>handleClick(e)}>더보기</A>
+                </MoreDiv>
 
-            <Search/>
-            <Login/>
+                <Search/>
+                <Login/>
+            </Header>
+            <SubMenu/>
             <Postcode/>
             <UpdateUser/>
             <Authority/>
@@ -166,9 +170,12 @@ export default Head;
 const Container = styled.div`
     position: fixed;
     width: 100%;
-    padding: 0 0 0 230.2px;
     font-size: 26px;
     font-weight: bold;
+`
+const Header = styled.div`
+    height: 46px;
+    padding: 0 0 0 265px;
     background-color: #E6E6E6;
 `
 const Logo = styled.div`
@@ -182,17 +189,17 @@ const Category = styled.div`
   height: 46px;
   font-size: 16px;
   line-height: 46px;
-  color: #3A3A3A;
 `
 const A = styled.a`
     cursor: pointer;
     color: #3A3A3A;
+    margin: 0 0 0 10px;
 `
 const UlLeft = styled.ul`
 font-size: 14px;
 background-color: white;
 list-style-type : none;
-z-index: 2;
+z-index: 999;
 position: fixed;
 margin-top: 0px;
 margin-left: -377px;
@@ -220,14 +227,14 @@ animation-fill-mode: forwards;
 `
 const UlCenter = styled.ul`
 font-size: 14px;
-margin: 0px 0 0 124px;
+margin: 0px 0 0 126px;
 padding: 10px 0 26px 0;
 list-style-type : none;
-z-index: 4;
+z-index: 999;
 position: fixed;
 text-align: left;
 
-animation-duration: 2s;
+animation-duration: 1.5s;
 animation-name: moreSlide;
 animation-fill-mode: forwards;
 
@@ -250,11 +257,11 @@ background-color: white;
 margin: ${({margin}) => "0 0 0 "+margin};
 padding: 10px 0 26px 0;
 list-style-type : none;
-z-index: 3;
+z-index: 999;
 position: fixed;
 text-align: left;
 
-animation-duration: 3s;
+animation-duration: 2s;
 animation-name: moreSlide;
 animation-fill-mode: forwards;
 

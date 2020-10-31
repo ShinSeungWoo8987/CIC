@@ -81,11 +81,11 @@ public class JwtAuthenticationController {
 				try {
 					this.cicService.addMember(member);
 				}catch (Exception e1) {
-					System.out.println("Error Message : Method-addMember Error");
+					System.out.println("register Error Message : Method-addMember Error");
 					return "Fail";
 				}
 			}catch (Exception e2) {
-				System.out.println("Error Message : Model-Builder Error");
+				System.out.println("register Error Message : Model-Builder Error");
 				return "Fail";
 			}
     		
@@ -129,7 +129,7 @@ public class JwtAuthenticationController {
     }
     
     @RequestMapping(value = "/authenticate/pw", method = RequestMethod.POST, consumes="application/json")
-    public String checkPw(@RequestBody Map map) throws Exception {
+    public List<String> checkPw(@RequestBody Map map) throws Exception {
     	try {
 	    	List<String> values = new ArrayList<String>();
 			map.forEach((k, v) -> {
@@ -142,16 +142,26 @@ public class JwtAuthenticationController {
 				try {
 					authenticate(userDetails.getUsername(), values.get(0));
 					final String token = jwtTokenUtil.generateToken(userDetails);
-					return "Success";
+					String confirm = "Success";
+					String authority = "0";
+			        if(userDetails.getAuthorities().toString().equals("[ROLE_CREATOR]")){
+			        	authority = "1";
+			        }else if(userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]")){
+			        	authority = "2";
+			        }
+			        List<String> result = new ArrayList<String>();
+			        result.add(confirm);
+			        result.add(authority);
+					return result;
 				}catch (Exception e) {
-					return "Fail";
+					System.out.println("checkPw Error Message : Response Error");
 				}
 			}catch (Exception e) {
-				System.out.println("Error Message : JWT Error");
+				System.out.println("checkPw Error Message : JWT Error");
 			}
     	}catch (Exception e) {
-			System.out.println("Error Message : React-Axios Error");
+			System.out.println("checkPw Error Message : React-Axios Error");
 		}
-    	return "Fail";
+    	return null;
     }
 }

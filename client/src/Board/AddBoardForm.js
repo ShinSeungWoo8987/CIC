@@ -6,7 +6,7 @@ import {put, post} from 'axios';
 import parse from  'html-react-parser';
 
 function AddBoardForm({id,title,description}) {
-    const {globalState} = useContext(Store);
+    const {globalState, globalStateDispatch} = useContext(Store);
     const [data, setData] = useState();
     const [_content, set_Content] = useState();
     const [titleRef, thumbnailRef, imageRef] = [useRef(),useRef(),useRef(),useRef()];
@@ -16,10 +16,14 @@ function AddBoardForm({id,title,description}) {
         setData(_data);
         set_Content(parse (_data));
     }
+    let setMain = '';
+    let payload = {}
 
     const onSubmit = (e) => {
         e.preventDefault();
         if(globalState.main==='addEvent'){
+            setMain = 'event';
+            payload = Object.assign(globalState, {main:setMain})
             const formData = new FormData();
             const config = { headers: { 'content-type': 'multipart/form-data' } }
             
@@ -27,6 +31,7 @@ function AddBoardForm({id,title,description}) {
             formData.append('image', imageRef.current.files[0]);
 
             return put('/event/uploadfile', formData, config).then(res => {
+
                 const folderName = 'https://crowdincreative.s3.ap-northeast-2.amazonaws.com/' + res.data.folderName;
                 const image = `${folderName}/${res.data.image}`
                 const thumbnail = `${folderName}/${res.data.thumbnail}`
@@ -42,21 +47,31 @@ function AddBoardForm({id,title,description}) {
                 if(id){ // 기존 글 수정
                     post(`/event/update/${id}`, sendContent)
                     .then((res) => {
+                        console.log(payload);
                         console.log(res);
+                        globalStateDispatch({type:'GLOBAL', payload})
                     }).catch((err) => console.log(err));
                 }else{ // 신규 글 작성
                     put('/event/add', sendContent)
                     .then((res) => {
+                        console.log(payload);
                         console.log(res);
+                        globalStateDispatch({type:'GLOBAL', payload})
                     }).catch((err) => console.log(err));
                 }
                 
             });
         } else {
             let url = '';
-            if(globalState.main==='addNotice') url='/notice/add'
-            if(globalState.main==='addCenter') url='/service_center/add'
-            
+            if(globalState.main==='addNotice') {
+                setMain = 'notice';
+                url='/notice/add'
+            }
+            if(globalState.main==='addCenter') {
+                setMain = 'center';
+                url='/service_center/add'
+            }
+            payload = Object.assign(globalState, {main:setMain})
             const sendContent = {
                 title: titleRef.current.value,
                 description: data
@@ -68,11 +83,13 @@ function AddBoardForm({id,title,description}) {
                 return post(url, sendContent)
                     .then((res) => {
                         console.log(res);
+                        globalStateDispatch({type:'GLOBAL', payload})
                     }).catch((err) => console.log(err));
             }else{ // 신규 글 작성
                 return put(url, sendContent)
                     .then((res) => {
                         console.log(res);
+                        globalStateDispatch({type:'GLOBAL', payload})
                     }).catch((err) => console.log(err));
             }
         }

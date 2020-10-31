@@ -23,8 +23,7 @@ export default App;
 
 const Container = styled.div`
   margin: 0 auto;
-  background-color: #F9F9F9;
-  width: 1920px;
+  width: 1900px;
   min-height: 100vh-106px;
 `
 const GlobalStyle = createGlobalStyle`
@@ -45,11 +44,8 @@ const GlobalStyle = createGlobalStyle`
 const Header = styled.div`
 width: 1460px;
 height: 46px;
-z-index: 1;
 `
 const Main = styled.div`
-  margin-left: 120px;
   width: 76%;
-  height: 890px;
-  text-align: left;
+  margin: 70px 0 0 120px;
 `

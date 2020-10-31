@@ -27,10 +27,9 @@ function Funding() {
                 address2: res.data[5]
             })
         })
-    }, [ session.token ]);
+    }, [ session.token, modalState.funding, addressValueDispatch ]); // 2020-10-31 - addressValueDispatch 추가
     // Funding Modal Setting
     const closeModal = (e) => {
-        e.preventDefault();
         const newAddressValue = {
             postcode: '',
             address1: ''
@@ -249,10 +248,10 @@ const FundingModalStyle = {
     content: {
         position: "absolute",
         left: '22%',
-        top: '15%',
+        top: '14%',
         padding: '50px 125px',
         width: '40%',
-        height: '600px',
+        height: '625px',
         borderRadius: 10,
         boxShadow: '9px 9px 10px #4E4E4E'
     }

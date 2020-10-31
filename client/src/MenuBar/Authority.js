@@ -3,9 +3,10 @@ import Styled from "styled-components" // styled-components 라이브러리를 �
 import Store from '../Store/Store';
 import { post } from 'axios';
 import Modal from 'react-modal';
+import { logout } from '../Jwt/AuthenticationService';
 
 function Authority() {
-    const { modalState, modalStateDispatch, globalState } = useContext(Store);
+    const { modalState, modalStateDispatch, globalState, sessionDispatch } = useContext(Store);
     const submit = globalState.action === 'updateUser'?'정보수정':'회원탈퇴'
     const [authorityMessage, setAuthorityMessage] = useState('');
     const [pwRef] = [useRef()];
@@ -29,7 +30,9 @@ function Authority() {
             pw: pw
         }
         post(url, data).then(res=>{
-            if(res.data==='Success'){
+            console.log("res.data : ",res.data);
+            console.log("globalState : ",globalState);
+            if(res.data[0]==='Success'){
                 if(globalState.action === 'updateUser'){
                     const newModalState = {
                         updateUser: true,
@@ -38,7 +41,24 @@ function Authority() {
                     modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
                     setAuthorityMessage("");
                 }else{
-                    console.log("회원 탈퇴 진행");
+                    if(Number(res.data[1])===1){
+                        setAuthorityMessage("창작자 회원탈퇴는 관리자한테 문의해주세요.");
+                        return false;
+                    }
+                    const url = '/member/delete'
+                    post(url).then(res=>{
+                        logout();
+                        sessionDispatch({type:'SESSION', payload: {
+                            state: false,
+                            authority: '',
+                            token: ''
+                        } });
+                        const newModalState = {
+                            authority: false
+                        }
+                        modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+                        setAuthorityMessage("");
+                    })
                 }
             }else{
                 setAuthorityMessage("잘못된 비밀번호입니다.");

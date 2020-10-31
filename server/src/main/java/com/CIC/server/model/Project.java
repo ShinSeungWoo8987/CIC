@@ -8,16 +8,17 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class Project {
+	private int pro_number;
+	private String pro_title;
+	private int pro_target;
+	private int pro_price;
+	private String pro_thumbnail;
+	private String pro_logo;
+	private String mem_id;
 	private float dDay;
-	private int PRO_NUMBER;
-	private String PRO_TITLE;
-	private int PRO_TARGET;
-	private int PRO_PRICE;
-	private String PRO_THUMBNAIL;
-	private String PRO_LOGO;
-	private String PRO_START;
-	private String PRO_FINISH;
-	private String PRO_REGISTER;
-	private String MEM_ID;
-	private int TYP_NUMBER;
+	private int fundingCnt;
+	private String pro_start;
+	private String pro_finish;
+	private String pro_register;
+	private int typ_number;
 }

@@ -14,7 +14,7 @@ const sessionReducer = (state, { type, payload }) => {
 }
 
 const _globalState = {
-    main: 'notice',
+    main: 'acceptCreator',
     sub: 'all',
     action: 1,
     num: 0

@@ -11,6 +11,7 @@ function Item(props){
     const percent = percentFormat(props.saveMoney,props.targetMoney);
     const dDay = dDayFormat(props.dDay);
     const dDayText = props.dDay<0?"":"일 남음";
+    
     const moveProjectDetailes = (e) =>{
         e.preventDefault();
         const newProjectInformation = {
@@ -36,10 +37,10 @@ function Item(props){
     }
     return(
         <Container id='projectDetails' onClick={(e)=>moveProjectDetailes(e)}>
-            {/* <ItemImage src={props.thumbnail}/>
-            <ItemLogo src={props.logo}/> */}
-            <ItemImage />
-            <ItemLogo />
+            <ItemImage src={props.thumbnail}/>
+            <ItemLogo src={props.logo}/>
+            {/* <ItemImage />
+            <ItemLogo /> */}
             <Creator>{props.name}</Creator>
             <DDayText>{dDayText}</DDayText><Dday>{dDay}</Dday>
             <Title>{props.title}</Title>

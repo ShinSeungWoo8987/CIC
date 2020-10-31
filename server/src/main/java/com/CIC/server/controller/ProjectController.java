@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.CIC.server.model.GetProject;
+import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.JwtRequest;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Project;
@@ -28,7 +28,7 @@ public class ProjectController {
 	private Util util;
 	
 	@RequestMapping(value="/project", method=RequestMethod.POST, consumes="application/json")
-    public GetProject getProject(@RequestBody Map map) throws Exception {
+    public ProjectList getProject(@RequestBody Map map) throws Exception {
 		try {
 			List<String> values = new ArrayList<String>();
 	        map.forEach((k, v) -> {
@@ -36,13 +36,13 @@ public class ProjectController {
 			});
 	        int projectNumber = Integer.parseInt(values.get(0));
 	        try {
-	        	GetProject project = this.cicService.getProject(projectNumber);
+	        	ProjectList project = this.cicService.getProject(projectNumber);
 	            return project;
 	        }catch (Exception e) {
-	        	System.out.println("Error Message : Method-getProject Error");
+	        	System.out.println("ProjectController getProject Error Message : Method-getProject Error");
 			}
 		}catch (Exception e) {
-			System.out.println("Error Message : React-Axios Error");
+			System.out.println("ProjectController getProject Error Message : React-Axios Error");
 		}
         return null;
 	}
@@ -61,21 +61,21 @@ public class ProjectController {
 	            		.subMenu(values.get(2))
 	            		.build();
 	        	try {
-	        		int projectCnt = this.cicService.getProjectCnt(searchProject);
+	        		int projectListCnt = this.cicService.getProjectListCnt(searchProject);
 	        		try {
-	        			int maxPage = this.util.getMaxPage(projectCnt);
+	        			int maxPage = this.util.getMaxPage(projectListCnt);
 	        			return maxPage;
 	        		}catch (Exception e) {
-	        			System.out.println("Error Message : Method-getMaxPage Error");
+	        			System.out.println("ProjectController getMaxPage Error Message : Method-getMaxPage Error");
 					}
 	        	}catch (Exception e) {
-	        		System.out.println("Error Message : Method-getProjectCnt Error");
+	        		System.out.println("ProjectController getMaxPage Error Message : Method-getProjectCnt Error");
 				}
 	        }catch (Exception e) {
-	        	System.out.println("Error Message : Model-Builder Error");
+	        	System.out.println("ProjectController getMaxPage Error Message : Model-Builder Error");
 			}
 		}catch (Exception e) {
-			System.out.println("Error Message : React-Axios Error");
+			System.out.println("ProjectController getMaxPage Error Message : React-Axios Error");
 		}
         return 0;
 	}
@@ -101,13 +101,13 @@ public class ProjectController {
 	            	List<Project> list = this.cicService.getProjectList(searchProject);
 	                return list;
 	            }catch (Exception e) {
-	            	System.out.println("Error Message : Method-getProjectList Error");
+	            	System.out.println("ProjectController getProjectList Error Message : Method-getProjectList Error");
 				}
 	        }catch (Exception e) {
-				System.out.println("Error Message : Model-Builder Error");
+				System.out.println("ProjectController getProjectList Error Message : Model-Builder Error");
 			}
 		}catch (Exception e) {
-			System.out.println("Error Message : React-Axios Error");
+			System.out.println("ProjectController getProjectList Error Message : React-Axios Error");
 		}
         return null; 
     }

@@ -13,19 +13,20 @@ function AddBoard(props) {
         if (globalState.main === 'addEvent') _main = 'eve';
         if (globalState.main === 'addNotice') _main = 'not';
         if (globalState.main === 'addCenter') _main = 'ser';
-        const _boardItemList = boardItemList.filter(i => i[`${_main}_NUMBER`] === globalState.num);
-        console.log(_boardItemList);
-        if(_boardItemList.length!==0){
-            setSelectedItem({
-                id: _boardItemList[0][`${_main}_NUMBER`],
-                title: _boardItemList[0][`${_main}_TITLE`],
-                name: _boardItemList[0][`mem_ID`],
-                date: _boardItemList[0][`${_main}_REGISTER`],
-                image: _boardItemList[0][`${_main}_IMAGE`] || '',
-                description: _boardItemList[0][`${_main}_DESCRIPTION`]
-            });
+        if(boardItemList){
+            const _boardItemList = boardItemList.filter(i => i[`${_main}_NUMBER`] === globalState.num);
+            if(_boardItemList.length!==0){
+                setSelectedItem({
+                    id: _boardItemList[0][`${_main}_NUMBER`],
+                    title: _boardItemList[0][`${_main}_TITLE`],
+                    name: _boardItemList[0][`mem_ID`],
+                    date: _boardItemList[0][`${_main}_REGISTER`],
+                    image: _boardItemList[0][`${_main}_IMAGE`] || '',
+                    description: _boardItemList[0][`${_main}_DESCRIPTION`]
+                });
+            }
         }
-    }, []);
+    }, [boardItemList, globalState.main, globalState.num]); // 2020-10-31 boardItemList, globalState.main, globalState.num 추가
     return (
         <Container>
             {globalState.main} <br/>

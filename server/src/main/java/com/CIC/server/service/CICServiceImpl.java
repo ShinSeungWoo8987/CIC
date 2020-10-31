@@ -4,9 +4,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.CIC.server.mapper.CICMapper;
+import com.CIC.server.model.Career;
 import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
-import com.CIC.server.model.GetProject;
+import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Notice;
 import com.CIC.server.model.Project;
@@ -37,12 +38,12 @@ public class CICServiceImpl implements CICService {
 		return this.cicMapper.getProjectList(searchProject);
 	}
 	@Override
-	public GetProject getProject(int projectNumber) {
+	public ProjectList getProject(int projectNumber) {
 		return this.cicMapper.getProject(projectNumber);
 	}
 	@Override
-	public int getProjectCnt(SearchProject searchProject) {
-		return this.cicMapper.getProjectCnt(searchProject);
+	public int getProjectListCnt(SearchProject searchProject) {
+		return this.cicMapper.getProjectListCnt(searchProject);
 	}
 	@Override
 	public void addFunding(Funding funding) {
@@ -52,6 +53,22 @@ public class CICServiceImpl implements CICService {
 	public void updateMember(Member member) {
 		this.cicMapper.updateMember(member);
 	}
+	@Override
+	public void deleteMember(String id) {
+		this.cicMapper.deleteMember(id);
+	}
+	@Override
+	public List<Project> getFundingProjectList(SearchProject searchProject) {
+		return this.cicMapper.getFundingProjectList(searchProject);
+	}
+	@Override
+	public int getFundingProjectListCnt(SearchProject searchProject) {
+		return this.cicMapper.getFundingProjectListCnt(searchProject);
+	}
+	
+	
+	
+	
 	
 	@Override
 	public List<Type> getTypeList() {
@@ -84,6 +101,11 @@ public class CICServiceImpl implements CICService {
 	}
 	
 	@Override
+	public String searchNoticeCnt(String key) {
+		return this.cicMapper.searchNoticeCnt(key);
+	}
+	
+	@Override
 	public List<Notice> getNoticeList(int startNum, int endNum) {
 		return this.cicMapper.getNoticeList(startNum, endNum);
 	}
@@ -91,6 +113,10 @@ public class CICServiceImpl implements CICService {
 	@Override
 	public String getEventCnt() {
 		return this.cicMapper.getEventCnt();
+	}
+	@Override
+	public String searchEventCnt(String key) {
+		return this.cicMapper.searchEventCnt(key);
 	}
 	@Override
 	public List<Event> getEventList(int startNum, int endNum) {
@@ -103,6 +129,10 @@ public class CICServiceImpl implements CICService {
 	@Override
 	public List<ServiceCenter> getServiceCenterList(int startNum, int endNum) {
 		return this.cicMapper.getServiceCenterList(startNum, endNum);
+	}
+	@Override
+	public String searchServiceCenterCnt(String key) {
+		return this.cicMapper.searchServiceCenterCnt(key);
 	}
 	@Override
 	public List<Notice> searchNoticeList(int startNum, int endNum, String key) {
@@ -118,6 +148,11 @@ public class CICServiceImpl implements CICService {
 	}
 	
 	@Override
+	public void updateEvent(Event event) {
+		this.cicMapper.updateEvent(event);
+	}
+	
+	@Override
 	public void updateNotice(Notice notice) {
 		this.cicMapper.updateNotice(notice);
 	}
@@ -127,8 +162,61 @@ public class CICServiceImpl implements CICService {
 	}
 	
 	@Override
-	public void updateEvent(Event event) {
-		this.cicMapper.updateEvent(event);
+	public void deleteEvent(int num) {
+		this.cicMapper.deleteEvent(num);
+	}
+	
+	@Override
+	public void deleteNotice(int num) {
+		this.cicMapper.deleteNotice(num);
+	}
+	
+	@Override
+	public void deleteServiceCenter(int num) {
+		this.cicMapper.deleteServiceCenter(num);
+	}
+	
+	@Override
+	public void addCareer(Career career) {
+		this.cicMapper.addCareer(career);
+	}
+	
+	@Override
+	public List<Member> getMemberList(int startNum, int endNum) {
+		return this.cicMapper.getMemberList(startNum,endNum);
+	}
+	
+	@Override
+	public List<Member> getCreatorRequestList(int startNum, int endNum) {
+		return this.cicMapper.getCreatorRequestList(startNum,endNum);
+	}
+	
+	@Override
+	public List<Member> searchMemberList(String key, int startNum, int endNum) {
+		return this.cicMapper.searchMemberList(key,startNum,endNum);
+	}
+	
+	@Override
+	public List<Member> searchCreatorRequestList(String key, int startNum, int endNum) {
+		return this.cicMapper.searchCreatorRequestList(key,startNum,endNum);
+	}
+	
+	@Override
+	public int getMemberCnt() {
+		return this.cicMapper.getMemberCnt();
+	}
+	@Override
+	public int getCreatorRequestMemberCnt() {
+		return this.cicMapper.getCreatorRequestMemberCnt();
+	}
+	
+	@Override
+	public int searchMemberCnt(String key) {
+		return this.cicMapper.searchMemberCnt(key);
+	}
+	@Override
+	public int searchCreatorRequestMemberCnt(String key) {
+		return this.cicMapper.searchCreatorRequestMemberCnt(key);
 	}
 	
 

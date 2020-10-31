@@ -5,7 +5,7 @@ import Store from '../Store/Store';
 function Search() {
   const { searchProjectDispatch, globalStateDispatch } = useContext(Store);
   const [displayInput, setDisplayInput] = useState(false);
-  // globalState 값 변경 시 검색값 초기화 유무 결정 필요 & KeyPress 제거?
+  // globalState 값 변경 시 검색값 초기화 유무 결정 필요
   const searchRef = useRef();
   const SearchImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/Search.png`;
   // Search Submit
@@ -48,7 +48,7 @@ const Left = Styled.div`
 const Container = Styled(Left)`
   position: fixed;
   // margin-left: ${({margin})=>margin};
-  margin-left: 60%;
+  margin-left: 1060px;
   width: 235px;
   height: 46px;
 `
@@ -66,7 +66,6 @@ const Input = Styled.input`
   text-indent: 10px;
   border: none;
   border-radius: 5px;
-  ime-mode: active;
   margin: 5px 0 0 0;
 `
 const ImageContainer = Styled(Left)`

@@ -42,15 +42,17 @@ function BoardDetails(props) {
         if (globalState.main === 'notice') _main = 'notice';
         if (globalState.main === 'center') _main = 'service_center';
         console.log(selectedItem.id);
-        axios.delete(`/${globalState.main}/delete/${selectedItem.id}`).then(res=>console.log(res)).catch(err=>console.log(err));
-        globalStateDispatch({
-            type: 'GLOBAL', payload: {
-                main: globalState.main,
-                sub: 'all',
-                action: globalState.action,
-                num: globalState.num
-            }
-        })
+        axios.delete(`/${_main}/delete/${selectedItem.id}`).then(res=>{
+            console.log(res);
+            globalStateDispatch({
+                type: 'GLOBAL', payload: {
+                    main: globalState.main,
+                    sub: 'all',
+                    action: globalState.action,
+                    num: globalState.num
+                }
+            });
+        }).catch(err=>console.log(err));
     }
 
     useEffect(() => {
@@ -67,7 +69,7 @@ function BoardDetails(props) {
             image: _boardItemList[0][`${_main}_IMAGE`] || '',
             description: _boardItemList[0][`${_main}_DESCRIPTION`]
         });
-    }, []);
+    }, [globalState, boardItemList]); // 2020-10-31 - globalState & boardItemList 추가
     return (
         <Container>
             <Title>

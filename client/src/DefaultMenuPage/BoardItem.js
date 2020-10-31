@@ -38,8 +38,9 @@ const Container = styled.div`
 const Upside = styled.div`
     padding-left: 20px;
     padding-top: 10px;
-    font-size: 28px;
+    font-size: 18px;
     height: 40px;
+    font-weight: bold;
 `
 const Downside = styled.div`
     padding-left: 20px;

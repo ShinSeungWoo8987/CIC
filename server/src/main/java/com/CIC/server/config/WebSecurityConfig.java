@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -14,12 +15,25 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.DefaultHttpFirewall;
+import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+	// '//'문자열 허용
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+	    web.httpFirewall(defaultHttpFirewall());
+	}
+	 
+	@Bean
+	public HttpFirewall defaultHttpFirewall() {
+	    return new DefaultHttpFirewall();
+	}
+
 
     @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -61,8 +75,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.antMatchers("/authenticate/pw").hasAnyRole("USER","CREATOR","ADMIN")
             	.antMatchers("/authenticate").permitAll()
             	.antMatchers("/member/update").hasAnyRole("USER","CREATOR","ADMIN")
+            	.antMatchers("/member/delete").hasAnyRole("USER","ADMIN")
             	.antMatchers("/member/idList").permitAll()
             	.antMatchers("/member").hasAnyRole("USER","CREATOR","ADMIN")
+            	.antMatchers("/fundingList/maxPage").hasAnyRole("USER","CREATOR")
+            	.antMatchers("/fundingList/list").hasAnyRole("USER","CREATOR","ADMIN")
             	.antMatchers("/funding").hasAnyRole("USER","CREATOR","ADMIN")
             	.antMatchers("/project/list").permitAll()
             	.antMatchers("/project/maxPage").permitAll()

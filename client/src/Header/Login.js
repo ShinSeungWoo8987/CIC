@@ -78,7 +78,7 @@ function Login() {
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     }
     return(
-        <Container>
+        <Container margin={session.state?'1300px':'1315px'}>
             <LinkModal onClick={(e)=>openLoginModal(e)}>{session.state?'로그아웃':'로그인'}</LinkModal>
             <Modal 
                 isOpen={modalState.login}
@@ -107,7 +107,7 @@ export default Login;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Container = Styled.div`
     position: fixed;
-    margin-left: 73%;
+    margin: ${({margin}) => "0 0 0 "+margin};
 `
 const LinkModal = Styled.a`
     font-size: 16px;

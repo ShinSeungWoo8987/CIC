@@ -6,15 +6,25 @@ import ReadBoard from '../DefaultMenuPage/ReadBoard';
 import ProjectDetails from '../ProjectDetails/ProjectDetails';
 import AddProject from '../AddProject/AddProject';
 import AddBoard from '../Board/AddBoard';
+import ProjectList from '../InformationPage/ProjectList';
+import RequestCreator from '../DefaultMenuPage/RequestCreator';
+import MemberList from '../DefaultMenuPage/MemberList';
 
 function MainView() {
     const { globalState } = useContext(Store);
-    // 임시로 펀딩목록 및 메인페이지 같이 표현 - 실제로 동일한 코드
-    const mainPage = ['all', 'tech', 'travel', 'fashion', 'fundingList']; // Main Page Menu List
+    const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
+    const informationPage = ['fundingList', 'projectList','projectListAll'];
     var idx = 0;
     while (idx<mainPage.length){
         if(mainPage[idx] === globalState.main){
             return <Container><Main/></Container>;
+        }
+        idx += 1;
+    }
+    idx = 0;
+    while (idx<informationPage.length){
+        if(informationPage[idx] === globalState.main){
+            return <Container><ProjectList/></Container>;
         }
         idx += 1;
     }
@@ -30,7 +40,12 @@ function MainView() {
     if(globalState.main==='event' || globalState.main==='notice' || globalState.main==='center'){
         return <ReadBoard/>;
     }
-    return <ReadBoard/>;
+    if(globalState.main==='requestCreator'){
+        return <RequestCreator/>;
+    }
+    if(globalState.main==='acceptCreator' || globalState.main==='memberList'){
+        return <MemberList/>;
+    }
 }
 export default MainView;
 

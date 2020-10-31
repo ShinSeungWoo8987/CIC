@@ -21,6 +21,5 @@ public class Member {
 	private String mem_register;
 	private int gra_number;
 	
-	public Member() {
-	}
+	public Member() {}
 }
