@@ -80,6 +80,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.antMatchers("/member").hasAnyRole("USER","CREATOR","ADMIN")
             	.antMatchers("/fundingList/maxPage").hasAnyRole("USER","CREATOR")
             	.antMatchers("/fundingList/list").hasAnyRole("USER","CREATOR","ADMIN")
+            	.antMatchers("/fundingMemberList/maxPage").hasAnyRole("CREATOR")
+            	.antMatchers("/fundingMemberList/list").hasAnyRole("CREATOR")
             	.antMatchers("/funding").hasAnyRole("USER","CREATOR","ADMIN")
             	.antMatchers("/projectList/maxPage").hasAnyRole("CREATOR","ADMIN")
             	.antMatchers("/projectList/list").hasAnyRole("CREATOR","ADMIN")

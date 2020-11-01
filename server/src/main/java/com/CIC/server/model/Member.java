@@ -21,5 +21,7 @@ public class Member {
 	private String mem_register;
 	private int gra_number;
 	
+	private int fundingCnt;
+	
 	public Member() {}
 }

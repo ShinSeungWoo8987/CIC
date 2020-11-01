@@ -16,16 +16,15 @@ public class Util {
 	}
 	
 	// 프로젝트 개수에 따라 최종 페이지 번호 반환
-		public int getMaxPage(int projectCnt) {
-			int pagePerProjectCnt = 8;
-			if (projectCnt == 0)
+		public int getMaxPage(int itemCnt, int pagePerCnt) {
+			if (itemCnt == 0)
 				return 0; 
-			if (projectCnt < pagePerProjectCnt)
+			if (itemCnt < pagePerCnt)
 				return 1;
-			if(projectCnt%pagePerProjectCnt==0) 
-				return projectCnt/pagePerProjectCnt;
-			if(projectCnt%pagePerProjectCnt!=0) 
-				return projectCnt/pagePerProjectCnt+1;
+			if(itemCnt%pagePerCnt==0) 
+				return itemCnt/pagePerCnt;
+			if(itemCnt%pagePerCnt!=0) 
+				return itemCnt/pagePerCnt+1;
 			return 0;
 		}
 }

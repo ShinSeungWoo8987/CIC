@@ -22,6 +22,7 @@ import com.CIC.server.util.Util;
 
 @RestController(value="projectContoller")
 public class ProjectController {
+	int pagePerCnt = 8;
 
 	@Autowired
 	private CICService cicService;
@@ -65,7 +66,7 @@ public class ProjectController {
 	        	try {
 	        		int projectListCnt = this.cicService.getMainProjectListCnt(searchProject);
 	        		try {
-	        			int maxPage = this.util.getMaxPage(projectListCnt);
+	        			int maxPage = this.util.getMaxPage(projectListCnt, pagePerCnt);
 	        			return maxPage;
 	        		}catch (Exception e) {
 	        			System.out.println("ProjectController getMainMaxPage Error Message : Method-getMaxPage Error");
@@ -91,10 +92,9 @@ public class ProjectController {
 			});
 	        try {
 	        	int page = Integer.parseInt(values.get(0));
-	    	    int listCnt = 8;
 	            SearchProject searchProject = SearchProject.builder()
-	            		.startNumber((1+(page-1)*listCnt)+"")
-	            		.finishNumber((page*listCnt)+"")
+	            		.startNumber((1+(page-1)*pagePerCnt)+"")
+	            		.finishNumber((page*pagePerCnt)+"")
 	            		.search(values.get(1))
 	            		.type(this.util.getType(values.get(2)))
 	            		.subMenu(values.get(3))
@@ -132,7 +132,7 @@ public class ProjectController {
 	        	try {
 	        		int fundingProjectListCnt = this.cicService.getFundingProjectListCnt(searchProject);
 	        		try {
-	        			int maxPage = this.util.getMaxPage(fundingProjectListCnt);
+	        			int maxPage = this.util.getMaxPage(fundingProjectListCnt, pagePerCnt);
 	        			return maxPage;
 	        		}catch (Exception e) {
 	        			System.out.println("ProjectController getFudningMaxPage Error Message : Method-getMaxPage Error");
@@ -160,10 +160,9 @@ public class ProjectController {
 			});
 	        try {
 	        	int page = Integer.parseInt(values.get(0));
-	    	    int listCnt = 8;
 	            SearchProject searchProject = SearchProject.builder()
-	            		.startNumber((1+(page-1)*listCnt)+"")
-	            		.finishNumber((page*listCnt)+"")
+	            		.startNumber((1+(page-1)*pagePerCnt)+"")
+	            		.finishNumber((page*pagePerCnt)+"")
 	            		.subMenu(values.get(1))
 	            		.id(username)
 	            		.build();
@@ -200,7 +199,7 @@ public class ProjectController {
 	        	try {
 	        		int fundingProjectListCnt = this.cicService.getProjectListCnt(searchProject);
 	        		try {
-	        			int maxPage = this.util.getMaxPage(fundingProjectListCnt);
+	        			int maxPage = this.util.getMaxPage(fundingProjectListCnt, pagePerCnt);
 	        			return maxPage;
 	        		}catch (Exception e) {
 	        			System.out.println("ProjectController getMaxPage Error Message : Method-getMaxPage Error");
@@ -229,10 +228,9 @@ public class ProjectController {
 			});
 	        try {
 	        	int page = Integer.parseInt(values.get(0));
-	    	    int listCnt = 8;
 	            SearchProject searchProject = SearchProject.builder()
-	            		.startNumber((1+(page-1)*listCnt)+"")
-	            		.finishNumber((page*listCnt)+"")
+	            		.startNumber((1+(page-1)*pagePerCnt)+"")
+	            		.finishNumber((page*pagePerCnt)+"")
 	            		.subMenu(values.get(1))
 	            		.id(username)
 	            		.build();
@@ -265,7 +263,7 @@ public class ProjectController {
 	        	try {
 	        		int fundingProjectListCnt = this.cicService.getProjectListAllCnt(searchProject);
 	        		try {
-	        			int maxPage = this.util.getMaxPage(fundingProjectListCnt);
+	        			int maxPage = this.util.getMaxPage(fundingProjectListCnt, pagePerCnt);
 	        			return maxPage;
 	        		}catch (Exception e) {
 	        			System.out.println("ProjectController getAlltMaxPage Error Message : Method-getMaxPage Error");
@@ -291,10 +289,9 @@ public class ProjectController {
 			});
 	        try {
 	        	int page = Integer.parseInt(values.get(0));
-	    	    int listCnt = 8;
 	            SearchProject searchProject = SearchProject.builder()
-	            		.startNumber((1+(page-1)*listCnt)+"")
-	            		.finishNumber((page*listCnt)+"")
+	            		.startNumber((1+(page-1)*pagePerCnt)+"")
+	            		.finishNumber((page*pagePerCnt)+"")
 	            		.subMenu(values.get(1))
 	            		.build();
 	            try {

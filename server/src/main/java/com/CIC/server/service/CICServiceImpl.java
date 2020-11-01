@@ -7,6 +7,7 @@ import com.CIC.server.mapper.CICMapper;
 import com.CIC.server.model.Career;
 import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
+import com.CIC.server.model.FundingMember;
 import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Notice;
@@ -80,6 +81,14 @@ public class CICServiceImpl implements CICService {
 	@Override
 	public int getFundingProjectListCnt(SearchProject searchProject) {
 		return this.cicMapper.getFundingProjectListCnt(searchProject);
+	}
+	@Override
+	public List<FundingMember> getFundingMemberList(String search, String number, int startNumber, int endNumber) {
+		return this.cicMapper.getFundingMemberList(search, number, startNumber, endNumber);
+	}
+	@Override
+	public int getFundingMemberListCnt(String search, String number) {
+		return this.cicMapper.getFundingMemberListCnt(search, number);
 	}
 	
 	
@@ -243,6 +252,4 @@ public class CICServiceImpl implements CICService {
 	public void handleCreatorRequest(String decision, String userId) {
 		this.cicMapper.handleCreatorRequest(decision, userId);
 	}
-	
-
 }

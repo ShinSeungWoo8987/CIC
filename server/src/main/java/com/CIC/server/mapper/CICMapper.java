@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.CIC.server.model.Career;
 import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
+import com.CIC.server.model.FundingMember;
 import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Notice;
@@ -32,6 +33,8 @@ public interface CICMapper {
 	public int getProjectListCnt(SearchProject searchProject);
 	public List<Project> getProjectListAll(SearchProject searchProject);
 	public int getProjectListAllCnt(SearchProject searchProject);
+	public List<FundingMember> getFundingMemberList(String search, String number, int startNumber, int endNumber);
+	public int getFundingMemberListCnt(String search, String number);
 	
 	
 	
