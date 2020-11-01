@@ -3,12 +3,13 @@ import Styled from "styled-components" // styled-components 라이브러리를 �
 import Store from '../Store/Store';
 import Item from '../Components/Item';
 import { post } from 'axios'
+import Paging from '../Components/Paging';
 
 function ProejctList() {
-    const { globalState, pageCnt, pageCntDispatch } = useContext(Store);
+    const { globalState, pageCnt } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
-    const [ paging, setPaging ] = useState('');
+    // const [ paging, setPaging ] = useState('');
     // Get Max Page
     useEffect(() => {
         const url = `/${globalState.main}/maxPage`;
@@ -41,33 +42,6 @@ function ProejctList() {
             setProjectList(newProjectList);
         })
     }, [ globalState, pageCnt.value ]);
-    // Page Setting
-    useEffect(() => {
-        var idx = 1;
-        const newPaging = [];
-        while(idx<=maxPage){
-            if(idx===pageCnt.value){
-                newPaging.push(
-                    <SelectPage key={idx}>[{idx}]</SelectPage>
-                );
-            }else{
-                newPaging.push(
-                    <Page key={idx} id={idx} onClick={(e) => movePage(e)}>[{idx}]</Page>
-                );
-            }
-            idx++;
-        }
-        setPaging(newPaging);
-    }, [ maxPage, pageCnt.value ]);
-    // Move Page
-    const movePage = (e) => {
-        e.preventDefault();
-        const newPageCnt = {
-            value: Number(e.target.id)
-        }
-        pageCntDispatch({type: 'MOVE_PAGE', payload: newPageCnt});
-    }
-
     // Navigation Setting
     let _category = '';
     let _period = '';
@@ -88,9 +62,7 @@ function ProejctList() {
             <ItemContainer>
                 {projectList}
             </ItemContainer>
-            <PageContainer>
-                {paging}
-            </PageContainer>
+            <Paging maxPage={maxPage}/>
             </>
             }
         </Container>

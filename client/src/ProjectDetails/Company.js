@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import Store from '../Store/Store';
+
+// 이메일 추가할 것???
 
 function Company(props) {
+    const { projectInformation } = useContext(Store);
     return <Container>
-        <Logo><LogoImg>LOGO</LogoImg></Logo>
+        <Logo><LogoImg src={projectInformation.logo}></LogoImg></Logo>
         <CompanyInfo>
-            <Creator>창작자 명</Creator>
+            <Creator>{projectInformation.creator}</Creator>
             <Email>Email@eamil.com</Email>
         </CompanyInfo>
     </Container>;
@@ -23,10 +27,11 @@ const Logo = styled.div`
     width: 50px;
     height: 50px;
 `
-const LogoImg = styled.div`
+const LogoImg = styled.img`
     border: 1px solid black;
     width:45px; height:45px;
     margin: 2.5px 2.5px;
+    border: none;
 `
 const CompanyInfo = styled.div`
     float:left;

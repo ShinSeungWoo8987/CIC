@@ -5,6 +5,7 @@ import Store from '../Store/Store';
 import ProjectNewsList from './ProjectNewsList';
 import ProjectSupport from './ProjectSupport';
 import Funding from './Funding';
+import FundingMemberList from './FundingMemberList';
 
 function DetailMain(props) {
     const { globalState } = useContext(Store);
@@ -17,6 +18,7 @@ function DetailMain(props) {
         <Container>
             {content}
             <Funding/>
+            <FundingMemberList/>
         </Container>
     );
 }

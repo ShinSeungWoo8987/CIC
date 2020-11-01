@@ -183,15 +183,10 @@ const Section = styled.div`
     z-index: 3;
     height: 30px;
     float: left;
-    margin: 0 31px;
+    margin: 0 30px;
 `
-const LineSection = styled.div`
-    cursor: pointer;
-    z-index: 3;
-    height: 30px;
+const LineSection = styled(Section)`
     border-bottom: 3px solid #83E538;
-    float: left;
-    margin: 0 31px;
 `
 const List = styled.div`
 float: left;

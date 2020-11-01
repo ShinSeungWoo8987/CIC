@@ -3,7 +3,7 @@ import Styled from 'styled-components';
 import Store from '../Store/Store';
 
 function SubMenu(){
-    const { globalState, globalStateDispatch, mainPageCntDispatch, searchProjectDispatch } = useContext(Store);
+    const { globalState, globalStateDispatch, pageCntDispatch, searchProjectDispatch } = useContext(Store);
     const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
     const projectListPage = ['fundingList','projectList','projectListAll']
     let menuList = [];
@@ -49,10 +49,10 @@ function SubMenu(){
             num:0
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
-        const newMainPageCnt = {
+        const newPageCnt = {
             value: 1
         }
-        mainPageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
+        pageCntDispatch({ type: 'MOVE_PAGE', payload: newPageCnt});
         const newSearchProject = {
             value: ''
           }
@@ -81,7 +81,11 @@ function SubMenu(){
         idx += 1;
     }
     return(
-        <Container margin={globalState.main==='projectDetails'?"265px":"0px"} width={globalState.main==='projectDetails'?"1080px":"1920px"}>
+        <Container 
+            margin={globalState.main==='projectDetails'?"265px":"0px"} 
+            width={globalState.main==='projectDetails'?"1080px":"1920px"}
+            height={globalState.main==='event' || globalState.main==='notice' || globalState.main==='center' ||
+                    globalState.main==='adminGradeUp' || globalState.main==='userList'?'0px':'auto'}>
             <Menu>
                 {menu}
             </Menu>
@@ -95,6 +99,7 @@ const Left = Styled.div`
 `
 const Container = Styled(Left)`
     width: ${({width}) => width};
+    height: ${({height}) => height};
     background-color: white;
     opacity: 0.8;
     margin: ${({margin}) => "0 0 0 "+margin};

@@ -12,7 +12,6 @@ import MemberList from '../DefaultMenuPage/MemberList';
 
 function MainView() {
     const { globalState } = useContext(Store);
-    console.log(globalState);
 
     if(globalState.main==='all' || globalState.main==='tech' || globalState.main==='travel' || globalState.main==='fashion'){
         return <Container><Main/></Container>;

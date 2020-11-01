@@ -43,7 +43,7 @@ const Upside = styled.div`
     font-weight: bold;
 `
 const Downside = styled.div`
-    padding-left: 20px;
+    padding-left: 15px;
     font-size: 15px;
     height: 40px;
 `
@@ -53,7 +53,7 @@ const LeftSide = styled.div`
 `
 const RightSide = styled.div`
   float: left;
-  padding: 3px 20px 0 0;
+  padding: 3px 15px 0 0;
   width: 12.7%
 `
 const Img = styled.img`

@@ -34,6 +34,10 @@ public class CICServiceImpl implements CICService {
 		return this.cicMapper.getMember(id);
 	}
 	@Override
+	public ProjectList getProject(int projectNumber) {
+		return this.cicMapper.getProject(projectNumber);
+	}
+	@Override
 	public List<Project> getMainProjectList(SearchProject searchProject) {
 		return this.cicMapper.getMainProjectList(searchProject);
 	}
@@ -44,10 +48,6 @@ public class CICServiceImpl implements CICService {
 	@Override
 	public List<Project> getProjectList(SearchProject searchProject) {
 		return this.cicMapper.getProjectList(searchProject);
-	}
-	@Override
-	public ProjectList getProject(int projectNumber) {
-		return this.cicMapper.getProject(projectNumber);
 	}
 	@Override
 	public int getProjectListCnt(SearchProject searchProject) {

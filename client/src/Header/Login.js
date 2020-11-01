@@ -55,7 +55,7 @@ function Login() {
     // Login Modal Setting
     const openLoginModal = (e) => {
         e.preventDefault();
-        if(e.currentTarget.text==='로그아웃') document.location.href='/'
+        if(e.currentTarget.text==='로그아웃') document.location.href='/' // 이 부분은 logout 처리하는 부분으로 넘겨도 되는 것이 아닌가???
         if(localStorage.getItem('token') === null){
             const newModalState = {
                 login: true,

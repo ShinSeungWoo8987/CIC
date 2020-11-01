@@ -19,7 +19,7 @@ function Item(props){
             title: props.title,
             target: targetMoneyStr,
             logo: props.logo,
-            creator: props.name,
+            creator: props.creator,
             dDay: dDay,
             price: moneyFormat(props.price),
             fundingCnt: props.fundingCnt,

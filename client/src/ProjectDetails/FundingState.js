@@ -1,25 +1,56 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Styled from 'styled-components';
 import Store from '../Store/Store';
+import { get } from 'axios';
 import PercentBar from '../Components/PercentBar'
 
 function FundingState(props) {
-    const { session, modalStateDispatch, projectInformation } = useContext(Store);
+    const { session, globalState, modalStateDispatch, projectInformation } = useContext(Store);
     const dDayText = projectInformation.dDay==='마감'?'':'일';
-    const fundingBtn = projectInformation.dDay==='마감'?<CloseFudningBtn>마감</CloseFudningBtn>:<FundingBtn onClick={(e)=>openModal(e)}>펀딩하기</FundingBtn>
+    const [ fundingBtn, setfundingBtn ] = useState('');
+    // Get User Information & Setting
+    useEffect(() => {
+        const url = '/member'
+        const newFundingBtn = [];
+        newFundingBtn.push(
+            projectInformation.dDay==='마감'?<CloseFudningBtn key={1} >마감</CloseFudningBtn>:<FundingBtn key={2} onClick={(e, value)=>openModal(e,'funding')}>펀딩하기</FundingBtn>
+        );
+        get(url).then(res=>{
+            if(projectInformation.creator===res.data[0]){
+                newFundingBtn.pop();
+                newFundingBtn.push(
+                    <>
+                    <FundingBtn key={3} onClick={(e, value)=>openModal(e, 'list')}>참여자 목록</FundingBtn>
+                    <FundingBtn key={4} onClick={(e, value)=>openModal(e, 'delete')}>삭제하기</FundingBtn>
+                    </>
+                );
+            }
+            setfundingBtn(newFundingBtn);
+        })
+    }, [ globalState, session.token ]);
     // When Login & Non-Login, Modal Setting
-    const openModal = (e) => {
+    const openModal = (e, value) => {
         e.preventDefault();
-        if( session.state ) { //로그인상태
+        console.log(value);
+        if(value==='funding'){
+            if( session.state ) { //로그인상태
+                const newModalState = {
+                    funding: true
+                }
+                modalStateDispatch({type: 'CHANGE_MODALSTATE', payload: newModalState});
+            }else{ //로그아웃상태
+                const newModalState = {
+                    login: true
+                }
+                modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+            }
+        }else if(value==='list'){
             const newModalState = {
-                funding: true
+                fundingMemberList: true
             }
             modalStateDispatch({type: 'CHANGE_MODALSTATE', payload: newModalState});
-        }else{ //로그아웃상태
-            const newModalState = {
-                login: true
-            }
-            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        }else if(value==='delete'){
+            console.log("프로젝트 삭제 조건 및 기능 구현 필요");
         }
     }
     return  <CurrentStateContainer>
@@ -42,10 +73,9 @@ function FundingState(props) {
                 <SubContainer>
                     <Value>{projectInformation.dDay}</Value><BottomText>{dDayText}</BottomText>
                 </SubContainer>
-                {fundingBtn}
-            </CurrentStateContainer>;
+                {!fundingBtn?<CloseFudningBtn>준비중</CloseFudningBtn>:fundingBtn}
+            </CurrentStateContainer>
 }
-
 export default FundingState;
 
 const Left = Styled.div`

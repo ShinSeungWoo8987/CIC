@@ -9,7 +9,7 @@ import UpdateUser from '../MenuBar/UpdateUser';
 import Authority from '../MenuBar/Authority';
 
 function Head(props) {
-    const { session, globalState, modalStateDispatch, globalStateDispatch, searchProjectDispatch, mainPageCntDispatch } = useContext(Store);
+    const { session, globalState, modalStateDispatch, globalStateDispatch, searchProjectDispatch, pageCntDispatch } = useContext(Store);
     const [showMore, setShowMore] = useState(false);
 
     const categoryList = [
@@ -59,7 +59,7 @@ function Head(props) {
                 setMyInfoList(admin);
                 break;
         }
-    },[session.state, session.authority]); // 2020-10-31 - session.authority, admin, common, creator 추가
+    },[session.state, session.authority]); // 2020-10-31 - session.authority 추가
 
     const handleClick = e=>{
         e.preventDefault();
@@ -77,15 +77,14 @@ function Head(props) {
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         // 왼쪽의 메인 메뉴 클릭 시 검색값 초기화 - 이 부분은 추후 결정할 것
-        console.log(e.currentTarget.id);
         const newSearchProject = {
           value: ''
         }
         searchProjectDispatch({type:'SEARCH', payload:newSearchProject});
-        const newMainPageCnt = {
+        const newPageCnt = {
           value: 1
         }
-        mainPageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
+        pageCntDispatch({ type: 'MOVE_PAGE', payload: newPageCnt});
     }
 
     const changeState = (e) => {

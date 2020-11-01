@@ -17,9 +17,9 @@ public interface CICService {
 	List<String> getMemberIdList();
 	void addMember(Member member);
 	Member getMember(String id);
+	ProjectList getProject(int projectNumber);
 	List<Project> getMainProjectList(SearchProject searchProject);
 	int getMainProjectListCnt(SearchProject searchProject);
-	ProjectList getProject(int projectNumber);
 	void addFunding(Funding funding);
 	void updateMember(Member member);
 	void deleteMember(String id);
