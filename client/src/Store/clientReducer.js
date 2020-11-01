@@ -14,8 +14,8 @@ const sessionReducer = (state, { type, payload }) => {
 }
 
 const _globalState = {
-    main: 'projectDetails',
-    sub: 'introduction',
+    main: 'all',
+    sub: 'all',
     action: 1,
     num: 0
 }
@@ -52,19 +52,19 @@ const _modalState = {
 const modalStateReducer = (state, { type, payload }) => {
     switch (type) {
         default:
-            return false;
+            return _modalState;
         case 'CHANGE_MODALSTATE':
             return payload;
     }
 }
 
-const _searchProject = {
+const _search = {
     value: ''
 }
-const searchProjectReducer = (state, { type, payload }) => {
+const searchReducer = (state, { type, payload }) => {
     switch (type) {
         default:
-            return false;
+            return _search;
         case 'SEARCH':
             return payload;
     }
@@ -75,7 +75,7 @@ const _pageCnt = {
 const pageCntReducer = (state, { type, payload }) => {
     switch (type) {
         default:
-            return false;
+            return _pageCnt;
         case 'MOVE_PAGE':
             return payload;
     }
@@ -95,7 +95,7 @@ const _projectInformation = {
 const projectInformationReducer = (state, { type, payload }) => {
     switch (type) {
         default:
-            return false;
+            return projectInformationReducer;
         case 'PROJECT':
             return payload;
     }
@@ -158,7 +158,7 @@ const boardItemListReducer = (state, {type, payload})=>{
 }
 
 export {
-    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _searchProject, searchProjectReducer,
+    _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _search, searchReducer,
     _pageCnt, pageCntReducer, _projectInformation, projectInformationReducer,
     _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer, boardItemListReducer
 };

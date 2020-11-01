@@ -9,8 +9,9 @@ function Postcode() {
         login: modalState.login,
         postcode: false,
         updateUser: modalState.updateUser,
-        deleteUser: modalState.deleteUser,
-        funding: modalState.funding
+        authority: modalState.deleteUser,
+        funding: modalState.funding,
+        fundingMemberList: modalState.fundingMemberList
     }
     // Postcode Modal Setting
     const closePostcodeModal = (e) => {

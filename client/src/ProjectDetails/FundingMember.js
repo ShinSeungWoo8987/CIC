@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import Store from '../Store/Store';
 
-function FundingMember({id,name,phone,address,cnt, border, top, bottom, color, foneWeight}) {
+function FundingMember({id,name,phone,address,cnt, border, top, bottom, color, foneWeight, zIndex}) {
     return (
-        <Container border={border} borderTop={top} borderBottom={bottom} color={color} foneWeight={foneWeight}>
+        <Container border={border} borderTop={top} borderBottom={bottom} color={color} foneWeight={foneWeight} zIndex={zIndex}>
             <Id>{id}</Id>
             <Name>{name}</Name>
             <Phone>{phone}</Phone>
@@ -22,12 +21,13 @@ line-height: 30px;
 border: ${({border})=>`${border}`};
 border-top: ${({borderTop})=>`${borderTop}`};
 border-bottom: ${({borderBottom})=>`${borderBottom}`};
+box-shadow: 0px 3px #FAFAFA;
 padding: 5px 0;
-box-shadow: 0px 2px 3px lightgray;
 font-size: 16px;
 font-weight: ${({foneWeight})=>`${foneWeight}`};
 text-align: center;
 background-color: ${({color})=>`${color}`};
+z-index: ${({zIndex})=>`${zIndex}`};
 `
 const Id = styled.div`
 float: left;

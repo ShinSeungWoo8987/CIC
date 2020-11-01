@@ -9,7 +9,6 @@ function ProejctList() {
     const { globalState, pageCnt } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
-    // const [ paging, setPaging ] = useState('');
     // Get Max Page
     useEffect(() => {
         const url = `/${globalState.main}/maxPage`;
@@ -62,7 +61,7 @@ function ProejctList() {
             <ItemContainer>
                 {projectList}
             </ItemContainer>
-            <Paging maxPage={maxPage}/>
+            <Paging maxPage={maxPage} bottom='20px'/>
             </>
             }
         </Container>
@@ -87,29 +86,6 @@ const Navigation = Styled.div`
 const ItemContainer = Styled(Left)`
     width: 100%;
     height: 824px;
-`
-const PageContainer = Styled(Left)`
-    position: relative;
-    bottom: 20px;
-    left: 50%;
-    transform: translate(-50%);
-`
-const Page = Styled(Left)`
-    color: #A3A3A3;
-    font-weight: normal;
-    cursor: pointer;
-    margin: 0 5px; 
-    
-    &:hover {
-        color: black;
-        font-weight: bold;
-    }
-`
-const SelectPage = Styled(Page)`
-    font-weight: bold;
-    color: black;
-    text-shadow: 1px 1px 2px gray;
-    cursor: default;   
 `
 const Preparing = Styled(Navigation)`
     width: 100%;

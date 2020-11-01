@@ -43,19 +43,8 @@ function UpdateUser() {
     }
     // updateUser Modal Setting
     const closeUpdateUserModal = () => {
-        const newModalState = {
-            login: modalState.login,
-            postcode: modalState.postcode,
-            updateUser: false,
-            authority: modalState.authority,
-            funding: modalState.funding
-        }
-        modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
-        const newAddressValue = {
-            postcode: '',
-            address1: ''
-        }
-        addressValueDispatch({type: 'CHANGE_ADDRESS', payload: newAddressValue});
+        modalStateDispatch({type: "DEFAULT"});
+        addressValueDispatch({type: 'DEFAULT'});
     }
     // Postcode Modal Setting
     const openPostcodeModal = (e) => {

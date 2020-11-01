@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
 
-function Paging({maxPage}){
+function Paging({maxPage, bottom}){
     const { pageCnt, pageCntDispatch } = useContext(Store);
     const [ paging, setPaging ] = useState('');
     // Page Setting
@@ -30,7 +30,7 @@ function Paging({maxPage}){
         }
         pageCntDispatch({type: 'MOVE_PAGE', payload: newPageCnt});
     }
-    return  <PageContainer>
+    return  <PageContainer bottom={bottom}>
                 {paging}
             </PageContainer>
 }
@@ -39,7 +39,7 @@ export default Paging;
 const PageContainer = Styled.div`
     float: left;
     position: relative;
-    bottom: 20px;
+    bottom: ${({bottom})=>`${bottom}`};
     left: 50%;
     transform: translate(-50%);
 `

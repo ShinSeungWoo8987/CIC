@@ -3,7 +3,7 @@ import Styled from 'styled-components';
 import Store from '../Store/Store';
 
 function SubMenu(){
-    const { globalState, globalStateDispatch, pageCntDispatch, searchProjectDispatch } = useContext(Store);
+    const { globalState, globalStateDispatch, pageCntDispatch, searchDispatch } = useContext(Store);
     const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
     const projectListPage = ['fundingList','projectList','projectListAll']
     let menuList = [];
@@ -49,14 +49,8 @@ function SubMenu(){
             num:0
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
-        const newPageCnt = {
-            value: 1
-        }
-        pageCntDispatch({ type: 'MOVE_PAGE', payload: newPageCnt});
-        const newSearchProject = {
-            value: ''
-          }
-          searchProjectDispatch({type:'SEARCH', payload:newSearchProject});
+        pageCntDispatch({ type: 'DEFAULT'});
+        searchDispatch({type:'DEFAULT'});
     }
     // Sub Menu List Setting
     idx=0;
@@ -85,7 +79,8 @@ function SubMenu(){
             margin={globalState.main==='projectDetails'?"265px":"0px"} 
             width={globalState.main==='projectDetails'?"1080px":"1920px"}
             height={globalState.main==='event' || globalState.main==='notice' || globalState.main==='center' ||
-                    globalState.main==='adminGradeUp' || globalState.main==='userList'?'0px':'auto'}>
+                    globalState.main==='adminGradeUp' || globalState.main==='userList' ||
+                    globalState.main==='gradeUp' || globalState.main==='addProject'?'0px':'auto'}>
             <Menu>
                 {menu}
             </Menu>

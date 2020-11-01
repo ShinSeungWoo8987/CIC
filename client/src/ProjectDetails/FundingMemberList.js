@@ -1,53 +1,83 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Styled, { keyframes } from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
+import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Modal from 'react-modal';
 import Store from '../Store/Store';
 import { post } from 'axios';
 import FundingMember from './FundingMember';
+import Paging from '../Components/Paging';
+import Search from '../Components/Search';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function FundingMemberList() {
-    const { modalState, modalStateDispatch, searchProject, pageCnt, projectInformation } = useContext(Store);
+    const { modalState, modalStateDispatch, search, searchDispatch, pageCnt, pageCntDispatch, projectInformation } = useContext(Store);
     const [ fundingMemberList, setFundingMemberList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
-    // Get Max Page - 무한 스크롤 구현 후 제거
+    // Get Max Page
     useEffect(() => {
         const url = '/fundingMemberList/maxPage';
         const data = {
-            search: searchProject.value,
-            number: projectInformation.number
+            search: search.value,
+            number: projectInformation.number+''
         }
         post(url, data).then(res=>{
             setMaxPage(res.data)
         })
-    }, [ searchProject, modalState.fundingMemberList ]);
+    }, [ search, modalState.fundingMemberList, projectInformation.number ]);
     // Get Project List
     useEffect(() => {
         const url = '/fundingMemberList/list';
         const data = {
-            search: searchProject.value,
-            number: projectInformation.number
+            search: search.value,
+            number: projectInformation.number+'',
+            page: pageCnt.value+''
         }
+        const newFundingMemberList = [];
         post(url, data).then(res=>{
             console.log(res.data);
+            var idx = 0;
+            while(idx < res.data.length){
+                // 마지막 라인에 별도의 효과를 줘야하는 경우 사용 - 없으면 나중에 제거할 것
+                // if(idx===res.data.length-1){
+                //     newFundingMemberList.push(
+                //         <FundingMember key={idx} id={res.data[idx].id} name={res.data[idx].name} phone={res.data[idx].phone} address={res.data[idx].address} cnt={res.data[idx].fundingCnt+'회'} top='none' bottom='4px solid #FAFAFA' color='white' foneWeight='bold'/>
+                //     )
+                //     idx++;
+                //     continue;
+                // }
+                newFundingMemberList.push(
+                    <FundingMember key={idx} id={res.data[idx].id} name={res.data[idx].name} phone={res.data[idx].phone} address={res.data[idx].address} cnt={res.data[idx].fundingCnt+'회'} top='none' bottom='none' color='white' foneWeight='bold'/>
+                )
+                idx++;
+            }
+            setFundingMemberList(newFundingMemberList);
         })
-    }, [ searchProject, modalState.fundingMemberList, pageCnt ]);
+    }, [ search, modalState.fundingMemberList, pageCnt, projectInformation.number ]);
     // Funding Modal Setting
     const closeModal = (e) => {
-        const newModalState = {
-            fundingMemberList: false
-        }
-        modalStateDispatch({type: 'CHANGE_MODALSTATE', payload: newModalState});
+        modalStateDispatch({type: 'DEFAULT'});
+        pageCntDispatch({type: 'DEFAULT'});
+        searchDispatch({type: 'DEFAULT'});
     }
     return <Modal 
-                isOpen= { !modalState.fundingMemberList }
+                isOpen= { modalState.fundingMemberList }
                 style={ FundingMemberListModalStyle }
                 onRequestClose={(e) => closeModal(e)}
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
-                <FundingMember id='아이디' name='이름' phone='번호' address='주소' cnt='참여횟수' border='none' top='none' bottom='none' color='#FAFAFA' foneWeight='bold'/>
-                {!fundingMemberList?<Preparing>목록을 불러오는 중입니다 . . .</Preparing>:'없넹?'}
+                <Text>펀딩 참여자 명단</Text>
+                <FundingMember id='아이디' name='이름' phone='번호' address='주소' cnt='참여횟수' top='none' bottom='none' color='#FAFAFA' foneWeight='bold' zIndex='1'/>
+                {!fundingMemberList?<Preparing>목록을 불러오는 중입니다 . . .</Preparing>:
+                    <>
+                        <Container>
+                            <SubContainer key={1} height='480px'>
+                            {fundingMemberList}
+                            </SubContainer>
+                        </Container>
+                        <Search />
+                        <Paging maxPage={maxPage} bottom='-10px'/>
+                    </>
+                }
             </Modal>
 }
 export default FundingMemberList;
@@ -77,6 +107,29 @@ const Preparing = Styled.div`
         100% { width: 215px; }
     }
 `
+const Text = Styled.div`
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin: 0 0 10px 0;
+`
+const Container = Styled.div`
+    margin: 0 0 30px 0;
+
+    animation-duration: 2s;
+    animation-name: showContainer;
+    animation-fill-mode: forwards;
+
+    @keyFrames showContainer {
+        0% { opacity: 0 }
+        100% { opacity: 1}
+    }
+`
+const SubContainer = Styled.div`
+    width: ${({width})=>`${width}`};
+    height: ${({height})=>`${height}`};
+    background-color: ${({bg})=>`${bg}`};
+`
 
 const FundingMemberListModalStyle = {
     overlay: {
@@ -86,10 +139,10 @@ const FundingMemberListModalStyle = {
     content: {
         position: "absolute",
         left: '13%',
-        top: '14%',
+        top: '13%',
         padding: '50px 125px',
         width: '60%',
-        height: '625px',
+        height: '650px',
         borderRadius: 10,
         boxShadow: '9px 9px 10px #4E4E4E'
     }

@@ -9,7 +9,7 @@ import UpdateUser from '../MenuBar/UpdateUser';
 import Authority from '../MenuBar/Authority';
 
 function Head(props) {
-    const { session, globalState, modalStateDispatch, globalStateDispatch, searchProjectDispatch, pageCntDispatch } = useContext(Store);
+    const { session, globalState, modalStateDispatch, globalStateDispatch, searchDispatch, pageCntDispatch } = useContext(Store);
     const [showMore, setShowMore] = useState(false);
 
     const categoryList = [
@@ -66,6 +66,7 @@ function Head(props) {
         setShowMore(!showMore);
     }
 
+    // Change GlobalState Main - DefaultMenu
     const changeDefaultMenuState = (e) => {
         e.preventDefault();
         setShowMore(!showMore);
@@ -76,17 +77,12 @@ function Head(props) {
             num:0
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
-        // 왼쪽의 메인 메뉴 클릭 시 검색값 초기화 - 이 부분은 추후 결정할 것
-        const newSearchProject = {
-          value: ''
-        }
-        searchProjectDispatch({type:'SEARCH', payload:newSearchProject});
-        const newPageCnt = {
-          value: 1
-        }
-        pageCntDispatch({ type: 'MOVE_PAGE', payload: newPageCnt});
+        // 검색 & 페이지 초기화
+        searchDispatch({type:'DEFAULT'});
+        pageCntDispatch({ type: 'DEFAULT'});
     }
 
+    // Change GlobalState Main - My Information
     const changeState = (e) => {
         e.preventDefault();
         setShowMore(!showMore);
@@ -120,6 +116,9 @@ function Head(props) {
             }
             globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         }
+        // 검색 & 페이지 초기화
+        searchDispatch({type:'DEFAULT'});
+        pageCntDispatch({ type: 'DEFAULT'});
     }
 
     return (

@@ -30,21 +30,14 @@ function Funding() {
     }, [ session.token, modalState.funding, addressValueDispatch ]); // 2020-10-31 - addressValueDispatch 추가
     // Funding Modal Setting
     const closeModal = (e) => {
-        const newAddressValue = {
-            postcode: '',
-            address1: ''
-        }
-        addressValueDispatch({type: 'CHANGE_ADDRESS', payload: newAddressValue});
+        addressValueDispatch({type: 'DEFAULT'});
         setUserInformation({
             id: '',
             name: '',
             phone: '',
             address2: ''
         })
-        const newModalState = {
-            funding: false
-        }
-        modalStateDispatch({type: 'CHANGE_MODALSTATE', payload: newModalState});
+        modalStateDispatch({type: 'DEFAULT'});
     }
     // Postcode Modal Setting
     const openPostcodeModal = (e) => {

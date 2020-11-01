@@ -6,7 +6,7 @@ import Modal from 'react-modal';
 import { logout } from '../Jwt/AuthenticationService';
 
 function Authority() {
-    const { modalState, modalStateDispatch, globalState, sessionDispatch } = useContext(Store);
+    const { modalState, modalStateDispatch, globalState, globalStateDispatch, sessionDispatch } = useContext(Store);
     const submit = globalState.action === 'updateUser'?'정보수정':'회원탈퇴'
     const [authorityMessage, setAuthorityMessage] = useState('');
     const [pwRef] = [useRef()];
@@ -35,8 +35,7 @@ function Authority() {
             if(res.data[0]==='Success'){
                 if(globalState.action === 'updateUser'){
                     const newModalState = {
-                        updateUser: true,
-                        authority: false
+                        updateUser: true
                     }
                     modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
                     setAuthorityMessage("");
@@ -48,15 +47,9 @@ function Authority() {
                     const url = '/member/delete'
                     post(url).then(res=>{
                         logout();
-                        sessionDispatch({type:'SESSION', payload: {
-                            state: false,
-                            authority: '',
-                            token: ''
-                        } });
-                        const newModalState = {
-                            authority: false
-                        }
-                        modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+                        sessionDispatch({type: 'DEFAULT'});
+                        globalStateDispatch({type: 'DEFAULT'})
+                        modalStateDispatch({type: "DEFALT"});
                         setAuthorityMessage("");
                     })
                 }
@@ -67,15 +60,8 @@ function Authority() {
     }
     // Authority Modal Setting
     const closeAuthorityModal = () => {
-        const newModalState = {
-            login: modalState.login,
-            postcode: modalState.postcode,
-            updateUser: modalState.updateUser,
-            authority: false,
-            funding: modalState.funding
-        }
         setAuthorityMessage("");
-        modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        modalStateDispatch({type: "DEFAULT"});
     }
     return(
         <Container>

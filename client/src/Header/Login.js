@@ -63,20 +63,12 @@ function Login() {
             modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
         }else{
             logout();
-            sessionDispatch({type:'SESSION', payload: {
-                state: false,
-                authority: '',
-                token: ''
-            } });
+            sessionDispatch({type:'DEFAULT'});
         }
     }
     const closeLoginModal = () => {
         setLoginMessage("");
-        const newModalState = {
-            login: false,
-            postcode: modalState.postcode
-        }
-        modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        modalStateDispatch({type:"DEFAULT"});
     }
     return(
         <Container margin={session.state?'1300px':'1315px'}>

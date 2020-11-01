@@ -5,7 +5,7 @@ import Item from '../Components/Item';
 import { post } from 'axios'
 
 function Main() {
-    const { globalState, searchProject, pageCnt, pageCntDispatch } = useContext(Store);
+    const { globalState, search, pageCnt, pageCntDispatch } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
@@ -13,21 +13,21 @@ function Main() {
     useEffect(() => {
         const url = '/main/maxPage';
         const data = {
-            search: searchProject.value,
+            search: search.value,
             main: globalState.main,
             sub: globalState.sub
         }
         post(url, data).then(res=>{
             setMaxPage(res.data)
         })
-    }, [ globalState, searchProject ]);
+    }, [ globalState, search ]);
     // Get Project List
     useEffect(() => {
         const newProjectList = [];
         const url = '/main/list';
         const data = {
             page: pageCnt.value+'',
-            search: searchProject.value,
+            search: search.value,
             main: globalState.main,
             sub: globalState.sub
         }
@@ -41,7 +41,7 @@ function Main() {
             }
             setProjectList(newProjectList);
         })
-    }, [ globalState, searchProject, pageCnt.value ]);
+    }, [ globalState, search, pageCnt.value ]);
     // Move Page - 무한 스크롤 구현 후 제거
     const moveMainPage = (e, direction) => {
         e.preventDefault();

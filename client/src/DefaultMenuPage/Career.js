@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Store from '../Store/Store';
 
 function Career({id,period_start,period_finish, agency, activity,career,setCareer}) {
-    const {globalState, globalStateDispatch} = useContext(Store);
+    const { globalState } = useContext(Store);
     
     const ChangeCareer = ()=>{
         setCareer(career.filter(i=>i.id!==id));

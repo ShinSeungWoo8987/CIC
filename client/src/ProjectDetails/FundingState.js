@@ -4,28 +4,26 @@ import Store from '../Store/Store';
 import { get } from 'axios';
 import PercentBar from '../Components/PercentBar'
 
-function FundingState(props) {
+function FundingState() {
     const { session, globalState, modalStateDispatch, projectInformation } = useContext(Store);
     const dDayText = projectInformation.dDay==='마감'?'':'일';
     const [ fundingBtn, setfundingBtn ] = useState('');
     // Get User Information & Setting
     useEffect(() => {
         const url = '/member'
-        const newFundingBtn = [];
-        newFundingBtn.push(
-            projectInformation.dDay==='마감'?<CloseFudningBtn key={1} >마감</CloseFudningBtn>:<FundingBtn key={2} onClick={(e, value)=>openModal(e,'funding')}>펀딩하기</FundingBtn>
-        );
         get(url).then(res=>{
             if(projectInformation.creator===res.data[0]){
-                newFundingBtn.pop();
-                newFundingBtn.push(
+                setfundingBtn(
                     <>
-                    <FundingBtn key={3} onClick={(e, value)=>openModal(e, 'list')}>참여자 목록</FundingBtn>
-                    <FundingBtn key={4} onClick={(e, value)=>openModal(e, 'delete')}>삭제하기</FundingBtn>
+                    <FundingBtn onClick={(e)=>openModal(e, 'list')}>참여자 목록</FundingBtn>
+                    <FundingBtn onClick={(e)=>openModal(e, 'delete')}>삭제하기</FundingBtn>
                     </>
                 );
+            }else{
+                setfundingBtn(
+                    projectInformation.dDay==='마감'?<CloseFudningBtn >마감</CloseFudningBtn>:<FundingBtn onClick={(e)=>openModal(e,'funding')}>펀딩하기</FundingBtn>
+                );
             }
-            setfundingBtn(newFundingBtn);
         })
     }, [ globalState, session.token ]);
     // When Login & Non-Login, Modal Setting
@@ -55,23 +53,23 @@ function FundingState(props) {
     }
     return  <CurrentStateContainer>
                 <Text>모인금액</Text><br />
-                <SubContainer>
-                    <Value>{projectInformation.save}</Value><BottomText>원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
+                <SubContainer key={1}>
+                    <Value >{projectInformation.save}</Value><BottomText >원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
                     <PercentBarContainer>
                         <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent}/>
                     </PercentBarContainer>
                 </SubContainer><br />
-                <Text>펀딩금액</Text><br />
-                <SubContainer>
-                    <Value>{projectInformation.price}</Value><BottomText>원</BottomText>
+                <Text >펀딩금액</Text><br />
+                <SubContainer key={2}>
+                    <Value >{projectInformation.price}</Value><BottomText >원</BottomText>
                 </SubContainer><br />
-                <Text>참여인원</Text><br />
-                <SubContainer>
-                    <Value>{projectInformation.fundingCnt}</Value><BottomText>명</BottomText>
+                <Text >참여인원</Text><br />
+                <SubContainer key={3}>
+                    <Value >{projectInformation.fundingCnt}</Value><BottomText >명</BottomText>
                 </SubContainer><br />
-                <Text>남은기간</Text><br />
-                <SubContainer>
-                    <Value>{projectInformation.dDay}</Value><BottomText>{dDayText}</BottomText>
+                <Text >남은기간</Text><br />
+                <SubContainer key={4}>
+                    <Value >{projectInformation.dDay}</Value><BottomText >{dDayText}</BottomText>
                 </SubContainer>
                 {!fundingBtn?<CloseFudningBtn>준비중</CloseFudningBtn>:fundingBtn}
             </CurrentStateContainer>
