@@ -16,9 +16,12 @@ function RequestCreator(props) {
         setCnt(cnt+1);
     }
     const onSubmit = (e)=>{
-        console.log(career);
-        //여기서 /creator/request로 career전달
-        put(`/creator/request`,{career}).then(res=>console.log(res)).catch(err=>console.log(err));
+        put(`/creator/request`,{career})
+            .then(res=>{
+                alert('신청이 완료되었습니다.');
+                document.location.href='/';
+            })
+            .catch(err=>console.log(err));
     }
     return (
         <Container>
@@ -39,6 +42,7 @@ function RequestCreator(props) {
 export default RequestCreator;
 
 const Container = styled.div`
+    margin-top: -54px;
     float: left;
     margin-left: 110px;
     width: 100%;

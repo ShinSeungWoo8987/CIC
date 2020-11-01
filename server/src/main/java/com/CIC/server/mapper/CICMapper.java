@@ -76,5 +76,12 @@ public interface CICMapper {
 	public List<Member> searchCreatorRequestList(String key, int startNum, int endNum);
 	
 	public int getMemberCnt();
+	public int searchMemberCnt(String key);
+	
 	public int getCreatorRequestMemberCnt();
+	public int searchCreatorRequestMemberCnt(String key);
+	
+	public List<Career> getCreatorRequestMember(String userId);
+	
+	public void handleCreatorRequest(String decision, String userId);
 }

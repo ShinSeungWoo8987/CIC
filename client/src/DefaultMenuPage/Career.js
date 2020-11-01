@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import Store from '../Store/Store';
 
 function Career({id,period_start,period_finish, agency, activity,career,setCareer}) {
+    const {globalState, globalStateDispatch} = useContext(Store);
     
     const ChangeCareer = ()=>{
         setCareer(career.filter(i=>i.id!==id));
@@ -17,22 +19,34 @@ function Career({id,period_start,period_finish, agency, activity,career,setCaree
     }
     return (
         <Container>
-            경력사항 &nbsp;<button onClick={()=>ChangeCareer()}>-</button> <br/>
+            {globalState.main==='adminGradeUp'?'':<>경력사항 &nbsp;<button onClick={()=>ChangeCareer()}>-</button> <br/></>}
             <Table>
                 <Period>
                     <Left>근무기간</Left>
                     <Right>
-                        <input type='date' id='period_start' onChange={e=>handleChange(e)}/>&nbsp;&nbsp;~&nbsp;&nbsp;
-                        <input type='date' id='period_finish' onChange={e=>handleChange(e)}/>
+                        {globalState.main==='adminGradeUp'?`${period_start.substr(0,10)}  ~  ${period_finish.substr(0,10)}`:
+                        <>
+                            <input type='date' id='period_start' onChange={e=>handleChange(e)}/>&nbsp;&nbsp;~&nbsp;&nbsp;
+                            <input type='date' id='period_finish' onChange={e=>handleChange(e)}/>
+                        </>
+                    }
                     </Right>
                 </Period>
                 <Agency>
                     <Left>기관명</Left>
-                    <Right><input type='text' id='agency' onChange={e=>handleChange(e)} placeholder="기관/회사명 입력"/></Right>
+                    <Right>
+                        {globalState.main==='adminGradeUp'?agency:
+                        <input type='text' id='agency' onChange={e=>handleChange(e)} placeholder="기관/회사명 입력"/>
+                        }
+                    </Right>
                 </Agency>
                 <Activity>
                     <Left>활동내역</Left>
-                    <Right><input type='text' id='activity' onChange={e=>handleChange(e)} placeholder="활동내역 입력"/></Right>
+                    <Right>
+                        {globalState.main==='adminGradeUp'?activity:
+                        <input type='text' id='activity' onChange={e=>handleChange(e)} placeholder="활동내역 입력"/>
+                        }
+                    </Right>
                 </Activity>
             </Table>
         </Container>

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.CIC.server.model.Career;
 import com.CIC.server.model.Member;
 import com.CIC.server.service.CICService;
 import com.CIC.server.util.Util;
@@ -152,7 +154,7 @@ public class MemberController {
     }
 	
 	@GetMapping("/memberCnt/{sort}")
-    public int getNoticeCnt(@PathVariable String sort) throws Exception {
+    public int getMemberCnt(@PathVariable String sort) throws Exception {
 		if(sort.equals("all")) {
 			int cnt = this.cicService.getMemberCnt();
 	        return cnt; 
@@ -160,5 +162,33 @@ public class MemberController {
 			int cnt = this.cicService.getCreatorRequestMemberCnt();
 	        return cnt; 
 		}
+    }
+	
+	@GetMapping("/memberCnt/{sort}/{key}")
+    public int searchMemberCnt(@PathVariable String sort, @PathVariable String key) throws Exception {
+		if(sort.equals("all")) {
+			int cnt = this.cicService.searchMemberCnt(key);
+	        return cnt; 
+		}else{
+			int cnt = this.cicService.searchCreatorRequestMemberCnt(key);
+	        return cnt; 
+		}
+    }
+	
+	@GetMapping("/creator_request/{userId}")
+    public List<Career> getCreatorRequestMember(@PathVariable String userId) throws Exception {
+		List<Career> career = this.cicService.getCreatorRequestMember(userId);
+		return career;
+    }
+	
+	@DeleteMapping ("/member/delete/{userId}")
+    public void deleteMember(@PathVariable String userId) throws Exception {
+		//관리자에서 아이디 삭제 - 연결필요
+		System.out.println(userId);
+    }
+	
+	@DeleteMapping ("/creator_request/{userId}/{decision}")
+    public void deleteCareer(@PathVariable String decision, @PathVariable String userId) throws Exception {
+		this.cicService.handleCreatorRequest(decision, userId);
     }
 }

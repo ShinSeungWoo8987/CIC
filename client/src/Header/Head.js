@@ -38,7 +38,7 @@ function Head(props) {
         {id: 'deleteUser', title: '회원탈퇴'}
     ]
     const admin = [
-        {id: 'memberList', title: '회원목록'},
+        {id: 'userList', title: '회원목록'},
         {id: 'adminGradeUp', title: '창작자승인'},
         {id: 'projectListAll', title: '프로젝트목록'},
     ]
@@ -59,7 +59,7 @@ function Head(props) {
                 setMyInfoList(admin);
                 break;
         }
-    },[session.state, session.authority]); // 2020-10-31 - session.authority 추가
+    },[session.state, session.authority]); // 2020-10-31 - session.authority, admin, common, creator 추가
 
     const handleClick = e=>{
         e.preventDefault();
@@ -77,6 +77,7 @@ function Head(props) {
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         // 왼쪽의 메인 메뉴 클릭 시 검색값 초기화 - 이 부분은 추후 결정할 것
+        console.log(e.currentTarget.id);
         const newSearchProject = {
           value: ''
         }
@@ -90,6 +91,7 @@ function Head(props) {
     const changeState = (e) => {
         e.preventDefault();
         setShowMore(!showMore);
+        if(e.currentTarget.id==='adminGradeUp') globalStateDispatch({type:'GLOBAL', payload:Object.assign(globalState,{main:e.currentTarget.id})})
         if(e.currentTarget.id === 'fundingList' || e.currentTarget.id === 'projectList' || e.currentTarget.id === 'projectListAll'){
             const newGlobalState = {
                 main: e.currentTarget.id,

@@ -55,6 +55,7 @@ function Login() {
     // Login Modal Setting
     const openLoginModal = (e) => {
         e.preventDefault();
+        if(e.currentTarget.text==='로그아웃') document.location.href='/'
         if(localStorage.getItem('token') === null){
             const newModalState = {
                 login: true,

@@ -12,21 +12,13 @@ import MemberList from '../DefaultMenuPage/MemberList';
 
 function MainView() {
     const { globalState } = useContext(Store);
-    const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
-    const informationPage = ['fundingList', 'projectList','projectListAll'];
-    var idx = 0;
-    while (idx<mainPage.length){
-        if(mainPage[idx] === globalState.main){
-            return <Container><Main/></Container>;
-        }
-        idx += 1;
+    console.log(globalState);
+
+    if(globalState.main==='all' || globalState.main==='tech' || globalState.main==='travel' || globalState.main==='fashion'){
+        return <Container><Main/></Container>;
     }
-    idx = 0;
-    while (idx<informationPage.length){
-        if(informationPage[idx] === globalState.main){
-            return <Container><ProjectList/></Container>;
-        }
-        idx += 1;
+    if(globalState.main==='fundingList' || globalState.main==='projectList' || globalState.main==='projectListAll'){
+        return <Container><ProjectList/></Container>;
     }
     if(globalState.main==='projectDetails'){
         return <ProjectDetails/>;
@@ -40,12 +32,14 @@ function MainView() {
     if(globalState.main==='event' || globalState.main==='notice' || globalState.main==='center'){
         return <ReadBoard/>;
     }
-    if(globalState.main==='requestCreator'){
+    if(globalState.main==='gradeUp'){
         return <RequestCreator/>;
     }
-    if(globalState.main==='acceptCreator' || globalState.main==='memberList'){
+    if(globalState.main==='adminGradeUp' || globalState.main==='userList'){
         return <MemberList/>;
     }
+    
+    return<></>;
 }
 export default MainView;
 

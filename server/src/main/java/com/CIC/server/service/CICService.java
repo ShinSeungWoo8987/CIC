@@ -74,7 +74,15 @@ public interface CICService {
 	List<Member> searchCreatorRequestList(String key, int startNum, int endNum);
 	
 	int getMemberCnt();
+	int searchMemberCnt(String key);
+	
 	int getCreatorRequestMemberCnt();
+	int searchCreatorRequestMemberCnt(String key);
+	
+	List<Career> getCreatorRequestMember(String userId);
+	
+	void handleCreatorRequest(String decision, String userId);
+	
 	
 	
 }

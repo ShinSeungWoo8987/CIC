@@ -42,8 +42,24 @@ public class CICServiceImpl implements CICService {
 		return this.cicMapper.getMainProjectListCnt(searchProject);
 	}
 	@Override
+	public List<Project> getProjectList(SearchProject searchProject) {
+		return this.cicMapper.getProjectList(searchProject);
+	}
+	@Override
 	public ProjectList getProject(int projectNumber) {
 		return this.cicMapper.getProject(projectNumber);
+	}
+	@Override
+	public int getProjectListCnt(SearchProject searchProject) {
+		return this.cicMapper.getProjectListCnt(searchProject);
+	}
+	@Override
+	public List<Project> getProjectListAll(SearchProject searchProject) {
+		return this.cicMapper.getProjectListAll(searchProject);
+	}
+	@Override
+	public int getProjectListAllCnt(SearchProject searchProject) {
+		return this.cicMapper.getProjectListAllCnt(searchProject);
 	}
 	@Override
 	public void addFunding(Funding funding) {
@@ -64,22 +80,6 @@ public class CICServiceImpl implements CICService {
 	@Override
 	public int getFundingProjectListCnt(SearchProject searchProject) {
 		return this.cicMapper.getFundingProjectListCnt(searchProject);
-	}
-	@Override
-	public List<Project> getProjectList(SearchProject searchProject) {
-		return this.cicMapper.getProjectList(searchProject);
-	}
-	@Override
-	public int getProjectListCnt(SearchProject searchProject) {
-		return this.cicMapper.getProjectListCnt(searchProject);
-	}
-	@Override
-	public List<Project> getProjectListAll(SearchProject searchProject) {
-		return this.cicMapper.getProjectListAll(searchProject);
-	}
-	@Override
-	public int getProjectListAllCnt(SearchProject searchProject) {
-		return this.cicMapper.getProjectListAllCnt(searchProject);
 	}
 	
 	
@@ -225,4 +225,24 @@ public class CICServiceImpl implements CICService {
 	public int getCreatorRequestMemberCnt() {
 		return this.cicMapper.getCreatorRequestMemberCnt();
 	}
+	
+	@Override
+	public int searchMemberCnt(String key) {
+		return this.cicMapper.searchMemberCnt(key);
+	}
+	@Override
+	public int searchCreatorRequestMemberCnt(String key) {
+		return this.cicMapper.searchCreatorRequestMemberCnt(key);
+	}
+	@Override
+	public List<Career> getCreatorRequestMember(String userId) {
+		return this.cicMapper.getCreatorRequestMember(userId);
+	}
+	
+	@Override
+	public void handleCreatorRequest(String decision, String userId) {
+		this.cicMapper.handleCreatorRequest(decision, userId);
+	}
+	
+
 }

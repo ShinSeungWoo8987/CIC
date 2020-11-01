@@ -395,7 +395,39 @@
 		SELECT count(*) FROM MEMBER
    </select>
    
+   <select id="searchMemberCnt" resultType="int">
+		select count(*) from member where MEM_ID like '%'||#{key}||'%' or MEM_NAME like '%'||#{key}||'%'
+   </select>
+   
    <select id="getCreatorRequestMemberCnt" resultType="int">
 		SELECT count(*) FROM MEMBER where mem_request=1
    </select>
+   
+   <select id="searchCreatorRequestMemberCnt" resultType="int">
+		select count(*) from member where MEM_ID like '%'||#{key}||'%' or MEM_NAME like '%'||#{key}||'%' and mem_request=1
+   </select>
+   
+   <select id="getCreatorRequestMember" resultType="Career">
+		select * from CAREER where MEM_ID=#{userId}
+   </select>
+
+
+	<select id="handleCreatorRequest">
+		<if test="decision != null">
+			<choose>
+				<when test="decision == 'accept'">
+					UPDATE MEMBER SET MEM_REQUEST=0, GRA_NUMBER=1 where MEM_ID=#{userId}
+				</when>
+				<when test="decision == 'deny'">
+					{call
+						declare
+						begin
+							UPDATE MEMBER SET MEM_REQUEST=0 where MEM_ID=#{userId};
+							DELETE FROM CAREER where mem_id=#{userId};
+						end
+					}
+				</when>
+			</choose>
+		</if>
+	</select>
 </mapper>

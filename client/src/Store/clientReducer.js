@@ -14,8 +14,8 @@ const sessionReducer = (state, { type, payload }) => {
 }
 
 const _globalState = {
-    main: 'projectListAll',
-    sub: 'continue',
+    main: 'all',
+    sub: 'all',
     action: 1,
     num: 0
 }
