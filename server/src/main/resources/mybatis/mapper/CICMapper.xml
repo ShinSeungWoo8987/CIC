@@ -213,19 +213,30 @@
 		from ( select rownum rnum, a.* 
 		  	   from ( select mem_id id, fun_name name, fun_phone phone, concat(concat(fun_address1,' '),fun_address2) address, count(fun_name) fundingCnt
 					  from funding
-					  where fun_name like '%'||#{search}||'%' or mem_id like '%'||#{search}||'%' and pro_number = #{number}
-					  group by fun_name, mem_id, fun_phone, concat(concat(fun_address1,' '),fun_address2)) a )
+					  where pro_number = #{number}
+					  group by fun_name, mem_id, fun_phone, concat(concat(fun_address1,' '),fun_address2)) a
+			   where name like '%'||#{search}||'%' or id like '%'||#{search}||'%')
 		where rnum between #{startNumber} and #{endNumber}
 	</select>
 	
 	<select id="getFundingMemberListCnt" resultType="int">
-		select count(fun_name)
-		from ( select fun_name
+		select count(name)
+  	    from ( select mem_id id, fun_name name, fun_phone phone, concat(concat(fun_address1,' '),fun_address2) address, count(fun_name) fundingCnt
 			   from funding
-			   where fun_name like '%'||#{search}||'%' or mem_id like '%'||#{search}||'%' and pro_number = #{number}
-			   group by fun_name
-			 )
+			   where pro_number = #{number}
+			   group by fun_name, mem_id, fun_phone, concat(concat(fun_address1,' '),fun_address2))
+	    where name like '%'||#{search}||'%' or id like '%'||#{search}||'%' 
 	</select>
+	
+	<select id='getProjectJoinCnt' resultType="int">
+		select count(fun_number)
+		from funding
+		where pro_number = #{number}
+	</select>
+	
+	<delete id="deleteProject">
+		delete from project where pro_number = #{number}
+	</delete>
 	
 	
 	

@@ -29,6 +29,7 @@ const Container = Styled.div`
     margin-right: auto;
     width: 75%;
     text-align: center;
+    background-color: blue;
 `
 const TitleText = Styled.div`
     font-size: 25px;

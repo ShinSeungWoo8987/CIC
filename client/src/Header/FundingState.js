@@ -3,6 +3,7 @@ import Styled from 'styled-components';
 import Store from '../Store/Store';
 import { get } from 'axios';
 import PercentBar from '../Components/PercentBar'
+import Company from './Company';
 
 function FundingState() {
     const { session, globalState, globalStateDispatch, modalStateDispatch, projectInformation } = useContext(Store);
@@ -61,45 +62,54 @@ function FundingState() {
             modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
         }
     }
-    return  <CurrentStateContainer>
-                <Text>모인금액</Text><br />
-                <SubContainer key={1}>
-                    <Value >{projectInformation.save}</Value><BottomText >원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
-                    <PercentBarContainer>
-                        <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent}/>
-                    </PercentBarContainer>
-                </SubContainer><br />
-                <Text >펀딩금액</Text><br />
-                <SubContainer key={2}>
-                    <Value >{projectInformation.price}</Value><BottomText >원</BottomText>
-                </SubContainer><br />
-                <Text >참여인원</Text><br />
-                <SubContainer key={3}>
-                    <Value >{projectInformation.fundingCnt}</Value><BottomText >명</BottomText>
-                </SubContainer><br />
-                <Text >남은기간</Text><br />
-                <SubContainer key={4}>
-                    <Value >{projectInformation.dDay}</Value><BottomText >{dDayText}</BottomText>
-                </SubContainer>
-                {!fundingBtn?<CloseFudningBtn>준비중</CloseFudningBtn>:fundingBtn}
-            </CurrentStateContainer>
+    return  <Container>
+                <CurrentStateContainer>
+                    <Text>모인금액</Text><br />
+                    <SubContainer key={1} margin='-10px 0 10px 0'>
+                        <Value >{projectInformation.save}</Value><BottomText >원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
+                        <PercentBarContainer>
+                            <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent}/>
+                        </PercentBarContainer>
+                    </SubContainer><br />
+                    <Text >펀딩금액</Text><br />
+                    <SubContainer key={2} margin='0 0 20px 0'>
+                        <Value >{projectInformation.price}</Value><BottomText >원</BottomText>
+                    </SubContainer><br />
+                    <Text >참여인원</Text><br />
+                    <SubContainer key={3} margin='0 0 20px 0'>
+                        <Value >{projectInformation.fundingCnt}</Value><BottomText >명</BottomText>
+                    </SubContainer><br />
+                    <Text >남은기간</Text><br />
+                    <SubContainer key={4} margin='0 0 20px 0'>
+                        <Value >{projectInformation.dDay}</Value><BottomText >{dDayText}</BottomText>
+                    </SubContainer>
+                    {!fundingBtn?<CloseFudningBtn>준비중</CloseFudningBtn>:fundingBtn}
+                </CurrentStateContainer>
+                <Company/>
+            </Container>
 }
 export default FundingState;
 
 const Left = Styled.div`
     float: left;
 `
+const Container = Styled.div`
+    position: relative;
+    left: 1327.5px;
+`
 const CurrentStateContainer = Styled(Left)`
     position: fixed;
     width: 300px;
-    margin: 58px 0 0 0;
+    margin: 63px 0 0 0;
 `
 const Text = Styled(Left)`
     font-size: 15px;
+    margin: 0px;
+    padding: 0px;
 `
 const SubContainer = Styled(Left)`
     width: 100%;
-    margin: 0 0 20px 0;
+    margin: ${({margin})=>`${margin}`};
 `
 const Value = Styled(Left)`
     font-size: 30px;
@@ -109,7 +119,8 @@ const Value = Styled(Left)`
 const PercentBarContainer = Styled(Left)`
     border: none;
     border-radius: 10px;
-    background-color: #E1E1E1 ;
+    background-color: #E1E1E1;
+    margin: -25px 0 -60px 0;
 `
 const BottomText = Styled(Text)`
     position: relative;

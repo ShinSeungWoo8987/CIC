@@ -28,7 +28,10 @@ const Left = Styled.div`
     float: left;
 `
 const Container = Styled(Left)`
-    width: 1248px;
+    position: relative;
+    left: 144px;
+    width: 1060px;
     height: 3000px;
     text-align: center;
+    background-color: red;
 `

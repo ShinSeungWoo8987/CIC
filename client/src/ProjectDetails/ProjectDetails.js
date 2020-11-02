@@ -1,7 +1,6 @@
 import React from 'react';
 import Styled from "styled-components";
 import DetailMain from './DetailMain';
-import _DetailSub from './DetailSub';
 
 function ProjectDetails() {
     return(
@@ -9,9 +8,6 @@ function ProjectDetails() {
             <LeftSide>
                 <DetailMain/>
             </LeftSide>
-            <RightSide>
-                <DetailSub/>
-            </RightSide>
         </Container>
     );
 }
@@ -29,7 +25,5 @@ const LeftSide = Styled(Left)`
 `
 const RightSide = Styled(Left)`
     width: 24.5%;
-`
-const DetailSub = Styled(_DetailSub)`
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

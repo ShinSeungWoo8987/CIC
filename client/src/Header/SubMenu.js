@@ -77,7 +77,7 @@ function SubMenu(){
     return(
         <Container 
             margin={globalState.main==='projectDetails'?"265px":"0px"} 
-            width={globalState.main==='projectDetails'?"1080px":"1920px"}
+            width={globalState.main==='projectDetails'?"1060px":"1920px"}
             height={globalState.main==='event' || globalState.main==='notice' || globalState.main==='center' ||
                     globalState.main==='adminGradeUp' || globalState.main==='userList' ||
                     globalState.main==='gradeUp' || globalState.main==='addProject'?'0px':'auto'}>
@@ -95,7 +95,7 @@ const Left = Styled.div`
 const Container = Styled(Left)`
     width: ${({width}) => width};
     height: ${({height}) => height};
-    background-color: white;
+    background-color: yellow;
     opacity: 0.8;
     margin: ${({margin}) => "0 0 0 "+margin};
 `

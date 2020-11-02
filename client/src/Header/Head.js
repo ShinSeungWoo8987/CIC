@@ -7,6 +7,7 @@ import SubMenu from './SubMenu';
 import Postcode from '../Components/Postcode';
 import UpdateUser from '../MenuBar/UpdateUser';
 import Authority from '../MenuBar/Authority';
+import _FundingState from './FundingState';
 
 function Head(props) {
     const { session, globalState, modalStateDispatch, globalStateDispatch, searchDispatch, pageCntDispatch } = useContext(Store);
@@ -160,6 +161,7 @@ function Head(props) {
             <Postcode/>
             <UpdateUser/>
             <Authority/>
+            {globalState.main==='projectDetails'?<FundingState/>:''}
         </Container>
     );
 }
@@ -295,4 +297,6 @@ const MoreDiv = styled.div`
   font-size: 16px;
   line-height: 46px;
   color: #3A3A3A;
+`
+const FundingState = styled(_FundingState)`
 `

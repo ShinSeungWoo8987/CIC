@@ -38,6 +38,7 @@ public class MemberController {
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserDetails userDetails = (UserDetails)principal;
 			String username = userDetails.getUsername();
+			
 			try {
 				Member member = this.cicService.getMember(username);
 				try {
@@ -112,6 +113,12 @@ public class MemberController {
 		try {
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			UserDetails userDetails = (UserDetails)principal;
+			
+			// 창작자 계정인 경우 묻지도 따지지도 않고 거절
+			if(userDetails.getAuthorities().toString().equals("[ROLE_CREATOR]")){
+				return null;
+			}
+			
 			String username = userDetails.getUsername();
 			this.cicService.deleteMember(username);
 		}catch (Exception e) {

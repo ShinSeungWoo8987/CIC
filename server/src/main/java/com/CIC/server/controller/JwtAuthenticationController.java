@@ -130,18 +130,33 @@ public class JwtAuthenticationController {
     
     @RequestMapping(value = "/authenticate/pw", method = RequestMethod.POST, consumes="application/json")
     public List<String> checkPw(@RequestBody Map map) throws Exception {
+    	List<String> result = new ArrayList<String>();
     	try {
 	    	List<String> values = new ArrayList<String>();
 			map.forEach((k, v) -> {
 				values.add((String)v);
 			});
 			String inputPw = values.get(0);
+			String pro_number = values.get(1);
 			try {
 				Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 				UserDetails userDetails = (UserDetails)principal;
 				try {
+					// 비밀번호 검증
 					authenticate(userDetails.getUsername(), values.get(0));
 					final String token = jwtTokenUtil.generateToken(userDetails);
+					// 프로젝트 삭제의 경우 해당 프로젝트에 참여한 인원이 있는지 체크
+					if(pro_number!="") {
+						try {
+							int joinCnt = this.cicService.getProjectJoinCnt(pro_number);
+							if(joinCnt!=0) {
+								result.add("Refuse");
+								return result;
+							}
+						}catch (Exception e) {
+							System.out.println("JwtAuthenticationController checkPw Error Message : Method-getProjectJoinCnt Error");
+						}
+					}
 					String confirm = "Success";
 					String authority = "0";
 			        if(userDetails.getAuthorities().toString().equals("[ROLE_CREATOR]")){
@@ -149,19 +164,20 @@ public class JwtAuthenticationController {
 			        }else if(userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]")){
 			        	authority = "2";
 			        }
-			        List<String> result = new ArrayList<String>();
 			        result.add(confirm);
 			        result.add(authority);
 					return result;
+				// 비밀번호 검증을 실패했을 때, 해당 위치로 넘어오는 경우 or 오류가 발생한 경우
 				}catch (Exception e) {
-					System.out.println("checkPw Error Message : Response Error");
+					System.out.println("JwtAuthenticationController checkPw Error Message : Response Error");
 				}
 			}catch (Exception e) {
-				System.out.println("checkPw Error Message : JWT Error");
+				System.out.println("JwtAuthenticationController checkPw Error Message : JWT Error");
 			}
     	}catch (Exception e) {
-			System.out.println("checkPw Error Message : React-Axios Error");
+			System.out.println("JwtAuthenticationController checkPw Error Message : React-Axios Error");
 		}
-    	return null;
+    	result.add("Fail");
+    	return result;
     }
 }

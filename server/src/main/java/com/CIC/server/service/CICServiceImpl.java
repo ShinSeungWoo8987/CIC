@@ -90,6 +90,14 @@ public class CICServiceImpl implements CICService {
 	public int getFundingMemberListCnt(String search, String number) {
 		return this.cicMapper.getFundingMemberListCnt(search, number);
 	}
+	@Override
+	public int getProjectJoinCnt(String number) {
+		return this.cicMapper.getProjectJoinCnt(number);
+	}
+	@Override
+	public void deleteProject(String number) {
+		this.cicMapper.deleteProject(number);
+	}
 	
 	
 	

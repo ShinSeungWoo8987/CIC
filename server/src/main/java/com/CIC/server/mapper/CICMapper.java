@@ -35,6 +35,8 @@ public interface CICMapper {
 	public int getProjectListAllCnt(SearchProject searchProject);
 	public List<FundingMember> getFundingMemberList(String search, String number, int startNumber, int endNumber);
 	public int getFundingMemberListCnt(String search, String number);
+	public int getProjectJoinCnt(String number);
+	public void deleteProject(String number);
 	
 	
 	

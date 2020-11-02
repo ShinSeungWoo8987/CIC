@@ -86,17 +86,25 @@ public class FundingController {
 	
 	@RequestMapping(value="/fundingMemberList/list", method=RequestMethod.POST, consumes="application/json")
     public List<FundingMember> getFundingMemberList(@RequestBody Map map) throws Exception {
-		System.out.println("getFundingMemberList Start");
-		List<String> values = new ArrayList<String>();
-        map.forEach((k, v) -> {
-			values.add((String)v);
-		});
-        String search = values.get(0);
-        String number = values.get(1);
-        int page = Integer.parseInt(values.get(2));
-        int startNumber = 1+(page-1)*pagePerCnt;
-        int endNumber = page*pagePerCnt;
-        List<FundingMember> list = this.cicService.getFundingMemberList(search, number, startNumber, endNumber);
-		return list;
+		try {
+			List<String> values = new ArrayList<String>();
+	        map.forEach((k, v) -> {
+				values.add((String)v);
+			});
+	        String search = values.get(0);
+	        String number = values.get(1);
+	        int page = Integer.parseInt(values.get(2));
+	        int startNumber = 1+(page-1)*pagePerCnt;
+	        int endNumber = page*pagePerCnt;
+	        try {
+	        	List<FundingMember> list = this.cicService.getFundingMemberList(search, number, startNumber, endNumber);
+	    		return list;
+	        }catch (Exception e) {
+	        	System.out.println("FundingController getFundingMemberList Error Message : Method-getFundingMemberList Error");
+			}
+		}catch (Exception e) {
+			System.out.println("FundingController getFundingMemberList Error Message : React-Axios Error");
+		}
+		return null;
 	}
 }

@@ -32,6 +32,8 @@ public interface CICService {
 	int getProjectListAllCnt(SearchProject searchProject);
 	List<FundingMember> getFundingMemberList(String search, String number, int startNumber, int endNumber);
 	int getFundingMemberListCnt(String search, String number);
+	int getProjectJoinCnt(String number);
+	void deleteProject(String number);
 	
 	
 	

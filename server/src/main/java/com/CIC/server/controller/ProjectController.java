@@ -50,6 +50,32 @@ public class ProjectController {
         return null;
 	}
 	
+	@RequestMapping(value="/project/delete", method=RequestMethod.POST, consumes="application/json")
+    public void deleteProject(@RequestBody Map map) throws Exception {
+//		try {
+			List<String> values = new ArrayList<String>();
+	        map.forEach((k, v) -> {
+				values.add((String)v);
+			});
+	        String projectNumber = values.get(0);
+//	        try {
+		        int joinCnt = this.cicService.getProjectJoinCnt(projectNumber);
+				if(joinCnt!=0) 
+					return;
+//		        try {
+		        	this.cicService.deleteProject(projectNumber);
+//		        }catch (Exception e) {
+//		        	System.out.println("ProjectController deleteProject Error Message : Method-deleteProject Error");
+//				}
+//	        }catch (Exception e) {
+//	        	System.out.println("ProjectController deleteProject Error Message : Method-getProjectJoinCnt Error");
+//			}
+//		}catch (Exception e) {
+//			System.out.println("ProjectController deleteProject Error Message : React-Axios Error");
+//		}
+//        return;
+	}
+	
 	@RequestMapping(value="/main/maxPage", method=RequestMethod.POST, consumes="application/json")
     public int getMainMaxPage(@RequestBody Map map) throws Exception {
 		try {
