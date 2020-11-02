@@ -5,7 +5,7 @@ import ProgressBar from './PercentBar';
 import { moneyFormat, percentFormat, dDayFormat } from '../Util/Util';
 
 function Item(props){
-    const { globalStateDispatch, projectInformationDispatch } = useContext(Store);
+    const { globalStateDispatch, projectInformationDispatch, pageCntDispatch } = useContext(Store);
     const targetMoneyStr = moneyFormat(props.targetMoney);
     const saveMoneyStr = moneyFormat(props.saveMoney);
     const percent = percentFormat(props.saveMoney,props.targetMoney);
@@ -34,6 +34,7 @@ function Item(props){
             num:0
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+        pageCntDispatch({type: 'DEFAULT'}); // 메인 페이지 페이징 처리 후 제거할 것
     }
     return(
         <Container id='projectDetails' onClick={(e)=>moveProjectDetailes(e)}>

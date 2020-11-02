@@ -5,7 +5,7 @@ import { get } from 'axios';
 import PercentBar from '../Components/PercentBar'
 
 function FundingState() {
-    const { session, globalState, modalStateDispatch, projectInformation } = useContext(Store);
+    const { session, globalState, globalStateDispatch, modalStateDispatch, projectInformation } = useContext(Store);
     const dDayText = projectInformation.dDay==='마감'?'':'일';
     const [ fundingBtn, setfundingBtn ] = useState('');
     // Get User Information & Setting
@@ -48,7 +48,17 @@ function FundingState() {
             }
             modalStateDispatch({type: 'CHANGE_MODALSTATE', payload: newModalState});
         }else if(value==='delete'){
-            console.log("프로젝트 삭제 조건 및 기능 구현 필요");
+            const newGlobalState = {
+                main: globalState.main,
+                sub: globalState.sub,
+                action: 'deleteProject',
+                num:0
+            }
+            globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+            const newModalState = {
+                authority: true
+            }
+            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
         }
     }
     return  <CurrentStateContainer>

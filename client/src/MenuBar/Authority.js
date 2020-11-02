@@ -6,8 +6,11 @@ import Modal from 'react-modal';
 import { logout } from '../Jwt/AuthenticationService';
 
 function Authority() {
-    const { modalState, modalStateDispatch, globalState, globalStateDispatch, sessionDispatch } = useContext(Store);
-    const submit = globalState.action === 'updateUser'?'정보수정':'회원탈퇴'
+    const { modalState, modalStateDispatch, globalState, globalStateDispatch, sessionDispatch, projectInformation } = useContext(Store);
+    let submit = '';
+    if (globalState.action === 'updateUser') submit = '정보수정';
+    else if (globalState.action === 'deleteUser') submit = '회원탈퇴';
+    else if (globalState.action === 'deleteProject') submit = '프로젝트 삭제';
     const [authorityMessage, setAuthorityMessage] = useState('');
     const [pwRef] = [useRef()];
     // Authority Submit
@@ -25,13 +28,15 @@ function Authority() {
             }
             idx++;
         }
+        let number = '';
+        if(globalState.action === 'deleteProject')
+            number = projectInformation.number
         const url = '/authenticate/pw'
         const data = {
-            pw: pw
+            pw: pw,
+            number: number+''
         }
         post(url, data).then(res=>{
-            console.log("res.data : ",res.data);
-            console.log("globalState : ",globalState);
             if(res.data[0]==='Success'){
                 if(globalState.action === 'updateUser'){
                     const newModalState = {
@@ -39,9 +44,9 @@ function Authority() {
                     }
                     modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
                     setAuthorityMessage("");
-                }else{
+                }else if(globalState.action === 'deleteUser'){
                     if(Number(res.data[1])===1){
-                        setAuthorityMessage("창작자 회원탈퇴는 관리자한테 문의해주세요.");
+                        setAuthorityMessage("창작자 회원탈퇴는 관리자에게 문의해주세요.");
                         return false;
                     }
                     const url = '/member/delete'
@@ -52,10 +57,21 @@ function Authority() {
                         modalStateDispatch({type: "DEFALT"});
                         setAuthorityMessage("");
                     })
+                }else if(globalState.action === 'deleteProject'){
+                    setAuthorityMessage("");
+                    const url = '/project/delete'
+                    const data = {
+                        number: number+''
+                    }
+                    post(url, data).then(res=>{
+                        globalStateDispatch({type: 'DEFAULT'});
+                        modalStateDispatch({type: 'DEFAULT'});
+                    })
                 }
-            }else{
-                setAuthorityMessage("잘못된 비밀번호입니다.");
-            }
+            }else if(res.data[0]==='Fail')
+            setAuthorityMessage("잘못된 비밀번호입니다.");
+            else if(res.data[0]==='Refuse')
+                    setAuthorityMessage("관리자에게 문의해주세요.");
         })
     }
     // Authority Modal Setting

@@ -13,6 +13,9 @@ function FundingMemberList() {
     const { modalState, modalStateDispatch, search, searchDispatch, pageCnt, pageCntDispatch, projectInformation } = useContext(Store);
     const [ fundingMemberList, setFundingMemberList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
+    console.log("projectInformation.number : ",projectInformation.number);
+    console.log("search.value : ",search.value);
+    console.log("pageCnt.value : ",pageCnt.value);
     // Get Max Page
     useEffect(() => {
         const url = '/fundingMemberList/maxPage';
@@ -67,7 +70,7 @@ function FundingMemberList() {
             >
                 <Text>펀딩 참여자 명단</Text>
                 <FundingMember id='아이디' name='이름' phone='번호' address='주소' cnt='참여횟수' top='none' bottom='none' color='#FAFAFA' foneWeight='bold' zIndex='1'/>
-                {!fundingMemberList?<Preparing>목록을 불러오는 중입니다 . . .</Preparing>:
+                {!fundingMemberList || fundingMemberList.length===0?<Preparing>목록을 불러오는 중입니다 . . .</Preparing>:
                     <>
                         <Container>
                             <SubContainer key={1} height='480px'>
