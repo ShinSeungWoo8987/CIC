@@ -27,9 +27,10 @@ const executeHelloService = ()=> {
     return axios.get('http://localhost:5000/hello');
 }
 
-const registerSuccessfulLoginForJwt = (authority, token)=>{
+const registerSuccessfulLoginForJwt = (authority, token, userId)=>{
     localStorage.setItem('authority', authority);
     localStorage.setItem('token', token);
+    localStorage.setItem('userId', userId);
     setupAxiosInterceptors();
 }
 
@@ -49,29 +50,21 @@ const setupAxiosInterceptors = ()=> {
 }
 
 const logout = ()=>{
-    //sessionStorage.removeItem('authenticatedUser');
-    localStorage.removeItem("authenticatedUser");
     localStorage.removeItem("token");
     localStorage.removeItem("authority");
+    localStorage.removeItem("userId");
 }
 
 const isUserLoggedIn=()=>{
-    
-    //let user = sessionStorage.getItem('authenticatedUser')
     const token = localStorage.getItem('token');
-    // console.log("===UserloggedInCheck===");
-    // console.log(token);
-
     if (token) {
         return true;
     }
-    //if(user===null) return false
     return false;
 }
 
 const getLoggedInUserName = ()=>{
-    //let user = sessionStorage.getItem('authenticatedUser')
-    let user = localStorage.getItem('authenticatedUser');
+    let user = localStorage.getItem('userId');
     if(user===null) return '';
     return user;
 }

@@ -18,7 +18,8 @@ function Login() {
         const _session = {
             state: localStorage.getItem("token") !== null,
             authority: parseInt(localStorage.getItem("authority")),
-            token: localStorage.getItem("token")
+            token: localStorage.getItem("token"),
+            userId:localStorage.getItem("userId")
         };
         sessionDispatch({type:"SESSION", payload:_session});
         setupAxiosInterceptors();
@@ -41,10 +42,8 @@ function Login() {
             idx++;
         }
         executeJwtAuthenticationService(id, pw)
-        .then((response) => {
-            session.token = response.data.token;
-            session.authority = response.data.authority;
-            registerSuccessfulLoginForJwt(session.authority, session.token);
+        .then(({data}) => {
+            registerSuccessfulLoginForJwt(data.authority, data.token, data.userId);
             sessionDispatch({type:'SESSION', payload: Object.assign(session, {state:true} ) });
             closeLoginModal();
         }).catch( () =>{

@@ -52,6 +52,8 @@ public class FileUploadController{
             e.printStackTrace();
         } catch (SdkClientException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 		return fileName;
 	}
@@ -65,7 +67,15 @@ public class FileUploadController{
 			@RequestParam(value = "file1", required = false) MultipartFile file1,
 			@RequestParam(value = "file2", required = false) MultipartFile file2,
 			@RequestParam(value = "file3", required = false) MultipartFile file3,
-			@RequestParam(value = "file4", required = false) MultipartFile file4
+			@RequestParam(value = "file4", required = false) MultipartFile file4,
+			@RequestParam(value = "file5", required = false) MultipartFile file5,
+			@RequestParam(value = "file6", required = false) MultipartFile file6,
+			@RequestParam(value = "file7", required = false) MultipartFile file7,
+			@RequestParam(value = "file8", required = false) MultipartFile file8,
+			@RequestParam(value = "file9", required = false) MultipartFile file9,
+			@RequestParam(value = "file10", required = false) MultipartFile file10,
+			@RequestParam(value = "file10", required = false) MultipartFile file11,
+			@RequestParam(value = "file10", required = false) MultipartFile file12
 			) throws IOException {
 		String folderName = UUID.randomUUID().toString();
 		
@@ -76,12 +86,23 @@ public class FileUploadController{
 		String fileName2 = file2 == null ? "" : uploadS3(folderName, convert(file2));
 		String fileName3 = file3 == null ? "" : uploadS3(folderName, convert(file3));
 		String fileName4 = file4 == null ? "" : uploadS3(folderName, convert(file4));
+		String fileName5 = file5 == null ? "" : uploadS3(folderName, convert(file5));
+		String fileName6 = file6 == null ? "" : uploadS3(folderName, convert(file6));
+		String fileName7 = file7 == null ? "" : uploadS3(folderName, convert(file7));
+		String fileName8 = file8 == null ? "" : uploadS3(folderName, convert(file8));
+		String fileName9 = file9 == null ? "" : uploadS3(folderName, convert(file9));
+		String fileName10 = file10 == null ? "" : uploadS3(folderName, convert(file10));
+		String fileName11 = file11 == null ? "" : uploadS3(folderName, convert(file11));
+		String fileName12 = file12 == null ? "" : uploadS3(folderName, convert(file12));
 		
 		if(!(fileName0.equals(fileName1)&&fileName1.equals(fileName2)&&fileName2.equals(fileName3)&&fileName3.equals(fileName4))) {
-			FileUploadRes res = new FileUploadRes(folderName, thumbnailName, logoName, fileName0, fileName1, fileName2, fileName3, fileName4);
+			FileUploadRes res = new FileUploadRes(
+					folderName, thumbnailName, logoName, fileName0, fileName1, fileName2, fileName3, fileName4,
+					fileName5, fileName6, fileName7, fileName8, fileName9, fileName10, fileName11, fileName12
+					);
 			return res;
 		}else {
-			FileUploadRes res = new FileUploadRes(folderName,thumbnailName,logoName,"","","","","");
+			FileUploadRes res = new FileUploadRes(folderName,thumbnailName,logoName,"","","","","","","","","","","","","");
 			return res;
 		}
 	}

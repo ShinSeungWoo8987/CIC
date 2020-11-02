@@ -103,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.antMatchers("/notice/update/{num}").permitAll()
             	.antMatchers("/").permitAll()
             // all other requests need to be authenticated
-            	.anyRequest().hasAnyRole("USER","ADMIN").and().
+            	.anyRequest().hasAnyRole("USER","CREATOR","ADMIN").and().
             // make sure we use stateless session; session won't be used to
             // store user's state.
                 exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()

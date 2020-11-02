@@ -35,7 +35,11 @@ function SetContent(props) {
         });
         return put(url, formData, config).then(res => {
             const folderName = 'https://crowdincreative.s3.ap-northeast-2.amazonaws.com/' + res.data.folderName;
-            const fileName = [res.data.fileName0, res.data.fileName1, res.data.fileName2, res.data.fileName3, res.data.fileName4];
+            const fileName = [
+                res.data.fileName0, res.data.fileName1, res.data.fileName2, res.data.fileName3, res.data.fileName4,
+                res.data.fileName5, res.data.fileName6, res.data.fileName7, res.data.fileName8, res.data.fileName9,
+                res.data.fileName10, res.data.fileName11
+            ];
             const thumbnail = `${folderName}/${res.data.thumbnail}`
             const logo = `${folderName}/${res.data.logo}`
             
@@ -51,7 +55,7 @@ function SetContent(props) {
                 if(head === 'text') sendContent.push({id:sendContent.length,head,content:_content})
                 else for(var j=0; j<_content.length; j++){
                     const {width} = _content[j];
-                    sendContent.push({id:sendContent.length, head, content:`<img src='${folderName}/${fileName[cnt++]} width=${width}' alt='content' />`})
+                    sendContent.push({id:sendContent.length, head, content:`<img src='${folderName}/${fileName[cnt++]}' width=${width} alt='content' />`})
                 }
             }
 

@@ -1,22 +1,40 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Styled from 'styled-components';
 import Store from '../Store/Store';
+import {get} from 'axios';
+import parse from 'html-react-parser';
 
 function DetailMainContent() {
     const { projectInformation } = useContext(Store);
-    const [ project ] = useState({
-        img:'https://crowdincreative.s3.ap-northeast-2.amazonaws.com/test_project/title_img.jpg',
-        subDescription:`[워크웨어] 임무에 따라 장시간 적은 움직임으로 추위를 견뎌야하는 모든 직업을 위한 워크웨어 브랜드 튜뮤의 '14포켓 헤링본 해비워크수트'를 소개합니다.`,
-        content:'컨텐츠'
-    });
+    const [ project, setProject ] = useState();
+
+    useEffect(() => {
+        get(`/project/${projectInformation.number}`)
+            .then(({ data }) => {
+                setProject(
+                    data.sort((a, b)=>{ 
+                        return a.con_number < b.con_number ? -1 : a.con_number > b.con_number ? 1 : 0;  
+                    })
+                );
+            })
+            .catch(err => console.log(err));
+    }, []);
+
+    console.log(projectInformation.creator);
+
     return (
         <Container>
           <TitleText>{projectInformation.title}</TitleText>
           <TitleImage>
-              <Image src={project.img}/>
+              <Image src={projectInformation.thumbnail}/><Image/>
           </TitleImage>
-          <SubText >{project.subDescription}</SubText>
-          <ContentText>{project.content}</ContentText>
+          
+          {/* <SubText>{project.subDescription}</SubText> */}
+          <SubText></SubText>
+
+          <ContentText>
+              {project?project.map(i=>i.con_content?parse(i.con_content):''):'로딩중입니다.'}
+          </ContentText>
         </Container>
     );
 }
@@ -25,11 +43,10 @@ export default DetailMainContent;
 
 const Container = Styled.div`
     margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 75%;
+    margin-left: 49.3px;
+    margin-right: 49.3px;
+    width: 90.24%;
     text-align: center;
-    background-color: blue;
 `
 const TitleText = Styled.div`
     font-size: 25px;
@@ -37,11 +54,13 @@ const TitleText = Styled.div`
 `
 const TitleImage = Styled.div`
     margin-top: 30px;
-    width: 935px;
+    width: 100%;
     height: 610;
+    padding-bottom: 30px;
+    border-bottom: 1px solid lightgrey;
 `
 const Image = Styled.img`
-    width:935px;
+    width: 100%;
 `
 const SubText = Styled.div`
     margin-top: 30px;
@@ -52,6 +71,11 @@ const SubText = Styled.div`
     font-weight: bold;
 `
 const ContentText = Styled.div`
+    text-align:left;
     margin-top: 30px;
     width:100%;
+    padding-bottom: 50px;
+    margin-bottom: 100px;
+    border-bottom: 1px solid lightgrey;
+    img{margin:0 auto;}
 `

@@ -7,12 +7,15 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.CIC.server.model.ProjectList;
+import com.CIC.server.model.Content;
 import com.CIC.server.model.JwtRequest;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Project;
@@ -333,5 +336,12 @@ public class ProjectController {
 			System.out.println("ProjectController getProjectListAll Error Message : React-Axios Error");
 		}
         return null; 
+    }
+	
+	@GetMapping("/project/{num}")
+    public List<Content> getProjectDetails(@PathVariable String num) throws Exception {
+		int projectNum = Integer.parseInt(num);
+		List<Content> content = this.cicService.getProjectDetails(projectNum);
+        return content; 
     }
 }

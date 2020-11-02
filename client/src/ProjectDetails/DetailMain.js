@@ -30,8 +30,7 @@ const Left = Styled.div`
 const Container = Styled(Left)`
     position: relative;
     left: 144px;
-    width: 1060px;
+    width: 1010.7px;
     height: 3000px;
     text-align: center;
-    background-color: red;
 `

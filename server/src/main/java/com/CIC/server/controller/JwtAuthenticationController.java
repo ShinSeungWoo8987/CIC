@@ -113,7 +113,7 @@ public class JwtAuthenticationController {
         	authority = 2;
         }
 //        System.out.println("authority : "+authority);
-        return ResponseEntity.ok(new JwtResponse(token,authority));
+        return ResponseEntity.ok(new JwtResponse(token,authority,userDetails.getUsername()));
     }
 
     private void authenticate(String username, String password) throws Exception {

@@ -246,13 +246,22 @@
 		select * from TYPE
 	</select>
 	
-   <insert id="addProject" keyProperty="PRO_NUMBER">
-       <selectKey keyProperty="PRO_NUMBER" resultType="int" order="BEFORE">
-          select coalesce(MAX(pro_number), 0) + 1 as PRO_NUMBER
+   <insert id="addProject" parameterType="Project">
+       <selectKey keyProperty="pro_number" resultType="int" order="BEFORE">
+          select coalesce(MAX(pro_number), 0) + 1 as pro_number
             from project
        </selectKey>
        INSERT INTO PROJECT (PRO_NUMBER, PRO_TITLE, PRO_TARGET, PRO_THUMBNAIL, PRO_LOGO, PRO_START, PRO_FINISH, MEM_ID, TYP_NUMBER, PRO_PRICE) 
-      values( #{PRO_NUMBER}, #{PRO_TITLE}, #{PRO_TARGET}, #{PRO_THUMBNAIL}, #{PRO_LOGO}, #{PRO_START}, #{PRO_FINISH}, #{MEM_ID}, #{TYP_NUMBER}, #{PRO_PRICE} )
+      values( #{pro_number}, #{pro_title}, #{pro_target}, #{pro_thumbnail}, #{pro_logo}, #{pro_start}, #{pro_finish}, #{mem_id}, #{typ_number}, #{pro_price} )
+   </insert>
+   
+   <insert id="addContent" parameterType="Content">
+       <selectKey keyProperty="con_number" resultType="int" order="BEFORE">
+          select coalesce(MAX(con_number), 0) + 1 as con_number
+          from CONTENT
+       </selectKey>
+       INSERT INTO CONTENT (CON_NUMBER, CON_TYPE, CON_CONTENT, PRO_NUMBER) 
+       values( #{con_number}, #{con_type}, #{con_content}, #{pro_number})
    </insert>
    
    <insert id="addEvent" keyProperty="EVE_NUMBER">
@@ -460,4 +469,12 @@
 			</choose>
 		</if>
 	</select>
+	
+	<select id="getProjectDetails" resultType="Content">
+		select * from CONTENT where pro_number = #{projectNum}
+	</select>
+	
+	
+	
+	
 </mapper>

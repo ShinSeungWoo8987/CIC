@@ -37,11 +37,11 @@ const CompanyInfo = styled.div`
     text-align: left;
 `
 const Creator = styled.div`
-    font-size: 22.5px;
+    font-size: 20px;
     font-weight: normal;
 `
 const Email = styled.div`
-    font-size: 17.5px;
+    font-size: 15px;
     font-weight: normal;
     color: grey;
 `

@@ -17,9 +17,7 @@ function Main() {
             main: globalState.main,
             sub: globalState.sub
         }
-        post(url, data).then(res=>{
-            setMaxPage(res.data)
-        })
+        post(url, data).then(({data})=>setMaxPage(data));
     }, [ globalState, search ]);
     // Get Project List
     useEffect(() => {
@@ -31,12 +29,12 @@ function Main() {
             main: globalState.main,
             sub: globalState.sub
         }
-        post(url, data).then(res=>{
+        post(url, data).then(({data})=>{
             var idx=0;
-            while(idx<res.data.length){
-                newProjectList.push(<Item key={idx} number={res.data[idx].pro_number} dDay={res.data[idx].dday} thumbnail={res.data[idx].pro_thumbnail} logo={res.data[idx].pro_logo} 
-                    creator={res.data[idx].mem_id} title={res.data[idx].pro_title} targetMoney={res.data[idx].pro_target} saveMoney={res.data[idx].fundingCnt*res.data[idx].pro_price}
-                    fundingCnt={res.data[idx].fundingCnt} price={res.data[idx].pro_price}/>)
+            while(idx<data.length){
+                newProjectList.push(<Item key={idx} number={data[idx].pro_number} dDay={data[idx].dday} thumbnail={data[idx].pro_thumbnail} logo={data[idx].pro_logo} 
+                    creator={data[idx].mem_id} title={data[idx].pro_title} targetMoney={data[idx].pro_target} saveMoney={data[idx].fundingCnt*data[idx].pro_price}
+                    fundingCnt={data[idx].fundingCnt} price={data[idx].pro_price}/>)
                 idx++;
             }
             setProjectList(newProjectList);

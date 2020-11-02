@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.CIC.server.model.Career;
+import com.CIC.server.model.Content;
 import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
 import com.CIC.server.model.FundingMember;
@@ -44,6 +45,7 @@ public interface CICMapper {
 	
 	public List<Type> getTypeList();
 	public void addProject(Project project);
+	public void addContent(Content content);
 	
 	public void addEvent(Event event);
 	public void addNotice(Notice notice);
@@ -89,4 +91,6 @@ public interface CICMapper {
 	public List<Career> getCreatorRequestMember(String userId);
 	
 	public void handleCreatorRequest(String decision, String userId);
+	
+	public List<Content> getProjectDetails(int projectNum);
 }

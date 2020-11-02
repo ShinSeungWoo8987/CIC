@@ -18,6 +18,7 @@ function Item(props){
             number: props.number,
             title: props.title,
             target: targetMoneyStr,
+            thumbnail: props.thumbnail,
             logo: props.logo,
             creator: props.creator,
             dDay: dDay,
@@ -131,7 +132,7 @@ const DDayText = Styled(Dday)`
 const Title = Styled(Left)`
     width: 90%;
     height: 45px;
-    font-size: 17.5px;
+    font-size: 17px;
     font-weight: bold;
     margin: 10px 0 20px 5%;
     overflow: hidden;

@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.CIC.server.model.Project;
 import com.CIC.server.model.ServiceCenter;
+import com.CIC.server.model.Career;
 import com.CIC.server.model.Content;
 import com.CIC.server.model.Event;
 import com.CIC.server.model.Member;
@@ -33,25 +34,23 @@ import io.jsonwebtoken.Claims;
 
 @RestController(value = "cicController")//<context:component-scan>
 public class CICController {
-	String project_name = "";
-	String category = "";
-	String target_money = "";
-	String sdate = "";
-	String fdate = "";
-	String thumbnail = "";
-	String logo = "";
-	String funding_price = "";
+	private String project_name = "";
+	private String category = "";
+	private String target_money = "";
+	private String sdate = "";
+	private String fdate = "";
+	private String thumbnail = "";
+	private String logo = "";
+	private String funding_price = "";
 	
-	String title="";
-	String image="";
-	String description="";
+	private String title="";
+	private String image="";
+	private String description="";
 	
-	ArrayList<Map> content;
-	
-	Authentication authentication;
+	private Authentication authentication;
 	
 	@Autowired
-    private CICService cicService;  
+    private CICService cicService;
 	
 	@GetMapping("/type")
     public List<Type> getTypeList() throws Exception { 
@@ -70,19 +69,12 @@ public class CICController {
 		UserDetails userDetails = (UserDetails)principal;
 		String username = userDetails.getUsername();
 		
-        System.out.println("-----------------------------------------");
-        // System.out.println(map.get(id));
+		System.out.println("-----------------------------------------");
+        System.out.println( (ArrayList)map.get("sendContent") );
+		
         map.forEach((k, v) -> {
-        	if(k.equals("sendContent")) {
-        		content = (ArrayList)v;
-        		// System.out.println(content.size());
-        		for(Map i : content) { //for문을 통한 전체출력
-        		    System.out.println(i.get("id")+", "+i.get("head"));
-        		    System.out.println(i.get("content"));
-        		}
-        	}else {
-        		//System.out.println(k + ": " + v);
-				switch ( (String)k ) {
+        	if(!k.equals("sendContent")) {
+        		switch ( (String)k ) {
 				case "project_name":
 					project_name = (String)v;
 					break;
@@ -111,10 +103,9 @@ public class CICController {
 					System.out.println("Something Error");
 					break;
 				}
+        		
         	}
         });
-        System.out.println("-----------------------------------------");
-		
 		Project project = Project.builder()
 				  .mem_id(username)
 				  .pro_title(project_name)
@@ -126,14 +117,26 @@ public class CICController {
 				  .pro_thumbnail(thumbnail)
 				  .pro_logo(logo)
 				  .build();
-		//이거 왜 프로젝트 넘버가 null이 아니고 0으로 뜨지?
-		System.out.println(project);
-		
 		try {
 			this.cicService.addProject(project);
-			return "Successfully insert project"; 
+			
+			ArrayList<Map> contentArray = (ArrayList)map.get("sendContent");
+	        for(Map i : contentArray) { //for문을 통한 전체출력
+				Content content = Content.builder()
+	    				.con_type( ((String)i.get("head")).equals("text")?"t":"i" )
+	    				.con_content((String)i.get("content"))
+	    				.pro_number(project.getPro_number()) //이거 바꿔줘야함.
+	    				.build();
+				
+				this.cicService.addContent(content); //만들어서 연결필요
+			}
+	        
+			return "Successfully insert project";
 		}catch (Exception e) {
+			e.printStackTrace();
 			return "insert project failed"; 
 		}
+		
+		
     }
 }

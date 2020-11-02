@@ -70,16 +70,18 @@ function FundingMemberList() {
             >
                 <Text>펀딩 참여자 명단</Text>
                 <FundingMember id='아이디' name='이름' phone='번호' address='주소' cnt='참여횟수' top='none' bottom='none' color='#FAFAFA' foneWeight='bold' zIndex='1'/>
-                {!fundingMemberList || fundingMemberList.length===0?<Preparing>목록을 불러오는 중입니다 . . .</Preparing>:
-                    <>
-                        <Container>
-                            <SubContainer key={1} height='480px'>
-                            {fundingMemberList}
-                            </SubContainer>
-                        </Container>
-                        <Search />
-                        <Paging maxPage={maxPage} bottom='-10px'/>
-                    </>
+                
+                {!fundingMemberList?<Preparing>목록을 불러오는 중입니다 . . .</Preparing>:
+                    fundingMemberList.length===0?<NoList>펀딩에 참여한 인원이없습니다.</NoList>:
+                        <>
+                            <Container>
+                                <SubContainer key={1} height='480px'>
+                                {fundingMemberList}
+                                </SubContainer>
+                            </Container>
+                            <Search />
+                            <Paging maxPage={maxPage} bottom='-10px'/>
+                        </>
                 }
             </Modal>
 }
@@ -109,6 +111,12 @@ const Preparing = Styled.div`
         90% { width: 215px; }
         100% { width: 215px; }
     }
+`
+const NoList = Styled.div`
+    line-height: 300px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
 `
 const Text = Styled.div`
     font-size: 20px;

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.CIC.server.mapper.CICMapper;
 import com.CIC.server.model.Career;
+import com.CIC.server.model.Content;
 import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
 import com.CIC.server.model.FundingMember;
@@ -111,6 +112,10 @@ public class CICServiceImpl implements CICService {
 	@Override
 	public void addProject(Project project) {
 		this.cicMapper.addProject(project);
+	}
+	@Override
+	public void addContent(Content content) {
+		this.cicMapper.addContent(content);
 	}
 
 	@Override
@@ -260,4 +265,9 @@ public class CICServiceImpl implements CICService {
 	public void handleCreatorRequest(String decision, String userId) {
 		this.cicMapper.handleCreatorRequest(decision, userId);
 	}
+	@Override
+	public List<Content> getProjectDetails(int projectNum) {
+		return this.cicMapper.getProjectDetails(projectNum);
+	}
+	
 }

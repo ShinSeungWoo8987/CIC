@@ -2,7 +2,8 @@
 const _session = {
     state: false,
     authority: '',
-    token: ''
+    token: '',
+    userId:''
 }
 const sessionReducer = (state, { type, payload }) => {
     switch (type) {

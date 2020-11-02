@@ -11,21 +11,13 @@ function FundingState() {
     const [ fundingBtn, setfundingBtn ] = useState('');
     // Get User Information & Setting
     useEffect(() => {
-        const url = '/member'
-        get(url).then(res=>{
-            if(projectInformation.creator===res.data[0]){
-                setfundingBtn(
-                    <>
-                    <FundingBtn onClick={(e)=>openModal(e, 'list')}>참여자 목록</FundingBtn>
-                    <FundingBtn onClick={(e)=>openModal(e, 'delete')}>삭제하기</FundingBtn>
-                    </>
-                );
-            }else{
-                setfundingBtn(
-                    projectInformation.dDay==='마감'?<CloseFudningBtn >마감</CloseFudningBtn>:<FundingBtn onClick={(e)=>openModal(e,'funding')}>펀딩하기</FundingBtn>
-                );
-            }
-        })
+        if(projectInformation.creator===localStorage.getItem('userId')) setfundingBtn([
+            <FundingBtn onClick={(e)=>openModal(e, 'list')}>참여자 목록</FundingBtn>,
+            <FundingBtn onClick={(e)=>openModal(e, 'delete')}>삭제하기</FundingBtn>
+        ]);
+        else setfundingBtn(
+            projectInformation.dDay==='마감'?<CloseFudningBtn >마감</CloseFudningBtn>:<FundingBtn onClick={(e)=>openModal(e,'funding')}>펀딩하기</FundingBtn>
+        );
     }, [ globalState, session.token ]);
     // When Login & Non-Login, Modal Setting
     const openModal = (e, value) => {
@@ -95,7 +87,7 @@ const Left = Styled.div`
 `
 const Container = Styled.div`
     position: relative;
-    left: 1327.5px;
+    left: 1278.2px;
 `
 const CurrentStateContainer = Styled(Left)`
     position: fixed;

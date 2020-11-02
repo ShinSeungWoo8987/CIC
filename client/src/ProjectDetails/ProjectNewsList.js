@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
+import Store from '../Store/Store';
 import NewsItem from './NewsItem';
 
 function ProjectNews() {
+    const { projectInformation } = useContext(Store);
     let _newsItem = [
         {title: 'Title', name: 'Creator', date: '2020.09.18'},
         {title: 'Title', name: '관리자', date: '2020.09.20'},
@@ -14,9 +16,11 @@ function ProjectNews() {
     const content = newsItem.map( ({title,name,date}, idx)=>{
         return <NewsItem key={idx} title={title} name={name} date={date} />;
     });
+
     return (
         <Container>
             <Upside> {content} </Upside>
+            <Write>{projectInformation.creator===localStorage.getItem('userId')?<button>글 작성</button>:''}</Write>
             <Downside>
                 <SearchDiv>
                     <SearchInput type="text" placeholder="검색어 입력"/>
@@ -48,6 +52,10 @@ const Downside = styled.div`
 margin: 15px auto 0 auto;
 width: 550px;
 height: 100px;
+`
+const Write = styled.div`
+width: 700px;
+text-align: right;
 `
 const SearchDiv = styled.div`
 margin: 0 auto;

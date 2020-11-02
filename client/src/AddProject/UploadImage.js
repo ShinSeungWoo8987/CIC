@@ -7,8 +7,7 @@ function UploadImage({id}) {
   const imagesRef = useRef();
 
   const handleImageSize = (e)=>{
-    const parentId = e.target.parentNode.id
-    console.log(parentId)
+    const parentId = e.target.parentNode.id;
     let newContent = content;
     newContent[id].content[parentId].width = e.target.value
     contentDispatch({type: 'CHANGE', payload: newContent});
@@ -25,7 +24,7 @@ function UploadImage({id}) {
         newFileList.push({
           file: file,
           previewURL: reader.result,
-          width:300
+          width:650
         })
       }
       reader.readAsDataURL(file);
@@ -58,7 +57,7 @@ function UploadImage({id}) {
       {content[id].content.map( (file,idx) => <div key={idx} id={idx}>
         <img src={file.previewURL} width={file.width} alt='profile_preview' />
         <br/>
-        <input type='text' placeholder='넓이 조절' onChange={handleImageSize}/>
+        <input type='text' placeholder='넓이 조절' onChange={handleImageSize} defaultValue="650"/>
         <button onClick={(e)=>refresh(e)}>변경</button>
         <br/>
       </div>)}
