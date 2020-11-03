@@ -7,6 +7,7 @@ import com.CIC.server.model.Career;
 import com.CIC.server.model.Content;
 import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
+import com.CIC.server.model.FundingDetail;
 import com.CIC.server.model.FundingMember;
 import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.Member;
@@ -38,6 +39,9 @@ public interface CICMapper {
 	public int getFundingMemberListCnt(String search, String number);
 	public int getProjectJoinCnt(String number);
 	public void deleteProject(String number);
+	public List<FundingDetail> getFundingDetailList(SearchProject searchProject);
+	public int getFundingDetailListCnt(SearchProject searchProject);
+
 	
 	
 	

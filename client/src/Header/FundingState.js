@@ -76,31 +76,31 @@ function FundingState() {
             globalStateDispatch({ type: 'GLOBAL', payload });
         }
     }
-    return <Container>
-        <CurrentStateContainer>
-            <Text>모인금액</Text><br />
-            <SubContainer key={1} margin='-10px 0 10px 0'>
-                <Value >{projectInformation.save}</Value><BottomText >원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
-                <PercentBarContainer>
-                    <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent} />
-                </PercentBarContainer>
-            </SubContainer><br />
-            <Text >펀딩금액</Text><br />
-            <SubContainer key={2} margin='0 0 20px 0'>
-                <Value >{projectInformation.price}</Value><BottomText >원</BottomText>
-            </SubContainer><br />
-            <Text >참여인원</Text><br />
-            <SubContainer key={3} margin='0 0 20px 0'>
-                <Value >{projectInformation.fundingCnt}</Value><BottomText >명</BottomText>
-            </SubContainer><br />
-            <Text >남은기간</Text><br />
-            <SubContainer key={4} margin='0 0 20px 0'>
-                <Value >{projectInformation.dDay}</Value><BottomText >{dDayText}</BottomText>
-            </SubContainer>
-            {!fundingBtn ? <CloseFudningBtn>준비중</CloseFudningBtn> : fundingBtn}
-        </CurrentStateContainer>
-        <Company />
-    </Container>
+    return  <Container>
+                <CurrentStateContainer>
+                    <Text>모인금액</Text><br />
+                    <SubContainer key={1} margin='-10px 0 10px 0'>
+                        <Value >{projectInformation.save}</Value><BottomText >원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
+                        <PercentBarContainer>
+                            <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent} />
+                        </PercentBarContainer>
+                    </SubContainer><br />
+                    <Text >펀딩금액</Text><br />
+                    <SubContainer key={2} margin='0 0 20px 0'>
+                        <Value >{projectInformation.price}</Value><BottomText >원</BottomText>
+                    </SubContainer><br />
+                    <Text >참여인원</Text><br />
+                    <SubContainer key={3} margin='0 0 20px 0'>
+                        <Value >{projectInformation.fundingCnt}</Value><BottomText >명</BottomText>
+                    </SubContainer><br />
+                    <Text >남은기간</Text><br />
+                    <SubContainer key={4} margin='0 0 20px 0'>
+                        <Value >{projectInformation.dDay}</Value><BottomText >{dDayText}</BottomText>
+                    </SubContainer>
+                    {!fundingBtn ? <CloseFudningBtn>준비중</CloseFudningBtn> : fundingBtn}
+                </CurrentStateContainer>
+                <Company />
+            </Container>
 }
 export default FundingState;
 

@@ -15,8 +15,10 @@ const sessionReducer = (state, { type, payload }) => {
 }
 
 const _globalState = {
-    main: 'all',
-    sub: 'all',
+    main: 'fundingList',
+    sub: 'continue',
+    // main: 'all',
+    // sub: 'all',
     action: 1,
     num: 0
 }
@@ -48,7 +50,8 @@ const _modalState = {
     updateUser: false,
     authority: false,
     funding: false,
-    fundingMemberList: false
+    fundingMemberList: false,
+    fundingDetailList: false
 }
 const modalStateReducer = (state, { type, payload }) => {
     switch (type) {
@@ -60,6 +63,7 @@ const modalStateReducer = (state, { type, payload }) => {
 }
 
 const _search = {
+    type: '',
     value: ''
 }
 const searchReducer = (state, { type, payload }) => {
@@ -157,7 +161,6 @@ const boardItemListReducer = (state, {type, payload})=>{
             return payload;
     }
 }
-
 const projectReducer = (state, {type, payload}) => {
     switch (type) {
         default:
@@ -166,6 +169,7 @@ const projectReducer = (state, {type, payload}) => {
             return payload;
     }
 }
+
 
 export {
     _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _search, searchReducer,

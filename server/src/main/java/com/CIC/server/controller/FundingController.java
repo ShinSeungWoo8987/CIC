@@ -5,13 +5,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.CIC.server.model.Funding;
+import com.CIC.server.model.FundingDetail;
 import com.CIC.server.model.FundingMember;
+import com.CIC.server.model.SearchProject;
 import com.CIC.server.service.CICService;
 import com.CIC.server.util.Util;
 
@@ -104,6 +108,71 @@ public class FundingController {
 			}
 		}catch (Exception e) {
 			System.out.println("FundingController getFundingMemberList Error Message : React-Axios Error");
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/fundingDetailList/maxPage", method=RequestMethod.POST, consumes="application/json")
+    public int getFundingDetailListMaxPage(@RequestBody Map map) throws Exception {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String id = userDetails.getUsername();
+		try {
+			List<String> values = new ArrayList<String>();
+	        map.forEach((k, v) -> {
+				values.add((String)v);
+			});
+	        String type = values.get(0);
+	        String search = values.get(1);
+	        
+	        SearchProject searchProject = SearchProject.builder()
+	        		.type(values.get(0))
+	        		.search(values.get(1))
+	        		.id(id)
+	        		.build();
+	        try {
+	        	int fundingDetailListCnt = this.cicService.getFundingDetailListCnt(searchProject);
+	        	try {
+	        		int maxPage = this.util.getMaxPage(fundingDetailListCnt, pagePerCnt);
+	        		return maxPage;
+	        	}catch (Exception e) {
+	        		System.out.println("FundingController getFundingDetailListMaxPage Error Message : Method-getMaxPage Error");
+				}
+	        }catch (Exception e) {
+	        	System.out.println("FundingController getFundingDetailListMaxPage Error Message : Method-fundingDetailListCnt Error");
+			}
+		}catch (Exception e) {
+			System.out.println("FundingController getFundingDetailListMaxPage Error Message : React-Axios Error");
+		}
+		return 0;
+	}
+	
+	@RequestMapping(value="/fundingDetailList/list", method=RequestMethod.POST, consumes="application/json")
+    public List<FundingDetail> getFundingDetailList(@RequestBody Map map) throws Exception {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String id = userDetails.getUsername();
+		try {
+			List<String> values = new ArrayList<String>();
+	        map.forEach((k, v) -> {
+				values.add((String)v);
+			});
+	        int page = Integer.parseInt(values.get(2));
+	        SearchProject searchProject = SearchProject.builder()
+	        		.type(values.get(0))
+	        		.search(values.get(1))
+	        		.startNumber(1+(page-1)*pagePerCnt+"")
+	        		.finishNumber(page*pagePerCnt+"")
+	        		.id(id)
+	        		.build();
+	        try {
+	        	List<FundingDetail> list = this.cicService.getFundingDetailList(searchProject);
+	    		return list;
+	        }catch (Exception e) {
+	        	System.out.println("FundingController getFundingDetailList Error Message : Method-getFundingDetailList Error");
+			}
+		}catch (Exception e) {
+			System.out.println("FundingController getFundingDetailList Error Message : React-Axios Error");
 		}
 		return null;
 	}

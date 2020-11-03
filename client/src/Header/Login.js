@@ -13,7 +13,6 @@ function Login() {
     const [LoginMessage, setLoginMessage] = useState('');
 
     // GlobalState 값도 나중에 새로고침했을 때 유지시켜야 됨
-
     useEffect(()=>{
         const _session = {
             state: localStorage.getItem("token") !== null,
@@ -43,14 +42,14 @@ function Login() {
         }
         executeJwtAuthenticationService(id, pw)
         .then(({data}) => {
-            const payload = {
+            registerSuccessfulLoginForJwt(data.authority, data.token, data.userId);
+            const newSession = {
                 state: true,
                 authority: data.authority,
                 token: data.token,
                 userId: data.userId
             }
-            registerSuccessfulLoginForJwt(data.authority, data.token, data.userId);
-            sessionDispatch({type:'SESSION', payload});
+            sessionDispatch({type:'SESSION', payload: newSession });
             closeLoginModal();
         }).catch( () =>{
             setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.")

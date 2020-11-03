@@ -2,16 +2,33 @@ import React, { useContext } from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
 
-function Search() {
-    const { searchDispatch } = useContext(Store);
+function Search({use}) {
+    const { searchDispatch, pageCntDispatch } = useContext(Store);
     const onSearchSubmit = (e) => {
         e.preventDefault();
-        const newSearch = {
-            value: e.target.search.value
+        let newSearch = '';
+        if (use==='true') {
+            newSearch = {
+                type: e.target.title.value,
+                value: e.target.search.value
+            }
+        }else{
+            newSearch = {
+                value: e.target.search.value
+            }
         }
         searchDispatch({type: 'SEARCH', payload: newSearch});
+        pageCntDispatch({type: 'DEFUALT'});
     }
     return  <Container onSubmit={(e)=>onSearchSubmit(e)}>
+                {use==='true'?
+                    <Select id='title'>
+                        <option value='title'>제목</option>
+                        <option value='name'>이름</option>
+                        <option value='address'>배송지</option>
+                    </Select>
+                    :
+                    ''}
                 <InputSearch id='search' type='search'/>
                 <BtnSearch type='submit' value='검색'/>
             </Container>
@@ -22,8 +39,17 @@ const Container = Styled.form`
     position: relative;
     left: 50%;
     transform: translate(-50%);
-    width: 450px;
+    width: 539px;
     height: 30px;
+`
+const Select = Styled.select`
+    float: left;
+    width: 80px;
+    height: 30px;
+    margin: 0 5px 0 0;
+    border: 1px solid #C8C8C8;
+    border-radius: 5px;
+    text-indent: 10px;
 `
 const InputSearch = Styled.input`
     float: left;

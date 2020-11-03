@@ -8,6 +8,7 @@ import com.CIC.server.model.Career;
 import com.CIC.server.model.Content;
 import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
+import com.CIC.server.model.FundingDetail;
 import com.CIC.server.model.FundingMember;
 import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.Member;
@@ -98,6 +99,14 @@ public class CICServiceImpl implements CICService {
 	@Override
 	public void deleteProject(String number) {
 		this.cicMapper.deleteProject(number);
+	}
+	@Override
+	public List<FundingDetail> getFundingDetailList(SearchProject searchProject) {
+		return this.cicMapper.getFundingDetailList(searchProject);
+	}
+	@Override
+	public int getFundingDetailListCnt(SearchProject searchProject) {
+		return this.cicMapper.getFundingDetailListCnt(searchProject);
 	}
 	
 	
@@ -272,7 +281,7 @@ public class CICServiceImpl implements CICService {
 	@Override
 	public void updateServiceCenterSolution(String num, String solution) {
 		this.cicMapper.updateServiceCenterSolution(num, solution);
-		
+
 	}
 	@Override
 	public void deleteServiceCenterSolution(String num) {

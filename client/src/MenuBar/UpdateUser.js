@@ -5,7 +5,7 @@ import { get, post } from 'axios';
 import Modal from 'react-modal';
 
 function UpdateUser() {
-    const { session, modalState, modalStateDispatch, addressValue, addressValueDispatch } = useContext(Store);
+    const { modalState, modalStateDispatch, addressValue, addressValueDispatch } = useContext(Store);
     const [ userInformation, setUserInformation] = useState('');
     // Get User Information & Setting
     useEffect(() => {

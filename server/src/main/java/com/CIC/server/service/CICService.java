@@ -6,6 +6,7 @@ import com.CIC.server.model.Career;
 import com.CIC.server.model.Content;
 import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
+import com.CIC.server.model.FundingDetail;
 import com.CIC.server.model.FundingMember;
 import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.Member;
@@ -35,6 +36,8 @@ public interface CICService {
 	int getFundingMemberListCnt(String search, String number);
 	int getProjectJoinCnt(String number);
 	void deleteProject(String number);
+	List<FundingDetail> getFundingDetailList(SearchProject searchProject);
+	int getFundingDetailListCnt(SearchProject searchProject);
 	
 	
 	

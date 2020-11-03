@@ -4,9 +4,10 @@ import Store from '../Store/Store';
 import Item from '../Components/Item';
 import { post } from 'axios'
 import Paging from '../Components/Paging';
+import FundingDetailList from './FundingDetailList';
 
 function ProejctList() {
-    const { globalState, pageCnt } = useContext(Store);
+    const { globalState, pageCnt, modalStateDispatch } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
     // Get Max Page
@@ -53,17 +54,25 @@ function ProejctList() {
     if(globalState.sub==='continue') _period='진행중';
     if(globalState.sub==='close') _period='마감';
 
+    const openCancleModal = (e) => {
+        const newModalState = {
+            fundingDetailList: true
+        }
+        modalStateDispatch({type: 'CHANGE_MODALSTATE', payload: newModalState})
+    }
     return(
         <Container>
             <Navigation>내정보&nbsp;&gt;&nbsp;{_category}&nbsp;&gt;&nbsp;{_period}</Navigation>
             {!projectList || projectList.length === 0?<Preparing>준비중입니다</Preparing>:
             <>
+            {globalState.main==='fundingList'?<BtnCancle onClick={(e)=>openCancleModal(e)}>펀딩취소</BtnCancle>:''}
             <ItemContainer>
                 {projectList}
             </ItemContainer>
             <Paging maxPage={maxPage} bottom='20px'/>
             </>
             }
+            <FundingDetailList/>
         </Container>
     );
 }
@@ -90,5 +99,22 @@ const ItemContainer = Styled(Left)`
 const Preparing = Styled(Navigation)`
     width: 100%;
     height: 824px;
+`
+const BtnCancle = Styled.button`
+    position: absolute;
+    left: 1567.5px;
+    top: 925px;
+    width: 72px;
+    height: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 3px gray;
+    
+    text-align: right;
+    border: none;
+    border-radius: 5px;
+    background-color: lightgray;
+    cursor: pointer;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

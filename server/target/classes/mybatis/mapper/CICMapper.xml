@@ -95,11 +95,14 @@
 	</delete>
 	
 	<select id="getFundingProjectList" resultType="ProjectList">
-	select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
-		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
-			   from ( select *
-			   		  from project
-			   		  <if test="subMenu != null">
+		select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, dDay, fundingCnt
+		from ( select rownum rnum, a.*
+			   from ( select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, <![CDATA[pro_finish-sysdate]]> as dDay, nvl(fundingCnt,0) fundingCnt
+			   		  from project join ( select pro_number, count(fun_number) fundingCnt
+                                          from funding
+			   	   			              where mem_id = #{id}
+			   	   			              group by pro_number) using(pro_number)
+                      <if test="subMenu != null">
 			   		  	<choose>
 			   		  		<when test="subMenu == 'continue'">
 			   		  			where <![CDATA[sysdate-pro_start > 0 and pro_finish-sysdate > 0]]>
@@ -110,11 +113,7 @@
 			   		  	</choose>
 			   		  </if>
 			   		  order by pro_number desc ) a )
-			   	join ( select pro_number, count(fun_number) fundingCnt
-			   	   			from funding
-			   	   			where mem_id = #{id}
-			   	   			group by pro_number) using(pro_number)
-		where rnum between #{startNumber} and #{finishNumber}
+  		  where rnum between #{startNumber} and #{finishNumber}
 	</select>
 	
 	<select id="getFundingProjectListCnt" resultType="int">
@@ -238,6 +237,54 @@
 		delete from project where pro_number = #{number}
 	</delete>
 	
+	<select id="getFundingDetailList" resultType="FundingDetail">
+		select num, title, period, name, address
+		from ( select rownum rnum, num, title, period, name, address
+			   from ( select fun_number num, title, period, fun_name name, concat(concat(fun_address1,' '),fun_address2) address 
+		       	  	  from funding join ( select pro_number, pro_title title, concat(concat(pro_start,' ~ '),pro_finish) period 
+		       						   	  from project
+		       						   	  where <![CDATA[sysdate-pro_start > 0 and pro_finish-sysdate > 0]]> ) using(pro_number)
+		       	   	  where mem_id = #{id}
+		       	   	  order by fun_number desc)
+			   <if test="type != null">
+				   <choose>
+				  	   <when test="type == 'title'">
+						   where title like '%'||#{search}||'%'
+					   </when>
+					   <when test="type == 'name'">
+						   where name like '%'||#{search}||'%'
+					   </when>
+					   <when test="type == 'address'">
+						   where address like '%'||#{search}||'%'
+					   </when>
+				   </choose>
+			   </if> )
+	  where rnum between #{startNumber} and #{finishNumber} 
+	</select>
+	
+	<select id="getFundingDetailListCnt" resultType="int">
+		select count(fun_number)
+			from ( select fun_number, pro_title title, concat(concat(fun_address1,' '),fun_address2) address, fun_name name, mem_id
+       			   from funding join ( select pro_number, pro_title
+                           			   from project 
+                           			   where <![CDATA[sysdate-pro_start > 0 and pro_finish-sysdate > 0]]> )
+                    			using(pro_number) )
+        where mem_id = #{id}
+        <if test="type != null">
+			<choose>
+				<when test="type == 'title'">
+					and title like '%'||#{search}||'%'
+				</when>
+				<when test="type == 'name'">
+					and name like '%'||#{search}||'%'
+				</when>
+				<when test="type == 'address'">
+					and address like '%'||#{search}||'%'
+				</when>
+			</choose>
+		</if>
+	</select>
+	
 	
 	
 	
@@ -251,7 +298,7 @@
           select coalesce(MAX(pro_number), 0) + 1 as pro_number
             from project
        </selectKey>
-       INSERT INTO PROJECT (PRO_NUMBER, PRO_TITLE, PRO_TARGET, PRO_THUMBNAIL, PRO_LOGO, PRO_START, PRO_FINISH, MEM_ID, TYP_NUMBER, PRO_PRICE, PRO_EMAIL) 
+      INSERT INTO PROJECT (PRO_NUMBER, PRO_TITLE, PRO_TARGET, PRO_THUMBNAIL, PRO_LOGO, PRO_START, PRO_FINISH, MEM_ID, TYP_NUMBER, PRO_PRICE, PRO_EMAIL) 
       values( #{pro_number}, #{pro_title}, #{pro_target}, #{pro_thumbnail}, #{pro_logo}, #{pro_start}, #{pro_finish}, #{mem_id}, #{typ_number}, #{pro_price}, #{pro_email} )
    </insert>
    
@@ -477,7 +524,7 @@
 	<update id="updateServiceCenterSolution">
 		update SERVICECENTER set SER_SOLUTION=#{solution} where SER_NUMBER=#{num}
 	</update>
-	
+
 	<update id="deleteServiceCenterSolution">
 		update SERVICECENTER set SER_SOLUTION=null where SER_NUMBER=#{num}
 	</update>
