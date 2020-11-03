@@ -5,7 +5,9 @@ import { put } from 'axios'
 import Store from '../Store/Store';
 
 function SetContent(props) {
-    const { info, infoDispatch, pageDispatch, content, contentDispatch } = useContext(Store);
+    const { project, info, infoDispatch, pageDispatch, content, contentDispatch } = useContext(Store);
+    console.log(project);
+    console.log(content);
 
     const addContent = (e) => {
         e.preventDefault();

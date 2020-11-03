@@ -6,7 +6,6 @@ import parse from 'html-react-parser';
 
 function DetailMainContent() {
     const { projectInformation, project, projectDispatch } = useContext(Store);
-    
     useEffect(() => {
         get(`/project/${projectInformation.number}`)
             .then(({ data }) => {

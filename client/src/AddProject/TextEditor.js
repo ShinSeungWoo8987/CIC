@@ -4,7 +4,7 @@ import CKeditor from '@ckeditor/ckeditor5-react';
 import Store from '../Store/Store';
 
 function TextEditor({id, _content}) {
-    const { content, contentDispatch} = useContext(Store);
+    const { globalState, content, contentDispatch} = useContext(Store);
     const handleCKeditorState = (event, editor) => {
         const data = editor.getData();
         var newContent = content;

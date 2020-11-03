@@ -1,8 +1,9 @@
 import React, { useContext, useRef, useState } from 'react';
 import Store from '../Store/Store';
+import parse from 'html-react-parser';
 
 function UploadImage({id}) {
-  const { content, contentDispatch } = useContext(Store);
+  const { globalState, content, contentDispatch } = useContext(Store);
   const [cnt, setCnt] = useState(0);
   const imagesRef = useRef();
 
@@ -54,13 +55,17 @@ function UploadImage({id}) {
       />
       <button onClick={(e)=>refresh(e)}>새로고침</button>
       <br/>
-      {content[id].content.map( (file,idx) => <div key={idx} id={idx}>
+      {globalState.sub==='editProject'?
+      parse(content[id].content)
+      :
+      content[id].content.map( (file,idx) => <div key={idx} id={idx}>
         <img src={file.previewURL} width={file.width} alt='profile_preview' />
         <br/>
         <input type='text' placeholder='넓이 조절' onChange={handleImageSize} defaultValue="650"/>
         <button onClick={(e)=>refresh(e)}>변경</button>
         <br/>
-      </div>)}
+      </div>)
+      }
     </div>
   );
 }
