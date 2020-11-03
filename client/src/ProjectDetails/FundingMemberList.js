@@ -13,9 +13,6 @@ function FundingMemberList() {
     const { modalState, modalStateDispatch, search, searchDispatch, pageCnt, pageCntDispatch, projectInformation } = useContext(Store);
     const [ fundingMemberList, setFundingMemberList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
-    console.log("projectInformation.number : ",projectInformation.number);
-    console.log("search.value : ",search.value);
-    console.log("pageCnt.value : ",pageCnt.value);
     // Get Max Page
     useEffect(() => {
         const url = '/fundingMemberList/maxPage';
@@ -40,14 +37,6 @@ function FundingMemberList() {
             console.log(res.data);
             var idx = 0;
             while(idx < res.data.length){
-                // 마지막 라인에 별도의 효과를 줘야하는 경우 사용 - 없으면 나중에 제거할 것
-                // if(idx===res.data.length-1){
-                //     newFundingMemberList.push(
-                //         <FundingMember key={idx} id={res.data[idx].id} name={res.data[idx].name} phone={res.data[idx].phone} address={res.data[idx].address} cnt={res.data[idx].fundingCnt+'회'} top='none' bottom='4px solid #FAFAFA' color='white' foneWeight='bold'/>
-                //     )
-                //     idx++;
-                //     continue;
-                // }
                 newFundingMemberList.push(
                     <FundingMember key={idx} id={res.data[idx].id} name={res.data[idx].name} phone={res.data[idx].phone} address={res.data[idx].address} cnt={res.data[idx].fundingCnt+'회'} top='none' bottom='none' color='white' foneWeight='bold'/>
                 )
@@ -75,7 +64,7 @@ function FundingMemberList() {
                     fundingMemberList.length===0?<NoList>펀딩에 참여한 인원이없습니다.</NoList>:
                         <>
                             <Container>
-                                <SubContainer key={1} height='480px'>
+                                <SubContainer height='480px'>
                                 {fundingMemberList}
                                 </SubContainer>
                             </Container>
@@ -145,7 +134,7 @@ const SubContainer = Styled.div`
 const FundingMemberListModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.9)',
-        zIndex: 1            
+        zIndex: 5      
     },
     content: {
         position: "absolute",

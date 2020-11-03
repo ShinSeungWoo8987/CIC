@@ -90,4 +90,7 @@ public interface CICService {
 	
 	List<Content> getProjectDetails(int projectNum);
 	
+	void updateServiceCenterSolution(String num, String solution);
+	void deleteServiceCenterSolution(String num);
+	
 }

@@ -7,9 +7,12 @@ import styled from 'styled-components';
 import {executeHelloService} from '../Jwt/AuthenticationService';
 
 function RegisterProject(props) {
-  const { page } = useContext(Store);
+  const { page, projectInformation, project, projectDispatch } = useContext(Store);
   const writeInfo = <SetInformation />
   const writeContent = <SetContent/>
+
+  console.log(projectInformation);
+  console.log(project);
 
   let view = '';
   switch (page) {

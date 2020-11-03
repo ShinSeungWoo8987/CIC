@@ -23,7 +23,7 @@ function UpdateUser() {
                 address2: res.data[5]
             })
         })
-    }, [ session.token, modalState.updateUser, addressValueDispatch ]); // 2020-10-31 addressValueDispatch 추가
+    }, [ modalState.updateUser, addressValueDispatch ]); // 2020-10-31 addressValueDispatch 추가
     // updateUser Submit
     const onUpdateUserSubmit = (e) => {
         e.preventDefault();
@@ -140,7 +140,7 @@ const InputSubmit = Styled(Input)`
 const UpdateUserModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.9)',
-        zIndex: 1      
+        zIndex: 5      
     },
     content: {
         position: "absolute",

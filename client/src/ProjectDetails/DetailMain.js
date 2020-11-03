@@ -6,6 +6,7 @@ import ProjectNewsList from './ProjectNewsList';
 import ProjectSupport from './ProjectSupport';
 import Funding from './Funding';
 import FundingMemberList from './FundingMemberList';
+import AddProject from '../AddProject/AddProject';
 
 function DetailMain(props) {
     const { globalState } = useContext(Store);
@@ -13,6 +14,7 @@ function DetailMain(props) {
     if(globalState.sub==='introduction') content = <DetailMainContent/>
     else if(globalState.sub==='recentlyNews') content = <ProjectNewsList/>
     else if(globalState.sub==='supportMessage') content = <ProjectSupport/>
+    else if(globalState.sub==='editProject') content = <AddProject/>
 
     return (
         <Container>

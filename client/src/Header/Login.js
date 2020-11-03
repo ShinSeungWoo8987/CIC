@@ -8,7 +8,7 @@ import Register from '../MenuBar/Register';
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Login() {
-    const { session, sessionDispatch, modalState, modalStateDispatch } = useContext(Store);
+    const { session, sessionDispatch, modalState, modalStateDispatch, globalStateDispatch } = useContext(Store);
     const [idRef, pwRef] = [useRef(), useRef()];
     const [LoginMessage, setLoginMessage] = useState('');
 
@@ -43,8 +43,14 @@ function Login() {
         }
         executeJwtAuthenticationService(id, pw)
         .then(({data}) => {
+            const payload = {
+                state: true,
+                authority: data.authority,
+                token: data.token,
+                userId: data.userId
+            }
             registerSuccessfulLoginForJwt(data.authority, data.token, data.userId);
-            sessionDispatch({type:'SESSION', payload: Object.assign(session, {state:true} ) });
+            sessionDispatch({type:'SESSION', payload});
             closeLoginModal();
         }).catch( () =>{
             setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.")
@@ -54,7 +60,6 @@ function Login() {
     // Login Modal Setting
     const openLoginModal = (e) => {
         e.preventDefault();
-        if(e.currentTarget.text==='로그아웃') document.location.href='/' // 이 부분은 logout 처리하는 부분으로 넘겨도 되는 것이 아닌가???
         if(localStorage.getItem('token') === null){
             const newModalState = {
                 login: true,
@@ -63,6 +68,7 @@ function Login() {
         }else{
             logout();
             sessionDispatch({type:'DEFAULT'});
+            globalStateDispatch({type: 'DEFAULT'});
         }
     }
     const closeLoginModal = () => {
@@ -180,7 +186,7 @@ const Blank = Styled.div`
 const LoginModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.9)',
-        zIndex: 3               
+        zIndex: 5               
     },
     content: {
         position: "absolute",

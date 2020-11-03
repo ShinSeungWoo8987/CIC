@@ -36,7 +36,8 @@ function SetInformation(props) {
                 펀딩가격: <input type="text" name="funding_price" value={newInfo.funding_price} onChange={e => onValueChange(e)} /> <br />
                 프로젝트 기간설정: <input type="date" name="sdate" value={newInfo.sdate} onChange={e => onValueChange(e)} /> - <input type="date" name="fdate" value={newInfo.fdate} onChange={e => onValueChange(e)} /> <br />
                 썸네일 이미지: <input type="file" name="thumbnail" onChange={e => onFileChange(e)} /> <br />
-                로고 이미지: <input type="file" name="logo" onChange={e => onFileChange(e)} />
+                로고 이미지: <input type="file" name="logo" onChange={e => onFileChange(e)} /> <br />
+                이메일: <input type="text" name="email" onChange={e => onValueChange(e)} />
                 <br /><br /><br />
                 <br />
                 <button type='submit'>다음</button>

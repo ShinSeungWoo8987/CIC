@@ -236,7 +236,7 @@ const InputSubmit = Styled(Input)`
 const FundingModalStyle = {
     overlay: {
         backgroundColor: 'rgba(140,140,140,0.9)',
-        zIndex: 1            
+        zIndex: 5            
     },
     content: {
         position: "absolute",

@@ -269,5 +269,13 @@ public class CICServiceImpl implements CICService {
 	public List<Content> getProjectDetails(int projectNum) {
 		return this.cicMapper.getProjectDetails(projectNum);
 	}
-	
+	@Override
+	public void updateServiceCenterSolution(String num, String solution) {
+		this.cicMapper.updateServiceCenterSolution(num, solution);
+		
+	}
+	@Override
+	public void deleteServiceCenterSolution(String num) {
+		this.cicMapper.deleteServiceCenterSolution(num);
+	}
 }

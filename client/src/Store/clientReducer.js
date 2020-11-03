@@ -158,8 +158,18 @@ const boardItemListReducer = (state, {type, payload})=>{
     }
 }
 
+const projectReducer = (state, {type, payload}) => {
+    switch (type) {
+        default:
+            return payload;
+        case 'CHANGE':
+            return payload;
+    }
+}
+
 export {
     _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _search, searchReducer,
     _pageCnt, pageCntReducer, _projectInformation, projectInformationReducer,
-    _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer, boardItemListReducer
+    _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer, boardItemListReducer,
+    projectReducer
 };

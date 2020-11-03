@@ -2,7 +2,8 @@ import React, { useReducer } from 'react';
 import Store from './Store';
 import { _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _search, searchReducer,
          _pageCnt, pageCntReducer, _projectInformation, projectInformationReducer, boardItemListReducer,
-         _viewPage, viewStateReducer, pageReducer, _content, contentReducer, _info, infoReducer } from './clientReducer';
+         _viewPage, viewStateReducer, pageReducer, _content, contentReducer, _info, infoReducer,
+         projectReducer } from './clientReducer';
 
 function ClientStore(props) {
 
@@ -20,13 +21,14 @@ function ClientStore(props) {
     const [info, infoDispatch] = useReducer(infoReducer, _info);
     const [page, pageDispatch] = useReducer(pageReducer, 'writeInfo');
     const [ boardItemList , boardItemListDispatch] = useReducer( boardItemListReducer, '');
+    const [ project, projectDispatch] = useReducer( projectReducer);
 
     return (
         <Store.Provider value={ {
             session, sessionDispatch, globalState, globalStateDispatch, addressValue, addressValueDispatch, modalState, modalStateDispatch, search, searchDispatch,
             pageCnt, pageCntDispatch, projectInformation, projectInformationDispatch,
             viewState, viewStateDispatch, content, contentDispatch, info, infoDispatch, page, pageDispatch,
-            boardItemList , boardItemListDispatch
+            boardItemList , boardItemListDispatch, project, projectDispatch
             } }>
                 
             {props.children}

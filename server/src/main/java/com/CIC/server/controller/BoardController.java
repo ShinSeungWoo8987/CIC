@@ -1,14 +1,17 @@
 package com.CIC.server.controller;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +48,8 @@ public class BoardController {
 	String title="";
 	String image="";
 	String description="";
+	
+	String solution="";
 	
 	ArrayList<Map> content;
 	
@@ -229,6 +234,7 @@ public class BoardController {
 		int endNum = Integer.parseInt(num)*7;
 		
         List<ServiceCenter> list = this.cicService.getServiceCenterList(startNum,endNum);
+        System.out.println(list);
         return list; 
     }
 	
@@ -365,11 +371,6 @@ public class BoardController {
 		}
     }
 	
-	// 남은거
-	// 
-	// /notice/delete/{num}
-	// /service_center/delete/{num}
-	
 	@RequestMapping(value="/event/delete/{num}", method=RequestMethod.DELETE)
     public String deleteEvent( @PathVariable String num ) throws Exception {
 		try {
@@ -400,6 +401,42 @@ public class BoardController {
 			return "Successfully delete data"; 
 		}catch (Exception e) {
 			return "Delete data failed"; 
+		}
+    }
+	
+	@PostMapping(value="/service_center_solution/update/{num}", consumes="application/json")
+    public String updateServiceCenterSolution(@PathVariable String num, @RequestBody Map map) throws Exception {
+		// 권한 확인
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		if( userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]") ) {
+			map.forEach((k, v) -> {
+				switch ( (String)k ) {
+					case "solution":
+						solution = (String)v;
+						break;
+					default:
+						System.out.println("Something Error");
+						break;
+				}
+	        });
+	        this.cicService.updateServiceCenterSolution(num, solution);
+			return "";
+		}else {
+			return "권한이 없습니다.";
+		}
+    }
+	
+	@DeleteMapping("/service_center_solution/delete/{num}")
+    public String deleteServiceCenterSolution(@PathVariable String num) throws Exception {
+		// 권한 확인
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		if( userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]") ) {
+	        this.cicService.deleteServiceCenterSolution(num);
+			return "";
+		}else {
+			return "권한이 없습니다.";
 		}
     }
 }

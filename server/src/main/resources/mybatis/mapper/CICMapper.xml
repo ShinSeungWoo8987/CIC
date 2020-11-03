@@ -251,8 +251,8 @@
           select coalesce(MAX(pro_number), 0) + 1 as pro_number
             from project
        </selectKey>
-       INSERT INTO PROJECT (PRO_NUMBER, PRO_TITLE, PRO_TARGET, PRO_THUMBNAIL, PRO_LOGO, PRO_START, PRO_FINISH, MEM_ID, TYP_NUMBER, PRO_PRICE) 
-      values( #{pro_number}, #{pro_title}, #{pro_target}, #{pro_thumbnail}, #{pro_logo}, #{pro_start}, #{pro_finish}, #{mem_id}, #{typ_number}, #{pro_price} )
+       INSERT INTO PROJECT (PRO_NUMBER, PRO_TITLE, PRO_TARGET, PRO_THUMBNAIL, PRO_LOGO, PRO_START, PRO_FINISH, MEM_ID, TYP_NUMBER, PRO_PRICE, PRO_EMAIL) 
+      values( #{pro_number}, #{pro_title}, #{pro_target}, #{pro_thumbnail}, #{pro_logo}, #{pro_start}, #{pro_finish}, #{mem_id}, #{typ_number}, #{pro_price}, #{pro_email} )
    </insert>
    
    <insert id="addContent" parameterType="Content">
@@ -474,7 +474,13 @@
 		select * from CONTENT where pro_number = #{projectNum}
 	</select>
 	
+	<update id="updateServiceCenterSolution">
+		update SERVICECENTER set SER_SOLUTION=#{solution} where SER_NUMBER=#{num}
+	</update>
 	
+	<update id="deleteServiceCenterSolution">
+		update SERVICECENTER set SER_SOLUTION=null where SER_NUMBER=#{num}
+	</update>
 	
 	
 </mapper>

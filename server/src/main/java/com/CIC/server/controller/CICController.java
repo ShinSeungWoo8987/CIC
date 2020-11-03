@@ -42,6 +42,7 @@ public class CICController {
 	private String thumbnail = "";
 	private String logo = "";
 	private String funding_price = "";
+	private String email = "";
 	
 	private String title="";
 	private String image="";
@@ -99,6 +100,9 @@ public class CICController {
 				case "funding_price":
 					funding_price = (String)v;
 					break;
+				case "email":
+					email = (String)v;
+					break;
 				default:
 					System.out.println("Something Error");
 					break;
@@ -112,6 +116,7 @@ public class CICController {
 				  .typ_number( Integer.parseInt(category) )
 				  .pro_target( Integer.parseInt(target_money) )
 				  .pro_price( Integer.parseInt(funding_price) )
+				  .pro_email(email)
 				  .pro_start(sdate)
 				  .pro_finish(fdate)
 				  .pro_thumbnail(thumbnail)

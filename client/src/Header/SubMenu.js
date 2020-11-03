@@ -97,6 +97,7 @@ const Container = Styled(Left)`
     height: ${({height}) => height};
     opacity: 0.8;
     margin: ${({margin}) => "0 0 0 "+margin};
+    background-color: white;
 `
 const Menu = Styled(Left)`
     position: relative;

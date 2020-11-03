@@ -26,12 +26,14 @@ function Head(props) {
     ]
     const [myInfoList, setMyInfoList] = useState([{id: '', title: ''}]);
     const common = [
+        {id: 'charge', title: '충전하기'},
         {id: 'updateUser', title: '정보수정'},
         {id: 'fundingList', title: '펀딩목록'},
         {id: 'gradeUp', title: '창작자신청'},
         {id: 'deleteUser', title: '회원탈퇴'}
     ]
     const creator = [
+        {id: 'charge', title: '충전하기'},
         {id: 'updateUser', title: '정보수정'},
         {id: 'fundingList', title: '펀딩목록'},
         {id: 'projectList', title: '프로젝트목록'},
@@ -174,6 +176,7 @@ const Container = styled.div`
     width: 100%;
     font-size: 26px;
     font-weight: bold;
+    z-index: 2;
 `
 const Header = styled.div`
     height: 46px;
@@ -219,10 +222,10 @@ animation-fill-mode: forwards;
         opacity: 0;
     }
     20% {
-        height: 150px;
+        height: 190px;
     }
     100% {
-        height: 150px;
+        height: 190px;
         opacity: 1;
     }
 }
@@ -245,10 +248,10 @@ animation-fill-mode: forwards;
         opacity: 0;
     }
     20% {
-        height: 150px;
+        height: 190px;
     }
     100% {
-        height: 150px;
+        height: 190px;
         opacity: 1;
     }
 }
@@ -271,10 +274,10 @@ animation-fill-mode: forwards;
         opacity: 0;
     }
     20% {
-        height: 150px;
+        height: 190px;
     }
     100% {
-        height: 150px;
+        height: 190px;
         opacity: 1;
     }
 }

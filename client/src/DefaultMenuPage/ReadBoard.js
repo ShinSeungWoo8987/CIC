@@ -65,7 +65,7 @@ function ReadBoard() {
             action: 1,
             num: 0
         }
-        document.getElementById('searchBox').value = null;
+        if(document.getElementById('searchBox')) document.getElementById('searchBox').value = null;
         globalStateDispatch({ type: 'GLOBAL', payload: newGlobalState });
         setKeyword();
     }
@@ -150,6 +150,7 @@ const Left = Styled.div`
     float: left;
 `
 const Container = Styled(Left)`
+    margin-top: -34px;    
     margin-left: 110px;
     width: 100%;
     height: 880px;

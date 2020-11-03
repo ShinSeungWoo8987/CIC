@@ -93,4 +93,7 @@ public interface CICMapper {
 	public void handleCreatorRequest(String decision, String userId);
 	
 	public List<Content> getProjectDetails(int projectNum);
+	
+	public void updateServiceCenterSolution(String num, String solution);
+	public void deleteServiceCenterSolution(String num);
 }

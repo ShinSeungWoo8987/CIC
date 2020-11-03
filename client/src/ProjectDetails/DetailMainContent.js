@@ -5,22 +5,22 @@ import {get} from 'axios';
 import parse from 'html-react-parser';
 
 function DetailMainContent() {
-    const { projectInformation } = useContext(Store);
-    const [ project, setProject ] = useState();
-
+    const { projectInformation, project, projectDispatch } = useContext(Store);
+    
     useEffect(() => {
         get(`/project/${projectInformation.number}`)
             .then(({ data }) => {
-                setProject(
-                    data.sort((a, b)=>{ 
-                        return a.con_number < b.con_number ? -1 : a.con_number > b.con_number ? 1 : 0;  
-                    })
+                projectDispatch(
+                    {
+                        type:'CHANGE',
+                        payload:data.sort((a, b)=>{ 
+                            return a.con_number < b.con_number ? -1 : a.con_number > b.con_number ? 1 : 0;
+                        })
+                    }
                 );
             })
             .catch(err => console.log(err));
     }, []);
-
-    console.log(projectInformation.creator);
 
     return (
         <Container>
@@ -33,7 +33,7 @@ function DetailMainContent() {
           <SubText></SubText>
 
           <ContentText>
-              {project?project.map(i=>i.con_content?parse(i.con_content):''):'로딩중입니다.'}
+              {project?project.map(i=>i.con_content?( parse(i.con_content) ):''):'로딩중입니다.'}
           </ContentText>
         </Container>
     );
@@ -77,5 +77,11 @@ const ContentText = Styled.div`
     padding-bottom: 50px;
     margin-bottom: 100px;
     border-bottom: 1px solid lightgrey;
-    img{margin:0 auto;}
+
+    img{
+        position: relative;
+        left: 50%; 
+        transform: translate(-50%); 
+
+    }
 `
