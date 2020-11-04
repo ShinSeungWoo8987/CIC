@@ -3,6 +3,8 @@ package com.CIC.server.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.CIC.server.model.EventFileUploadRes;
 import com.CIC.server.model.FileUploadRes;
@@ -61,50 +64,25 @@ public class FileUploadController{
 	@RequestMapping( value = "/upload", method = RequestMethod.PUT, consumes = "multipart/form-data")
 	@CrossOrigin//(origins = {"http://localhost:3000"})
 	public FileUploadRes projectFileUpload( //ArrayList<FileUploadRes>
-			@RequestParam(value = "thumbnail", required = false) MultipartFile thumbnail,
-			@RequestParam(value = "logo", required = false) MultipartFile logo,
-			@RequestParam(value = "file0", required = false) MultipartFile file0,
-			@RequestParam(value = "file1", required = false) MultipartFile file1,
-			@RequestParam(value = "file2", required = false) MultipartFile file2,
-			@RequestParam(value = "file3", required = false) MultipartFile file3,
-			@RequestParam(value = "file4", required = false) MultipartFile file4,
-			@RequestParam(value = "file5", required = false) MultipartFile file5,
-			@RequestParam(value = "file6", required = false) MultipartFile file6,
-			@RequestParam(value = "file7", required = false) MultipartFile file7,
-			@RequestParam(value = "file8", required = false) MultipartFile file8,
-			@RequestParam(value = "file9", required = false) MultipartFile file9,
-			@RequestParam(value = "file10", required = false) MultipartFile file10,
-			@RequestParam(value = "file10", required = false) MultipartFile file11,
-			@RequestParam(value = "file10", required = false) MultipartFile file12
+			MultipartHttpServletRequest request
 			) throws IOException {
+		Map<String, MultipartFile> fileList = request.getFileMap();
 		String folderName = UUID.randomUUID().toString();
+		
+		MultipartFile thumbnail = request.getFile("thumbnail");
+		MultipartFile logo = request.getFile("logo");
 		
 		String thumbnailName = thumbnail == null ? "" : uploadS3(folderName, convert(thumbnail));
 		String logoName = logo == null ? "" : uploadS3(folderName, convert(logo));
-		String fileName0 = file0 == null ? "" : uploadS3(folderName, convert(file0));
-		String fileName1 = file1 == null ? "" : uploadS3(folderName, convert(file1));
-		String fileName2 = file2 == null ? "" : uploadS3(folderName, convert(file2));
-		String fileName3 = file3 == null ? "" : uploadS3(folderName, convert(file3));
-		String fileName4 = file4 == null ? "" : uploadS3(folderName, convert(file4));
-		String fileName5 = file5 == null ? "" : uploadS3(folderName, convert(file5));
-		String fileName6 = file6 == null ? "" : uploadS3(folderName, convert(file6));
-		String fileName7 = file7 == null ? "" : uploadS3(folderName, convert(file7));
-		String fileName8 = file8 == null ? "" : uploadS3(folderName, convert(file8));
-		String fileName9 = file9 == null ? "" : uploadS3(folderName, convert(file9));
-		String fileName10 = file10 == null ? "" : uploadS3(folderName, convert(file10));
-		String fileName11 = file11 == null ? "" : uploadS3(folderName, convert(file11));
-		String fileName12 = file12 == null ? "" : uploadS3(folderName, convert(file12));
 		
-		if(!(fileName0.equals(fileName1)&&fileName1.equals(fileName2)&&fileName2.equals(fileName3)&&fileName3.equals(fileName4))) {
-			FileUploadRes res = new FileUploadRes(
-					folderName, thumbnailName, logoName, fileName0, fileName1, fileName2, fileName3, fileName4,
-					fileName5, fileName6, fileName7, fileName8, fileName9, fileName10, fileName11, fileName12
-					);
-			return res;
-		}else {
-			FileUploadRes res = new FileUploadRes(folderName,thumbnailName,logoName,"","","","","","","","","","","","","");
-			return res;
+		ArrayList<String> files = new ArrayList();
+		for(int i=0; i<fileList.size()-2; i++) {
+			MultipartFile file = request.getFile("file"+i);
+			
+			files.add( uploadS3(folderName, convert(file)) );
 		}
+		FileUploadRes res = new FileUploadRes(folderName,thumbnailName,logoName,files);
+		return res;
 	}
 	
 	@RequestMapping( value = "/event/uploadfile", method = RequestMethod.PUT, consumes = "multipart/form-data")

@@ -35,15 +35,11 @@ function SetContent(props) {
         imageContent.map((u) => {
             u.content.map(f => formData.append('file' + cnt++, f.file));
         });
-        return put(url, formData, config).then(res => {
-            const folderName = 'https://crowdincreative.s3.ap-northeast-2.amazonaws.com/' + res.data.folderName;
-            const fileName = [
-                res.data.fileName0, res.data.fileName1, res.data.fileName2, res.data.fileName3, res.data.fileName4,
-                res.data.fileName5, res.data.fileName6, res.data.fileName7, res.data.fileName8, res.data.fileName9,
-                res.data.fileName10, res.data.fileName11
-            ];
-            const thumbnail = `${folderName}/${res.data.thumbnail}`
-            const logo = `${folderName}/${res.data.logo}`
+        return put(url, formData, config).then(({data}) => {
+            const folderName = 'https://crowdincreative.s3.ap-northeast-2.amazonaws.com/' + data.folderName;
+            const fileName = data.files;
+            const thumbnail = `${folderName}/${data.thumbnail}`
+            const logo = `${folderName}/${data.logo}`
             
             const _info = Object.assign(info, {thumbnail,logo});
             infoDispatch({type:'CHANGE_INFO', payload:_info});
