@@ -10,9 +10,10 @@ import FundingMember from '../ProjectDetails/FundingMember';
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function FundingDetailList() {
-    const { modalState, modalStateDispatch, search, searchDispatch, pageCnt, pageCntDispatch, projectInformation } = useContext(Store);
+    const { modalState, modalStateDispatch, search, searchDispatch, pageNumber, pageNumberDispatch, projectInformation } = useContext(Store);
     const [ fundingDetailList, setFundingDetailList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
+    const blockPerCnt = 10;
     // Get Max Page
     useEffect(() => {
         const url = '/fundingDetailList/maxPage';
@@ -31,7 +32,7 @@ function FundingDetailList() {
         const data = {
             type: search.type,
             search: search.value,
-            page: pageCnt.value+''
+            page: pageNumber.value+''
         }
         const newFundingDetailList = [];
         post(url, data).then(res=>{
@@ -45,14 +46,13 @@ function FundingDetailList() {
             }
             setFundingDetailList(newFundingDetailList);
         })
-    }, [ search, modalState.fundingDetailList, pageCnt, projectInformation.number ]);
+    }, [ search, modalState.fundingDetailList, pageNumber, projectInformation.number ]);
     // Funding Modal Setting
     const closeModal = (e) => {
         modalStateDispatch({type: 'DEFAULT'});
-        pageCntDispatch({type: 'DEFAULT'});
+        pageNumberDispatch({type: 'DEFAULT'});
         searchDispatch({type: 'DEFAULT'});
     }
-    console.log(fundingDetailList);
     return  <Modal 
                 isOpen= { modalState.fundingDetailList }
                 style={ FundingDetailListModalStyle }
@@ -67,7 +67,7 @@ function FundingDetailList() {
                         <>
                         <NoList>참여한 펀딩이 없습니다.</NoList>
                         <Search use='true'/>
-                        <Paging maxPage={maxPage} bottom='-10px'/>
+                        <Paging maxPage={maxPage} blockPerCnt={blockPerCnt} bottom='-10px'/>
                         </>
                         :
                         <>
@@ -78,7 +78,7 @@ function FundingDetailList() {
                                     </SubContainer>
                                 </Container>
                                 <Search use='true'/>
-                                <Paging maxPage={maxPage} bottom='-10px'/>
+                                <Paging maxPage={maxPage} blockPerCnt={blockPerCnt} bottom='-10px'/>
                             </>
                         </>
                 }

@@ -7,7 +7,7 @@ import Paging from '../Components/Paging';
 import FundingDetailList from './FundingDetailList';
 
 function ProejctList() {
-    const { globalState, pageCnt, modalStateDispatch } = useContext(Store);
+    const { globalState, pageNumber, modalStateDispatch, pageNumberDispatch } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
     // Get Max Page
@@ -28,7 +28,7 @@ function ProejctList() {
         const newProjectList = [];
         const url = `/${globalState.main}/list`;
         const data = {
-            page: pageCnt.value+'',
+            page: pageNumber.value+'',
             sub: globalState.sub
         }
         post(url, data).then(res=>{
@@ -41,7 +41,7 @@ function ProejctList() {
             }
             setProjectList(newProjectList);
         })
-    }, [ globalState, pageCnt.value ]);
+    }, [ globalState, pageNumber.value ]);
     // Navigation Setting
     let _category = '';
     let _period = '';
@@ -59,18 +59,25 @@ function ProejctList() {
             fundingDetailList: true
         }
         modalStateDispatch({type: 'CHANGE_MODALSTATE', payload: newModalState})
+        pageNumberDispatch({type: 'DEFAULT'});
     }
     return(
         <Container>
             <Navigation>내정보&nbsp;&gt;&nbsp;{_category}&nbsp;&gt;&nbsp;{_period}</Navigation>
-            {!projectList || projectList.length === 0?<Preparing>준비중입니다</Preparing>:
-            <>
-            {globalState.main==='fundingList'?<BtnCancle onClick={(e)=>openCancleModal(e)}>펀딩취소</BtnCancle>:''}
-            <ItemContainer>
-                {projectList}
-            </ItemContainer>
-            <Paging maxPage={maxPage} bottom='20px'/>
-            </>
+            {!projectList?<Preparing>목록을 불러오는 중입니다 . . .</Preparing>:
+                projectList.length === 0?
+                <>
+                <NoList>참여한 펀딩이 없습니다.</NoList>
+                <Paging maxPage={maxPage} bottom='20px'/>
+                </>
+                :
+                <>
+                {globalState.main==='fundingList'?<BtnCancle onClick={(e)=>openCancleModal(e)}>펀딩취소</BtnCancle>:''}
+                <ItemContainer>
+                    {projectList}
+                </ItemContainer>
+                <Paging maxPage={maxPage} bottom='20px'/>
+                </>
             }
             <FundingDetailList/>
         </Container>
@@ -97,8 +104,35 @@ const ItemContainer = Styled(Left)`
     height: 824px;
 `
 const Preparing = Styled(Navigation)`
-    width: 100%;
-    height: 824px;
+    float: left;
+    width: 215px;
+    height: 25px;
+    margin: 5px 0 0 50px;
+    font-size: 17.5px;
+    font-weight: bold;
+    overflow: hidden;
+
+    animation-duration: 3s;
+    animation-name: preparing;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+
+    @keyFrames preparing {
+        15% { width: 225px; }
+        30% { width: 235px; }
+        45% { width: 245px; }
+        60% { width: 235px; }
+        75% { width: 225px; }
+        90% { width: 215px; }
+        100% { width: 215px; }
+    }
+`
+const NoList = Styled.div`
+    height: 480px;
+    line-height: 300px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
 `
 const BtnCancle = Styled.button`
     position: absolute;

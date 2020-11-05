@@ -3,7 +3,7 @@ import Styled from "styled-components" // styled-components 라이브러리를 �
 import Store from '../Store/Store';
 
 function Search({use}) {
-    const { searchDispatch, pageCntDispatch } = useContext(Store);
+    const { searchDispatch, pageNumberDispatch } = useContext(Store);
     const onSearchSubmit = (e) => {
         e.preventDefault();
         let newSearch = '';
@@ -18,9 +18,9 @@ function Search({use}) {
             }
         }
         searchDispatch({type: 'SEARCH', payload: newSearch});
-        pageCntDispatch({type: 'DEFUALT'});
+        pageNumberDispatch({type: 'DEFUALT'});
     }
-    return  <Container onSubmit={(e)=>onSearchSubmit(e)}>
+    return  <Container width={use==='true'?'539px':'450px'} onSubmit={(e)=>onSearchSubmit(e)}>
                 {use==='true'?
                     <Select id='title'>
                         <option value='title'>제목</option>
@@ -39,7 +39,7 @@ const Container = Styled.form`
     position: relative;
     left: 50%;
     transform: translate(-50%);
-    width: 539px;
+    width: ${({width})=>`${width}`};
     height: 30px;
 `
 const Select = Styled.select`

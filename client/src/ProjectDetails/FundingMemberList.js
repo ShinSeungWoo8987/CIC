@@ -10,7 +10,7 @@ import Search from '../Components/Search';
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function FundingMemberList() {
-    const { modalState, modalStateDispatch, search, searchDispatch, pageCnt, pageCntDispatch, projectInformation } = useContext(Store);
+    const { modalState, modalStateDispatch, search, searchDispatch, pageNumber, pageNumberDispatch, projectInformation } = useContext(Store);
     const [ fundingMemberList, setFundingMemberList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
     // Get Max Page
@@ -30,7 +30,7 @@ function FundingMemberList() {
         const data = {
             search: search.value,
             number: projectInformation.number+'',
-            page: pageCnt.value+''
+            page: pageNumber.value+''
         }
         const newFundingMemberList = [];
         post(url, data).then(res=>{
@@ -44,11 +44,11 @@ function FundingMemberList() {
             }
             setFundingMemberList(newFundingMemberList);
         })
-    }, [ search, modalState.fundingMemberList, pageCnt, projectInformation.number ]);
+    }, [ search, modalState.fundingMemberList, pageNumber, projectInformation.number ]);
     // Funding Modal Setting
     const closeModal = (e) => {
         modalStateDispatch({type: 'DEFAULT'});
-        pageCntDispatch({type: 'DEFAULT'});
+        pageNumberDispatch({type: 'DEFAULT'});
         searchDispatch({type: 'DEFAULT'});
     }
     return <Modal 

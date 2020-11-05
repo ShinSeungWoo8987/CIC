@@ -3,7 +3,7 @@ import Styled from 'styled-components';
 import Store from '../Store/Store';
 
 function SubMenu(){
-    const { globalState, globalStateDispatch, pageCntDispatch, searchDispatch } = useContext(Store);
+    const { globalState, globalStateDispatch, pageNumberDispatch, searchDispatch } = useContext(Store);
     const mainPage = ['all', 'tech', 'travel', 'fashion']; // Main Page Menu List
     const projectListPage = ['fundingList','projectList','projectListAll']
     let menuList = [];
@@ -49,7 +49,7 @@ function SubMenu(){
             num:0
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
-        pageCntDispatch({ type: 'DEFAULT'});
+        pageNumberDispatch({ type: 'DEFAULT'});
         searchDispatch({type:'DEFAULT'});
     }
     // Sub Menu List Setting

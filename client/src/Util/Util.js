@@ -32,4 +32,23 @@ const dDayFormat = (dDay) => {
     else
         return parseInt(dDay)
 }
-export { moneyFormat, percentFormat, getRandom, dDayFormat };
+const getMaxBlock = (maxPage, blockPerCnt) => {
+    if(maxPage === 0 || maxPage <= blockPerCnt){
+        return 1
+    }else if(maxPage%blockPerCnt===0){
+        return parseInt(maxPage/blockPerCnt)
+    }else if(maxPage%blockPerCnt!==0){
+        return parseInt(maxPage/blockPerCnt) + 1
+    }
+}
+const getPageCnt = ( maxPage, maxBlock, blockPerCnt, blockNumber ) => {
+    if(maxPage === 0)
+        return 1
+    if(blockNumber < maxBlock)
+        return 10;
+    if(blockNumber === maxBlock){
+        return maxPage%blockPerCnt
+    }
+        
+}
+export { moneyFormat, percentFormat, getRandom, dDayFormat, getMaxBlock, getPageCnt };

@@ -10,7 +10,7 @@ import Authority from '../MenuBar/Authority';
 import _FundingState from './FundingState';
 
 function Head(props) {
-    const { session, globalState, modalStateDispatch, globalStateDispatch, searchDispatch, pageCntDispatch } = useContext(Store);
+    const { session, globalState, modalStateDispatch, globalStateDispatch, searchDispatch, pageNumberDispatch } = useContext(Store);
     const [showMore, setShowMore] = useState(false);
 
     const categoryList = [
@@ -82,7 +82,7 @@ function Head(props) {
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
         // 검색 & 페이지 초기화
         searchDispatch({type:'DEFAULT'});
-        pageCntDispatch({ type: 'DEFAULT'});
+        pageNumberDispatch({ type: 'DEFAULT'});
     }
 
     // Change GlobalState Main - My Information
@@ -121,7 +121,7 @@ function Head(props) {
         }
         // 검색 & 페이지 초기화
         searchDispatch({type:'DEFAULT'});
-        pageCntDispatch({ type: 'DEFAULT'});
+        pageNumberDispatch({ type: 'DEFAULT'});
     }
 
     return (

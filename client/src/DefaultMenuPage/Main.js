@@ -5,7 +5,7 @@ import Item from '../Components/Item';
 import { post } from 'axios'
 
 function Main() {
-    const { globalState, search, pageCnt, pageCntDispatch } = useContext(Store);
+    const { globalState, search, pageNumber, pageNumberDispatch } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
     const buttonImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/`;
@@ -24,7 +24,7 @@ function Main() {
         const newProjectList = [];
         const url = '/main/list';
         const data = {
-            page: pageCnt.value+'',
+            page: pageNumber.value+'',
             search: search.value,
             main: globalState.main,
             sub: globalState.sub
@@ -39,21 +39,21 @@ function Main() {
             }
             setProjectList(newProjectList);
         })
-    }, [ globalState, search, pageCnt.value ]);
+    }, [ globalState, search, pageNumber.value ]);
     // Move Page - 무한 스크롤 구현 후 제거
     const moveMainPage = (e, direction) => {
         e.preventDefault();
-        if(direction==='left' && pageCnt.value>1){
-            const newMainPageCnt = {
-                value: pageCnt.value-1
+        if(direction==='left' && pageNumber.value>1){
+            const newMainPageNumber = {
+                value: pageNumber.value-1
             }
-            pageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
+            pageNumberDispatch({ type: 'MOVE_PAGE', payload: newMainPageNumber});
         }
-        if(direction==='right' && pageCnt.value<maxPage){
-            const newMainPageCnt = {
-                value: pageCnt.value+1
+        if(direction==='right' && pageNumber.value<maxPage){
+            const newMainPageNumber = {
+                value: pageNumber.value+1
             }
-            pageCntDispatch({ type: 'MOVE_PAGE', payload: newMainPageCnt});
+            pageNumberDispatch({ type: 'MOVE_PAGE', payload: newMainPageNumber});
         }
     }
     let _category = '전체';
