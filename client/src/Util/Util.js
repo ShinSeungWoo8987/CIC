@@ -1,3 +1,11 @@
+const getRandom = (max, min) => {
+    max = Math.floor(max);
+    min = Math.ceil(min);
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+const replaceAt = (string, idx, character) => {
+    return string.substring(0, idx) + character + string.substring(idx+character.length);
+}
 // Format - (###,###,###)
 const moneyFormat = (money) => {
     const reverseSource = String(money).split("").reverse().join("");
@@ -21,16 +29,23 @@ const percentFormat = (saveMoney, targetMoney) =>{
     result = (saveMoney/targetMoney)*100;
     return parseInt(result);
 }
-const getRandom = (max, min) => {
-    max = Math.floor(max);
-    min = Math.ceil(min);
-    return Math.floor(Math.random() * (max - min)) + min;
-}
 const dDayFormat = (dDay) => {
     if(dDay<0)
         return "마감"
     else
         return parseInt(dDay)
+}
+const dateFormat = (date) => {
+    date = date.replaceAll('-','/').substring(2);
+    return date;
+}
+const idFormat = (id) => {
+    const length = id.length;
+    const startHiddenNumber = 4;
+    for(var idx=startHiddenNumber; idx<length; idx++){
+        id = replaceAt(id, idx, "*");
+    }
+    return id
 }
 const getMaxBlock = (maxPage, blockPerCnt) => {
     if(maxPage === 0 || maxPage <= blockPerCnt){
@@ -48,7 +63,6 @@ const getPageCnt = ( maxPage, maxBlock, blockPerCnt, blockNumber ) => {
         return 10;
     if(blockNumber === maxBlock){
         return maxPage%blockPerCnt
-    }
-        
+    }   
 }
-export { moneyFormat, percentFormat, getRandom, dDayFormat, getMaxBlock, getPageCnt };
+export { getRandom, moneyFormat, percentFormat, dDayFormat, dateFormat, idFormat, getMaxBlock, getPageCnt };

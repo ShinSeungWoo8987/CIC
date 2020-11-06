@@ -18,7 +18,7 @@ function Paging({maxPage, bottom}){
         const newPaging = [];
         if(maxBlock > 1 && blockNumber > 1){
             newPaging.push(
-                <MoveBlock margin='0 7.5px 0 0' onClick={()=>moveBlock('down')}>[이전]</MoveBlock>
+                <MoveBlock key={idx+11} margin='0 7.5px 0 0' onClick={()=>moveBlock('down')}>[이전]</MoveBlock>
             );
         }
         for(idx=1; idx<=pageCnt; idx++){
@@ -28,13 +28,13 @@ function Paging({maxPage, bottom}){
                 );
             }else{
                 newPaging.push(
-                    <Page key={idx} margin='2.5px' id={idx} onClick={(e) => movePage(e)}>[{startNumber+idx}]</Page>
+                    <Page key={idx} margin='2.5px' id={startNumber+idx} onClick={(e) => movePage(e)}>[{startNumber+idx}]</Page>
                 );    
             }
         }
         if(maxBlock > 1 && blockNumber < maxBlock){
             newPaging.push(
-                <MoveBlock margin='0 0 0 7.5px' onClick={()=>moveBlock('up')}>[다음]</MoveBlock>
+                <MoveBlock key={idx+10} margin='0 0 0 7.5px' onClick={()=>moveBlock('up')}>[다음]</MoveBlock>
             );
         }
         setPaging(newPaging);

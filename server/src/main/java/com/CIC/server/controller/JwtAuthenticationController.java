@@ -180,4 +180,53 @@ public class JwtAuthenticationController {
     	result.add("Fail");
     	return result;
     }
+    
+    @RequestMapping(value = "/authenticate/findId", method = RequestMethod.POST, consumes="application/json")
+    public String findId(@RequestBody Map map) throws Exception {
+    	try {
+	    	// index(0) : name, index(1): phone, index(2): birth
+	    	List<String> values = new ArrayList<String>();
+			map.forEach((k, v) -> {
+				values.add((String)v);
+			});
+			try {
+				String id = cicService.findId(values.get(0), values.get(1), values.get(2));
+				if(id==null)
+					return "Fail";
+				return id;
+			}catch (Exception e) {
+				System.out.println("JwtAuthenticationController findId Error Message : Method-findId Error");
+			}
+    	}catch (Exception e) {
+    		System.out.println("JwtAuthenticationController findId Error Message : React-Axios Error");
+		}
+    	return "Fail";
+    }
+    
+    @RequestMapping(value = "/authenticate/findPw", method = RequestMethod.POST, consumes="application/json")
+    public String findPw(@RequestBody Map map) throws Exception {
+//    	.mem_pw(bcrypt.encode(values.get(1)))
+    	try {
+	    	// index(0) : id, index(1): pw
+	    	List<String> values = new ArrayList<String>();
+			map.forEach((k, v) -> {
+				values.add((String)v);
+			});
+			try {
+				if(cicService.getMember(values.get(0))!=null) {
+					try {
+						cicService.findPw(values.get(0), bcrypt.encode(values.get(1)));
+						return "비밀번호가 변경되었습니다.";
+					}catch (Exception e) {
+						System.out.println("JwtAuthenticationController findPw Error Message : Method-findPw Error");
+					}
+				}
+			}catch (Exception e) {
+				System.out.println("JwtAuthenticationController findPw Error Message : Method-getMember Error");
+			}
+    	}catch (Exception e) {
+    		System.out.println("JwtAuthenticationController findPw Error Message : React-Axios Error");
+		}
+		return "존재하지 않는 정보입니다.";
+    }
 }

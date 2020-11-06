@@ -10,6 +10,7 @@ import com.CIC.server.model.Funding;
 import com.CIC.server.model.FundingDetail;
 import com.CIC.server.model.FundingMember;
 import com.CIC.server.model.ProjectList;
+import com.CIC.server.model.RecentlyNews;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Notice;
 import com.CIC.server.model.Project;
@@ -41,7 +42,11 @@ public interface CICMapper {
 	public void deleteProject(String number);
 	public List<FundingDetail> getFundingDetailList(SearchProject searchProject);
 	public int getFundingDetailListCnt(SearchProject searchProject);
-
+	public void deleteFundingDetailList(String number);
+	String findId(String name, String phone, String birth);
+	void findPw(String id, String pw);
+	List<RecentlyNews> getRecentlyNewsList(SearchProject searchProject);
+	int getRecentlyNewsListMaxPage(SearchProject searchProject);
 	
 	
 	

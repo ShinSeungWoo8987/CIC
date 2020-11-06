@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
 
-function Search({use}) {
+function Search({use, bottom}) {
     const { searchDispatch, pageNumberDispatch } = useContext(Store);
     const onSearchSubmit = (e) => {
         e.preventDefault();
@@ -20,7 +20,7 @@ function Search({use}) {
         searchDispatch({type: 'SEARCH', payload: newSearch});
         pageNumberDispatch({type: 'DEFUALT'});
     }
-    return  <Container width={use==='true'?'539px':'450px'} onSubmit={(e)=>onSearchSubmit(e)}>
+    return  <Container width={use==='true'?'539px':'450px'} bottom={bottom} onSubmit={(e)=>onSearchSubmit(e)}>
                 {use==='true'?
                     <Select id='title'>
                         <option value='title'>제목</option>
@@ -38,6 +38,7 @@ export default Search;
 const Container = Styled.form`
     position: relative;
     left: 50%;
+    bottom: ${({bottom})=>`${bottom}`};
     transform: translate(-50%);
     width: ${({width})=>`${width}`};
     height: 30px;

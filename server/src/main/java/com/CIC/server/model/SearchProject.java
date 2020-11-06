@@ -15,4 +15,5 @@ public class SearchProject {
 	private String subMenu;
 	
 	private String id;
+	private String number;
 }

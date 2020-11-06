@@ -8,7 +8,7 @@ import {executeRegisterService} from '../Jwt/AuthenticationService';
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Register() {
-    const { session, addressValue, addressValueDispatch, modalState, modalStateDispatch } = useContext(Store);
+    const { addressValue, addressValueDispatch, modalState, modalStateDispatch } = useContext(Store);
     // const register=session.state?'':'회원가입';
     const register='회원가입';
     const [registerModalState, setRegisterModalState] = useState(false);

@@ -1,7 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
+import { post } from 'axios';
 
-function FundingMember({id, title, period, name, phone, address, cnt, border, top, bottom, color, foneWeight, zIndex, type, act, header}) {
+function FundingMember({number, id, title, period, name, phone, address, cnt, border, top, bottom, color, foneWeight, zIndex, type, act, header, deleteCheck, setDeleteCheck}) {
+    const deleteFunding = (number) => {
+        const url = '/fundingDetailList/delete';
+        const data = {
+            number: number+"",
+            id: localStorage.getItem("userId")
+        };
+        post(url,data).then(res=>{
+            setDeleteCheck(deleteCheck+1);
+        })
+    }
     return <>
         {type==='delete'?
             <>
@@ -19,7 +30,7 @@ function FundingMember({id, title, period, name, phone, address, cnt, border, to
                     <Period>{period}</Period>
                     <Name_>{name}</Name_>
                     <Address>{address}</Address>
-                    <Act_>{act}</Act_>
+                    <Act_ onClick={()=>deleteFunding(number)}>{act}</Act_>
                 </Container>
             }
             </>

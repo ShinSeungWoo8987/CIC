@@ -25,7 +25,7 @@ function Search() {
   return (
     <Container>
       <SubContainer>
-          {displayInput? <Input id='inputSearch' type='text' placeholder='단어를 입력해주세요.' ref={searchRef}/>:<NullBox>&nbsp;</NullBox>}
+          {!displayInput? <Input id='inputSearch' type='search' placeholder='단어를 입력해주세요.' ref={searchRef}/>:<NullBox>&nbsp;</NullBox>}
           <ImageContainer>
             <Image id='btnSearch' src={SearchImg}  onClick={(e) => onSubmit(e)}></Image>
           </ImageContainer>
@@ -40,7 +40,6 @@ const Left = Styled.div`
 `
 const Container = Styled(Left)`
   position: fixed;
-  // margin-left: ${({margin})=>margin};
   margin-left: 1060px;
   width: 235px;
   height: 46px;
@@ -59,7 +58,7 @@ const Input = Styled.input`
   text-indent: 10px;
   border: none;
   border-radius: 5px;
-  margin: 5px 0 0 0;
+  margin: 7px 0 0 0;
 `
 const ImageContainer = Styled(Left)`
   float: left;

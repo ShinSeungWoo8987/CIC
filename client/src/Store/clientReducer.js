@@ -15,10 +15,8 @@ const sessionReducer = (state, { type, payload }) => {
 }
 
 const _globalState = {
-    main: 'fundingList',
-    sub: 'continue',
-    // main: 'all',
-    // sub: 'all',
+    main: 'all',
+    sub: 'all',
     action: 1,
     num: 0
 }
@@ -51,7 +49,8 @@ const _modalState = {
     authority: false,
     funding: false,
     fundingMemberList: false,
-    fundingDetailList: false
+    fundingDetailList: false,
+    find: false
 }
 const modalStateReducer = (state, { type, payload }) => {
     switch (type) {

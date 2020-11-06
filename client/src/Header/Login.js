@@ -3,7 +3,8 @@ import Styled from "styled-components"; // styled-components 라이브러리를 
 import Modal from 'react-modal';
 import Store from '../Store/Store';
 import {executeJwtAuthenticationService, registerSuccessfulLoginForJwt, logout, setupAxiosInterceptors} from '../Jwt/AuthenticationService.js'
-import Register from '../MenuBar/Register';
+import Register from './Register';
+import FindUser from './FindUser';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
@@ -91,9 +92,7 @@ function Login() {
                 <Find>
                     <A><Register/></A>
                     <Blank>|</Blank>
-                    <A>아이디 찾기</A>
-                    <Blank>|</Blank>
-                    <A>비밀번호 찾기</A><br/>
+                    <A><FindUser/></A>
                 </Find>
                 </Form>
             </Modal>
@@ -163,11 +162,8 @@ const InputSubmit = Styled.button`
     }
 `
 const Find = Styled.div`
-    position: relative;
-    left: 16%;
-    width: 75%;
     font-size: 12.5px;
-    margin: 10px 0 0 0;
+    margin: 10px 0 0 25%;
 `
 const A = Styled.a`
     float: left;

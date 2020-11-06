@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.CIC.server.model.ProjectList;
+import com.CIC.server.model.RecentlyNews;
 import com.CIC.server.model.Content;
 import com.CIC.server.model.JwtRequest;
 import com.CIC.server.model.Member;
@@ -343,4 +344,41 @@ public class ProjectController {
 		List<Content> content = this.cicService.getProjectDetails(projectNum);
         return content; 
     }
+	
+	int recentlyNewsPagePerCnt = 7;
+	
+	@RequestMapping(value="/recentlyNewsList/maxPage", method=RequestMethod.POST, consumes="application/json")
+    public int getRecentlyNewsListMaxPage(@RequestBody Map map) throws Exception {
+		// index(0) - search, index(1) - projectNumber
+		List<String> values = new ArrayList<String>();
+        map.forEach((k, v) -> {
+			values.add((String)v);
+		});
+    	SearchProject searchProject = SearchProject.builder()
+        		.search(values.get(0))
+        		.number(values.get(1))
+        		.build();
+    	int recentlyNewsListCnt = cicService.getRecentlyNewsListMaxPage(searchProject);
+    	int maxPage = util.getMaxPage(recentlyNewsListCnt, recentlyNewsPagePerCnt);
+		return maxPage;
+	}
+	
+	@RequestMapping(value="/recentlyNewsList/list", method=RequestMethod.POST, consumes="application/json")
+    public List<RecentlyNews> getRecentlyNewsList(@RequestBody Map map) throws Exception {
+		// index(0) - search, index(1) - page, index(2) - projectNumber
+		List<String> values = new ArrayList<String>();
+        map.forEach((k, v) -> {
+			values.add((String)v);
+		});
+        int page = Integer.parseInt(values.get(1));
+        SearchProject searchProject = SearchProject.builder()
+        		.search(values.get(0))
+        		.startNumber((1+(page-1)*recentlyNewsPagePerCnt)+"")
+        		.finishNumber((page*recentlyNewsPagePerCnt)+"")
+        		.number(values.get(2))
+        		.build();
+        System.out.println("searchProject : "+searchProject);
+        List<RecentlyNews> list = cicService.getRecentlyNewsList(searchProject);
+		return list;
+	}
 }

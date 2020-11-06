@@ -9,6 +9,7 @@ import com.CIC.server.model.Funding;
 import com.CIC.server.model.FundingDetail;
 import com.CIC.server.model.FundingMember;
 import com.CIC.server.model.ProjectList;
+import com.CIC.server.model.RecentlyNews;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Notice;
 import com.CIC.server.model.Project;
@@ -38,6 +39,11 @@ public interface CICService {
 	void deleteProject(String number);
 	List<FundingDetail> getFundingDetailList(SearchProject searchProject);
 	int getFundingDetailListCnt(SearchProject searchProject);
+	void deleteFundingDetailList(String number);
+	String findId(String name, String phone, String birth);
+	void findPw(String id, String pw);
+	List<RecentlyNews> getRecentlyNewsList(SearchProject searchProject);
+	int getRecentlyNewsListMaxPage(SearchProject searchProject);
 	
 	
 	

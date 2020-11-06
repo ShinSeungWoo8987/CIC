@@ -1,33 +1,55 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Store from '../Store/Store';
+import { post } from 'axios';
 import NewsItem from './NewsItem';
+import Search from '../Components/Search';
+import Paging from '../Components/Paging';
 
 function ProjectNews() {
-    const { projectInformation } = useContext(Store);
-    let _newsItem = [
-        {title: 'Title', name: 'Creator', date: '2020.09.18'},
-        {title: 'Title', name: '관리자', date: '2020.09.20'},
-        {title: 'Title', name: '내가내다', date: '2020.10.20'},
-        {title: 'Title', name: '신승우', date: '2020.11.20'}
-    ];
-    const [ newsItem ] = useState(_newsItem);
+    const { projectInformation, search, pageNumber } = useContext(Store);
+    const [ newsList, setNewList ] = useState('');
+    const [ maxPage, setMaxPage ] = useState('');
+    // Get Max Page
+    useEffect(() => {
+        const url = '/recentlyNewsList/maxPage';
+        const data = {
+            search: search.value,
+            number: projectInformation.number+""
+        }
+        post(url, data).then(res=>{
+            setMaxPage(res.data)
+        })
 
-    const content = newsItem.map( ({title,name,date}, idx)=>{
-        return <NewsItem key={idx} title={title} name={name} date={date} />;
-    });
-
+    }, [ search ]);
+    // Get Funding List
+    useEffect(() => {
+        const url = '/recentlyNewsList/list';
+        const data = {
+            search: search.value,
+            page: pageNumber.value+'',
+            number: projectInformation.number+""
+        }
+        const newNewsList = [];
+        post(url, data).then(res=>{
+            var idx = 0;
+            console.log(res.data);
+            while(idx < res.data.length){
+                newNewsList.push(
+                    <NewsItem key={idx} number={res.data[idx].new_number} title={res.data[idx].new_title} name={projectInformation.creator} date={res.data[idx].new_register} description={res.data[idx].new_description} />
+                )
+                idx++;
+            }
+            setNewList(newNewsList);
+        })
+    }, [ search, pageNumber, projectInformation.number ]);
     return (
         <Container>
-            <Upside> {content} </Upside>
+            <Upside> {newsList} </Upside>
             <Write>{projectInformation.creator===localStorage.getItem('userId')?<button>글 작성</button>:''}</Write>
             <Downside>
-                <SearchDiv>
-                    <SearchInput type="text" placeholder="검색어 입력"/>
-                    <SearchButton>검색</SearchButton>
-                </SearchDiv>
-                <br/>
-                [이전] [1] [2] [3] [4] [다음]
+                <Search bottom='5px'/>
+                <Paging maxPage={maxPage} />
             </Downside>
         </Container>
     );
@@ -49,9 +71,9 @@ width: 700px;
 height: 700px;
 `
 const Downside = styled.div`
-margin: 15px auto 0 auto;
-width: 550px;
-height: 100px;
+    position: relative;
+    bottom: 7px;
+
 `
 const Write = styled.div`
 width: 700px;

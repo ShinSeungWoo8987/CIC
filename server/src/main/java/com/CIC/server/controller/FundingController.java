@@ -176,4 +176,22 @@ public class FundingController {
 		}
 		return null;
 	}
+	
+	@RequestMapping(value="/fundingDetailList/delete", method=RequestMethod.POST, consumes="application/json")
+    public void deleteFundingDetailList(@RequestBody Map map) throws Exception {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String id = userDetails.getUsername();
+		
+		// index-0 : number, index-1: id
+		List<String> values = new ArrayList<String>();
+        map.forEach((k, v) -> {
+			values.add((String)v);
+		});
+        
+        if(!id.equals(values.get(1))) {
+        	return;
+        }
+        cicService.deleteFundingDetailList(values.get(0));
+	}
 }

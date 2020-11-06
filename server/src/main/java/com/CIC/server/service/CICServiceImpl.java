@@ -11,6 +11,7 @@ import com.CIC.server.model.Funding;
 import com.CIC.server.model.FundingDetail;
 import com.CIC.server.model.FundingMember;
 import com.CIC.server.model.ProjectList;
+import com.CIC.server.model.RecentlyNews;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Notice;
 import com.CIC.server.model.Project;
@@ -108,6 +109,27 @@ public class CICServiceImpl implements CICService {
 	public int getFundingDetailListCnt(SearchProject searchProject) {
 		return this.cicMapper.getFundingDetailListCnt(searchProject);
 	}
+	@Override
+	public void deleteFundingDetailList(String number) {
+		cicMapper.deleteFundingDetailList(number);
+	}
+	@Override
+	public String findId(String name, String phone, String birth) {
+		return cicMapper.findId(name, phone, birth);
+	}
+	@Override
+	public void findPw(String id, String pw) {
+		cicMapper.findPw(id, pw);
+	}
+	@Override
+	public List<RecentlyNews> getRecentlyNewsList(SearchProject searchProject) {
+		return cicMapper.getRecentlyNewsList(searchProject);
+	}
+	@Override
+	public int getRecentlyNewsListMaxPage(SearchProject searchProject) {
+		return cicMapper.getRecentlyNewsListMaxPage(searchProject);
+	}
+	
 	
 	
 	

@@ -285,6 +285,37 @@
 		</if>
 	</select>
 	
+	<delete id="deleteFundingDetailList">
+		delete from funding where fun_number = #{number}
+	</delete>
+	
+	<select id="findId" resultType="String">
+		select mem_id
+		from member
+		where mem_name = #{name} and mem_phone = #{phone} and mem_birth = #{birth}
+	</select>
+	
+	<update id="findPw">
+		update member
+		set mem_pw = #{pw}
+		where mem_id = #{id}
+	</update>
+	
+	<select id="getRecentlyNewsList" resultType="RecentlyNews">
+		select new_number, new_title, new_description, new_register
+		from ( select rownum rnum, new_number, new_title, new_description, to_char(new_register, 'yyyy-mm-dd') new_register
+		       from news
+		       where pro_number = #{number} and new_title like '%'||#{search}||'%'
+		       order by new_register desc )
+		where rnum between #{startNumber} and #{finishNumber}
+	</select>
+	
+	<select id="getRecentlyNewsListMaxPage" resultType="int">
+		select count(new_number)
+		from news
+		where pro_number = #{number} and new_title like '%'||#{search}||'%'
+	</select>
+	
 	
 	
 	

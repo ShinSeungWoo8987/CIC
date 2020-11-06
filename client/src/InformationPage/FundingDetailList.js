@@ -13,7 +13,9 @@ function FundingDetailList() {
     const { modalState, modalStateDispatch, search, searchDispatch, pageNumber, pageNumberDispatch, projectInformation } = useContext(Store);
     const [ fundingDetailList, setFundingDetailList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
+    const [ deleteCheck, setDeleteCheck ] = useState(1);
     const blockPerCnt = 10;
+    console.log("delete : ",deleteCheck);
     // Get Max Page
     useEffect(() => {
         const url = '/fundingDetailList/maxPage';
@@ -25,7 +27,7 @@ function FundingDetailList() {
             setMaxPage(res.data)
         })
 
-    }, [ search, modalState.fundingDetailList ]);
+    }, [ search, modalState.fundingDetailList, deleteCheck ]);
     // Get Funding List
     useEffect(() => {
         const url = '/fundingDetailList/list';
@@ -39,19 +41,19 @@ function FundingDetailList() {
             var idx = 0;
             while(idx < res.data.length){
                 newFundingDetailList.push(
-                    // 여기부터 작업하면 됨
-                    <FundingMember key={idx} number={res.data[idx].number} title={res.data[idx].title} period={res.data[idx].period} name={res.data[idx].name} address={res.data[idx].address} act='삭제' top='none' bottom='none' color='white' foneWeight='bold' type='delete'/>
+                    <FundingMember key={idx} number={res.data[idx].number} title={res.data[idx].title} period={res.data[idx].period} name={res.data[idx].name} address={res.data[idx].address} act='삭제' top='none' bottom='none' color='white' foneWeight='bold' type='delete' deleteCheck={deleteCheck} setDeleteCheck={setDeleteCheck}/>
                 )
                 idx++;
             }
             setFundingDetailList(newFundingDetailList);
         })
-    }, [ search, modalState.fundingDetailList, pageNumber, projectInformation.number ]);
+    }, [ search, modalState.fundingDetailList, pageNumber, projectInformation.number, deleteCheck ]);
     // Funding Modal Setting
     const closeModal = (e) => {
         modalStateDispatch({type: 'DEFAULT'});
         pageNumberDispatch({type: 'DEFAULT'});
         searchDispatch({type: 'DEFAULT'});
+        setDeleteCheck(1)
     }
     return  <Modal 
                 isOpen= { modalState.fundingDetailList }
