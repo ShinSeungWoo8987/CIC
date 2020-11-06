@@ -316,6 +316,11 @@
 		where pro_number = #{number} and new_title like '%'||#{search}||'%'
 	</select>
 	
+	<delete id="deleteRecentlyNews">
+		delete from news
+		where new_number = #{number}
+	</delete>
+	
 	
 	
 	

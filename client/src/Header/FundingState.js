@@ -11,9 +11,9 @@ function FundingState() {
     // Get User Information & Setting
     useEffect(() => {
         if (projectInformation.creator === localStorage.getItem('userId')) setfundingBtn([
-            <FundingBtn onClick={(e) => openModal(e, 'list')}>참여자 목록</FundingBtn>,
-            <EditBtn onClick={(e) => openModal(e, 'edit')}>수정하기</EditBtn>,
-            <DeleteBtn onClick={(e) => openModal(e, 'delete')}>삭제하기</DeleteBtn>
+            <FundingBtn key={1} onClick={(e) => openModal(e, 'list')}>참여자 목록</FundingBtn>,
+            <EditBtn key={2} onClick={(e) => openModal(e, 'edit')}>수정하기</EditBtn>,
+            <DeleteBtn key={3} onClick={(e) => openModal(e, 'delete')}>삭제하기</DeleteBtn>
         ]);
         else setfundingBtn(
             projectInformation.dDay === '마감' ? <CloseFudningBtn >마감</CloseFudningBtn> : <FundingBtn onClick={(e) => openModal(e, 'funding')}>펀딩하기</FundingBtn>
@@ -85,15 +85,15 @@ function FundingState() {
                             <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent} />
                         </PercentBarContainer>
                     </SubContainer><br />
-                    <Text >펀딩금액</Text><br />
+                    <Text>펀딩금액</Text><br />
                     <SubContainer key={2} margin='0 0 20px 0'>
                         <Value >{projectInformation.price}</Value><BottomText >원</BottomText>
                     </SubContainer><br />
-                    <Text >참여인원</Text><br />
+                    <Text>참여인원</Text><br />
                     <SubContainer key={3} margin='0 0 20px 0'>
                         <Value >{projectInformation.fundingCnt}</Value><BottomText >명</BottomText>
                     </SubContainer><br />
-                    <Text >남은기간</Text><br />
+                    <Text>남은기간</Text><br />
                     <SubContainer key={4} margin='0 0 20px 0'>
                         <Value >{projectInformation.dDay}</Value><BottomText >{dDayText}</BottomText>
                     </SubContainer>

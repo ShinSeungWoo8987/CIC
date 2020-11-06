@@ -34,7 +34,6 @@ function FundingMemberList() {
         }
         const newFundingMemberList = [];
         post(url, data).then(res=>{
-            console.log(res.data);
             var idx = 0;
             while(idx < res.data.length){
                 newFundingMemberList.push(

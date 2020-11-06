@@ -25,7 +25,7 @@ function Search() {
   return (
     <Container>
       <SubContainer>
-          {!displayInput? <Input id='inputSearch' type='search' placeholder='단어를 입력해주세요.' ref={searchRef}/>:<NullBox>&nbsp;</NullBox>}
+          {displayInput? <Input id='inputSearch' type='search' placeholder='단어를 입력해주세요.' ref={searchRef}/>:<NullBox>&nbsp;</NullBox>}
           <ImageContainer>
             <Image id='btnSearch' src={SearchImg}  onClick={(e) => onSubmit(e)}></Image>
           </ImageContainer>

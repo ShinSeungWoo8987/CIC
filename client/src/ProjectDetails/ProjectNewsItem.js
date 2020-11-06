@@ -1,47 +1,59 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
+import Store from '../Store/Store';
 
-/*
-    연결할 것
-*/
-function ProjectNews(props) {
-    let _news = {title: 'Title', name: 'Creator', date: '2020.09.18', content:'content'};
-    const [news, setNews] = useState(_news);
-
+function ProjectNewsItem({number, title, writer, date, description}) {
+  const { recentlyNewsInformationDispatch, globalState, globalStateDispatch } = useContext(Store);
+  const moveProjectNewsDetail = (e) =>{
+    e.preventDefault();
+    const newRecentlyNewsInformation = {
+      number: number,
+      title: title,
+      writer: writer,
+      date: date,
+      description: description
+    }
+    console.log(newRecentlyNewsInformation);
+    recentlyNewsInformationDispatch({type: 'NEWS', payload: newRecentlyNewsInformation})
+    const newGlobalState = {
+      main: globalState.main,
+      sub: globalState.sub,
+      action: 'read'
+    }
+    globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+  }
     return (
-        <Container>
-            <Upside>
-                {news.title}
-                {news.name}
-                {news.date}
-                {news.content}
-            </Upside>
-            <Downside>목록으로 돌아가기
-            </Downside>
+        <Container onClick={(e)=>moveProjectNewsDetail(e)}>
+            <Upside>{title}</Upside>
+            <Downside><Left>{writer}</Left> <Right>{date}</Right> </Downside>
         </Container>
     );
 }
 
-export default ProjectNews;
-
+export default ProjectNewsItem;
 const Container = styled.div`
-    margin-top: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 75%;
-    height: 850px;
-    text-align: center;
+  text-align: left;
+  height: 90px;
+  border-bottom: 1px solid #E1E1E1;
+  cursor: pointer;
 `
+
 const Upside = styled.div`
-border: 1px solid black;
-margin: 0 auto 0 auto;
-width: 700px;
-height: 700px;
+    padding-left: 10px;
+    padding-top: 10px;
+    font-weight: bold;
+    font-size: 28px;
+    height: 40px;
 `
 const Downside = styled.div`
-border: 1px solid black;
-margin: 15px auto 0 auto;
-width: 300px;
-height: 50px;
-cursor: pointer;
+    padding-left: 10px;
+    font-size: 15px;
+    height: 40px;
+`
+const Left = styled.div`
+  float: left;
+`
+const Right = styled.div`
+  margin-left: 30px;
+  float: left;
 `

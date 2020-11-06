@@ -44,6 +44,7 @@ public interface CICService {
 	void findPw(String id, String pw);
 	List<RecentlyNews> getRecentlyNewsList(SearchProject searchProject);
 	int getRecentlyNewsListMaxPage(SearchProject searchProject);
+	void deleteRecentlyNews(String number);
 	
 	
 	

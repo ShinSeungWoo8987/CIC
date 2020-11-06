@@ -349,36 +349,81 @@ public class ProjectController {
 	
 	@RequestMapping(value="/recentlyNewsList/maxPage", method=RequestMethod.POST, consumes="application/json")
     public int getRecentlyNewsListMaxPage(@RequestBody Map map) throws Exception {
-		// index(0) - search, index(1) - projectNumber
-		List<String> values = new ArrayList<String>();
-        map.forEach((k, v) -> {
-			values.add((String)v);
-		});
-    	SearchProject searchProject = SearchProject.builder()
-        		.search(values.get(0))
-        		.number(values.get(1))
-        		.build();
-    	int recentlyNewsListCnt = cicService.getRecentlyNewsListMaxPage(searchProject);
-    	int maxPage = util.getMaxPage(recentlyNewsListCnt, recentlyNewsPagePerCnt);
-		return maxPage;
+		try {
+			// index(0) - search, index(1) - projectNumber
+			List<String> values = new ArrayList<String>();
+	        map.forEach((k, v) -> {
+				values.add((String)v);
+			});
+	        try {
+	        	SearchProject searchProject = SearchProject.builder()
+	            		.search(values.get(0))
+	            		.number(values.get(1))
+	            		.build();
+	        	try {
+	        		int recentlyNewsListCnt = cicService.getRecentlyNewsListMaxPage(searchProject);
+	            	int maxPage = util.getMaxPage(recentlyNewsListCnt, recentlyNewsPagePerCnt);
+	        		return maxPage;
+	        	}catch (Exception e) {
+	        		System.out.println("ProjectController getRecentlyNewsListMaxPage Error Message : Method-getRecentlyNewsListMaxPage Error");
+				}
+	        }catch (Exception e) {
+	        	System.out.println("ProjectController getRecentlyNewsListMaxPage Error Message : Model-Builder Error");
+			}
+		}catch (Exception e) {
+			System.out.println("ProjectController getRecentlyNewsListMaxPage Error Message : React-Axios Error");
+		}
+		return 0;
 	}
 	
 	@RequestMapping(value="/recentlyNewsList/list", method=RequestMethod.POST, consumes="application/json")
     public List<RecentlyNews> getRecentlyNewsList(@RequestBody Map map) throws Exception {
-		// index(0) - search, index(1) - page, index(2) - projectNumber
+		try {
+			// index(0) - search, index(1) - page, index(2) - projectNumber
+			List<String> values = new ArrayList<String>();
+	        map.forEach((k, v) -> {
+				values.add((String)v);
+			});
+	        int page = Integer.parseInt(values.get(1));
+	        try {
+	        	SearchProject searchProject = SearchProject.builder()
+	            		.search(values.get(0))
+	            		.startNumber((1+(page-1)*recentlyNewsPagePerCnt)+"")
+	            		.finishNumber((page*recentlyNewsPagePerCnt)+"")
+	            		.number(values.get(2))
+	            		.build();
+	        	try {
+	        		List<RecentlyNews> list = cicService.getRecentlyNewsList(searchProject);
+	        		return list;
+	        	}catch (Exception e) {
+	        		System.out.println("ProjectController getRecentlyNewsList Error Message : Method-getRecentlyNewsList Error");
+				}
+	        }catch (Exception e) {
+	        	System.out.println("ProjectController getRecentlyNewsList Error Message : Model-Builder Error");
+			}
+		}catch (Exception e) {
+			System.out.println("ProjectController getRecentlyNewsList Error Message : React-Axios Error");
+		}
+        return null;
+	}
+	
+	@RequestMapping(value="/recentlyNews/delete", method=RequestMethod.POST, consumes="application/json")
+    public void deleteRecentlyNews(@RequestBody Map map) throws Exception {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String username = userDetails.getUsername();
+		// index(0) - number, index(1) - id
 		List<String> values = new ArrayList<String>();
         map.forEach((k, v) -> {
 			values.add((String)v);
 		});
-        int page = Integer.parseInt(values.get(1));
-        SearchProject searchProject = SearchProject.builder()
-        		.search(values.get(0))
-        		.startNumber((1+(page-1)*recentlyNewsPagePerCnt)+"")
-        		.finishNumber((page*recentlyNewsPagePerCnt)+"")
-        		.number(values.get(2))
-        		.build();
-        System.out.println("searchProject : "+searchProject);
-        List<RecentlyNews> list = cicService.getRecentlyNewsList(searchProject);
-		return list;
+        if(!username.equals(values.get(1))) 
+        	return;
+        // 창작자 or 관리자가 아닌경우 거절
+		if(!userDetails.getAuthorities().toString().equals("[ROLE_CREATOR]") && !userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
+			System.out.println("관리자 or 창작자가 아닌 경우");
+			return;
+		}
+		cicService.deleteRecentlyNews(values.get(0));
 	}
 }

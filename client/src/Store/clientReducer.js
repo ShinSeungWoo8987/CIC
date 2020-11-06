@@ -99,8 +99,23 @@ const _projectInformation = {
 const projectInformationReducer = (state, { type, payload }) => {
     switch (type) {
         default:
-            return projectInformationReducer;
+            return _projectInformation;
         case 'PROJECT':
+            return payload;
+    }
+}
+const _recentlyNewsInformation = {
+    number: '',
+    title: '',
+    writer: '',
+    data: '',
+    description: ''
+}
+const recentlyNewsInformationReducer = (state, { type, payload }) => {
+    switch (type) {
+        default:
+            return _recentlyNewsInformation;
+        case 'NEWS':
             return payload;
     }
 }
@@ -172,7 +187,7 @@ const projectReducer = (state, {type, payload}) => {
 
 export {
     _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _search, searchReducer,
-    _pageNumber, pageNumberReducer, _projectInformation, projectInformationReducer,
+    _pageNumber, pageNumberReducer, _projectInformation, projectInformationReducer, _recentlyNewsInformation, recentlyNewsInformationReducer,
     _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer, boardItemListReducer,
     projectReducer
 };

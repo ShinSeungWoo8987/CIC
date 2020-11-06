@@ -129,6 +129,10 @@ public class CICServiceImpl implements CICService {
 	public int getRecentlyNewsListMaxPage(SearchProject searchProject) {
 		return cicMapper.getRecentlyNewsListMaxPage(searchProject);
 	}
+	@Override
+	public void deleteRecentlyNews(String number) {
+		cicMapper.deleteRecentlyNews(number);
+	}
 	
 	
 	
