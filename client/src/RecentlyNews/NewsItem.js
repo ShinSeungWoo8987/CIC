@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Store from '../Store/Store';
 
-function ProjectNewsItem({number, title, writer, date, description}) {
+function NewsItem({number, title, writer, date, description}) {
   const { recentlyNewsInformationDispatch, globalState, globalStateDispatch } = useContext(Store);
   const moveProjectNewsDetail = (e) =>{
     e.preventDefault();
@@ -30,7 +30,7 @@ function ProjectNewsItem({number, title, writer, date, description}) {
     );
 }
 
-export default ProjectNewsItem;
+export default NewsItem;
 const Container = styled.div`
   text-align: left;
   height: 90px;

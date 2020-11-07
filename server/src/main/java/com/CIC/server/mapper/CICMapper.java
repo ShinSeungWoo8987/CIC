@@ -48,6 +48,8 @@ public interface CICMapper {
 	List<RecentlyNews> getRecentlyNewsList(SearchProject searchProject);
 	int getRecentlyNewsListMaxPage(SearchProject searchProject);
 	void deleteRecentlyNews(String number);
+	void addRecentlyNews(RecentlyNews recentlyNews);
+	void updateRecentlyNews(RecentlyNews recentlyNews);
 	
 	
 	

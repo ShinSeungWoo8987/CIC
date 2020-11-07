@@ -133,6 +133,14 @@ public class CICServiceImpl implements CICService {
 	public void deleteRecentlyNews(String number) {
 		cicMapper.deleteRecentlyNews(number);
 	}
+	@Override
+	public void addRecentlyNews(RecentlyNews recentlyNews) {
+		cicMapper.addRecentlyNews(recentlyNews);
+	}
+	@Override
+	public void updateRecentlyNews(RecentlyNews recentlyNews) {
+		cicMapper.updateRecentlyNews(recentlyNews);
+	}
 	
 	
 	

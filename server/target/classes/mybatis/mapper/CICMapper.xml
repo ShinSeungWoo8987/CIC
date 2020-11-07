@@ -302,11 +302,11 @@
 	</update>
 	
 	<select id="getRecentlyNewsList" resultType="RecentlyNews">
-		select new_number, new_title, new_description, new_register
-		from ( select rownum rnum, new_number, new_title, new_description, to_char(new_register, 'yyyy-mm-dd') new_register
+		select new_number, new_title, new_description, new_register, pro_number
+		from ( select rownum rnum, new_number, new_title, new_description, to_char(new_register, 'yyyy-mm-dd') new_register, pro_number
 		       from news
 		       where pro_number = #{number} and new_title like '%'||#{search}||'%'
-		       order by new_register desc )
+		       order by new_number desc )
 		where rnum between #{startNumber} and #{finishNumber}
 	</select>
 	
@@ -320,6 +320,21 @@
 		delete from news
 		where new_number = #{number}
 	</delete>
+	
+	<insert id="addRecentlyNews">
+		<selectKey keyProperty="new_number" resultType="string" order="BEFORE">
+			select coalesce(MAX(new_number), 0) + 1 as new_number
+            from news
+		</selectKey>
+		insert into news(new_number, new_title, new_description, pro_number) 
+		values(#{new_number}, #{new_title}, #{new_description}, #{pro_number})
+	</insert>
+	
+	<update id="updateRecentlyNews">
+		update news
+		set new_title = #{new_title}, new_description = #{new_description}
+		where new_number = #{new_number}
+	</update>
 	
 	
 	

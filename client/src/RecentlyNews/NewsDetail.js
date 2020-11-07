@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import Store from '../Store/Store';
 import styled from "styled-components"
 import { post } from 'axios';
+import parse from 'html-react-parser';
 
-function ProjectNewsDetail() {
+function NewsDetail() {
     const { globalState, globalStateDispatch, recentlyNewsInformation } = useContext(Store);
     const moveBack = (e) => {
         e.preventDefault();
@@ -15,6 +16,15 @@ function ProjectNewsDetail() {
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
     }
+    const updateNews = (e) => {
+        e.preventDefault();
+        const newGlobalState = {
+            main: globalState.main,
+            sub: globalState.sub,
+            action: 'update'
+        }
+        globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
+    }
     const deleteNews = (e) => {
         e.preventDefault();
         const url = '/recentlyNews/delete';
@@ -22,7 +32,6 @@ function ProjectNewsDetail() {
             number: recentlyNewsInformation.number+'',
             id: localStorage.getItem('userId')
         }
-        console.log('data : ',data);
         post(url, data).then(res=>{
             const newGlobalState = {
                 main: globalState.main,
@@ -40,7 +49,15 @@ function ProjectNewsDetail() {
                 </TitleUp>
                 <TitleDown>
                     <LeftSide>
-                        <BackButton onClick={e => moveBack(e)}>돌아가기</BackButton>
+                        {localStorage.getItem('userId')===recentlyNewsInformation.writer?
+                        <>
+                            <Btn float='left' margin='0 15px 0 0' onClick={e => updateNews(e)}>수정</Btn>
+                            &nbsp;&nbsp;
+                            <Btn float='left' onClick={e => deleteNews(e)}>삭제</Btn>
+                        </>
+                        :
+                        ''
+                        }
                     </LeftSide>
                     <RightSide>
                         <Writer>등록일</Writer>
@@ -51,19 +68,7 @@ function ProjectNewsDetail() {
                 </TitleDown>
             </Title>
             <Content>
-                <Description>{recentlyNewsInformation.description}</Description>
-                <Down>
-                    {localStorage.getItem('userId')===recentlyNewsInformation.writer?
-                    <BtnContainer>
-                        {/* <Btn onClick={e => updateBoard(e)}>수정</Btn> */}
-                        <Btn>수정</Btn>
-                        &nbsp;&nbsp;
-                        <Btn onClick={e => deleteNews(e)}>삭제</Btn>
-                    </BtnContainer>
-                    :
-                    ''
-                    }
-                </Down>
+                <Description>{parse(recentlyNewsInformation.description)}</Description>
             </Content>
             <Bottom>
                 <Btn onClick={e => moveBack(e)}>돌아가기</Btn>
@@ -72,20 +77,19 @@ function ProjectNewsDetail() {
     );
 }
 
-export default ProjectNewsDetail;
+export default NewsDetail;
 
 const Container = styled.div`
     float: left;
     width: 90.24%;
-    margin-top: 10px;
-    margin-right: 49.3px;
-    margin-left: 49.3px;
+    margin: 10px 49.3px 0 49.3px;
 `
 const Title = styled.div`
     border-bottom: 1px solid #E1E1E1;
     width: 100%;
-    min-height: 80px;
-    font-size: 28px;
+    height: 80px;
+    font-size: 25px;
+    font-weight: bold;
 `
 const TitleUp = styled.div`
     margin: 0 10%;
@@ -101,18 +105,14 @@ const TitleDown = styled.div`
 const LeftSide = styled.div`
     float: left;
     width: 60%;
-
 `
 const Btn = styled.button`
+    float: ${({float})=>`${float}`};
+    margin: ${({margin})=>`${margin}`};
     font-size: 15px;
     border-radius: 5px;
     border: 1px solid #C8C8C8;
     cursor: pointer;
-`
-const BackButton = styled(Btn)`
-    position: relative;
-    bottom: 2.5px;
-    float: left;
 `
 const RightSide = styled.div`
     float: left;
@@ -127,21 +127,14 @@ const Writer = styled.div`
 `
 const Content = styled.div`
     width: 96%;
-    min-height: 550px;
+    height: 550px;
     margin-top: 10px;
     padding: 10px 2%;
-    border-bottom: 1px solid #E1E1E1;
     font-size: 18px;
     text-align: left;
+    border-bottom: 1px solid #E1E1E1;
 `
 const Description = styled.div`
-    min-height: 530px;
-`
-const Down = styled.div`
-    width: 100%;
-`
-const BtnContainer = styled.div`
-    float: right;
 `
 const Bottom = styled.div`
     margin-top: 20px;
