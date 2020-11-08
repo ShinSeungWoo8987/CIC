@@ -52,7 +52,8 @@ const _modalState = {
     funding: false,
     fundingMemberList: false,
     fundingDetailList: false,
-    find: false
+    find: false,
+    charge: false,
 }
 const modalStateReducer = (state, { type, payload }) => {
     switch (type) {

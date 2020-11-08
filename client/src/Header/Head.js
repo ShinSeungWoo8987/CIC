@@ -8,6 +8,7 @@ import Postcode from '../Components/Postcode';
 import UpdateUser from '../MenuBar/UpdateUser';
 import Authority from '../MenuBar/Authority';
 import _FundingState from './FundingState';
+import Charge from '../Charge/Charge';
 
 function Head(props) {
     const { session, globalState, modalStateDispatch, globalStateDispatch, searchDispatch, pageNumberDispatch } = useContext(Store);
@@ -110,7 +111,13 @@ function Head(props) {
                 authority: true
             }
             modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
-        }else{
+        }else if(e.currentTarget.id === 'charge'){
+            const newModalState = {
+                charge: true
+            }
+            modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        }
+        else{
             const newGlobalState = {
                 main: e.currentTarget.id,
                 sub: globalState.sub,
@@ -163,6 +170,7 @@ function Head(props) {
             <Postcode/>
             <UpdateUser/>
             <Authority/>
+            <Charge/>
             {globalState.main==='projectDetails'?<FundingState/>:''}
         </Container>
     );
