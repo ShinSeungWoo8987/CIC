@@ -12,6 +12,7 @@ import com.CIC.server.model.FundingMember;
 import com.CIC.server.model.FundingSupport;
 import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.RecentlyNews;
+import com.CIC.server.model.Schedule;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Notice;
 import com.CIC.server.model.Project;
@@ -52,6 +53,8 @@ public interface CICMapper {
 	void deleteRecentlyNews(String number);
 	void addRecentlyNews(RecentlyNews recentlyNews);
 	void updateRecentlyNews(RecentlyNews recentlyNews);
+	List<Schedule> getProjectResult();
+	List<FundingMember> getFundingJoinList(String pro_number);
 
 	
 	

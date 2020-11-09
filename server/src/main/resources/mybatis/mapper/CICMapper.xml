@@ -336,6 +336,24 @@
 		where new_number = #{new_number}
 	</update>
 	
+	<select id="getProjectResult" resultType="Schedule">
+		select pro_number, pro_title, case when pro_price * nvl(fundingCnt,0) / pro_target * 100 >= 100 then '목표금액을 달성하여 성공하였습니다!!!'
+                                      else '목표금액을 달성하지 못하여 실패하였습니다.'
+                                      end message
+		from ( select pro_number, pro_title, pro_target, pro_price 
+       		   from project
+       		   where <![CDATA[pro_finish = to_char(sysdate-1,'YY/MM/DD')]]> )left join ( select pro_number, count(fun_number) fundingCnt
+                                                   							 			 from funding 
+                                                   							 			 group by pro_number) using(pro_number)
+	</select>
+	
+	<!-- Schedule -->
+	<select id="getFundingJoinList" resultType="FundingMember">
+		select distinct mem_id id, fun_name name, fun_phone phone, fun_address2 address, 0 fundingCnt
+		from funding
+		where pro_number = #{pro_number}
+	</select>
+	
 	
 	
 	
