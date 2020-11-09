@@ -19,7 +19,7 @@ function TextEditor({id, _content}) {
                 onChange={(event, editor) => {
                     handleCKeditorState(event, editor); // console.log(editor.sourceElement.parentNode.id)
                 }}
-                data={_content}
+                data={_content?_content:'<p></p>'}
                 config={{
                     toolbar: [
                         "heading", "|", "bold", "italic", "link", "bulletedList",

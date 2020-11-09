@@ -54,19 +54,19 @@ public class JwtAuthenticationController {
     @RequestMapping(value = "/register", method = RequestMethod.PUT)
     public String register(@RequestBody JwtRegisterRequest registerRequest) {
 //    	System.out.println(registerRequest.getUsername()+" / "+ registerRequest.getPassword());
-    	try { // 아이디 중복하는 체크
+    	try { // �븘�씠�뵒 以묐났�븯�뒗 泥댄겕
     		authenticate(registerRequest.getUsername(), registerRequest.getPassword());
         	final UserDetails userDetails = userDetailsService
                 .loadUserByUsername(registerRequest.getUsername());
             final String token = jwtTokenUtil.generateToken(userDetails);
             
             return "username is already exist";
-    	} catch (Exception e) { // 중복되는 아이디가 없다면, 등록하기.
+    	} catch (Exception e) { // 以묐났�릺�뒗 �븘�씠�뵒媛� �뾾�떎硫�, �벑濡앺븯湲�.
     		String username = registerRequest.getUsername();
-    		String password = bcrypt.encode(registerRequest.getPassword()); // 암호화
-//    		System.out.println("암호화된 pw : " + password);
+    		String password = bcrypt.encode(registerRequest.getPassword()); // �븫�샇�솕
+//    		System.out.println("�븫�샇�솕�맂 pw : " + password);
     		
-    		// 회원가입 진행
+    		// �쉶�썝媛��엯 吏꾪뻾
     		try {
     			Member member = Member.builder()
 						.mem_id(username)
@@ -97,12 +97,12 @@ public class JwtAuthenticationController {
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-    	// 디테일.패스워드 값이 노출되지 않도록 위쪽에 선언
+    	// �뵒�뀒�씪.�뙣�뒪�썙�뱶 媛믪씠 �끂異쒕릺吏� �븡�룄濡� �쐞履쎌뿉 �꽑�뼵
     	authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        // req로 받은 username을 통해 userDetails를 가져오고, 
+        // req濡� 諛쏆� username�쓣 �넻�빐 userDetails瑜� 媛��졇�삤怨�, 
     	final UserDetails userDetails = userDetailsService
             .loadUserByUsername(authenticationRequest.getUsername());
-        // 가져온 userDetails를 통해 토큰을 생성해준다. -> 이후 위에서 실행한 authenticate메소드에 따라 생성된 token과 가져온 값을 비교하여 일치하는지 자동으로 검증된다. 
+        // 媛��졇�삩 userDetails瑜� �넻�빐 �넗�겙�쓣 �깮�꽦�빐以��떎. -> �씠�썑 �쐞�뿉�꽌 �떎�뻾�븳 authenticate硫붿냼�뱶�뿉 �뵲�씪 �깮�꽦�맂 token怨� 媛��졇�삩 媛믪쓣 鍮꾧탳�븯�뿬 �씪移섑븯�뒗吏� �옄�룞�쑝濡� 寃�利앸맂�떎. 
         final String token = jwtTokenUtil.generateToken(userDetails);
         int authority = 0;
 //        System.out.println("Creator : "+userDetails.getAuthorities().toString().equals("[ROLE_CREATOR]"));
@@ -118,8 +118,8 @@ public class JwtAuthenticationController {
 
     private void authenticate(String username, String password) throws Exception {
         try {
-        	// request로 들어온 아이디/비밀번호 값으로 UsernamePasswordAuthenticationToken객체를 생성한다.
-        	// authenticationManager.authenticate를 통해 request의 username을 통해 가져온 userDetails와 자동으로 매칭하여 일치하는지 확인한다.
+        	// request濡� �뱾�뼱�삩 �븘�씠�뵒/鍮꾨�踰덊샇 媛믪쑝濡� UsernamePasswordAuthenticationToken媛앹껜瑜� �깮�꽦�븳�떎.
+        	// authenticationManager.authenticate瑜� �넻�빐 request�쓽 username�쓣 �넻�빐 媛��졇�삩 userDetails�� �옄�룞�쑝濡� 留ㅼ묶�븯�뿬 �씪移섑븯�뒗吏� �솗�씤�븳�떎.
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
@@ -142,10 +142,10 @@ public class JwtAuthenticationController {
 				Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 				UserDetails userDetails = (UserDetails)principal;
 				try {
-					// 비밀번호 검증
+					// 鍮꾨�踰덊샇 寃�利�
 					authenticate(userDetails.getUsername(), values.get(0));
 					final String token = jwtTokenUtil.generateToken(userDetails);
-					// 프로젝트 삭제의 경우 해당 프로젝트에 참여한 인원이 있는지 체크
+					// �봽濡쒖젥�듃 �궘�젣�쓽 寃쎌슦 �빐�떦 �봽濡쒖젥�듃�뿉 李몄뿬�븳 �씤�썝�씠 �엳�뒗吏� 泥댄겕
 					if(pro_number!="") {
 						try {
 							int joinCnt = this.cicService.getProjectJoinCnt(pro_number);
@@ -167,7 +167,7 @@ public class JwtAuthenticationController {
 			        result.add(confirm);
 			        result.add(authority);
 					return result;
-				// 비밀번호 검증을 실패했을 때, 해당 위치로 넘어오는 경우 or 오류가 발생한 경우
+				// 鍮꾨�踰덊샇 寃�利앹쓣 �떎�뙣�뻽�쓣 �븣, �빐�떦 �쐞移섎줈 �꽆�뼱�삤�뒗 寃쎌슦 or �삤瑜섍� 諛쒖깮�븳 寃쎌슦
 				}catch (Exception e) {
 					System.out.println("JwtAuthenticationController checkPw Error Message : Response Error");
 				}
@@ -216,7 +216,7 @@ public class JwtAuthenticationController {
 				if(cicService.getMember(values.get(0))!=null) {
 					try {
 						cicService.findPw(values.get(0), bcrypt.encode(values.get(1)));
-						return "비밀번호가 변경되었습니다.";
+						return "鍮꾨�踰덊샇媛� 蹂�寃쎈릺�뿀�뒿�땲�떎.";
 					}catch (Exception e) {
 						System.out.println("JwtAuthenticationController findPw Error Message : Method-findPw Error");
 					}
@@ -227,6 +227,6 @@ public class JwtAuthenticationController {
     	}catch (Exception e) {
     		System.out.println("JwtAuthenticationController findPw Error Message : React-Axios Error");
 		}
-		return "존재하지 않는 정보입니다.";
+		return "議댁옱�븯吏� �븡�뒗 �젙蹂댁엯�땲�떎.";
     }
 }

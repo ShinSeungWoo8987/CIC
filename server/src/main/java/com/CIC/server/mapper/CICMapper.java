@@ -9,11 +9,13 @@ import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
 import com.CIC.server.model.FundingDetail;
 import com.CIC.server.model.FundingMember;
+import com.CIC.server.model.FundingSupport;
 import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.RecentlyNews;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Notice;
 import com.CIC.server.model.Project;
+import com.CIC.server.model.ProjectInformation;
 import com.CIC.server.model.SearchProject;
 import com.CIC.server.model.ServiceCenter;
 import com.CIC.server.model.Type;
@@ -50,6 +52,7 @@ public interface CICMapper {
 	void deleteRecentlyNews(String number);
 	void addRecentlyNews(RecentlyNews recentlyNews);
 	void updateRecentlyNews(RecentlyNews recentlyNews);
+
 	
 	
 	
@@ -104,8 +107,15 @@ public interface CICMapper {
 	
 	public void handleCreatorRequest(String decision, String userId);
 	
-	public List<Content> getProjectDetails(int projectNum);
+	public List<Content> getContentDetails(int projectNum);
+	public ProjectInformation getProjectDetails(int projectNum);
+	
+	public List<FundingSupport> getProjectSupport(int projectNum, int startNum, int endNum);
+	public int getProjectSupportCnt(int projectNum);
 	
 	public void updateServiceCenterSolution(String num, String solution);
 	public void deleteServiceCenterSolution(String num);
+	
+	public void updateProject(Project project);
+	public void updateContent(Content content);
 }

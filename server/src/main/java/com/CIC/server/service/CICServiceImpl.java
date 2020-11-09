@@ -10,11 +10,13 @@ import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
 import com.CIC.server.model.FundingDetail;
 import com.CIC.server.model.FundingMember;
+import com.CIC.server.model.FundingSupport;
 import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.RecentlyNews;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Notice;
 import com.CIC.server.model.Project;
+import com.CIC.server.model.ProjectInformation;
 import com.CIC.server.model.SearchProject;
 import com.CIC.server.model.ServiceCenter;
 import com.CIC.server.model.Type;
@@ -141,7 +143,6 @@ public class CICServiceImpl implements CICService {
 	public void updateRecentlyNews(RecentlyNews recentlyNews) {
 		cicMapper.updateRecentlyNews(recentlyNews);
 	}
-	
 	
 	
 	
@@ -308,10 +309,27 @@ public class CICServiceImpl implements CICService {
 	public void handleCreatorRequest(String decision, String userId) {
 		this.cicMapper.handleCreatorRequest(decision, userId);
 	}
+	
 	@Override
-	public List<Content> getProjectDetails(int projectNum) {
+	public List<Content> getContentDetails(int projectNum) {
+		return this.cicMapper.getContentDetails(projectNum);
+	}
+	
+	@Override
+	public ProjectInformation getProjectDetails(int projectNum) {
 		return this.cicMapper.getProjectDetails(projectNum);
 	}
+	
+	@Override
+	public List<FundingSupport> getProjectSupport(int projectNum, int startNum, int endNum) {
+		return this.cicMapper.getProjectSupport(projectNum, startNum, endNum);
+	}
+	
+	@Override
+	public int getProjectSupportCnt(int projectNum) {
+		return this.cicMapper.getProjectSupportCnt(projectNum);
+	}
+	
 	@Override
 	public void updateServiceCenterSolution(String num, String solution) {
 		this.cicMapper.updateServiceCenterSolution(num, solution);
@@ -320,5 +338,14 @@ public class CICServiceImpl implements CICService {
 	@Override
 	public void deleteServiceCenterSolution(String num) {
 		this.cicMapper.deleteServiceCenterSolution(num);
+	}
+	
+	@Override
+	public void updateProject(Project project) {
+		this.cicMapper.updateProject(project);
+	}
+	@Override
+	public void updateContent(Content content) {
+		this.cicMapper.updateContent(content);
 	}
 }

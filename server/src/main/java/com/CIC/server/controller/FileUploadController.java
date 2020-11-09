@@ -69,14 +69,22 @@ public class FileUploadController{
 		Map<String, MultipartFile> fileList = request.getFileMap();
 		String folderName = UUID.randomUUID().toString();
 		
-		MultipartFile thumbnail = request.getFile("thumbnail");
+		MultipartFile thumbnail = request.getFile("thumbnail"); //없으면 어쩔껀지 처리해줘야함
 		MultipartFile logo = request.getFile("logo");
 		
 		String thumbnailName = thumbnail == null ? "" : uploadS3(folderName, convert(thumbnail));
 		String logoName = logo == null ? "" : uploadS3(folderName, convert(logo));
 		
+		int period = fileList.size();
+		if(thumbnail != null) {
+			period--;
+		}
+		if(logo != null) {
+			period--;
+		}
+		
 		ArrayList<String> files = new ArrayList();
-		for(int i=0; i<fileList.size()-2; i++) {
+		for(int i=0; i<period; i++) {
 			MultipartFile file = request.getFile("file"+i);
 			
 			files.add( uploadS3(folderName, convert(file)) );

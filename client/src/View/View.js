@@ -11,7 +11,7 @@ import RequestCreator from '../DefaultMenuPage/RequestCreator';
 import MemberList from '../DefaultMenuPage/MemberList';
 
 function MainView() {
-    const { globalState } = useContext(Store);
+    const { globalState, info } = useContext(Store);
 
     if(globalState.main==='all' || globalState.main==='tech' || globalState.main==='travel' || globalState.main==='fashion'){
         return <Container><Main/></Container>;

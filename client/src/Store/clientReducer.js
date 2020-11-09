@@ -17,9 +17,7 @@ const sessionReducer = (state, { type, payload }) => {
 const _globalState = {
     main: 'all',
     sub: 'all',
-    // main: 'projectDetails',
-    // sub: 'recentlyNews',
-    action: '',
+    action: 1,
     num: 0
 }
 const globalStateReducer = (state, {type, payload}) => {
@@ -107,6 +105,7 @@ const projectInformationReducer = (state, { type, payload }) => {
             return payload;
     }
 }
+
 const _recentlyNewsInformation = {
     number: '',
     title: '',
@@ -143,7 +142,7 @@ const viewStateReducer = (state, { type, payload }) => {
 const pageReducer = (state, { type, payload }) => {
     switch (type) {
         default:
-            return true;
+            return 'writeInfo';
         case 'CHANGE_PAGE':
             return payload;
     }
@@ -154,7 +153,7 @@ const _info = {
 const infoReducer = (state, { type, payload }) => {
     switch (type) {
         default:
-            return _content;
+            return _info;
         case 'CHANGE_INFO':
             return payload;
     }

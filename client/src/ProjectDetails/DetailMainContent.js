@@ -9,6 +9,7 @@ function DetailMainContent() {
     useEffect(() => {
         get(`/project/${projectInformation.number}`)
             .then(({ data }) => {
+                console.log(data);
                 projectDispatch(
                     {
                         type:'CHANGE',

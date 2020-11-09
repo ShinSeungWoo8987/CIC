@@ -16,7 +16,7 @@ function Charge() {
     const availableMoney = '200,000';
     return (
         <Modal 
-            isOpen={!modalState.charge}
+            isOpen={modalState.charge}
             style={ChargeModalStyle}
             onRequestClose={(e) => closeChargeModal(e)}
             shouldCloseOnOverlayClick={true} // 화면 밖 클릭 시 종료되는 기능 

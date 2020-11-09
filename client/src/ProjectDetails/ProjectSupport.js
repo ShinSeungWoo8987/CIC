@@ -1,29 +1,39 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SupportItem from './SupportItem';
+import {get} from 'axios';
+import Paging from '../Components/Paging';
+import Store from '../Store/Store';
 
 function ProjectSupport(props) {
-    let _supportItem = [
-        {title: 'Title', name: 'Creator', date: '2020.09.18'},
-        {title: 'Title', name: '관리자', date: '2020.09.20'},
-        {title: 'Title', name: '내가내다', date: '2020.10.20'},
-        {title: 'Title', name: '신승우', date: '2020.11.20'}
-    ];
-    const [ supportItem ] = useState(_supportItem);
+    const { projectInformation, pageNumber } = useContext(Store);
+    const [cnt, setCnt] = useState(1);
+    const [ supportItem, setSupportItem ] = useState([{title: '로딩중...', name: '', date: ''},]);
+
+    useEffect(()=>{
+        get(`/project_support/${projectInformation.number}/${pageNumber.value}`)
+            .then(({data})=>{
+                const loadList = data.fundingSupportList.map(i=>{
+                    return {
+                        title: i.fun_description,
+                        name: i.fun_name,
+                        date: i.fun_register.substr(0,10)
+                    }
+                });
+                setCnt(data.fundingSupportCnt);
+                setSupportItem(loadList);
+            })
+            .catch(err=>alert(err));
+    },[pageNumber]);
 
     const content = supportItem.map( ({title,name,date}, idx)=>{
         return <SupportItem key={idx} title={title} name={name} date={date} />;
     });
     return (
         <Container>
-            <Upside> {content} </Upside>
+            <Upside> {content.length!==0?content:'아직 펀딩이 이루어지지 않았습니다.'} </Upside>
             <Downside>
-                <SearchDiv>
-                    <SearchInput type="text" placeholder="검색어 입력"/>
-                    <SearchButton>검색</SearchButton>
-                </SearchDiv>
-                <br/>
-                [이전] [1] [2] [3] [4] [다음]
+                <Paging maxPage={cnt}/>
             </Downside>
         </Container>
     );
@@ -45,7 +55,7 @@ width: 700px;
 height: 700px;
 `
 const Downside = styled.div`
-margin: 15px auto 0 auto;
+margin: 0px auto 0 auto;
 width: 550px;
 height: 100px;
 `

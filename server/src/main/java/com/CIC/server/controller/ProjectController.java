@@ -20,6 +20,7 @@ import com.CIC.server.model.Content;
 import com.CIC.server.model.JwtRequest;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Project;
+import com.CIC.server.model.ProjectInformation;
 import com.CIC.server.model.SearchProject;
 import com.CIC.server.service.CICService;
 import com.CIC.server.util.Util;
@@ -27,6 +28,21 @@ import com.CIC.server.util.Util;
 @RestController(value="projectContoller")
 public class ProjectController {
 	int pagePerCnt = 8;
+	
+	private String project_num;
+	private String project_name = "";
+	private String category = "";
+	private String target_money = "";
+	private String sdate = "";
+	private String fdate = "";
+	private String thumbnail = "";
+	private String logo = "";
+	private String funding_price = "";
+	private String email = "";
+	
+	private String title="";
+	private String image="";
+	private String description="";
 
 	@Autowired
 	private CICService cicService;
@@ -341,7 +357,182 @@ public class ProjectController {
 	@GetMapping("/project/{num}")
     public List<Content> getProjectDetails(@PathVariable String num) throws Exception {
 		int projectNum = Integer.parseInt(num);
-		List<Content> content = this.cicService.getProjectDetails(projectNum);
-        return content; 
+		List<Content> content = this.cicService.getContentDetails(projectNum);
+        return content;
     }
+
+	@GetMapping("/project/information/{num}")
+    public ProjectInformation getProjectInformation(@PathVariable String num) throws Exception {
+		int projectNum = Integer.parseInt(num);
+		ProjectInformation projectInformation = this.cicService.getProjectDetails(projectNum);
+        return projectInformation;
+    }
+	
+	@RequestMapping(value="/create_project", method=RequestMethod.PUT, consumes="application/json")
+    public String createProject( @RequestBody Map map ) throws Exception {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String username = userDetails.getUsername();
+		
+		System.out.println("-----------------------------------------");
+        System.out.println( (ArrayList)map.get("sendContent") );
+		
+        map.forEach((k, v) -> {
+        	if(!k.equals("sendContent")) {
+        		switch ( (String)k ) {
+				case "project_name":
+					project_name = (String)v;
+					break;
+				case "category":
+					category = (String)v;
+					break;
+				case "target_money":
+					target_money = (String)v;
+					break;
+				case "sdate":
+					sdate = (String)v;
+					break;
+				case "fdate":
+					fdate = (String)v;
+					break;
+				case "thumbnail":
+					thumbnail = (String)v;
+					break;
+				case "logo":
+					logo = (String)v;
+					break;
+				case "funding_price":
+					funding_price = (String)v;
+					break;
+				case "email":
+					email = (String)v;
+					break;
+				default:
+					System.out.println("Something Error");
+					break;
+				}
+        		
+        	}
+        });
+		Project project = Project.builder()
+				  .mem_id(username)
+				  .pro_title(project_name)
+				  .typ_number( Integer.parseInt(category) )
+				  .pro_target( Integer.parseInt(target_money) )
+				  .pro_price( Integer.parseInt(funding_price) )
+				  .pro_email(email)
+				  .pro_start(sdate)
+				  .pro_finish(fdate)
+				  .pro_thumbnail(thumbnail)
+				  .pro_logo(logo)
+				  .build();
+		try {
+			this.cicService.addProject(project);
+			
+			ArrayList<Map> contentArray = (ArrayList)map.get("sendContent");
+	        for(Map i : contentArray) {
+				Content content = Content.builder()
+	    				.con_type( ((String)i.get("head")).equals("text")?"t":"i" )
+	    				.con_content((String)i.get("content"))
+	    				.pro_number(project.getPro_number())
+	    				.build();
+				
+				this.cicService.addContent(content);
+			}
+	        
+			return "Successfully insert project";
+		}catch (Exception e) {
+			e.printStackTrace();
+			return "insert project failed"; 
+		}
+    }
+	
+	
+	
+	
+	
+	@RequestMapping(value="/project/update", method=RequestMethod.POST, consumes="application/json")
+    public String updateProject( @RequestBody Map map ) throws Exception {
+		//관리자인지 프로젝트 등록한 창작자인지 확인해서 처리해야됨.
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String username = userDetails.getUsername();
+		
+        map.forEach((k, v) -> {
+        	if(!k.equals("sendContent")) {
+        		switch ( (String)k ) {
+        		case "project_num":
+        			project_num = (String)v;
+					break;
+				case "project_name":
+					project_name = (String)v;
+					break;
+				case "category":
+					category = (String)v;
+					break;
+				case "target_money":
+					target_money = (String)v;
+					break;
+				case "sdate":
+					sdate = (String)v;
+					break;
+				case "fdate":
+					fdate = (String)v;
+					break;
+				case "thumbnail":
+					thumbnail = (String)v;
+					break;
+				case "logo":
+					logo = (String)v;
+					break;
+				case "funding_price":
+					funding_price = (String)v;
+					break;
+				case "email":
+					email = (String)v;
+					break;
+				default:
+					System.out.println("Something Error");
+					break;
+				}
+        		
+        	}
+        });
+		Project project = Project.builder()
+				  .mem_id(username)
+				  .pro_number( Integer.parseInt(project_num) )
+				  .pro_title(project_name)
+				  .typ_number( Integer.parseInt(category) )
+				  .pro_target( Integer.parseInt(target_money) )
+				  .pro_price( Integer.parseInt(funding_price) )
+				  .pro_email(email)
+				  .pro_start(sdate)
+				  .pro_finish(fdate)
+				  .pro_thumbnail(thumbnail)
+				  .pro_logo(logo)
+				  .build();
+		try {
+			this.cicService.updateProject(project);
+			
+			ArrayList<Map> contentArray = (ArrayList)map.get("sendContent");
+	        for(Map i : contentArray) {
+				Content content = Content.builder()
+						.con_number( (int)i.get("id") )
+	    				.con_type( ((String)i.get("head")).equals("text")?"t":"i" )
+	    				.con_content((String)i.get("content"))
+	    				.pro_number(project.getPro_number())
+	    				.build();
+				
+				this.cicService.updateContent(content);
+			}
+	        
+			return "Successfully update project";
+		}catch (Exception e) {
+			e.printStackTrace();
+			return "update project failed"; 
+		}
+		
+		
+    }
+	
 }

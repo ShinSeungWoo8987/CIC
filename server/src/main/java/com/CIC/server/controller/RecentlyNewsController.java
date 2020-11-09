@@ -152,7 +152,7 @@ public class RecentlyNewsController {
 		});
         if(!username.equals(values.get(1))) 
         	return;
-        // 창작자 or 관리자가 아닌경우 거절
+        // 창작자 or 관리자가 아닌경우 거절 
 		if(!userDetails.getAuthorities().toString().equals("[ROLE_CREATOR]") && !userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]")) {
 			System.out.println("관리자 or 창작자가 아닌 경우");
 			return;

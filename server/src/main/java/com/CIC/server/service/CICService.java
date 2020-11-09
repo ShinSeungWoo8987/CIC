@@ -8,11 +8,13 @@ import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
 import com.CIC.server.model.FundingDetail;
 import com.CIC.server.model.FundingMember;
+import com.CIC.server.model.FundingSupport;
 import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.RecentlyNews;
 import com.CIC.server.model.Member;
 import com.CIC.server.model.Notice;
 import com.CIC.server.model.Project;
+import com.CIC.server.model.ProjectInformation;
 import com.CIC.server.model.SearchProject;
 import com.CIC.server.model.ServiceCenter;
 import com.CIC.server.model.Type;
@@ -100,9 +102,17 @@ public interface CICService {
 	
 	void handleCreatorRequest(String decision, String userId);
 	
-	List<Content> getProjectDetails(int projectNum);
+	List<Content> getContentDetails(int projectNum);
+	ProjectInformation getProjectDetails(int projectNum);
+	
+	
+	List<FundingSupport> getProjectSupport(int projectNum, int startNum, int endNum);
+	int getProjectSupportCnt(int projectNum);
+	
 	
 	void updateServiceCenterSolution(String num, String solution);
 	void deleteServiceCenterSolution(String num);
 	
+	void updateProject(Project project);
+	void updateContent(Content content);
 }

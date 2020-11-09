@@ -11,7 +11,7 @@ import _FundingState from './FundingState';
 import Charge from '../Charge/Charge';
 
 function Head(props) {
-    const { session, globalState, modalStateDispatch, globalStateDispatch, searchDispatch, pageNumberDispatch } = useContext(Store);
+    const { session, globalState, modalStateDispatch, globalStateDispatch, searchDispatch, pageNumberDispatch, infoDispatch, projectDispatch, pageDispatch } = useContext(Store);
     const [showMore, setShowMore] = useState(false);
 
     const categoryList = [
@@ -116,8 +116,10 @@ function Head(props) {
                 charge: true
             }
             modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
-        }
-        else{
+        }else{
+            infoDispatch({ type: 'DEFAULT'});
+            projectDispatch({ type: 'DEFAULT'});
+            pageDispatch({ type: 'DEFAULT'});
             const newGlobalState = {
                 main: e.currentTarget.id,
                 sub: globalState.sub,
@@ -169,8 +171,8 @@ function Head(props) {
             <SubMenu/>
             <Postcode/>
             <UpdateUser/>
-            <Authority/>
             <Charge/>
+            <Authority/>
             {globalState.main==='projectDetails'?<FundingState/>:''}
         </Container>
     );

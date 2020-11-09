@@ -288,19 +288,19 @@
 	<delete id="deleteFundingDetailList">
 		delete from funding where fun_number = #{number}
 	</delete>
-	
+
 	<select id="findId" resultType="String">
 		select mem_id
 		from member
 		where mem_name = #{name} and mem_phone = #{phone} and mem_birth = #{birth}
 	</select>
-	
+
 	<update id="findPw">
 		update member
 		set mem_pw = #{pw}
 		where mem_id = #{id}
 	</update>
-	
+
 	<select id="getRecentlyNewsList" resultType="RecentlyNews">
 		select new_number, new_title, new_description, new_register, pro_number
 		from ( select rownum rnum, new_number, new_title, new_description, to_char(new_register, 'yyyy-mm-dd') new_register, pro_number
@@ -309,7 +309,7 @@
 		       order by new_number desc )
 		where rnum between #{startNumber} and #{finishNumber}
 	</select>
-	
+
 	<select id="getRecentlyNewsListMaxPage" resultType="int">
 		select count(new_number)
 		from news
@@ -329,12 +329,15 @@
 		insert into news(new_number, new_title, new_description, pro_number) 
 		values(#{new_number}, #{new_title}, #{new_description}, #{pro_number})
 	</insert>
-	
+
 	<update id="updateRecentlyNews">
 		update news
 		set new_title = #{new_title}, new_description = #{new_description}
 		where new_number = #{new_number}
 	</update>
+	
+	
+	
 	
 	
 	
@@ -568,8 +571,22 @@
 		</if>
 	</select>
 	
-	<select id="getProjectDetails" resultType="Content">
+	<select id="getContentDetails" resultType="Content">
 		select * from CONTENT where pro_number = #{projectNum}
+	</select>
+	
+	<select id="getProjectDetails" resultType="ProjectInformation">
+		select * from PROJECT where pro_number = #{projectNum}
+	</select>
+	
+	<select id="getProjectSupport" resultType="FundingSupport">
+		select * from (select ROWNUM as rnum, a.* from (
+			select FUN_NUMBER, FUN_NAME, FUN_DESCRIPTION, FUN_REGISTER
+			from FUNDING where PRO_NUMBER=#{projectNum} order by FUN_NUMBER desc
+		) a) where rnum between #{startNum} and #{endNum}
+	</select>
+	<select id="getProjectSupportCnt" resultType="int">
+		select count(*) from FUNDING where PRO_NUMBER=#{projectNum}
 	</select>
 	
 	<update id="updateServiceCenterSolution">
@@ -579,6 +596,35 @@
 	<update id="deleteServiceCenterSolution">
 		update SERVICECENTER set SER_SOLUTION=null where SER_NUMBER=#{num}
 	</update>
+	
+	
+	
+	
+	
+	<update id="updateProject">
+      UPDATE PROJECT SET 
+      	PRO_TITLE=#{pro_title}, PRO_TARGET=#{pro_target}, PRO_THUMBNAIL=#{pro_thumbnail}, PRO_LOGO=#{pro_logo},
+      	PRO_START=#{pro_start}, PRO_FINISH=#{pro_finish}, MEM_ID=#{mem_id}, TYP_NUMBER=#{typ_number}, PRO_PRICE=#{pro_price}, PRO_EMAIL=#{pro_email}
+      WHERE PRO_NUMBER=#{pro_number}
+   </update>
+   
+   <update id="updateContent">
+       <selectKey keyProperty="con_number" resultType="int" order="BEFORE">
+       	SELECT CASE
+        	WHEN cnt = 0 THEN (select coalesce(MAX(con_number), 0) + 1 as con_number from CONTENT)
+        	WHEN cnt = 1 THEN (select con_number from (select ROWNUM as rnum, a.* from (select CON_NUMBER as con_number from content where PRO_NUMBER=#{pro_number} order by CON_NUMBER) a) where rnum=#{con_number})
+       		END AS con_number
+		FROM (select count(*) as cnt from (select ROWNUM as rnum, a.* from (select CON_NUMBER as con_number from content where PRO_NUMBER=#{pro_number} order by CON_NUMBER) a) where rnum=#{con_number})  
+       </selectKey>
+       {call
+        	declare
+        	begin
+        		delete from content where con_number=#{con_number};
+        		INSERT INTO CONTENT (CON_NUMBER, CON_TYPE, CON_CONTENT, PRO_NUMBER) 
+       			values( #{con_number}, #{con_type}, #{con_content}, #{pro_number});
+        	end
+		}
+   </update>
 	
 	
 </mapper>
