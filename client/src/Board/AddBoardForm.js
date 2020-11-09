@@ -4,6 +4,7 @@ import CKeditor from '@ckeditor/ckeditor5-react';
 import Store from '../Store/Store';
 import {put, post} from 'axios';
 import parse from  'html-react-parser';
+import styled from 'styled-components';
 
 function AddBoardForm({id,title,description}) {
     const {globalState, globalStateDispatch} = useContext(Store);
@@ -94,38 +95,109 @@ function AddBoardForm({id,title,description}) {
             }
         }
     }
-
+    const viewPath = (e) => {
+        console.log(e.target.id);
+        if(e.target.id==='thumbnail')
+            document.getElementById('thumbnailPath').value = e.target.value;
+        else
+            document.getElementById('contentImagePath').value = e.target.value;
+    }
     return (
-        <form onSubmit={e => onSubmit(e)}>
-            제목 : <br/>
-            <input type="text" ref={titleRef} defaultValue={title}/>
+        <Container onSubmit={e => onSubmit(e)}>
+            <Input type="text" ref={titleRef} defaultValue={title} placeholder='제목을 입력해 주세요.'/>
+            <Btn type="submit" value="등록" />
             {globalState.main!=='addEvent'?''
             :<>
-                <br/>썸네일 : <br/>
-                <input type="file" ref={thumbnailRef}/>
-                <br/>이미지 : <br/>
-                <input type="file" ref={imageRef}/>
+                <LabelContainer onChange={(e)=>viewPath(e)}>
+                    <Label for='thumbnail' >썸네일 추가
+                        <InputFile id='thumbnail' type="file" ref={thumbnailRef} />
+                    </Label>
+                </LabelContainer>
+                <Path margin='0 50px 10px 5px' id='thumbnailPath' type='text' readOnly/>
+                <LabelContainer onChange={(e)=>viewPath(e)}>
+                    <Label for='contentImage' >이미지 추가</Label>
+                    <InputFile id='contentImage' type="file" ref={imageRef}/>
+                </LabelContainer>
+                <Path margin='0 0 10px 5px' id='contentImagePath' type='text' defaultValue='ㅎㅇㅎㅇ' readOnly/>
             </>}
-            <br/>내용 : <br/>
-            <CKeditor
-                editor={ClassicEditor} onInit={() => { }}
-                onChange={(event, editor) => {
-                    handleCKeditorState(event, editor); // console.log(editor.sourceElement.parentNode.id)
-                }}
-                data={description}
-                config={{
-                    toolbar: [
-                        "heading", "|", "bold", "italic", "link", "bulletedList",
-                        "numberedList", "|", "indent", "outdent", "|", // "imageUpload"
-                        "blockQuote", "insertTable", "mediaEmbed", "undo", "redo"
-                    ],
-                    placeholder: "글을 작성해 주세요."
-                }}
-            />
-            <button type="submit">Upload</button>
+            <SubContainer margin = {globalState.main==='addEvent'?'':'-30px 0 0 0'}>
+                <CKeditor
+                    editor={ClassicEditor} onInit={() => { }}
+                    onChange={(event, editor) => {
+                        handleCKeditorState(event, editor); // console.log(editor.sourceElement.parentNode.id)
+                    }}
+                    data={description}
+                    config={{
+                        toolbar: [
+                            "heading", "|", "bold", "italic", "link", "bulletedList",
+                            "numberedList", "|", "indent", "outdent", "|", // "imageUpload"
+                            "blockQuote", "insertTable", "mediaEmbed", "undo", "redo"
+                        ],
+                        placeholder: "글을 작성해 주세요."
+                    }}
+                />
+            </SubContainer>
             {_content}
-        </form>
+        </Container>
     );
 }
 
 export default AddBoardForm;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const Container = styled.form`
+`
+const Input = styled.input`
+    width: 1000px;
+    height: 40px;
+    margin: 10px 0;
+    text-indent: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 2.5px;
+`
+const InputFile = styled(Input)`
+    display: none;
+`
+const Btn = styled.input`
+    position: relative;
+    bottom: 105px;
+    float: right;
+    width: 50px;
+    height: 30px;
+    font-size: 15px;
+    border-radius: 5px;
+    border: 1px solid #C8C8C8;
+    cursor: pointer;
+`
+const LabelContainer = styled.span`
+    float: left;
+    width: 125px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 10px;
+    color: white;
+    background-color: lightgray;
+`
+const Label = styled.label`
+    font-size: 20px;
+    font-weight: bold;
+`
+const Path = styled.input`
+    float: left;
+    width: 300px;
+    height: 35px;
+    margin: ${({margin})=>`${margin}`};
+    border: none;
+    text-indent: 10px;
+`
+const SubContainer = styled.div`
+    float: left;
+    width: 100%;
+    margin: ${({margin})=>`${margin}`};
+
+    .ck-editor__editable {
+        
+        height: 592px;
+    }
+`
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

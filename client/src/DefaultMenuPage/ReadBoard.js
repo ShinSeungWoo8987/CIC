@@ -196,9 +196,9 @@ height: 650px;
 `
 const Search = styled.div`
 float: left;
-margin: 15px auto 0 auto;
 width: 100%;
 height: 100px;
+margin: 15px auto 0 auto;
 text-align: center;
 `
 const EditBoard = styled.div`
@@ -209,29 +209,32 @@ const SearchDiv = styled.div`
 margin: 0 auto;
 height: 30px;
 width: 400px;
-border-radius: 6px;
-border: 1px solid #A6A6A6;
 background: white;
 `
 const SearchInput = styled.input`
-font-size: 16px;
-width: 325px;
-height: 10px;
-padding: 10px;
-border: 0px;
-outline: none;
 float: left;
+width: 325px;
+height: 30px;
+font-size: 16px;
+text-indent: 10px;
+border-top-left-radius: 6px;
+border-bottom-left-radius: 6px;
+border-top: 1px solid #A6A6A6;
+border-right: none;
+border-bottom: 1px solid #A6A6A6;
+border-left: 1px solid #A6A6A6;
 `
 const SearchButton = styled.button`
-cursor: pointer;
+float: left;
 width: 50px;
-height: 100%;
-border: 0px;
-outline: none;
-float: right;
-color: white;
+height: 34px;
 font-size: 16px;
 font-weight: bold;
+border-top-right-radius: 6px;
+border-bottom-right-radius: 6px;
+border: none;
+cursor: pointer;
+color: white;
 background-color: #A6A6A6;
 `
 const A = styled.a`
