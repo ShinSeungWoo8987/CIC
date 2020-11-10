@@ -6,6 +6,22 @@ const getRandom = (max, min) => {
 const replaceAt = (string, idx, character) => {
     return string.substring(0, idx) + character + string.substring(idx+character.length);
 }
+
+const checkInputValueRestirctedCharacter = (inputValue) => {
+    const restirctedCharacterList = [" ", "=", "'", "\"", ">", "<", "-"]; // Restricted Charater
+    for(var idx=0; idx<restirctedCharacterList.length; idx++){
+        if(inputValue.indexOf(restirctedCharacterList[idx]) !== -1)
+            return -1
+    }
+    return 0
+}
+
+const checkSearchValueRestirctedCharacter = (inputValue) => {
+    const restirctedCharacterList = ["=", "'", "\""]; // Restricted Charater
+    for(var idx=0; idx<restirctedCharacterList.length; idx++)
+        inputValue = inputValue.replaceAll(restirctedCharacterList[idx],'');
+    return inputValue;
+}
 // Format - (###,###,###)
 const moneyFormat = (money) => {
     const reverseSource = String(money).split("").reverse().join("");
@@ -65,4 +81,4 @@ const getPageCnt = ( maxPage, maxBlock, blockPerCnt, blockNumber ) => {
         return maxPage%blockPerCnt
     }   
 }
-export { getRandom, moneyFormat, percentFormat, dDayFormat, dateFormat, idFormat, getMaxBlock, getPageCnt };
+export { getRandom, checkInputValueRestirctedCharacter, checkSearchValueRestirctedCharacter, moneyFormat, percentFormat, dDayFormat, dateFormat, idFormat, getMaxBlock, getPageCnt };

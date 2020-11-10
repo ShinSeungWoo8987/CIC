@@ -5,15 +5,16 @@ import Store from '../Store/Store';
 import {executeJwtAuthenticationService, registerSuccessfulLoginForJwt, logout, setupAxiosInterceptors} from '../Jwt/AuthenticationService.js'
 import Register from './Register';
 import FindUser from './FindUser';
+import { checkInputValueRestirctedCharacter } from '../Util/Util';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Login() {
-    const { session, sessionDispatch, modalState, modalStateDispatch, globalStateDispatch } = useContext(Store);
+    const { globalStateDispatch, session, sessionDispatch, modalState, modalStateDispatch } = useContext(Store);
     const [idRef, pwRef] = [useRef(), useRef()];
     const [LoginMessage, setLoginMessage] = useState('');
-
-    // GlobalState 값도 나중에 새로고침했을 때 유지시켜야 됨
+    
+    // 새로고침했을 때, globalState 값 유지시킬 것
     useEffect(()=>{
         const _session = {
             state: localStorage.getItem("token") !== null,
@@ -25,38 +26,6 @@ function Login() {
         setupAxiosInterceptors();
     },[sessionDispatch])
 
-    // Login Submit
-    const onLoginSubmit = (e) => {
-        e.preventDefault();
-        const id = idRef.current.value;
-        const pw = pwRef.current.value;
-        // Restricted Character
-        const restirctedCharacterList = [" ", "=", "'", "\""]
-        var idx = 0;
-        while(idx<restirctedCharacterList.length){
-            // 아이디 또는 비밀번호 입력값에 제한된 문자 리스트의 목록이 없는 경우 -1 반환
-            if(id.indexOf(restirctedCharacterList[idx]) !== -1 || pw.indexOf(restirctedCharacterList[idx]) !== -1){
-                setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.");
-                return false
-            }
-            idx++;
-        }
-        executeJwtAuthenticationService(id, pw)
-        .then(({data}) => {
-            registerSuccessfulLoginForJwt(data.authority, data.token, data.userId);
-            const newSession = {
-                state: true,
-                authority: data.authority,
-                token: data.token,
-                userId: data.userId
-            }
-            sessionDispatch({type:'SESSION', payload: newSession });
-            closeLoginModal();
-        }).catch( () =>{
-            setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.")
-            console.log("executeJwtAuthenticationService Error");
-        })
-    }
     // Login Modal Setting
     const openLoginModal = (e) => {
         e.preventDefault();
@@ -75,6 +44,39 @@ function Login() {
         setLoginMessage("");
         modalStateDispatch({type:"DEFAULT"});
     }
+
+    // Input Value Valid Check
+    const checkInutValue = (e) => {
+        const inputValue = e.target.value;
+        const inputId = e.target.id;
+        const check = checkInputValueRestirctedCharacter(inputValue);
+        if(check === -1){
+            setLoginMessage('사용할 수 없는 문자입니다.');
+            document.getElementById(inputId).focus();
+        }
+    }
+
+    // Login Submit
+    const onLoginSubmit = (e) => {
+        e.preventDefault();
+        const id = idRef.current.value;
+        const pw = pwRef.current.value;
+        executeJwtAuthenticationService(id, pw)
+        .then(({data}) => {
+            registerSuccessfulLoginForJwt(data.authority, data.token, data.userId);
+            const newSession = {
+                state: true,
+                authority: data.authority,
+                token: data.token,
+                userId: data.userId
+            }
+            sessionDispatch({type:'SESSION', payload: newSession });
+            closeLoginModal();
+        }).catch( () =>{
+            setLoginMessage("가입하지 않은 아이디이거나, 잘못된 비밀번호입니다.")
+            // console.log("executeJwtAuthenticationService Error");
+        })
+    }
     return(
         <Container margin={session.state?'1300px':'1315px'}>
             <LinkModal onClick={(e)=>openLoginModal(e)}>{session.state?'로그아웃':'로그인'}</LinkModal>
@@ -85,8 +87,8 @@ function Login() {
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form>
-                <InputId ref={idRef} type='text' placeholder="아이디" required/><br/>
-                <InputPw ref={pwRef} type='password' placeholder="비밀번호" required/><br/>
+                <InputId id='id' ref={idRef} type='text' placeholder="아이디" required autoFocus onBlur={(e)=>checkInutValue(e)}/><br/>
+                <InputPw id='pw' ref={pwRef} type='password' placeholder="비밀번호" required onBlur={(e)=>checkInutValue(e)}/><br/>
                 <SpanText>{LoginMessage}</SpanText><br/>
                 <InputSubmit  onClick={(e)=>onLoginSubmit(e)}>로그인</InputSubmit>
                 <Find>

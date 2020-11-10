@@ -4,25 +4,20 @@ import Modal from 'react-modal';
 import Store from '../Store/Store';
 import { post } from 'axios'
 import {executeRegisterService} from '../Jwt/AuthenticationService';
+import { checkInputValueRestirctedCharacter } from '../Util/Util';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Register() {
     const { addressValue, addressValueDispatch, modalState, modalStateDispatch } = useContext(Store);
-    // const register=session.state?'':'회원가입';
-    const register='회원가입';
     const [registerModalState, setRegisterModalState] = useState(false);
     const [passwordMessage, setPasswordMessage] = useState(''); // Password Valid Check Message
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState(''); // Password Equal Check Message
     const [idMessage, setIdMessage] = useState(''); // Id Valid Check Message
-    const restirctedCharacterList = [" ", "=", "'", "\""]; // Restricted Charater
     // Register Modal Setting
     const openRegisterModal = (e) => {
         e.preventDefault();
         setRegisterModalState(true);
-        // if(register === '회원가입'){
-        //     setRegisterModalState(true);
-        // }
     };
     const closeRegisterModal = () => {
         setIdMessage("");
@@ -40,65 +35,16 @@ function Register() {
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     };
-    // Register Submit
-    const handleRegisterSubmit = (e) => {
-        e.preventDefault();
-        const {id,pw1,pw2,name,birth,phone,postcode,address1,address2} = e.target;
-        if(pw1.value !== pw2.value){
-            document.getElementById('pw2').focus();
-            return false;
-        }
-        executeRegisterService(
-            id.value,
-            pw1.value,
-            name.value,
-            birth.value,
-            phone.value,
-            postcode.value,
-            address1.value,
-            address2.value
-        ).then(res=>console.log(res));
-        closeRegisterModal();
-    };
-    // Password Valid Check
-    const checkPassword = (e) => {
-        e.preventDefault();
-        const pw = e.target.value;
-        var idx = 0;
-        setPasswordMessage('');
-        while(idx<restirctedCharacterList.length){
-            // 비밀번호 입력값에 제한된 문자 리스트의 목록이 없는 경우 -1 반환
-            if(pw.indexOf(restirctedCharacterList[idx]) !== -1){
-                setPasswordMessage("사용할 수 없는 비밀번호입니다.");
-                break;
-            }
-            idx++;
-        }
-    }
-    // Password Equal Check
-    const checkPasswordConfirm = (e) => {
-        e.preventDefault();
-        var pw1 = document.getElementById('pw1').value
-        var pw2 = e.target.value;
-        if(pw1 !== pw2){
-            setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
-        }else{
-            setPasswordConfirmMessage('');
-        }
-    }
     // Id Valid Check
     const checkId = (e) => {
         e.preventDefault();
         const id = e.target.value;
-        var idx = 0;
         setIdMessage('');
-        while(idx<restirctedCharacterList.length){
-            // 비밀번호 입력값에 제한된 문자 리스트의 목록이 없는 경우 -1 반환
-            if(id.indexOf(restirctedCharacterList[idx]) !== -1){
-                setIdMessage("사용할 수 없는 아이디입니다.");
-                return false;
-            }
-            idx++;
+        const check = checkInputValueRestirctedCharacter(id);
+        if(check === -1){
+            setIdMessage("사용할 수 없는 아이디입니다.");
+            document.getElementById(e.target.id).focus();
+            return false;
         }
         const url = '/member/idList';
         const data = {
@@ -108,32 +54,73 @@ function Register() {
             setIdMessage(res.data);
         });
     }
+    // Input Value Valid Check
+    const checkInutValue = (e) => {
+        const inputId = e.target.id;
+        const inputValue = e.target.value;
+        const check = checkInputValueRestirctedCharacter(inputValue);
+        if(check === -1){
+            if(inputId === 'pw1'){
+                setPasswordMessage('사용할 수 없는 비밀번호입니다.');
+                document.getElementById('pw1').focus();
+            }else{
+                document.getElementById(inputId).value = '';
+                document.getElementById(inputId).focus();
+            }
+        }
+    }
+    // Password Equal Check
+    const checkPasswordConfirm = (e) => {
+        e.preventDefault();
+        var pw1 = document.getElementById('pw1').value;
+        var pw2 = e.target.value;
+        if(pw1 !== pw2){
+            setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
+            document.getElementById('pw1').value = '';
+            document.getElementById('pw2').value = '';
+            document.getElementById('pw1').focus();
+        }else{
+            setPasswordConfirmMessage('');
+        }
+    }
+    // Register Submit
+    const handleRegisterSubmit = (e) => {
+        e.preventDefault();
+        const {id,pw1,name,birth,phone,postcode,address1,address2} = e.target;
+        executeRegisterService(
+            id.value,
+            pw1.value,
+            name.value,
+            birth.value,
+            phone.value,
+            postcode.value,
+            address1.value,
+            address2.value
+        ).then(res=>{});
+        closeRegisterModal();
+    };
     return(
         <Container>
-            <LinkModal href='login' onClick={(e)=>openRegisterModal(e)}>{register}</LinkModal>
+            <LinkModal href='login' onClick={(e)=>openRegisterModal(e)}>회원가입</LinkModal>
             <Modal 
                 isOpen={registerModalState}
                 style={RegisterModalStyle}
                 onRequestClose={(e) => closeRegisterModal(e)}
-                // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form onSubmit={(e)=>handleRegisterSubmit(e)}>
-                    {/* RealTime Id Valid Check */}
-                    {/* <InputId id='id' type='text' placeholder="아이디" required pattern="[A-Za-z0-9]{3,12}" onChange={(e)=>checkId(e)}/><br/> */}
-                    {/* Lost Focus, Id Valid Check */}
-                    <InputId id='id' type='text' placeholder="아이디" required onBlur={(e)=>checkId(e)}/><br/>
+                    <InputId id='id' type='text' placeholder="아이디" pattern="[A-Za-z0-9!@%^*]{8,15}" required autoFocus onBlur={(e)=>checkId(e)}/><br/>
                     <SpanText>{idMessage}</SpanText><br/>
-                    <InputPw id='pw1' type='password' placeholder="비밀번호" required onChange={(e)=>checkPassword(e)}/><br/>
+                    <InputPw id='pw1' type='password' placeholder="비밀번호" pattern="[A-Za-z0-9!@%^*]{8,15}" required onBlur={(e)=>checkInutValue(e)}/><br/>
                     <SpanText>{passwordMessage}</SpanText><br/>
-                    <InputPw id='pw2' type='password' placeholder="비밀번호 확인" required onChange={(e)=>checkPasswordConfirm(e)}/><br/>
+                    <InputPw id='pw2' type='password' placeholder="비밀번호 확인" pattern="[A-Za-z0-9!@%^*]{8,15}" required onChange={(e)=>checkPasswordConfirm(e)}/><br/>
                     <SpanText>{passwordConfirmMessage}</SpanText><br/>
-                    <InputText id='name' type='text' placeholder="이름" required /><br/>
-                    <InputDate id='birth' type='date' min='1996-01-01' max='2099-12-31' required/><br/>
-                    <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" /><br/>
+                    <InputText id='name' type='text' placeholder="이름" required onBlur={(e)=>checkInutValue(e)}/><br/>
+                    <InputDate id='birth' type='date' min='1970-01-01' max='2099-12-31' required/><br/>
+                    <InputText id='phone' type='tel' placeholder="01000000000" pattern="[0-9]{3}[0-9]{4}[0-9]{4}" onBlur={(e)=>checkInutValue(e)}/><br/>
                     <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} required readOnly/>
                     <BtnPostcode type='button' value='우편번호 검색' onClick={(e)=>openPostcodeModal(e)}/><br/>
                     <InputText id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} required readOnly/><br/>
-                    <InputText id="address2" type="text" placeholder="상세 주소" />
+                    <InputText id="address2" type="text" placeholder="상세 주소" onBlur={(e)=>checkInutValue(e)}/>
                     <InputSubmit type="submit" value="회원가입"/>
                 </Form>
             </Modal>
@@ -142,7 +129,6 @@ function Register() {
 }
 
 export default Register;
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Container = Styled.div`
     float: left;

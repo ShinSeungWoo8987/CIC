@@ -68,13 +68,23 @@
 		from project where pro_number = #{projectNumber}
 	</select>
 	
-	<insert id="addFunding" keyProperty="fun_number">
-		<selectKey keyProperty="fun_number" resultType="int" order="BEFORE">
-			select coalesce(MAX(fun_number), 0) + 1 as fun_number
-            from funding
-		</selectKey>
-		insert into funding (fun_number, fun_name, fun_phone, fun_postcode, fun_address1, fun_address2, fun_description, mem_id, pro_number) 
-		values(#{fun_number}, #{fun_name}, #{fun_phone}, #{fun_postcode}, #{fun_address1}, #{fun_address2}, #{fun_description}, #{mem_id}, #{pro_number})
+	<insert id="addFunding">
+    	<selectKey resultType="AddFunding" keyProperty="fun_number,mon_number,pro_title,pro_price" order="BEFORE">
+        	SELECT * FROM 
+				(select coalesce(MAX(fun_number), 0) + 1 as fun_number from funding), 
+				(select coalesce(MAX(mon_number), 0) + 1 as mon_number from money), 
+				(select pro_title, pro_price from project where pro_number=#{pro_number})
+    	</selectKey>
+		{call
+        	declare
+        	begin
+        		insert into funding (fun_number, fun_name, fun_phone, fun_postcode, fun_address1, fun_address2, fun_description, mem_id, pro_number) 
+				values (#{fun_number}, #{fun_name}, #{fun_phone}, #{fun_postcode}, #{fun_address1}, #{fun_address2}, #{fun_description}, #{mem_id}, #{pro_number});
+        		
+        		INSERT into MONEY ( MON_NUMBER, MON_TYPE, MON_MONEY, MON_TITLE, MEM_ID, FUN_NUMBER ) 
+       			values( #{mon_number}, 1, #{pro_price}, #{pro_title}, #{mem_id}, #{fun_number});
+        	end
+		}
 	</insert>
 	
 	<update id="updateMember">
@@ -337,9 +347,9 @@
 	</update>
 	
 	<select id="getProjectResult" resultType="Schedule">
-		select pro_number, pro_title, case when pro_price * nvl(fundingCnt,0) / pro_target * 100 >= 100 then '목표금액을 달성하여 성공하였습니다!!!'
-                                      else '목표금액을 달성하지 못하여 실패하였습니다.'
-                                      end message
+		select pro_number, pro_title, case when pro_price * nvl(fundingCnt,0) / pro_target * 100 >= 100 then 'Success'
+                                      else 'Fail'
+                                      end result
 		from ( select pro_number, pro_title, pro_target, pro_price 
        		   from project
        		   where <![CDATA[pro_finish = to_char(sysdate-1,'YY/MM/DD')]]> )left join ( select pro_number, count(fun_number) fundingCnt
@@ -348,11 +358,24 @@
 	</select>
 	
 	<!-- Schedule -->
-	<select id="getFundingJoinList" resultType="FundingMember">
-		select distinct mem_id id, fun_name name, fun_phone phone, fun_address2 address, 0 fundingCnt
+	<select id="getFundingJoinList" resultType="FundingJoin">
+		select fun_number, mem_id id, fun_name name, fun_phone phone
 		from funding
 		where pro_number = #{pro_number}
 	</select>
+	<update id="updateMoneyHistory">
+		update money 
+		<choose>
+			<when test="result == 'Success'">
+				set mon_type = 2
+				where fun_number = #{fun_number}
+			</when>
+			<when test="result == 'Fail'">
+				set mon_type = 3
+				where fun_number = #{fun_number}
+			</when>
+		</choose>
+	</update>
 	
 	
 	
@@ -644,5 +667,40 @@
 		}
    </update>
 	
+	<select id="checkProjectWriter" resultType="String">
+   		select MEM_ID from PROJECT where PRO_NUMBER=#{num}
+   </select>
+   
+   <select id="getMoneyDetails" resultType="Money">
+   		select * from MONEY where mem_id=#{userId} order by mon_register desc
+   </select>
+   
+   <insert id="chargeMoney">
+   		<selectKey keyProperty="mon_number" resultType="int" order="BEFORE">
+			select coalesce(MAX(mon_number), 0) + 1 as mon_number
+            from MONEY
+		</selectKey>
+		insert into MONEY (MON_NUMBER, MON_TYPE, MON_MONEY, MON_TITLE, MEM_ID, FUN_NUMBER)
+		values(#{mon_number}, 0, #{money}, '-', #{userId}, 0)
+   </insert>
+
+
+   <select id="checkAvailableMoney" resultType="int">
+		<![CDATA[
+		SELECT CASE
+    		WHEN available < pro_price then 0
+    		WHEN available >= pro_price then 1
+   			END AS con_number
+		FROM
+			(select available, pro_price from (
+				select a-b-c available from (
+					select NVL(sum(mon_money),0) a from money where mon_type=0 and mem_id=#{username}
+					), (
+					select NVL(sum(mon_money),0) b from money where mon_type=1 and mem_id=#{username}
+					), (select NVL(sum(mon_money),0) c from money where mon_type=2 and mem_id=#{username})
+				),
+        	(select pro_price from project where pro_number = #{num}))
+        ]]>
+   </select>
 	
 </mapper>

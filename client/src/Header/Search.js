@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
+import { checkSearchValueRestirctedCharacter } from '../Util/Util';
 
 function Search() {
   const { searchDispatch, globalStateDispatch } = useContext(Store);
@@ -8,13 +9,14 @@ function Search() {
   // globalState 값 변경 시 검색값 초기화 유무 결정 필요
   const searchRef = useRef();
   const SearchImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/Search.png`;
+
   // Search Submit
   const onSubmit = (e) => {
     e.preventDefault();
     if(searchRef.current === undefined || searchRef.current === null || searchRef.current.value === ''){
       setDisplayInput(!displayInput);
     }else{
-      const searchValue = searchRef.current.value;
+      const searchValue = checkSearchValueRestirctedCharacter(searchRef.current.value);
       const newSearch = {
         value: searchValue
       }

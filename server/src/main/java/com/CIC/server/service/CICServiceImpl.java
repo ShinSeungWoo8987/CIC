@@ -9,12 +9,14 @@ import com.CIC.server.model.Content;
 import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
 import com.CIC.server.model.FundingDetail;
+import com.CIC.server.model.FundingJoin;
 import com.CIC.server.model.FundingMember;
 import com.CIC.server.model.FundingSupport;
 import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.RecentlyNews;
 import com.CIC.server.model.Schedule;
 import com.CIC.server.model.Member;
+import com.CIC.server.model.Money;
 import com.CIC.server.model.Notice;
 import com.CIC.server.model.Project;
 import com.CIC.server.model.ProjectInformation;
@@ -149,8 +151,12 @@ public class CICServiceImpl implements CICService {
 		return cicMapper.getProjectResult();
 	}
 	@Override
-	public List<FundingMember> getFundingJoinList(String pro_number) {
+	public List<FundingJoin> getFundingJoinList(String pro_number) {
 		return cicMapper.getFundingJoinList(pro_number);
+	}
+	@Override
+	public void updateMoneyHistory(String fun_number, String result) {
+		cicMapper.updateMoneyHistory(fun_number, result);
 	}
 	
 	
@@ -356,5 +362,27 @@ public class CICServiceImpl implements CICService {
 	@Override
 	public void updateContent(Content content) {
 		this.cicMapper.updateContent(content);
+	}
+	
+	@Override
+	public String checkProjectWriter(int num) {
+		return this.cicMapper.checkProjectWriter(num);
+	}
+	@Override
+	public List<Money> getMoneyDetails(String userId) {
+		return this.cicMapper.getMoneyDetails(userId);
+	}
+	@Override
+	public void chargeMoney(int money, String userId) {
+		this.cicMapper.chargeMoney(money, userId);
+	}
+	
+	@Override
+	public List<Money> getAllFundingList() {
+		return this.cicMapper.getAllFundingList();
+	}
+	@Override
+	public int checkAvailableMoney(String username, int num) {
+		return this.cicMapper.checkAvailableMoney(username, num);
 	}
 }

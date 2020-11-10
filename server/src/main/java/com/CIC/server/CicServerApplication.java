@@ -4,15 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import jdk.jfr.Enabled;
-
 @SpringBootApplication
 @EnableScheduling
 public class CicServerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CicServerApplication.class, args);
-		System.out.println(org.springframework.core.SpringVersion.getVersion());
 	}
-
 }

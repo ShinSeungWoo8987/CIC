@@ -4,6 +4,7 @@ import Store from '../Store/Store';
 import { post } from 'axios';
 import Modal from 'react-modal';
 import { logout } from '../Jwt/AuthenticationService';
+import { checkInputValueRestirctedCharacter } from '../Util/Util';
 
 function Authority() {
     const { modalState, modalStateDispatch, globalState, globalStateDispatch, sessionDispatch, projectInformation } = useContext(Store);
@@ -17,16 +18,10 @@ function Authority() {
     const onAuthoritySubmit = (e) => {
         e.preventDefault();
         const pw = pwRef.current.value;
-        // Restricted Character
-        const restirctedCharacterList = [" ", "=", "'", "\""]
-        var idx = 0;
-        while(idx<restirctedCharacterList.length){
-            // 아이디 또는 비밀번호 입력값에 제한된 문자 리스트의 목록이 없는 경우 -1 반환
-            if(pw.indexOf(restirctedCharacterList[idx]) !== -1){
-                setAuthorityMessage("잘못된 비밀번호입니다.");
-                return false
-            }
-            idx++;
+        const check = checkInputValueRestirctedCharacter(pw);
+        if(check===-1){
+            setAuthorityMessage('잘못된 비밀번호입니다.');
+            return;
         }
         let number = '';
         if(globalState.action === 'deleteProject')
@@ -85,7 +80,6 @@ function Authority() {
                 isOpen={modalState.authority}
                 style={AuthorityModalStyle}
                 onRequestClose={(e) => closeAuthorityModal(e)}
-                // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form onSubmit={(e)=>onAuthoritySubmit(e)}>
                     <Input id='pw' ref={pwRef} type='password' placeholder="비밀번호" required /><br/>

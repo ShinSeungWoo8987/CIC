@@ -63,7 +63,7 @@ function Head(props) {
                 setMyInfoList(admin);
                 break;
         }
-    },[session.state, session.authority]); // 2020-10-31 - session.authority 추가
+    },[session.state, session.authority]);
 
     const handleClick = e=>{
         e.preventDefault();
@@ -91,7 +91,7 @@ function Head(props) {
         e.preventDefault();
         setShowMore(!showMore);
         if(e.currentTarget.id==='adminGradeUp') globalStateDispatch({type:'GLOBAL', payload:Object.assign(globalState,{main:e.currentTarget.id})})
-        if(e.currentTarget.id === 'fundingList' || e.currentTarget.id === 'projectList' || e.currentTarget.id === 'projectListAll'){
+        else if(e.currentTarget.id === 'fundingList' || e.currentTarget.id === 'projectList' || e.currentTarget.id === 'projectListAll'){
             const newGlobalState = {
                 main: e.currentTarget.id,
                 sub: 'continue',
@@ -211,105 +211,105 @@ const A = styled.a`
     margin: 0 0 0 10px;
 `
 const UlLeft = styled.ul`
-font-size: 14px;
-background-color: white;
-list-style-type : none;
-z-index: 999;
-position: fixed;
-margin-top: 0px;
-margin-left: -414.5px;
-padding: 10px 0 26px 415px;
-text-align: left;
-width: 100%;
-box-shadow: 0px 5px 5px lightgrey;
+    font-size: 14px;
+    background-color: white;
+    list-style-type : none;
+    z-index: 999;
+    position: fixed;
+    margin-top: 0px;
+    margin-left: -414.5px;
+    padding: 10px 0 26px 415px;
+    text-align: left;
+    width: 100%;
+    box-shadow: 0px 5px 5px lightgrey;
 
-animation-duration: 1s;
-animation-name: moreSlide;
-animation-fill-mode: forwards;
+    animation-duration: 1s;
+    animation-name: moreSlide;
+    animation-fill-mode: forwards;
 
-@keyframes moreSlide {
-    0% {
-        opacity: 0;
+    @keyframes moreSlide {
+        0% {
+            opacity: 0;
+        }
+        20% {
+            height: 190px;
+        }
+        100% {
+            height: 190px;
+            opacity: 1;
+        }
     }
-    20% {
-        height: 190px;
-    }
-    100% {
-        height: 190px;
-        opacity: 1;
-    }
-}
 `
 const UlCenter = styled.ul`
-font-size: 14px;
-margin: 0px 0 0 126px;
-padding: 10px 0 26px 0;
-list-style-type : none;
-z-index: 999;
-position: fixed;
-text-align: left;
+    font-size: 14px;
+    margin: 0px 0 0 126px;
+    padding: 10px 0 26px 0;
+    list-style-type : none;
+    z-index: 999;
+    position: fixed;
+    text-align: left;
 
-animation-duration: 1.5s;
-animation-name: moreSlide;
-animation-fill-mode: forwards;
+    animation-duration: 1.5s;
+    animation-name: moreSlide;
+    animation-fill-mode: forwards;
 
-@keyframes moreSlide {
-    0% {
-        opacity: 0;
+    @keyframes moreSlide {
+        0% {
+            opacity: 0;
+        }
+        20% {
+            height: 190px;
+        }
+        100% {
+            height: 190px;
+            opacity: 1;
+        }
     }
-    20% {
-        height: 190px;
-    }
-    100% {
-        height: 190px;
-        opacity: 1;
-    }
-}
 `
 const UlRight = styled.ul`
-font-size: 14px;
-margin: ${({margin}) => "0 0 0 "+margin};
-padding: 10px 0 26px 0;
-list-style-type : none;
-z-index: 999;
-position: fixed;
-text-align: left;
+    font-size: 14px;
+    margin: ${({margin}) => "0 0 0 "+margin};
+    padding: 10px 0 26px 0;
+    list-style-type : none;
+    z-index: 999;
+    position: fixed;
+    text-align: left;
 
-animation-duration: 2s;
-animation-name: moreSlide;
-animation-fill-mode: forwards;
+    animation-duration: 2s;
+    animation-name: moreSlide;
+    animation-fill-mode: forwards;
 
-@keyframes moreSlide {
-    0% {
-        opacity: 0;
+    @keyframes moreSlide {
+        0% {
+            opacity: 0;
+        }
+        20% {
+            height: 190px;
+        }
+        100% {
+            height: 190px;
+            opacity: 1;
+        }
     }
-    20% {
-        height: 190px;
-    }
-    100% {
-        height: 190px;
-        opacity: 1;
-    }
-}
 `
 const Li = styled.li`
-height: 32px;
+    height: 32px;
 `
 const MyInfoDiv = styled.div`
-  float: left;
-  margin-left: 3.2%;
-  height: 46px;
-  font-size: 16px;
-  line-height: 46px;
-  color: #3A3A3A;
+    float: left;
+    margin-left: 3.2%;
+    height: 46px;
+    font-size: 16px;
+    line-height: 46px;
+    color: #3A3A3A;
 `
 const MoreDiv = styled.div`
-  float: left;
-  margin-left: 3.3%;
-  height: 46px;
-  font-size: 16px;
-  line-height: 46px;
-  color: #3A3A3A;
+    float: left;
+    margin-left: 3.3%;
+    height: 46px;
+    font-size: 16px;
+    line-height: 46px;
+    color: #3A3A3A;
 `
 const FundingState = styled(_FundingState)`
 `

@@ -31,6 +31,9 @@ public class FundingController {
 	
 	@RequestMapping(value="/funding", method=RequestMethod.PUT, consumes="application/json")
     public String addFunding(@RequestBody Map map) throws Exception {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String username = userDetails.getUsername();
 		try {
 			List<String> values = new ArrayList<String>();
 	        map.forEach((k, v) -> {
@@ -38,7 +41,7 @@ public class FundingController {
 			});
 	        try {
 	        	Funding funding = Funding.builder()
-	            		.mem_id(values.get(0))
+	            		.mem_id(username)
 	            		.fun_name(values.get(1))
 	            		.fun_phone(values.get(2))
 	            		.fun_postcode(values.get(3))
@@ -48,7 +51,12 @@ public class FundingController {
 	            		.pro_number(Integer.parseInt(values.get(7)))
 	            		.build();
 	        	try {
-	        		this.cicService.addFunding(funding);
+	        		int check = this.cicService.checkAvailableMoney(username, Integer.parseInt(values.get(7)));
+	        		if( check==0 ) { // 사용가능금액이 모자란경우
+	        			return "보유 금액이 부족합니다.";
+	        		}else { // 펀딩가능
+	        			this.cicService.addFunding(funding);
+	        		}
 	        		return "Success";
 	        	}catch (Exception e) {
 					System.out.println("FundingController addFunding Error Message : Method-addFunding Error");

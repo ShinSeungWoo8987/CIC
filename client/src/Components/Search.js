@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
+import { checkSearchValueRestirctedCharacter } from '../Util/Util';
 
 function Search({use, bottom}) {
     const { searchDispatch, pageNumberDispatch } = useContext(Store);
@@ -10,11 +11,11 @@ function Search({use, bottom}) {
         if (use==='true') {
             newSearch = {
                 type: e.target.title.value,
-                value: e.target.search.value
+                value: checkSearchValueRestirctedCharacter(e.target.search.value)
             }
         }else{
             newSearch = {
-                value: e.target.search.value
+                value: checkSearchValueRestirctedCharacter(e.target.search.value)
             }
         }
         searchDispatch({type: 'SEARCH', payload: newSearch});

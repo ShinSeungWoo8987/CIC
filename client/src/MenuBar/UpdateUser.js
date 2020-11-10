@@ -3,10 +3,15 @@ import Styled from "styled-components" // styled-components 라이브러리를 �
 import Store from '../Store/Store';
 import { get, post } from 'axios';
 import Modal from 'react-modal';
+import { checkInputValueRestirctedCharacter } from '../Util/Util';
 
 function UpdateUser() {
     const { modalState, modalStateDispatch, addressValue, addressValueDispatch } = useContext(Store);
     const [ userInformation, setUserInformation] = useState('');
+    const [ passwordMessage, setPasswordMessage] = useState('');
+    const [ nameMessage, setNameMessage] = useState('');
+    const [ phoneMessage, setPhoneMessage] = useState('');
+    const [ address2Message, setAddress2Message] = useState('');
     // Get User Information & Setting
     useEffect(() => {
         const url = '/member'
@@ -23,7 +28,44 @@ function UpdateUser() {
                 address2: res.data[5]
             })
         })
-    }, [ modalState.updateUser, addressValueDispatch ]); // 2020-10-31 addressValueDispatch 추가
+    }, [ modalState.updateUser, addressValueDispatch ]);
+     // updateUser Modal Setting
+     const closeUpdateUserModal = () => {
+        modalStateDispatch({type: "DEFAULT"});
+        addressValueDispatch({type: 'DEFAULT'});
+    }
+    // Postcode Modal Setting
+    const openPostcodeModal = (e) => {
+        e.preventDefault();
+        const newModalState = {
+            login: modalState.login,
+            postcode: true,
+            updateUser: modalState.updateUser
+        }
+        modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+    };
+    // Input Value Valid Check
+    const checkInutValue = (e) => {
+        const inputId = e.target.id;
+        const inputValue = e.target.value;
+        const check = checkInputValueRestirctedCharacter(inputValue);
+        if(check === -1){
+            if(inputId === 'pw'){
+                setPasswordMessage('사용할 수 없는 비밀번호입니다.');
+                document.getElementById(inputId).focus();
+            }else if(inputId === 'name'){
+                setNameMessage('사용할 수 없는 이름입니다.');
+                document.getElementById(inputId).focus();
+            }else if(inputId === 'phone'){
+                setPhoneMessage('사용할 수 없는 번호입니다.');
+                document.getElementById(inputId).focus();
+            }else if(inputId === 'address2'){
+                setAddress2Message('사용할 수 없는 주소입니다.');
+                document.getElementById(inputId).focus();
+            }
+        }
+        // 여기부터!
+    }
     // updateUser Submit
     const onUpdateUserSubmit = (e) => {
         e.preventDefault();
@@ -41,38 +83,26 @@ function UpdateUser() {
         })
         closeUpdateUserModal();
     }
-    // updateUser Modal Setting
-    const closeUpdateUserModal = () => {
-        modalStateDispatch({type: "DEFAULT"});
-        addressValueDispatch({type: 'DEFAULT'});
-    }
-    // Postcode Modal Setting
-    const openPostcodeModal = (e) => {
-        e.preventDefault();
-        const newModalState = {
-            login: modalState.login,
-            postcode: true,
-            updateUser: modalState.updateUser
-        }
-        modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
-    };
     return(
         <Container>
             <Modal 
                 isOpen={modalState.updateUser}
                 style={UpdateUserModalStyle}
                 onRequestClose={(e) => closeUpdateUserModal(e)}
-                // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form onSubmit={(e)=>onUpdateUserSubmit(e)}>
-                    <InputText id='id' type='text' placeholder="아이디" value={userInformation.id} readOnly/><br/>
-                    <InputText id='pw' type='password' placeholder="비밀번호" /><br/>
-                    <InputText id='name' type='text' placeholder="이름" defaultValue={userInformation.name} required/><br/>
-                    <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" defaultValue={userInformation.phone} pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required/><br/>
-                    <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} readOnly/>
-                    <BtnPostcode type='button' value='우편번호 검색' onClick={(e)=>openPostcodeModal(e)}/><br/>
-                    <InputText id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} readOnly/><br/>
-                    <InputText id="address2" type="text" placeholder="상세 주소" defaultValue={userInformation.address2}/>
+                    <Input margin='0 0 20px 0' id='id' type='text' placeholder="아이디" value={userInformation.id} readOnly /><br/>
+                    <Input id='pw' type='password' placeholder="비밀번호" autoFocus pattern="[A-Za-z0-9!@%^*]{8,15}" onBlur={(e)=>checkInutValue(e)}/>
+                    <ErrorMessage>{passwordMessage}</ErrorMessage>
+                    <Input id='name' type='text' placeholder="이름" defaultValue={userInformation.name} required onBlur={(e)=>checkInutValue(e)}/>
+                    <ErrorMessage>{nameMessage}</ErrorMessage>
+                    <Input id='phone' type='tel' placeholder="01000000000" defaultValue={userInformation.phone} pattern="[0-9]{3}[0-9]{4}[0-9]{4}" required onBlur={(e)=>checkInutValue(e)}/>
+                    <ErrorMessage>{phoneMessage}</ErrorMessage>
+                    <InputPostcode margin='0 0 20px 0' id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} readOnly/>
+                    <BtnPostcode margin='0 0 20px 0' type='button' value='우편번호 검색' onClick={(e)=>openPostcodeModal(e)}/><br/>
+                    <Input margin='0 0 20px 0' id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} readOnly/><br/>
+                    <Input id="address2" type="text" placeholder="상세 주소" defaultValue={userInformation.address2} onBlur={(e)=>checkInutValue(e)}/>
+                    <ErrorMessage margin='0 0 10px 0'>{address2Message}</ErrorMessage>
                     <InputSubmit type="submit" value="정보수정"/>
                 </Form>
             </Modal>
@@ -93,14 +123,12 @@ const Input = Styled.input`
     left: 14%;
     width: 355px;
     height: 50px;
-    margin: 0 0 20px 0;
+    margin: ${({margin})=>`${margin}`};
     font-size: 15px;
     text-indent: 15px;
     border: 1px solid #E0E0E0;
     border-radius: 10px;
     color: #717171;
-`
-const InputText = Styled(Input)`
 `
 const InputPostcode = Styled(Input)`
     width: 175px;
@@ -136,6 +164,16 @@ const InputSubmit = Styled(Input)`
     &:hover {
         box-shadow: 1px 1px 9px #8C8C8C; 
     }
+`
+const ErrorMessage = Styled.div`
+    position: relative;
+    left: 12.5%;
+    width: 300px;
+    height: 20px;
+    line-height: 20px;
+    margin: ${({margin})=>`${margin}`};
+    font-size: 5px;
+    color: red;
 `
 const UpdateUserModalStyle = {
     overlay: {

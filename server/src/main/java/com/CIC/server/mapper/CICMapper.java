@@ -8,12 +8,14 @@ import com.CIC.server.model.Content;
 import com.CIC.server.model.Event;
 import com.CIC.server.model.Funding;
 import com.CIC.server.model.FundingDetail;
+import com.CIC.server.model.FundingJoin;
 import com.CIC.server.model.FundingMember;
 import com.CIC.server.model.FundingSupport;
 import com.CIC.server.model.ProjectList;
 import com.CIC.server.model.RecentlyNews;
 import com.CIC.server.model.Schedule;
 import com.CIC.server.model.Member;
+import com.CIC.server.model.Money;
 import com.CIC.server.model.Notice;
 import com.CIC.server.model.Project;
 import com.CIC.server.model.ProjectInformation;
@@ -54,7 +56,8 @@ public interface CICMapper {
 	void addRecentlyNews(RecentlyNews recentlyNews);
 	void updateRecentlyNews(RecentlyNews recentlyNews);
 	List<Schedule> getProjectResult();
-	List<FundingMember> getFundingJoinList(String pro_number);
+	List<FundingJoin> getFundingJoinList(String pro_number);
+	void updateMoneyHistory(String fun_number, String result);
 
 	
 	
@@ -121,4 +124,12 @@ public interface CICMapper {
 	
 	public void updateProject(Project project);
 	public void updateContent(Content content);
+	
+	public String checkProjectWriter(int num);
+	
+	public List<Money> getMoneyDetails(String userId);
+	public void chargeMoney(int money, String userId);
+	public List<Money> getAllFundingList();
+	
+	public int checkAvailableMoney(String username, int num);
 }

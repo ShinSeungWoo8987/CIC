@@ -19,4 +19,8 @@ public class Funding {
 	private String fun_register;
 	private String mem_id;
 	private int pro_number;
+	
+	private int mon_number;
+	private String pro_title;
+	private String pro_price;
 }

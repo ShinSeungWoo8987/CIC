@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Store from '../Store/Store';
 import { post } from 'axios';
 import TextEditor from '../Components/TextEditor';
+import { checkInputValueRestirctedCharacter } from '../Util/Util'
 
 function AddNews({}) {
     const { projectInformation, recentlyNewsInformation, globalState, globalStateDispatch } = useContext(Store);
@@ -33,14 +34,22 @@ function AddNews({}) {
             action: null
         }
         globalStateDispatch({type: 'GLOBAL', payload: newGlobalState});
-        console.log('globalState : ',globalState);
+    }
+    // Input Value Valid Check
+    const checkInutValue = (e) => {
+        const inputId = e.target.id;
+        const inputValue = e.target.value;
+        const check = checkInputValueRestirctedCharacter(inputValue);
+        if(check === -1){
+            document.getElementById(inputId).focus();
+        }
     }
     return (
         <Container onSubmit={(e)=>onRecentlyNewsSumbit(e)}>
             <SubContainer>
                 <Title>최근소식 글쓰기</Title><Btn type='submit' value='등록'/>
             </SubContainer>
-            <Input id='title' type='text' defaultValue={content.title} placeholder='제목을 입력해 주세요.'/>
+            <Input id='title' type='text' defaultValue={content.title} placeholder='제목을 입력해 주세요.' onBlur={(e)=>checkInutValue(e)}/>
             <TextEditor content={content} setContent={setContent}/>
         </Container>
     )

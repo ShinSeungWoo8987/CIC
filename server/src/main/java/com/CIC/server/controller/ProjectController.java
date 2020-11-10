@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.CIC.server.model.ProjectList;
+import com.CIC.server.model.ProjectSupportRes;
 import com.CIC.server.model.RecentlyNews;
 import com.CIC.server.model.Content;
 import com.CIC.server.model.JwtRequest;
@@ -453,10 +454,10 @@ public class ProjectController {
 	
 	@RequestMapping(value="/project/update", method=RequestMethod.POST, consumes="application/json")
     public String updateProject( @RequestBody Map map ) throws Exception {
-		//관리자인지 프로젝트 등록한 창작자인지 확인해서 처리해야됨.
+		// 권한 확인
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserDetails userDetails = (UserDetails)principal;
-		String username = userDetails.getUsername();
+		String userId = userDetails.getUsername();
 		
         map.forEach((k, v) -> {
         	if(!k.equals("sendContent")) {
@@ -499,7 +500,7 @@ public class ProjectController {
         	}
         });
 		Project project = Project.builder()
-				  .mem_id(username)
+				  .mem_id(userId)
 				  .pro_number( Integer.parseInt(project_num) )
 				  .pro_title(project_name)
 				  .typ_number( Integer.parseInt(category) )
@@ -512,7 +513,15 @@ public class ProjectController {
 				  .pro_logo(logo)
 				  .build();
 		try {
-			this.cicService.updateProject(project);
+			if( userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]") ) {
+				this.cicService.updateProject(project);
+			}else {
+				if(userId.equals( this.cicService.checkProjectWriter(project.getPro_number()) )) {
+					this.cicService.updateProject(project);
+				}else {
+					return "권한이 없습니다..";
+				}
+			}
 			
 			ArrayList<Map> contentArray = (ArrayList)map.get("sendContent");
 	        for(Map i : contentArray) {
@@ -531,8 +540,20 @@ public class ProjectController {
 			e.printStackTrace();
 			return "update project failed"; 
 		}
-		
-		
     }
 	
+	@GetMapping("/project_support/{projectNum}/{pageNum}")
+	public ProjectSupportRes getProjectSupport(@PathVariable String projectNum, @PathVariable String pageNum) {
+		int pagePerCnt = 7;
+		int startNum = ( Integer.parseInt(pageNum) -1)*pagePerCnt+1;
+		int endNum = Integer.parseInt(pageNum)*pagePerCnt;
+		int _cnt = this.cicService.getProjectSupportCnt(Integer.parseInt(projectNum));
+		
+		ProjectSupportRes projectSupportRes = ProjectSupportRes.builder()
+				.fundingSupportCnt( util.getMaxPage(_cnt, pagePerCnt))
+				.fundingSupportList( this.cicService.getProjectSupport(Integer.parseInt(projectNum),startNum,endNum) )
+				.build();
+		
+		return projectSupportRes;
+	}
 }

@@ -9,9 +9,7 @@ function Postcode() {
         login: modalState.login,
         postcode: false,
         updateUser: modalState.updateUser,
-        authority: modalState.deleteUser,
-        funding: modalState.funding,
-        fundingMemberList: modalState.fundingMemberList
+        funding: modalState.funding
     }
     // Postcode Modal Setting
     const closePostcodeModal = (e) => {
@@ -29,10 +27,9 @@ function Postcode() {
     };
     return(
         <Modal 
-            isOpen={modalState.postcode}
-            style={PostcodeModalStyle}
+            isOpen={ modalState.postcode }
+            style={ PostcodeModalStyle }
             onRequestClose={(e)=>closePostcodeModal(e)}
-            // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
         >
             <DaumPostcode
                 onComplete={handleComplete}

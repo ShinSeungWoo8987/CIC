@@ -4,12 +4,16 @@ import Modal from 'react-modal';
 import Store from '../Store/Store';
 import { get, put } from 'axios';
 import PercentBar from '../Components/PercentBar'
+import { checkInputValueRestirctedCharacter } from '../Util/Util'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Funding() {
     const { session, addressValue, addressValueDispatch, modalState, modalStateDispatch, projectInformation } = useContext(Store);
     const [ userInformation, setUserInformation] = useState('');
+    const [ nameMesage, setNameMessage] = useState('');
+    const [ address2Mesage, setAddress2Message] = useState('');
+    const [ supportMesage, setSupportMessage] = useState('');
     const dDayText = projectInformation.dDay==='마감'?'':'일';
     // Get User Information & Setting
     useEffect(() => {
@@ -51,6 +55,24 @@ function Funding() {
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     };
+    // Input Value Valid Check
+    const checkInutValue = (e) => {
+        const inputId = e.target.id;
+        const inputValue = e.target.value;
+        const check = checkInputValueRestirctedCharacter(inputValue);
+        if(check === -1){
+            if(inputId === 'name'){
+                setNameMessage('사용할 수 없는 문자입니다.');
+                document.getElementById(inputId).focus();
+            }else if(inputId === 'address2'){
+                setAddress2Message('사용할 수 없는 문자입니다.');
+                document.getElementById(inputId).focus();
+            }else if(inputId === 'supportMessage'){
+                setSupportMessage('사용할 수 없는 문자입니다.');
+                document.getElementById(inputId).focus();
+            }
+        }
+    }
     // Funding Submit
     const onFundingSubmit = (e) => {
         e.preventDefault();
@@ -102,14 +124,14 @@ function Funding() {
                     </CurrentStateContainer>
                     <DeliveryAddressContainer>
                         <SubTitle>배송지 정보</SubTitle><br/>
-                        <InputText id='name' type='text' placeholder="이름" defaultValue={userInformation.name} required/>
-                        <InputText id='phone' type='tel' placeholder="010 - 0000 - 0000" defaultValue={userInformation.phone} pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"/><br/>
+                        <Input id='name' type='text' placeholder="이름" defaultValue={userInformation.name} required onBlur={(e)=>checkInutValue(e)}/>
+                        <Input id='phone' type='tel' placeholder="01012345678" defaultValue={userInformation.phone} pattern="[0-9]{3}[0-9]{4}[0-9]{4}"/><br/>
                         <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} required readOnly/>
                         <BtnPostcode type='submit' value='우편번호 검색' onClick={(e)=>openPostcodeModal(e)}/><br/>
-                        <InputText id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} required readOnly/><br/>
-                        <InputText id="address2" type="text" placeholder="상세 주소" defaultValue={userInformation.address2}/><br/>
+                        <Input id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} required readOnly/><br/>
+                        <Input id="address2" type="text" placeholder="상세 주소" defaultValue={userInformation.address2} onBlur={(e)=>checkInutValue(e)}/><br/>
                     </DeliveryAddressContainer>
-                    <Writing id='supportMessage' placeholder='응원글을 입력해주세요!'/><br/>
+                    <Writing id='supportMessage' placeholder='응원글을 입력해주세요!' onBlur={(e)=>checkInutValue(e)}/><br/>
                     <InputSubmit type="submit" value="펀딩하기"/>
                 </Form>
             </Modal>
@@ -201,8 +223,6 @@ const BtnPostcode = Styled(Input)`
     &:hover {
         box-shadow: 1px 1px 9px #8C8C8C; 
     }
-`
-const InputText = Styled(Input)`
 `
 const Writing = Styled.textarea`
     float: right;

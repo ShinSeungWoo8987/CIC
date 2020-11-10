@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
 import { post } from 'axios';
 import Modal from 'react-modal';
-import { dateFormat, idFormat } from '../Util/Util';
+import { dateFormat, idFormat, checkInputValueRestirctedCharacter } from '../Util/Util';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
@@ -15,7 +15,6 @@ function Find() {
     const [findIdMessage, setFindIdMessage] = useState(""); // Find Id Result Message
     const [findPwMessage, setFindPwMessage] = useState(''); // Find Pw Result Message
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState(''); // Password Equal Check Message
-    const restirctedCharacterList = [" ", "=", "'", "\""]; // Restricted Charater
     const openFindModal = (e) => {
         e.preventDefault();
         const newModalState = {
@@ -31,6 +30,31 @@ function Find() {
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
     }
+    // Input Value Valid Check
+    const checkInutValue = (e) => {
+        const inputId = e.target.id;
+        const inputValue = e.target.value;
+        const check = checkInputValueRestirctedCharacter(inputValue);
+        if(check === -1){
+            if(inputId === 'name'){
+                setNameMessage("사용할 수 없는 문자입니다.");
+                document.getElementById(inputId).focus();
+            }else if(inputId === 'pw1'){
+                setPasswordMessage('사용할 수 없는 비밀번호입니다.');
+                document.getElementById(inputId).focus();
+            }else if(inputId==='id'){
+                setIdMessage("사용할 수 없는 문자입니다.");
+                document.getElementById(inputId).focus();
+            }
+        }else{
+            if(inputId==='name')
+                setNameMessage("");
+            else if(inputId==='pw1')
+                setPasswordMessage("");
+            else if(inputId==='id')
+                setIdMessage("");
+        }
+    }
     // Password Equal Check
     const checkPasswordConfirm = (e) => {
         e.preventDefault();
@@ -38,41 +62,11 @@ function Find() {
         var pw2 = e.target.value;
         if(pw1 !== pw2){
             setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
-            document.getElementById("pw2").value = "";
+            document.getElementById('pw1').value = '';
+            document.getElementById('pw2').value = '';
+            document.getElementById('pw1').focus();
         }else{
             setPasswordConfirmMessage('');
-        }
-    }
-    // Value RestirctedCharacter Check
-    const checkRestirctedCharacter = (e) => {
-        var idx = 0;
-        const value = e.target.value;
-        setNameMessage('');
-        while(idx<restirctedCharacterList.length){
-            // 비밀번호 입력값에 제한된 문자 리스트의 목록이 없는 경우 -1 반환
-            if(value.indexOf(restirctedCharacterList[idx]) !== -1){
-                if(e.target.id==='name'){
-                    setNameMessage("사용할 수 없는 문자입니다.");
-                    document.getElementById("name").value = "";
-                }
-                else if(e.target.id==='pw1'){
-                    setPasswordMessage("사용할 수 없는 비밀번호입니다.");
-                    document.getElementById("pw1").value = "";
-                }
-                else if(e.target.id==='id'){
-                    setIdMessage("사용할 수 없는 문자입니다.");
-                    document.getElementById("id").value = "";
-                }
-                break;
-            }else{
-                if(e.target.id==='name')
-                    setNameMessage("");
-                else if(e.target.id==='pw1')
-                    setPasswordMessage("");
-                else if(e.target.id==='id')
-                    setIdMessage("");
-            }
-            idx++;
         }
     }
     const findIdSubmit = (e) => {
@@ -116,20 +110,20 @@ function Find() {
                 >
                     <SubContainer key={1} bg='' borderRight='1px solid #E0E0E0' onSubmit={(e)=>findIdSubmit(e)}>
                         <Title>아이디 찾기</Title>
-                        <Input indent='15px' id='name' type='text' placeholder='이름을 입력해주세요.' required onChange={(e)=>checkRestirctedCharacter(e)} />
+                        <Input indent='15px' id='name' type='text' placeholder='이름을 입력해주세요.' required onBlur={(e)=>checkInutValue(e)} />
                         <ErrorMessage>{nameMessage}</ErrorMessage>
-                        <Input margin='0 0 20px 0' indent='15px' id='phone' type='tel' placeholder="010 - 0000 - 0000" pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" required/>
+                        <Input margin='0 0 20px 0' indent='15px' id='phone' type='tel' placeholder="01012345678" pattern="[0-9]{3}[0-9]{4}[0-9]{4}" required/>
                         <Input margin='0 0 30px 0' indent='7.5px' id='birth' type='date' min='1996-01-01' max='2099-12-31' required/><br/>
                         <InputSubmit type='submit' value='아이디 찾기'/>
                         <ResultMessage>{findIdMessage}</ResultMessage>
                     </SubContainer>
                     <SubContainer key={2} bg='' onSubmit={(e)=>findPwSubmit(e)}>
                         <Title>비밀번호 찾기</Title>
-                        <Input indent='15px' id='id' type='text' placeholder='아이디를 입력해주세요.' required onChange={(e)=>checkRestirctedCharacter(e)}/>
+                        <Input indent='15px' id='id' type='text' placeholder='아이디를 입력해주세요.' required onBlur={(e)=>checkInutValue(e)}/>
                         <ErrorMessage>{idMessage}</ErrorMessage>
-                        <Input indent='15px' id='pw1' type='password' placeholder='새 비밀번호를 입력해주세요.' required onChange={(e)=>checkRestirctedCharacter(e)}/><br/>
+                        <Input indent='15px' id='pw1' type='password' placeholder='새 비밀번호를 입력해주세요.' required onBlur={(e)=>checkInutValue(e)}/><br/>
                         <ErrorMessage>{passwordMessage}</ErrorMessage>
-                        <Input indent='15px' id='pw2' type='password' placeholder="새 비밀번호를 다시 입력해주세요." required onChange={(e)=>checkPasswordConfirm(e)}/><br/>
+                        <Input indent='15px' id='pw2' type='password' placeholder="새 비밀번호를 다시 입력해주세요." required onBlur={(e)=>checkInutValue(e)}/><br/>
                         <ErrorMessage margin='0 0 10px 0'>{passwordConfirmMessage}</ErrorMessage>
                         <InputSubmit type='submit' value='비밀번호 찾기'/>
                         <ResultMessage>{findPwMessage}</ResultMessage>
