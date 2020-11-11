@@ -5,7 +5,7 @@ import { put, post } from 'axios'
 import Store from '../Store/Store';
 
 function SetContent(props) {
-    const { globalState, info, infoDispatch, pageDispatch, content, contentDispatch, projectInformation } = useContext(Store);
+    const { globalState, globalStateDispatch, info, infoDispatch, pageDispatch, content, contentDispatch, projectInformation } = useContext(Store);
     const addContent = (e) => {
         e.preventDefault();
         var newContent = content.concat([{
@@ -18,7 +18,7 @@ function SetContent(props) {
     // Upload to server
     const onSubmit = (e) => {
         e.preventDefault();
-
+        
         if(globalState.main==='addProject'){ // 프로젝트 등록
             const url = '/upload'
             const formData = new FormData();
@@ -58,7 +58,7 @@ function SetContent(props) {
                 // post data
                 put('/project/add', {...info, sendContent})
                     .then((res) => {
-                        console.log(res);
+                        globalStateDispatch({type:"DEFAULT"});
                     }).catch((err2) => alert(err2));
             }).catch(err1=>alert(err1));
         }else{ // 프로젝트 수정
@@ -111,7 +111,7 @@ function SetContent(props) {
 
                 post('/project/update', {...newInfo, sendContent, project_num:`${projectInformation.number}`})
                     .then((res) => {
-                        console.log(res);
+                        globalStateDispatch({type:"DEFAULT"});
                     }).catch((err2) => console.log(err2));
             }).catch(err1=>alert(err1));
         }

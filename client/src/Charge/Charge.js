@@ -89,11 +89,12 @@ export default Charge;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Title = styled.div`
     width: 560px;
+    padding: 10px 45px;
     font-size: 17.5px;
     font-weight: bold;
-    padding: 10px 45px;
+    text-shadow: 1px 1px 3px grey;
     color: white;
-    background-color: #6600CC;
+    background-color: #1f3a93;
 `
 const Container = styled.div`
     width: 560px;

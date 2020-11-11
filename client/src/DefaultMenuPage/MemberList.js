@@ -4,9 +4,11 @@ import Store from '../Store/Store';
 import Member from './Member';
 import axios, {get} from 'axios';
 import Career from './Career';
+import { replaceInputValueRestirctedCharacter } from '../Util/Util';
+import Paging from '../Components/Paging';
 
 function MemberList(props) {
-    const {globalState, globalStateDispatch} = useContext(Store);
+    const {globalState, globalStateDispatch, pageNumber} = useContext(Store);
     const searchRef = useRef();
     const [memberList, setMemberList] = useState();
     const [keyword, setKeyword] = useState();
@@ -15,12 +17,14 @@ function MemberList(props) {
     const [career, setCareer] = useState();
     
     useEffect(()=>{
+        console.log('pageCnt : ',pageNumber.value);
         if(globalState.sub==='all'){ // 리스트
             get(`/memberCnt/${globalState.main==='userList'?'all':'creator_request'}${keyword?`/${keyword}`:''}`)
-                .then( ({ data }) => setItemCnt(parseInt(Number(data) / 18) + 1) )
+                .then( ({ data }) => setItemCnt(data) )
                 .catch(err => console.log(err));
 
-            get(`/member/${globalState.main==='userList'?'all':'creator_request'}/${globalState.action}${keyword?`/${keyword}`:''}`)
+            // get(`/member/${globalState.main==='userList'?'all':'creator_request'}/${globalState.action}${keyword?`/${keyword}`:''}`)
+            get(`/member/${globalState.main==='userList'?'all':'creator_request'}/${pageNumber.value}${keyword?`/${keyword}`:''}`)
                 .then(res=>setMemberList(res.data))
                 .catch(err=>console.log(err));
         }else if(globalState.sub==='selected'){
@@ -28,11 +32,11 @@ function MemberList(props) {
                 .then( ({data})=>setCareer(data) )
                 .catch(err=>console.log(err))
         }
-    },[globalState,keyword,changed]);
+    },[globalState,keyword,changed, pageNumber]);
 
     const handleSearch = e=>{
         e.preventDefault();
-        setKeyword(searchRef.current.value);
+        setKeyword(replaceInputValueRestirctedCharacter(searchRef.current.value));
     }
     const returnPage = ()=>{
         globalStateDispatch({type:'GLOBAL', payload:{
@@ -42,7 +46,7 @@ function MemberList(props) {
             num: 0
         } });
     }
-    
+    /*
     const setPaging = []
     for (var k = 1; k <= itemCnt; k++) {
         if (globalState.action === k) setPaging.push(
@@ -52,6 +56,8 @@ function MemberList(props) {
             <A key={k} href={k} onClick={e => changePage(e)}> [{k}] </A>
         );
     }
+    */
+    /*
     const changePage = e => {
         e.preventDefault();
         globalStateDispatch({
@@ -63,6 +69,7 @@ function MemberList(props) {
             }
         })
     }
+    */
     const decision = _decesion=>{
         axios.delete(`/creator_request/${globalState.num}/${_decesion}`)
             .then(()=>globalStateDispatch({type:'GLOBAL', payload:{
@@ -86,7 +93,8 @@ function MemberList(props) {
                 <SearchButton onClick={e => handleSearch(e)}>검색</SearchButton>
             </SearchDiv>
             <br />
-            {setPaging}
+            {/* {setPaging} */}
+            <Paging maxPage={itemCnt}/>
         </Bottom>
     </>);
     const _selected = <>
@@ -98,14 +106,14 @@ function MemberList(props) {
                 :'신청서 로딩중...'}
             </ListContainer>
             <Decision>
-                <button onClick={e=>decision('accept')}> 승인 </button>
+                <Btn width='50px' height='30px' size='15px' bg='#87d37c' onClick={e=>decision('accept')}> 승인 </Btn>
                 &nbsp;&nbsp;&nbsp;
-                <button onClick={e=>decision('deny')}> 거절 </button>
+                <Btn width='50px' height='30px' size='15px' bg='#b2bec3' onClick={e=>decision('deny')}> 거절 </Btn>
                 
             </Decision>
         </List>
         <Bottom>
-            <Button onClick={()=>returnPage()}>목록으로 돌아가기</Button>
+            <Btn width='300px' height='50px' size='20px' bg='#74b9ff' onClick={()=>returnPage()}>목록으로 돌아가기</Btn>
         </Bottom>
     </>;
 
@@ -180,8 +188,8 @@ const SearchDiv = styled.div`
 margin: 0 auto;
 height: 30px;
 width: 400px;
-border-radius: 6px;
-border: 1px solid #A6A6A6;
+border-radius: 5px;
+border: 1px solid #a29bfe;
 background: white;
 `
 const SearchInput = styled.input`
@@ -189,7 +197,7 @@ font-size: 16px;
 width: 325px;
 height: 10px;
 padding: 10px;
-border: 0px;
+border: none;
 outline: none;
 float: left;
 `
@@ -203,12 +211,22 @@ float: right;
 color: white;
 font-size: 16px;
 font-weight: bold;
-background-color: #A6A6A6;
+background-color: #a29bfe;
 `
-const A = styled.a`
-`
-const SelectedA = styled.a`
-    font-weight: bold;
-`
-const Button = styled.button`
+const Btn = styled.button`
+width: ${({width})=>`${width}`};
+height: ${({height})=>`${height}`};
+font-size: ${({size})=>`${size}`};
+font-weight: bold;
+border: none;
+border-radius: 5px;
+text-shadow: 1px 1px 3px grey;
+box-shadow: 1px 1px 5px #BDBDBD;
+color: white;
+background-color: ${({bg})=>`${bg}`};
+cursor: pointer;
+
+&:hover {
+    box-shadow: 2px 2px 5px #BDBDBD;
+}
 `

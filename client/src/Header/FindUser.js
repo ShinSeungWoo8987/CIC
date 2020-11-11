@@ -29,6 +29,12 @@ function Find() {
             find: false
         }
         modalStateDispatch({type:"CHANGE_MODALSTATE", payload: newModalState});
+        setNameMessage("");
+        setPasswordMessage("");
+        setIdMessage("");
+        setFindIdMessage("");
+        setFindPwMessage("");
+        setPasswordConfirmMessage("");            
     }
     // Input Value Valid Check
     const checkInutValue = (e) => {
@@ -47,12 +53,9 @@ function Find() {
                 document.getElementById(inputId).focus();
             }
         }else{
-            if(inputId==='name')
-                setNameMessage("");
-            else if(inputId==='pw1')
-                setPasswordMessage("");
-            else if(inputId==='id')
-                setIdMessage("");
+            setNameMessage("");
+            setPasswordMessage("");
+            setIdMessage("");
         }
     }
     // Password Equal Check
@@ -112,7 +115,7 @@ function Find() {
                         <Title>아이디 찾기</Title>
                         <Input indent='15px' id='name' type='text' placeholder='이름을 입력해주세요.' required onBlur={(e)=>checkInutValue(e)} />
                         <ErrorMessage>{nameMessage}</ErrorMessage>
-                        <Input margin='0 0 20px 0' indent='15px' id='phone' type='tel' placeholder="01012345678" pattern="[0-9]{3}[0-9]{4}[0-9]{4}" required/>
+                        <Input margin='0 0 20px 0' indent='15px' id='phone' type='tel' placeholder="'-' 빼고 입력해주세요." pattern="[0-9]{3}[0-9]{4}[0-9]{4}" required/>
                         <Input margin='0 0 30px 0' indent='7.5px' id='birth' type='date' min='1996-01-01' max='2099-12-31' required/><br/>
                         <InputSubmit type='submit' value='아이디 찾기'/>
                         <ResultMessage>{findIdMessage}</ResultMessage>
@@ -123,7 +126,7 @@ function Find() {
                         <ErrorMessage>{idMessage}</ErrorMessage>
                         <Input indent='15px' id='pw1' type='password' placeholder='새 비밀번호를 입력해주세요.' required onBlur={(e)=>checkInutValue(e)}/><br/>
                         <ErrorMessage>{passwordMessage}</ErrorMessage>
-                        <Input indent='15px' id='pw2' type='password' placeholder="새 비밀번호를 다시 입력해주세요." required onBlur={(e)=>checkInutValue(e)}/><br/>
+                        <Input indent='15px' id='pw2' type='password' placeholder="새 비밀번호를 다시 입력해주세요." required onBlur={(e)=>checkPasswordConfirm(e)}/><br/>
                         <ErrorMessage margin='0 0 10px 0'>{passwordConfirmMessage}</ErrorMessage>
                         <InputSubmit type='submit' value='비밀번호 찾기'/>
                         <ResultMessage>{findPwMessage}</ResultMessage>
@@ -169,7 +172,7 @@ const Input = Styled.input`
     font-size: 15px;
     text-indent: ${({indent})=>`${indent}`};
     border: 1px solid #E0E0E0;
-    border-radius: 10px;
+    border-radius: 5px;
     color: #717171;
 `
 const ErrorMessage = Styled.div`
@@ -185,16 +188,16 @@ const ErrorMessage = Styled.div`
 const InputSubmit = Styled(Input)`
     width: 300px;  
     font-size: 20px;
-    font-weight: bold;
     text-indent: 0px;
-    text-shadow: 1px 1px 7px #BDBDBD; 
-    box-shadow: 1px 1px 7px #BDBDBD;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
     border: none;
+    border-radius: 5px;
     color: white;
-    background-color: #83E538;
+    background-color: #87d37c;
 
     &:hover {
-        box-shadow: 1px 1px 9px #8C8C8C; 
+        box-shadow: 2px 2px 5px #BDBDBD;
     }
 `
 const ResultMessage = Styled.div`

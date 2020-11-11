@@ -54,7 +54,7 @@ function NewsList() {
     return (
         <Container>
             <Upside> {newsList} </Upside>
-            <Write>{projectInformation.creator===localStorage.getItem('userId')?<BtnAdd onClick={(e)=>moveAddRecentlyNews(e)}>글 작성</BtnAdd>:''}</Write>
+            <Write>{projectInformation.creator===localStorage.getItem('userId')?<BtnAdd onClick={(e)=>moveAddRecentlyNews(e)}>글작성</BtnAdd>:''}</Write>
             <Downside>
                 <Search bottom='5px'/>
                 <Paging maxPage={maxPage} />
@@ -86,8 +86,15 @@ const Write = styled.div`
     text-align: right;
 `
 const BtnAdd = styled.button`
+    width: 60px;
+    height: 25px;
+    line-height: 25px;
     font-size: 15px;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
+    border: none;
     border-radius: 5px;
-    border: 1px solid #C8C8C8;
     cursor: pointer;
+    color: white;
+    background-color: #87d37c;
 `

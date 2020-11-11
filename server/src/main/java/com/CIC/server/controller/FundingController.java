@@ -53,7 +53,7 @@ public class FundingController {
 	        	try {
 	        		int check = this.cicService.checkAvailableMoney(username, Integer.parseInt(values.get(7)));
 	        		if( check==0 ) { // 사용가능금액이 모자란경우
-	        			return "보유 금액이 부족합니다.";
+	        			return "Fail";
 	        		}else { // 펀딩가능
 	        			this.cicService.addFunding(funding);
 	        		}

@@ -33,6 +33,10 @@ function UpdateUser() {
      const closeUpdateUserModal = () => {
         modalStateDispatch({type: "DEFAULT"});
         addressValueDispatch({type: 'DEFAULT'});
+        setPasswordMessage('');
+        setNameMessage('');
+        setPhoneMessage('');
+        setAddress2Message('');
     }
     // Postcode Modal Setting
     const openPostcodeModal = (e) => {
@@ -63,8 +67,12 @@ function UpdateUser() {
                 setAddress2Message('사용할 수 없는 주소입니다.');
                 document.getElementById(inputId).focus();
             }
+        }else{
+            setPasswordMessage('');
+            setNameMessage('');
+            setPhoneMessage('');
+            setAddress2Message('');
         }
-        // 여기부터!
     }
     // updateUser Submit
     const onUpdateUserSubmit = (e) => {
@@ -127,7 +135,7 @@ const Input = Styled.input`
     font-size: 15px;
     text-indent: 15px;
     border: 1px solid #E0E0E0;
-    border-radius: 10px;
+    border-radius: 5px;
     color: #717171;
 `
 const InputPostcode = Styled(Input)`
@@ -137,37 +145,37 @@ const InputPostcode = Styled(Input)`
 const BtnPostcode = Styled(Input)`
     width: 150px;
     height: 54px;
+    font-size: 15px;
     font-weight: bold;
     text-indent: 0px;
-    text-shadow: 1px 1px 7px #BDBDBD; 
-    box-shadow: 1px 1px 7px #BDBDBD;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
     border: none;
-    border-radius: 10px;
     color: white;
     background-color: #A6A6A6;
 
     &:hover {
-        box-shadow: 1px 1px 9px #8C8C8C; 
+        box-shadow: 2px 2px 5px #BDBDBD;
     }
 `
 const InputSubmit = Styled(Input)`
     width: 361px;  
     font-size: 20px;
     font-weight: bold;
-    text-shadow: 1px 1px 7px #BDBDBD; 
-    box-shadow: 1px 1px 7px #BDBDBD;
-    margin: 30px 0 0 0;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
+    margin: 10px 0 0 0;
     border: none;
     color: white;
-    background-color: #83E538;
+    background-color: #fdcb6e;
 
     &:hover {
-        box-shadow: 1px 1px 9px #8C8C8C; 
+        box-shadow: 2px 2px 5px #BDBDBD;
     }
 `
 const ErrorMessage = Styled.div`
     position: relative;
-    left: 12.5%;
+    left: 15%;
     width: 300px;
     height: 20px;
     line-height: 20px;

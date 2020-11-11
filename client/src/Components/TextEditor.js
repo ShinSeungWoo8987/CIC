@@ -2,17 +2,11 @@ import React from 'react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import CKeditor from '@ckeditor/ckeditor5-react';
 import styled from 'styled-components';
-import { checkInputValueRestirctedCharacter } from '../Util/Util';
+import { replaceInputValueRestirctedCharacter } from '../Util/Util';
 
 function TextEditor({content, setContent}) {
     const handleCKeditorState = (event, editor) => {
-        const data = editor.getData();
-        const check = checkInputValueRestirctedCharacter(data);
-        if(check === -1){
-            document.getElementsByClassName('ck-editor__editable').focus();
-            alert("다시 입력해");
-            return false;
-        }
+        const data = replaceInputValueRestirctedCharacter(editor.getData());
         setContent({
             title: content.title,
             description: data

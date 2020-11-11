@@ -9,15 +9,19 @@ import AddBoard from '../Board/AddBoard';
 import ProjectList from '../InformationPage/ProjectList';
 import RequestCreator from '../DefaultMenuPage/RequestCreator';
 import MemberList from '../DefaultMenuPage/MemberList';
+import Test from '../Components/Test';
 
 function MainView() {
     const { globalState, info } = useContext(Store);
 
+    if(globalState.main==='test'){
+        return <Test/>;
+    }
     if(globalState.main==='all' || globalState.main==='tech' || globalState.main==='travel' || globalState.main==='fashion'){
-        return <Container><Main/></Container>;
+        return <Main/>
     }
     if(globalState.main==='fundingList' || globalState.main==='projectList' || globalState.main==='projectListAll'){
-        return <Container><ProjectList/></Container>;
+        return <ProjectList/>;
     }
     if(globalState.main==='projectDetails'){
         return <ProjectDetails/>;
@@ -41,6 +45,3 @@ function MainView() {
     return<></>;
 }
 export default MainView;
-
-const Container = Styled.div`
-`

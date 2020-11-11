@@ -54,7 +54,6 @@ function FundingMemberList() {
                 isOpen= { modalState.fundingMemberList }
                 style={ FundingMemberListModalStyle }
                 onRequestClose={(e) => closeModal(e)}
-                // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Text>펀딩 참여자 명단</Text>
                 <FundingMember id='아이디' name='이름' phone='번호' address='주소' cnt='참여횟수' top='none' bottom='none' color='#FAFAFA' foneWeight='bold' zIndex='1'/>

@@ -59,31 +59,3 @@ margin: 0px auto 0 auto;
 width: 550px;
 height: 100px;
 `
-const SearchDiv = styled.div`
-margin: 0 auto;
-height: 30px;
-width: 400px;
-border-radius: 6px;
-border: 1px solid #A6A6A6;
-background: white;
-`
-const SearchInput = styled.input`
-font-size: 16px;
-width: 325px;
-height: 10px;
-padding: 10px;
-border: 0px;
-outline: none;
-float: left;
-`
-const SearchButton = styled.button`
-width: 50px;
-height: 100%;
-border: 0px;
-outline: none;
-float: right;
-color: white;
-font-size: 16px;
-font-weight: bold;
-background-color: #A6A6A6;
-`

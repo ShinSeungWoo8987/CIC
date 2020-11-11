@@ -58,9 +58,6 @@ function FundingState() {
                 action: globalState.action,
                 num: globalState.num
             }
-
-
-            console.log(projectInformation);
             infoDispatch({
                 type: 'CHANGE_INFO', payload: {
                     category: "",
@@ -128,7 +125,7 @@ const SubContainer = Styled(Left)`
 const Value = Styled(Left)`
     font-size: 30px;
     font-weight: bold;
-    color: #80C72D;
+    color: #87d37c;
 `
 const PercentBarContainer = Styled(Left)`
     border: none;
@@ -143,7 +140,7 @@ const BottomText = Styled(Text)`
 const PercentText = Styled(BottomText)`
     float: right;
     font-weight: bold;
-    color: #80C72D;
+    color: #87d37c;
 `
 const FundingBtn = Styled.button`
     left: 14%;
@@ -151,57 +148,27 @@ const FundingBtn = Styled.button`
     height: 50px;
     font-size: 20px;
     font-weight: bold;
-    text-shadow: 1px 1px 7px #BDBDBD; 
-    box-shadow: 1px 1px 7px #BDBDBD;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
     border: none;
-    border-radius: 10px;
+    border-radius: 5px;
     color: white;
     margin-top: 20px;
-    background-color: #83E538;
+    background-color: #87d37c;
     cursor: pointer;
 
     &:hover {
-        box-shadow: 1px 1px 9px #8C8C8C; 
+        box-shadow: 2px 2px 5px #BDBDBD;
     }
 `
-const EditBtn = Styled.button`
-    left: 14%;
+const EditBtn = Styled(FundingBtn)`
     width: 140px;
-    height: 50px;
-    font-size: 20px;
-    font-weight: bold;
-    text-shadow: 1px 1px 7px #BDBDBD; 
-    box-shadow: 1px 1px 7px #BDBDBD;
-    border: none;
-    border-radius: 10px;
-    color: white;
     margin-top: 20px;
-    background-color: #83E538;
-    cursor: pointer;
-
-    &:hover {
-        box-shadow: 1px 1px 9px #8C8C8C; 
-    }
+    background-color: #fdcb6e;
 `
-const DeleteBtn = Styled.button`
+const DeleteBtn = Styled(EditBtn)`
     margin-left: 20px;
-    left: 14%;
-    width: 140px;
-    height: 50px;
-    font-size: 20px;
-    font-weight: bold;
-    text-shadow: 1px 1px 7px #BDBDBD; 
-    box-shadow: 1px 1px 7px #BDBDBD;
-    border: none;
-    border-radius: 10px;
-    color: white;
-    margin-top: 20px;
-    background-color: #83E538;
-    cursor: pointer;
-
-    &:hover {
-        box-shadow: 1px 1px 9px #8C8C8C; 
-    }
+    background-color: #b2bec3;
 `
 const CloseFudningBtn = Styled(FundingBtn)`
     cursor: default;

@@ -6,17 +6,15 @@ const getRandom = (max, min) => {
 const replaceAt = (string, idx, character) => {
     return string.substring(0, idx) + character + string.substring(idx+character.length);
 }
-
 const checkInputValueRestirctedCharacter = (inputValue) => {
-    const restirctedCharacterList = [" ", "=", "'", "\"", ">", "<", "-"]; // Restricted Charater
+    const restirctedCharacterList = [" ", "=", "'", "\"", ">", "<"]; // Restricted Charater
     for(var idx=0; idx<restirctedCharacterList.length; idx++){
         if(inputValue.indexOf(restirctedCharacterList[idx]) !== -1)
             return -1
     }
     return 0
 }
-
-const checkSearchValueRestirctedCharacter = (inputValue) => {
+const replaceInputValueRestirctedCharacter = (inputValue) => {
     const restirctedCharacterList = ["=", "'", "\""]; // Restricted Charater
     for(var idx=0; idx<restirctedCharacterList.length; idx++)
         inputValue = inputValue.replaceAll(restirctedCharacterList[idx],'');
@@ -81,4 +79,4 @@ const getPageCnt = ( maxPage, maxBlock, blockPerCnt, blockNumber ) => {
         return maxPage%blockPerCnt
     }   
 }
-export { getRandom, checkInputValueRestirctedCharacter, checkSearchValueRestirctedCharacter, moneyFormat, percentFormat, dDayFormat, dateFormat, idFormat, getMaxBlock, getPageCnt };
+export { getRandom, checkInputValueRestirctedCharacter, replaceInputValueRestirctedCharacter, moneyFormat, percentFormat, dDayFormat, dateFormat, idFormat, getMaxBlock, getPageCnt };

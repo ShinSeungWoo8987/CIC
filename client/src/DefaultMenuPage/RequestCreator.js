@@ -29,11 +29,11 @@ function RequestCreator(props) {
                 <Nav>
                     <Title>창작자 신청</Title>
                     <Controller>
-                        <button onClick={()=>addCareer()}>추가</button>
+                        <Btn width='50px' height='30px' size='15px' bg='#fdcb6e' onClick={()=>addCareer()}>추가</Btn>
                     </Controller>
                 </Nav>
                 <List> {_career} </List>
-                <Bottom><button onClick={e=>onSubmit(e)}>신청하기</button></Bottom>
+                <Bottom><Btn width='300px' height='50px' size='20px' bg='#87d37c' onClick={e=>onSubmit(e)}>신청하기</Btn></Bottom>
             </Center>
         </Container>
     );
@@ -85,4 +85,24 @@ float: left;
 height: 100px;
 width: 100%;
 text-align: center;
+`
+const Btn = styled.button`
+width: ${({width})=>`${width}`};
+height: ${({height})=>`${height}`};
+
+font-size: ${({size})=>`${size}`};
+
+text-shadow: 1px 1px 3px grey;
+box-shadow: 1px 1px 5px #BDBDBD;
+
+border: none;
+border-radius: 5px;
+
+color: white;
+background-color: ${({bg})=>`${bg}`};
+cursor: pointer;
+
+&:hover {
+    box-shadow: 2px 2px 5px #BDBDBD;
+}
 `

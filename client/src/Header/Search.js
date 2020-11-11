@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import Styled from 'styled-components'; // Styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
-import { checkSearchValueRestirctedCharacter } from '../Util/Util';
+import { replaceInputValueRestirctedCharacter } from '../Util/Util';
 
 function Search() {
   const { searchDispatch, globalStateDispatch } = useContext(Store);
@@ -16,7 +16,7 @@ function Search() {
     if(searchRef.current === undefined || searchRef.current === null || searchRef.current.value === ''){
       setDisplayInput(!displayInput);
     }else{
-      const searchValue = checkSearchValueRestirctedCharacter(searchRef.current.value);
+      const searchValue = replaceInputValueRestirctedCharacter(searchRef.current.value);
       const newSearch = {
         value: searchValue
       }

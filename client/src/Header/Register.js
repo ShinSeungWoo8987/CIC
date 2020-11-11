@@ -14,15 +14,20 @@ function Register() {
     const [passwordMessage, setPasswordMessage] = useState(''); // Password Valid Check Message
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState(''); // Password Equal Check Message
     const [idMessage, setIdMessage] = useState(''); // Id Valid Check Message
+    const [nameMessage, setNameMessage] = useState(''); // Id Valid Check Message
+    const [address2Message, setAddress2Message] = useState(''); // Id Valid Check Message
     // Register Modal Setting
     const openRegisterModal = (e) => {
         e.preventDefault();
         setRegisterModalState(true);
+        addressValueDispatch({type:'DEFAULT'})
     };
     const closeRegisterModal = () => {
         setIdMessage("");
         setPasswordMessage("");
         setPasswordConfirmMessage("");
+        setNameMessage("");
+        setAddress2Message("");
         addressValueDispatch({type: 'DEFAULT'});
         setRegisterModalState(false);
     }
@@ -62,11 +67,18 @@ function Register() {
         if(check === -1){
             if(inputId === 'pw1'){
                 setPasswordMessage('사용할 수 없는 비밀번호입니다.');
-                document.getElementById('pw1').focus();
-            }else{
-                document.getElementById(inputId).value = '';
+                document.getElementById(inputId).focus();
+            }else if(inputId === 'name'){
+                setNameMessage('사용할 수 없는 이름입니다.');
+                document.getElementById(inputId).focus();
+            }else if(inputId === 'address2'){
+                setAddress2Message('사용할 수 없는 주소입니다.');
                 document.getElementById(inputId).focus();
             }
+        }else{
+            setPasswordMessage('');
+            setNameMessage('');
+            setAddress2Message('');
         }
     }
     // Password Equal Check
@@ -108,19 +120,21 @@ function Register() {
                 onRequestClose={(e) => closeRegisterModal(e)}
             >
                 <Form onSubmit={(e)=>handleRegisterSubmit(e)}>
-                    <InputId id='id' type='text' placeholder="아이디" pattern="[A-Za-z0-9!@%^*]{8,15}" required autoFocus onBlur={(e)=>checkId(e)}/><br/>
+                    <Input id='id' type='text' placeholder="아이디" pattern={`[A-Za-z0-9!&@#$%^*()]{8,15}`} required autoFocus onBlur={(e)=>checkId(e)}/><br/>
                     <SpanText>{idMessage}</SpanText><br/>
-                    <InputPw id='pw1' type='password' placeholder="비밀번호" pattern="[A-Za-z0-9!@%^*]{8,15}" required onBlur={(e)=>checkInutValue(e)}/><br/>
+                    <Input id='pw1' type='password' placeholder="비밀번호" pattern={`[A-Za-z0-9!&@#$%^*()]{8,15}`} required onBlur={(e)=>checkInutValue(e)}/><br/>
                     <SpanText>{passwordMessage}</SpanText><br/>
-                    <InputPw id='pw2' type='password' placeholder="비밀번호 확인" pattern="[A-Za-z0-9!@%^*]{8,15}" required onChange={(e)=>checkPasswordConfirm(e)}/><br/>
+                    <Input id='pw2' type='password' placeholder="비밀번호 확인" pattern={`[A-Za-z0-9!&@#$%^*()]{8,15}`} required onBlur={(e)=>checkPasswordConfirm(e)}/><br/>
                     <SpanText>{passwordConfirmMessage}</SpanText><br/>
-                    <InputText id='name' type='text' placeholder="이름" required onBlur={(e)=>checkInutValue(e)}/><br/>
-                    <InputDate id='birth' type='date' min='1970-01-01' max='2099-12-31' required/><br/>
-                    <InputText id='phone' type='tel' placeholder="01000000000" pattern="[0-9]{3}[0-9]{4}[0-9]{4}" onBlur={(e)=>checkInutValue(e)}/><br/>
+                    <Input id='name' type='text' placeholder="이름" required onBlur={(e)=>checkInutValue(e)}/><br/>
+                    <SpanText>{nameMessage}</SpanText><br/>
+                    <InputDate margin='0 0 20px 0' id='birth' type='date' min='1970-01-01' max='2099-12-31' required/><br/>
+                    <Input margin='0 0 20px 0' id='phone' type='tel' placeholder="'-' 빼고 입력해주세요." pattern="[0-9]{3}[0-9]{4}[0-9]{4}"/><br/>
                     <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} required readOnly/>
                     <BtnPostcode type='button' value='우편번호 검색' onClick={(e)=>openPostcodeModal(e)}/><br/>
-                    <InputText id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} required readOnly/><br/>
-                    <InputText id="address2" type="text" placeholder="상세 주소" onBlur={(e)=>checkInutValue(e)}/>
+                    <Input margin='0 0 20px 0' id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} required readOnly/><br/>
+                    <Input id="address2" type="text" placeholder="상세 주소" onBlur={(e)=>checkInutValue(e)}/><br/>
+                    <SpanText>{address2Message}</SpanText><br/>
                     <InputSubmit type="submit" value="회원가입"/>
                 </Form>
             </Modal>
@@ -150,17 +164,12 @@ const Input = Styled.input`
     left: 14%;
     width: 355px;
     height: 50px;
-    margin: 0 0 20px 0;
+    margin: ${({margin})=>`${margin}`};
     font-size: 15px;
     text-indent: 15px;
     border: 1px solid #E0E0E0;
-    border-radius: 10px;
+    border-radius: 5px;
     color: #717171;
-`
-const InputId = Styled(Input)`
-    margin: 0 0;
-`
-const InputPw = Styled(InputId)`
 `
 const SpanText = Styled.span`
     position: relative;
@@ -168,8 +177,6 @@ const SpanText = Styled.span`
     bottom: 4px;
     font-size: 5px;
     color: red;
-`
-const InputText = Styled(Input)`
 `
 const InputDate = Styled(Input)`
     text-indent: 7.5px;
@@ -181,32 +188,32 @@ const InputPostcode = Styled(Input)`
 const BtnPostcode = Styled(Input)`
     width: 150px;
     height: 54px;
+    font-size: 15px;
     font-weight: bold;
     text-indent: 0px;
-    text-shadow: 1px 1px 7px #BDBDBD; 
-    box-shadow: 1px 1px 7px #BDBDBD;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
     border: none;
-    border-radius: 10px;
     color: white;
     background-color: #A6A6A6;
 
     &:hover {
-        box-shadow: 1px 1px 9px #8C8C8C; 
+        box-shadow: 2px 2px 5px #BDBDBD;
     }
 `
 const InputSubmit = Styled(Input)`
     width: 361px;  
     font-size: 20px;
     font-weight: bold;
-    text-shadow: 1px 1px 7px #BDBDBD; 
-    box-shadow: 1px 1px 7px #BDBDBD;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
     margin: 30px 0 0 0;
     border: none;
     color: white;
-    background-color: #83E538;
+    background-color: #87d37c;
 
     &:hover {
-        box-shadow: 1px 1px 9px #8C8C8C; 
+        box-shadow: 2px 2px 5px #BDBDBD;
     }
 `
 const RegisterModalStyle = {

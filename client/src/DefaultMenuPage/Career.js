@@ -19,7 +19,7 @@ function Career({id,period_start,period_finish, agency, activity,career,setCaree
     }
     return (
         <Container>
-            {globalState.main==='adminGradeUp'?'':<>경력사항 &nbsp;<button onClick={()=>ChangeCareer()}>-</button> <br/></>}
+            {globalState.main==='adminGradeUp'?'':<>경력사항 &nbsp;<Btn onClick={()=>ChangeCareer()}>─</Btn> <br/></>}
             <Table>
                 <Period>
                     <Left>근무기간</Left>
@@ -97,4 +97,25 @@ width: 68%;
 height: 40px;
 line-height: 40px;
 text-align: left;
+`
+const Btn = styled.button`
+width: 30px;
+height: 20px;
+line-height: 10px;
+
+font-size: 17.5px;
+
+text-shadow: 1px 1px 3px grey;
+box-shadow: 1px 1px 5px #BDBDBD;
+
+border: none;
+border-radius: 5px;
+
+color: white;
+background-color: #ff7675;
+cursor: pointer;
+
+&:hover {
+    box-shadow: 2px 2px 5px #BDBDBD;
+}
 `

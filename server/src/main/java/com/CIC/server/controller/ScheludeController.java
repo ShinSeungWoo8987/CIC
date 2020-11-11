@@ -19,8 +19,8 @@ import net.nurigo.java_sdk.api.Message;
 @RestController(value = "scheduleController")
 public class ScheludeController {
 	
-	String k1 = "어림도 없지 ㅎㅎ";
-	String k2 = "어림도 없지 ㅎㅎ";
+	String k1 = "응~ 안알려줘";
+	String k2 = "응~ 안알려줘";
 	Message coolsms = new Message(k1, k2);
 	
 	String fromPhone = "";
@@ -47,10 +47,12 @@ public class ScheludeController {
 				cicService.updateMoneyHistory(fundingJoinList.get(j).getFun_number(), result.get(i).getResult());
 				String toPhone = fundingJoinList.get(j).getPhone();
 				String message = "";
+				String title = result.get(i).getPro_title();
+				title = "'"+title.substring(0, 11)+"..'";
 				if(result.get(i).getResult().equals("Success"))
-					message = fundingJoinList.get(j).getName()+"님께서 신청하신 '"+result.get(i).getPro_title()+"'은 목표금액을 달성하였습니다. 축하드립니다.";
+					message = fundingJoinList.get(j).getName()+"님, "+title+"은 목표금액을 달성하였습니다. 축하드립니다.";
 				else
-					message = fundingJoinList.get(j).getName()+"님께서 신청하신 '"+result.get(i).getPro_title()+"'은 목표금액을 달성하지 못하였습니다.";
+					message = fundingJoinList.get(j).getName()+"님, "+title+"은 목표금액을 달성하지 못하였습니다.";
 				System.out.println("------------------------------------------------");
 				System.out.println("message : "+message);
 				System.out.println("toPhone : "+toPhone);

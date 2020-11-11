@@ -9,7 +9,8 @@ import { checkInputValueRestirctedCharacter } from '../Util/Util';
 function Authority() {
     const { modalState, modalStateDispatch, globalState, globalStateDispatch, sessionDispatch, projectInformation } = useContext(Store);
     let submit = '';
-    if (globalState.action === 'updateUser') submit = '정보수정';
+    let bg = globalState.action === 'updateUser'?'#fdcb6e':'#b2bec3';
+    if (globalState.action === 'updateUser')submit = '정보수정';
     else if (globalState.action === 'deleteUser') submit = '회원탈퇴';
     else if (globalState.action === 'deleteProject') submit = '프로젝트 삭제';
     const [authorityMessage, setAuthorityMessage] = useState('');
@@ -84,7 +85,7 @@ function Authority() {
                 <Form onSubmit={(e)=>onAuthoritySubmit(e)}>
                     <Input id='pw' ref={pwRef} type='password' placeholder="비밀번호" required /><br/>
                     <ErrorMessage>{authorityMessage}</ErrorMessage><br/>
-                    <InputSubmit type="submit" value={submit}/>
+                    <InputSubmit bg={bg} type="submit" value={submit}/>
                 </Form>
             </Modal>
         </Container>
@@ -107,23 +108,25 @@ const Input = Styled.input`
     font-size: 15px;
     text-indent: 15px;
     border: 1px solid #E0E0E0;
-    border-radius: 10px;
+    border-radius: 5px;
     color: #717171;
 `
 const InputSubmit = Styled(Input)`
     width: 361px;  
     margin: 10px 0 0 0;
     font-size: 20px;
-    font-weight: bold;
-    text-shadow: 1px 1px 7px #BDBDBD; 
-    box-shadow: 1px 1px 7px #BDBDBD;
+    font-weight: normal;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
     text-indent: 0px;
     border: none;
+    border-radius: 5px;
     color: white;
-    background-color: #83E538;
+    background-color: ${({bg}) => `${bg}`};
+    cursor: pointer;
 
     &:hover {
-        box-shadow: 1px 1px 9px #8C8C8C; 
+        box-shadow: 2px 2px 5px #BDBDBD;
     }
 `
 const ErrorMessage = Styled.span`

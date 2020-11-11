@@ -95,8 +95,9 @@ const Left = Styled.div`
 const Container = Styled(Left)`
     width: ${({width}) => width};
     height: ${({height}) => height};
-    opacity: 0.8;
     margin: ${({margin}) => "0 0 0 "+margin};
+    opacity: 0.8;
+    background-color: white;
 `
 const Menu = Styled(Left)`
     position: relative;

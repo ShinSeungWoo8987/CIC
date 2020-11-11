@@ -5,6 +5,7 @@ import Store from '../Store/Store';
 import BoardItem from './BoardItem';
 import { get } from 'axios';
 import BoardDetails from './BoardDetails';
+import { replaceInputValueRestirctedCharacter } from '../Util/Util';
 
 function ReadBoard() {
     const { session, globalState, globalStateDispatch, boardItemList, boardItemListDispatch } = useContext(Store);
@@ -23,7 +24,7 @@ function ReadBoard() {
                 boardItemListDispatch({ type: 'CHANGE', payload: data.slice(0, 7) });
             })
             .catch(err => console.log(err));
-    }, [globalState.action ,keyword, boardItemListDispatch, globalState.main]); // 2020-10-31 boardItemListDispatch, ㅎlobalState.main 추가
+    }, [keyword, boardItemListDispatch, globalState]);
 
     let selected = '';
     let navItem = [
@@ -97,7 +98,7 @@ function ReadBoard() {
     }
     const handleSearch = e=>{
         e.preventDefault();
-        setKeyword(searchRef.current.value);
+        setKeyword(replaceInputValueRestirctedCharacter(searchRef.current.value));
         globalStateDispatch({type:'GLOBAL', payload:Object.assign(globalState,{action:1})})
     }
     const setPaging = []
@@ -125,9 +126,9 @@ function ReadBoard() {
                             {_boardItem}
                         </List>
                         <Search>
-                            {session.authority===2?
+                            {globalState.main==='center' || session.authority===2?
                                 <EditBoard>
-                                    <button onClick={e => writeBoard(e)}>글작성</button>
+                                    <Btn onClick={e => writeBoard(e)}>글작성</Btn>
                                 </EditBoard>:''
                             }
                             <SearchDiv>
@@ -205,6 +206,19 @@ const EditBoard = styled.div`
 text-align: right;
 width: 100%;
 `
+const Btn = styled.button`
+    width: 60px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 15px;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+    background-color: #87d37c;
+`
 const SearchDiv = styled.div`
 margin: 0 auto;
 height: 30px;
@@ -217,12 +231,12 @@ width: 325px;
 height: 30px;
 font-size: 16px;
 text-indent: 10px;
-border-top-left-radius: 6px;
-border-bottom-left-radius: 6px;
-border-top: 1px solid #A6A6A6;
+border-top-left-radius: 5px;
+border-bottom-left-radius: 5px;
+border-top: 1px solid #a29bfe;
 border-right: none;
-border-bottom: 1px solid #A6A6A6;
-border-left: 1px solid #A6A6A6;
+border-bottom: 1px solid #a29bfe;
+border-left: 1px solid #a29bfe;
 `
 const SearchButton = styled.button`
 float: left;
@@ -230,12 +244,12 @@ width: 50px;
 height: 34px;
 font-size: 16px;
 font-weight: bold;
-border-top-right-radius: 6px;
-border-bottom-right-radius: 6px;
+border-top-right-radius: 5px;
+border-bottom-right-radius: 5px;
 border: none;
 cursor: pointer;
 color: white;
-background-color: #A6A6A6;
+background-color: #a29bfe;
 `
 const A = styled.a`
 `

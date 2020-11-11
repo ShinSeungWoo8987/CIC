@@ -51,9 +51,9 @@ function NewsDetail() {
                     <LeftSide>
                         {localStorage.getItem('userId')===recentlyNewsInformation.writer?
                         <>
-                            <Btn float='left' margin='0 15px 0 0' onClick={e => updateNews(e)}>수정</Btn>
+                            <Btn float='left' margin='0 15px 0 0' width='50px' height='25px' size='15px' bg='#fdcb6e' onClick={e => updateNews(e)}>수정</Btn>
                             &nbsp;&nbsp;
-                            <Btn float='left' onClick={e => deleteNews(e)}>삭제</Btn>
+                            <Btn float='left' width='50px' height='25px' size='15px' bg='#b2bec3' onClick={e => deleteNews(e)}>삭제</Btn>
                         </>
                         :
                         ''
@@ -71,7 +71,7 @@ function NewsDetail() {
                 <Description>{parse(recentlyNewsInformation.description)}</Description>
             </Content>
             <Bottom>
-                <Btn onClick={e => moveBack(e)}>돌아가기</Btn>
+                <Btn width='300px' height='50px' size='20px' bg='#74b9ff' onClick={e => moveBack(e)}>목록으로 돌아가기</Btn>
             </Bottom>
         </Container>
     );
@@ -108,11 +108,22 @@ const LeftSide = styled.div`
 `
 const Btn = styled.button`
     float: ${({float})=>`${float}`};
+    width: ${({width})=>`${width}`};
+    height: ${({height})=>`${height}`};
     margin: ${({margin})=>`${margin}`};
-    font-size: 15px;
+    font-size: ${({size})=>`${size}`};
+    font-weight: bold;
+    border: none;
     border-radius: 5px;
-    border: 1px solid #C8C8C8;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
+    color: white;
+    background-color: ${({bg})=>`${bg}`};
     cursor: pointer;
+
+    &:hover {
+        box-shadow: 2px 2px 5px #BDBDBD;
+    }
 `
 const RightSide = styled.div`
     float: left;

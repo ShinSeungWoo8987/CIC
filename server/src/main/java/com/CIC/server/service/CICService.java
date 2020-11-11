@@ -122,7 +122,7 @@ public interface CICService {
 	void updateProject(Project project);
 	void updateContent(Content content);
 	
-String checkProjectWriter(int num);
+	String checkProjectWriter(int num);
 	
 	void chargeMoney(int money, String userId);
 	List<Money> getMoneyDetails(String userId);

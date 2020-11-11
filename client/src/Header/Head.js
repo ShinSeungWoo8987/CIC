@@ -90,8 +90,9 @@ function Head(props) {
     const changeState = (e) => {
         e.preventDefault();
         setShowMore(!showMore);
+        
         if(e.currentTarget.id==='adminGradeUp') globalStateDispatch({type:'GLOBAL', payload:Object.assign(globalState,{main:e.currentTarget.id})})
-        else if(e.currentTarget.id === 'fundingList' || e.currentTarget.id === 'projectList' || e.currentTarget.id === 'projectListAll'){
+        if(e.currentTarget.id === 'fundingList' || e.currentTarget.id === 'projectList' || e.currentTarget.id === 'projectListAll'){
             const newGlobalState = {
                 main: e.currentTarget.id,
                 sub: 'continue',

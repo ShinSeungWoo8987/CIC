@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import Styled from "styled-components" // styled-components 라이브러리를 사용하기 위해 선언
 import Store from '../Store/Store';
-import { checkSearchValueRestirctedCharacter } from '../Util/Util';
+import { replaceInputValueRestirctedCharacter } from '../Util/Util';
 
 function Search({use, bottom}) {
     const { searchDispatch, pageNumberDispatch } = useContext(Store);
@@ -11,11 +11,11 @@ function Search({use, bottom}) {
         if (use==='true') {
             newSearch = {
                 type: e.target.title.value,
-                value: checkSearchValueRestirctedCharacter(e.target.search.value)
+                value: replaceInputValueRestirctedCharacter(e.target.search.value)
             }
         }else{
             newSearch = {
-                value: checkSearchValueRestirctedCharacter(e.target.search.value)
+                value: replaceInputValueRestirctedCharacter(e.target.search.value)
             }
         }
         searchDispatch({type: 'SEARCH', payload: newSearch});
@@ -49,7 +49,7 @@ const Select = Styled.select`
     width: 80px;
     height: 30px;
     margin: 0 5px 0 0;
-    border: 1px solid #C8C8C8;
+    border: 1px solid #a29bfe;
     border-radius: 5px;
     text-indent: 10px;
 `
@@ -59,10 +59,10 @@ const InputSearch = Styled.input`
     height: 30px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    border-top: 1px solid #C8C8C8;
+    border-top: 1px solid #a29bfe;
     border-right: none;
-    border-bottom: 1px solid #C8C8C8;
-    border-left: 1px solid #C8C8C8;
+    border-bottom: 1px solid #a29bfe;
+    border-left: 1px solid #a29bfe;
     
 `
 const BtnSearch = Styled.input`
@@ -72,11 +72,10 @@ const BtnSearch = Styled.input`
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border: none;
-    background-color: #C8C8C8;
+    background-color: #a29bfe;
     font-size: 15px;
-    font-weight: bold;
     color: white;
-    text-shadow: 1px 1px 3px gray;
+    text-shadow: 1px 1px 3px black;
     cursor: pointer;
 `
 

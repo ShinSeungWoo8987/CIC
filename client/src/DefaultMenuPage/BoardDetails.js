@@ -114,7 +114,7 @@ function BoardDetails(props) {
                     {selectedItem.title}
                 </TitleUp>
                 <TitleDown>
-                    <LeftSide><BackButton onClick={e => handleClick(e)}>돌아가기</BackButton></LeftSide>
+                    <LeftSide><Btn width='80px' height='25px' size='15px' bg='#74b9ff' onClick={e => handleClick(e)}>돌아가기</Btn></LeftSide>
                     <RightSide>
                         <Quarter>등록일</Quarter>
                         <Quarter>{selectedItem.date.substr(0, 10)}</Quarter>
@@ -135,9 +135,9 @@ function BoardDetails(props) {
                             </QuestionContent>
                             {session.authority===2?
                             <Writer>
-                                <button onClick={e => updateBoard(e)}>수정</button>
+                                <Btn width='50px' height='25px' size='15px' bg='#fdcb6e' onClick={e => updateBoard(e)}>수정</Btn>
                                 &nbsp;&nbsp;
-                                <button onClick={e => deleteBoard(e)}>삭제</button>
+                                <Btn width='50px' height='25px' size='15px' bg='#b2bec3' onClick={e => deleteBoard(e)}>삭제</Btn>
                             </Writer>:''}
                         </Question>
                         <Answer>
@@ -166,17 +166,17 @@ function BoardDetails(props) {
                         <Admin>
                             {doAnswer?
                             <>
-                            <button onClick={()=>setDoAnswer(false)}>작성취소</button>&nbsp;&nbsp;
-                            <button onClick={()=>handleSubmit()}>작성완료</button>
+                            <Btn width='80px' height='25px' size='15px' bg='#b2bec3' onClick={()=>setDoAnswer(false)}>작성취소</Btn>&nbsp;&nbsp;
+                            <Btn width='80px' height='25px' size='15px' bg='#87d37c' onClick={()=>handleSubmit()}>작성완료</Btn>
                             </>
                             :
                             session.authority===2?
                                 selectedItem.solution===selectedItem.description?
-                                <button onClick={()=>setDoAnswer(true)}>답변작성</button>
+                                <Btn width='80px' height='25px' size='15px' bg='#87d37c' onClick={()=>setDoAnswer(true)}>답변작성</Btn>
                                 :
                                 <>
-                                    <button onClick={()=>setDoAnswer(true)}>수정</button>&nbsp;&nbsp;
-                                    <button onClick={()=>handleDelete()}>삭제</button>
+                                    <Btn width='50px' height='25px' size='15px' bg='#fdcb6e' onClick={()=>setDoAnswer(true)}>수정</Btn>&nbsp;&nbsp;
+                                    <Btn width='50px' height='25px' size='15px' bg='#b2bec3' onClick={()=>handleDelete()}>삭제</Btn>
                                 </>
                             :''
                             }
@@ -193,14 +193,14 @@ function BoardDetails(props) {
                 <Down>
                     {!(globalState.main==='center') && session.authority===2 ?
                     <Admin>
-                        <button onClick={e => updateBoard(e)}>수정</button>
+                        <Btn width='50px' height='25px' size='15px' bg='#fdcb6e' onClick={e => updateBoard(e)}>수정</Btn>
                         &nbsp;&nbsp;
-                        <button onClick={e => deleteBoard(e)}>삭제</button>
+                        <Btn width='50px' height='25px' size='15px' bg='#b2bec3' onClick={e => deleteBoard(e)}>삭제</Btn>
                     </Admin> : ''
                     }
                 </Down>
             </Content>
-            <Bottom> <Button onClick={e => handleClick(e)}>돌아가기</Button> </Bottom>
+            <Bottom> <Btn width='300px' height='50px' size='20px' bg='#74b9ff' onClick={e => handleClick(e)}>돌아가기</Btn> </Bottom>
         </Container>
     );
 }
@@ -235,9 +235,6 @@ const LeftSide = styled.div`
     width: 60%;
     height: 21px;
     margin-top: -14px;
-`
-const BackButton = styled.button`
- font-size: 14px;
 `
 const RightSide = styled.div`
     float: left;
@@ -290,5 +287,20 @@ const Bottom = styled.div`
 margin-top: 20px;
 text-align: center;
 `
-const Button = styled.button`
+const Btn = styled.button`
+width: ${({width})=>`${width}`};
+height: ${({height})=>`${height}`};
+font-size: ${({size})=>`${size}`};
+font-weight: bold;
+border: none;
+border-radius: 5px;
+text-shadow: 1px 1px 3px grey;
+box-shadow: 1px 1px 5px #BDBDBD;
+color: white;
+background-color: ${({bg})=>`${bg}`};
+cursor: pointer;
+
+&:hover {
+    box-shadow: 2px 2px 5px #BDBDBD;
+}
 `

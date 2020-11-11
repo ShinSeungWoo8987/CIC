@@ -73,6 +73,12 @@ public class ProjectController {
 	
 	@RequestMapping(value="/project/delete", method=RequestMethod.POST, consumes="application/json")
     public void deleteProject(@RequestBody Map map) throws Exception {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = (UserDetails)principal;
+		String userId = userDetails.getUsername();
+		String authority = userDetails.getUsername();
+		
+		
 		try {
 			List<String> values = new ArrayList<String>();
 	        map.forEach((k, v) -> {
@@ -80,16 +86,18 @@ public class ProjectController {
 			});
 	        String projectNumber = values.get(0);
 	        try {
-		        int joinCnt = this.cicService.getProjectJoinCnt(projectNumber);
-				if(joinCnt!=0) 
-					return;
-		        try {
-		        	this.cicService.deleteProject(projectNumber);
-		        }catch (Exception e) {
-		        	System.out.println("ProjectController deleteProject Error Message : Method-deleteProject Error");
-				}
+	        	if( userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]") || userId.equals( this.cicService.checkProjectWriter(Integer.parseInt(projectNumber)) )) {
+	        		int joinCnt = this.cicService.getProjectJoinCnt(projectNumber);
+					if(joinCnt!=0) 
+						return;
+			        try {
+			        	this.cicService.deleteProject(projectNumber);
+			        }catch (Exception e) {
+			        	System.out.println("ProjectController deleteProject Error Message : Method-deleteProject Error");
+					}
+	    		}
 	        }catch (Exception e) {
-	        	System.out.println("ProjectController deleteProject Error Message : Method-getProjectJoinCnt Error");
+	        	System.out.println("ProjectController deleteProject Error Message : Method-getProjectJoinCnt or checkProjectWriter Error");
 			}
 		}catch (Exception e) {
 			System.out.println("ProjectController deleteProject Error Message : React-Axios Error");
@@ -369,7 +377,7 @@ public class ProjectController {
         return projectInformation;
     }
 	
-	@RequestMapping(value="/create_project", method=RequestMethod.PUT, consumes="application/json")
+	@RequestMapping(value="/project/add", method=RequestMethod.PUT, consumes="application/json")
     public String createProject( @RequestBody Map map ) throws Exception {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserDetails userDetails = (UserDetails)principal;
@@ -454,7 +462,6 @@ public class ProjectController {
 	
 	@RequestMapping(value="/project/update", method=RequestMethod.POST, consumes="application/json")
     public String updateProject( @RequestBody Map map ) throws Exception {
-		// 권한 확인
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserDetails userDetails = (UserDetails)principal;
 		String userId = userDetails.getUsername();

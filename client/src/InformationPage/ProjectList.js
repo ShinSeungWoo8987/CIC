@@ -7,7 +7,7 @@ import Paging from '../Components/Paging';
 import FundingDetailList from './FundingDetailList';
 
 function ProejctList() {
-    const { globalState, pageNumber, modalStateDispatch, pageNumberDispatch } = useContext(Store);
+    const { globalState, pageNumber, modalState, modalStateDispatch, pageNumberDispatch } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
     // Get Max Page
@@ -22,7 +22,7 @@ function ProejctList() {
             else
                 setMaxPage(res.data);
         })
-    }, [ globalState ]);
+    }, [ globalState, modalState.fundingDetailList ]);
     // Get Project List
     useEffect(() => {
         const newProjectList = [];
@@ -41,7 +41,7 @@ function ProejctList() {
             }
             setProjectList(newProjectList);
         })
-    }, [ globalState, pageNumber.value ]);
+    }, [ globalState, pageNumber.value, modalState.fundingDetailList ]);
     // Navigation Setting
     let _category = '';
     let _period = '';
@@ -95,9 +95,8 @@ const Container = Styled(Left)`
 const Navigation = Styled.div`
     font-size: 15px;
     color: #777777;
-    margin-left: 50px;
-    margin-bottom: 6px;
-    text-align: left;
+    margin: 0 60px 12.5px 0;
+    text-align: right;
 `
 const ItemContainer = Styled(Left)`
     width: 100%;
@@ -148,7 +147,7 @@ const BtnCancle = Styled.button`
     text-align: right;
     border: none;
     border-radius: 5px;
-    background-color: lightgray;
+    background-color: #a29bfe;
     cursor: pointer;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

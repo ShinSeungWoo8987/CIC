@@ -24,6 +24,8 @@ import com.CIC.server.util.Util;
 @RestController(value="memberContoller")
 public class MemberController {
 	
+	private int pagePerCnt = 18;
+	
 	@Autowired
 	private CICService cicService;
 	
@@ -134,8 +136,8 @@ public class MemberController {
 	
 	@GetMapping("/member/{sort}/{page}")
     public List<Member> getMemberList(@PathVariable String sort, @PathVariable String page) throws Exception {
-		int startNum = ( Integer.parseInt(page) -1)*18+1;
-		int endNum = Integer.parseInt(page)*18;
+		int startNum = ( Integer.parseInt(page) -1)*pagePerCnt+1;
+		int endNum = Integer.parseInt(page)*pagePerCnt;
         if(sort.equals("all")) {
         	List<Member> list = this.cicService.getMemberList(startNum,endNum);
             return list;
@@ -149,8 +151,8 @@ public class MemberController {
     public List<Member> searchMemberList(
     		@PathVariable String sort, @PathVariable String page, @PathVariable String key
     		) throws Exception {
-		int startNum = ( Integer.parseInt(page) -1)*18+1;
-		int endNum = Integer.parseInt(page)*18;
+		int startNum = ( Integer.parseInt(page) -1)*pagePerCnt+1;
+		int endNum = Integer.parseInt(page)*pagePerCnt;
         if(sort.equals("all")) {
         	List<Member> list = this.cicService.searchMemberList(key,startNum,endNum);
             return list;
@@ -163,10 +165,10 @@ public class MemberController {
 	@GetMapping("/memberCnt/{sort}")
     public int getMemberCnt(@PathVariable String sort) throws Exception {
 		if(sort.equals("all")) {
-			int cnt = this.cicService.getMemberCnt();
+			int cnt = util.getMaxPage(this.cicService.getMemberCnt(),pagePerCnt);
 	        return cnt; 
 		}else{
-			int cnt = this.cicService.getCreatorRequestMemberCnt();
+			int cnt = util.getMaxPage(this.cicService.getCreatorRequestMemberCnt(),pagePerCnt);
 	        return cnt; 
 		}
     }
@@ -174,10 +176,10 @@ public class MemberController {
 	@GetMapping("/memberCnt/{sort}/{key}")
     public int searchMemberCnt(@PathVariable String sort, @PathVariable String key) throws Exception {
 		if(sort.equals("all")) {
-			int cnt = this.cicService.searchMemberCnt(key);
+			int cnt = util.getMaxPage(this.cicService.searchMemberCnt(key),pagePerCnt);
 	        return cnt; 
 		}else{
-			int cnt = this.cicService.searchCreatorRequestMemberCnt(key);
+			int cnt = util.getMaxPage(this.cicService.searchCreatorRequestMemberCnt(key),pagePerCnt);
 	        return cnt; 
 		}
     }
@@ -190,8 +192,7 @@ public class MemberController {
 	
 	@DeleteMapping ("/member/delete/{userId}")
     public void deleteMember(@PathVariable String userId) throws Exception {
-		//관리자에서 아이디 삭제 - 연결필요
-		System.out.println(userId);
+		cicService.deleteMember(userId);
     }
 	
 	@DeleteMapping ("/creator_request/{userId}/{decision}")

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Store from '../Store/Store';
 import { post } from 'axios';
 import TextEditor from '../Components/TextEditor';
-import { checkInputValueRestirctedCharacter } from '../Util/Util'
+import { replaceInputValueRestirctedCharacter } from '../Util/Util'
 
 function AddNews({}) {
     const { projectInformation, recentlyNewsInformation, globalState, globalStateDispatch } = useContext(Store);
@@ -21,7 +21,7 @@ function AddNews({}) {
         const url = `/recentlyNews/${globalState.action}`;
         const data = {
             pro_number: projectInformation.number+'',
-            title: e.target.title.value,
+            title: replaceInputValueRestirctedCharacter(e.target.title.value),
             content: content.description,
             id: localStorage.getItem('userId'),
             new_number: recentlyNewsInformation.number+''
@@ -35,21 +35,12 @@ function AddNews({}) {
         }
         globalStateDispatch({type: 'GLOBAL', payload: newGlobalState});
     }
-    // Input Value Valid Check
-    const checkInutValue = (e) => {
-        const inputId = e.target.id;
-        const inputValue = e.target.value;
-        const check = checkInputValueRestirctedCharacter(inputValue);
-        if(check === -1){
-            document.getElementById(inputId).focus();
-        }
-    }
     return (
         <Container onSubmit={(e)=>onRecentlyNewsSumbit(e)}>
             <SubContainer>
                 <Title>최근소식 글쓰기</Title><Btn type='submit' value='등록'/>
             </SubContainer>
-            <Input id='title' type='text' defaultValue={content.title} placeholder='제목을 입력해 주세요.' onBlur={(e)=>checkInutValue(e)}/>
+            <Input id='title' type='text' defaultValue={content.title} placeholder='제목을 입력해 주세요.'/>
             <TextEditor content={content} setContent={setContent}/>
         </Container>
     )
@@ -79,16 +70,21 @@ const Input = styled.input`
     margin: 10px 0;
     text-indent: 15px;
     border: 1px solid #E0E0E0;
-    border-radius: 2.5px;
+    border-radius: 5px;
 `
 const Btn = styled.input`
     float: right;
     width: 50px;
-    height: 30px;
-    margin: 3px 0 0 0;
+    height: 25px;
+    line-height: 25px;
+    margin: 8px 0 0 0;
     font-size: 15px;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
+    border: none;
     border-radius: 5px;
-    border: 1px solid #C8C8C8;
     cursor: pointer;
+    color: white;
+    background-color: #87d37c;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -37,7 +37,13 @@ function Login() {
         }else{
             logout();
             sessionDispatch({type:'DEFAULT'});
-            globalStateDispatch({type: 'DEFAULT'});
+            const payload = {
+                main: 'all',
+                sub: 'all',
+                action: '',
+                num: 0
+            }
+            globalStateDispatch({type: 'GLOBAL', payload});
         }
     }
     const closeLoginModal = () => {
@@ -87,8 +93,8 @@ function Login() {
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Form>
-                <InputId id='id' ref={idRef} type='text' placeholder="아이디" required autoFocus onBlur={(e)=>checkInutValue(e)}/><br/>
-                <InputPw id='pw' ref={pwRef} type='password' placeholder="비밀번호" required onBlur={(e)=>checkInutValue(e)}/><br/>
+                <Input margin='0 0 20px 0' id='id' ref={idRef} type='text' placeholder="아이디" required autoFocus onBlur={(e)=>checkInutValue(e)}/><br/>
+                <Input id='pw' ref={pwRef} type='password' placeholder="비밀번호" required onBlur={(e)=>checkInutValue(e)}/><br/>
                 <SpanText>{LoginMessage}</SpanText><br/>
                 <InputSubmit  onClick={(e)=>onLoginSubmit(e)}>로그인</InputSubmit>
                 <Find>
@@ -125,15 +131,11 @@ const Input = Styled.input`
     left: 14%;
     height: 50px;
     width: 300px;
+    margin: ${({margin})=>`${margin}`};
     font-size: 15px;
     text-indent: 15px;
-    border-radius: 10px;
+    border-radius: 5px;
     border: 1px solid #E0E0E0;
-`
-const InputId = Styled(Input)`
-    margin: 0 0 20px 0;
-`
-const InputPw = Styled(Input)`
 `
 const SpanText = Styled.span`
     position: relative;
@@ -146,21 +148,19 @@ const InputSubmit = Styled.button`
     position: relative;
     left: 14%;
     height: 50px;
-    border-radius: 10px;
-    border: 1px solid #E0E0E0;
     width: 306px;  
-    font-size: 20px;
-    font-weight: bold;
-    text-indent: 0px;
-    text-shadow: 1px 1px 7px #BDBDBD; 
-    box-shadow: 1px 1px 7px #BDBDBD;
-    border: none;
-    color: white;
     margin: 20px 0 0 0;
-    background-color: #83E538;
+    font-size: 20px;
+    text-indent: 0px;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: #87d37c;
 
     &:hover {
-        box-shadow: 1px 1px 9px #8C8C8C; 
+        box-shadow: 2px 2px 5px #BDBDBD;
     }
 `
 const Find = Styled.div`

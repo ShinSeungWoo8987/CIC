@@ -35,7 +35,7 @@ function Member({idx,authority,userId,name,phone,birth,adress,changed,setChanged
             <Id>{userId}</Id>
             <Name>{name}</Name>
             <Phone>{phone}</Phone>
-            <Birth>{birth.substring(0,9)}</Birth>
+            <Birth>{birth.substring(0,10)}</Birth>
             <Address width={globalState.main==='userList'?'42':'46'}>{adress}</Address>
             {globalState.main==='userList'?
             <Del>
@@ -54,7 +54,7 @@ width: ${({width})=>`${width}%`};
 height: 30px;
 line-height: 30px;
 font-size: 16px;
-border: 1px solid black;
+border: none;
 text-align: center;
 `
 

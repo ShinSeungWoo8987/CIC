@@ -62,7 +62,7 @@ function Main() {
     if(globalState.main==='all') _category='전체';
     if(globalState.main==='tech') _category='테크·가전';
     if(globalState.main==='travel') _category='여행·레저';
-    if(globalState.main==='fasion') _category='패션·잡화';
+    if(globalState.main==='fashion') _category='패션·잡화';
 
     if(globalState.sub==='all') _period='전체';
     if(globalState.sub==='new') _period='신규';
@@ -93,15 +93,13 @@ const Left = Styled.div`
 `
 const Container = Styled(Left)`
     width: 1665px;
-    height: 3100px;
     text-align: center;
 `
 const Navigation = Styled.div`
     font-size: 15px;
     color: #777777;
-    margin-left: 150px;
-    margin-bottom: 6px;
-    text-align: left;
+    margin: 0 158px 12.5px 0;
+    text-align: right;
 `
 const SubContainer = Styled(Left)`
 `
@@ -112,13 +110,13 @@ const Image = Styled.img`
 `
 const LeftSide = Styled(Left)`
     width: 100px;
-    height: 865px;
+    height: 800px;
     line-height: 800px;
 `
 const RightSide = Styled(LeftSide)`
 `
 const ItemContainer = Styled(Left)`
     width: 1465px;
-    height: 100px;
+    height: 800px;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
