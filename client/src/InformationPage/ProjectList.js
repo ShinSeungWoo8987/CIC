@@ -64,7 +64,7 @@ function ProejctList() {
     return(
         <Container>
             <Navigation>내정보&nbsp;&gt;&nbsp;{_category}&nbsp;&gt;&nbsp;{_period}</Navigation>
-            {!projectList?<Preparing>목록을 불러오는 중입니다 . . .</Preparing>:
+            {!projectList?<Box><Preparing>목록을 불러오는 중입니다 . . .</Preparing></Box>:
                 projectList.length === 0?
                 <>
                 <NoList>참여한 펀딩이 없습니다.</NoList>
@@ -102,13 +102,16 @@ const ItemContainer = Styled(Left)`
     width: 100%;
     height: 824px;
 `
+const Box = Styled(Left)`
+    width: 100%;
+`
 const Preparing = Styled(Navigation)`
-    float: left;
     width: 215px;
     height: 25px;
     margin: 5px 0 0 50px;
     font-size: 17.5px;
     font-weight: bold;
+    text-align: left;
     overflow: hidden;
 
     animation-duration: 3s;
@@ -127,7 +130,7 @@ const Preparing = Styled(Navigation)`
     }
 `
 const NoList = Styled.div`
-    height: 480px;
+    height: 824px;
     line-height: 300px;
     text-align: center;
     font-size: 20px;

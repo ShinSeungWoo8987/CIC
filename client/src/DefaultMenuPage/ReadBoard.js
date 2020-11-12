@@ -56,7 +56,7 @@ function ReadBoard() {
     if (boardItemList) {
         if (globalState.main === 'event') _boardItem = boardItemList.map(({ eve_NUMBER, eve_THUMBNAIL, eve_TITLE, mem_ID, eve_REGISTER }, idx) => <BoardItem key={idx} id={eve_NUMBER} image={eve_THUMBNAIL} title={eve_TITLE} name={mem_ID} date={eve_REGISTER} />);
         if (globalState.main === 'notice') _boardItem = boardItemList.map(({ not_NUMBER, image, not_TITLE, mem_ID, not_REGISTER }, idx) => <BoardItem key={idx} id={not_NUMBER} image={image} title={not_TITLE} name={mem_ID} date={not_REGISTER} />);
-        if (globalState.main === 'center') _boardItem = boardItemList.map(({ ser_NUMBER, image, ser_TITLE, mem_ID, ser_REGISTER }, idx) => <BoardItem key={idx} id={ser_NUMBER} image={image} title={ser_TITLE} name={mem_ID} date={ser_REGISTER} />);
+        if (globalState.main === 'center') _boardItem = boardItemList.map(({ ser_NUMBER, image, ser_TITLE, mem_ID, ser_REGISTER, ser_SOLUTION }, idx) => <BoardItem key={idx} id={ser_NUMBER} image={image} title={ser_TITLE} name={mem_ID} date={ser_REGISTER} answer={ser_SOLUTION} />);
     }
     const changeGlobalState = e => {
         e.preventDefault();

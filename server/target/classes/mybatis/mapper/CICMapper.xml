@@ -298,6 +298,10 @@
 	<delete id="deleteFundingDetailList">
 		delete from funding where fun_number = #{number}
 	</delete>
+	
+	<delete id="deleteMoneyList">
+		delete from money where fun_number = #{number}
+	</delete>
 
 	<select id="findId" resultType="String">
 		select mem_id
@@ -635,7 +639,7 @@
 	</update>
 
 	<update id="deleteServiceCenterSolution">
-		update SERVICECENTER set SER_SOLUTION=null where SER_NUMBER=#{num}
+		update SERVICECENTER set SER_SOLUTION=' ' where SER_NUMBER=#{num}
 	</update>
 	
 	

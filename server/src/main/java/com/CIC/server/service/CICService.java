@@ -45,6 +45,7 @@ public interface CICService {
 	List<FundingDetail> getFundingDetailList(SearchProject searchProject);
 	int getFundingDetailListCnt(SearchProject searchProject);
 	void deleteFundingDetailList(String number);
+	void deleteMoneyList(String number);
 	String findId(String name, String phone, String birth);
 	void findPw(String id, String pw);
 	List<RecentlyNews> getRecentlyNewsList(SearchProject searchProject);

@@ -119,6 +119,10 @@ public class CICServiceImpl implements CICService {
 		cicMapper.deleteFundingDetailList(number);
 	}
 	@Override
+	public void deleteMoneyList(String number) {
+		cicMapper.deleteMoneyList(number);
+	}
+	@Override
 	public String findId(String name, String phone, String birth) {
 		return cicMapper.findId(name, phone, birth);
 	}

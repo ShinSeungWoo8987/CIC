@@ -52,6 +52,7 @@ const _modalState = {
     fundingDetailList: false,
     find: false,
     charge: false,
+    message: false
 }
 const modalStateReducer = (state, { type, payload }) => {
     switch (type) {
@@ -122,6 +123,19 @@ const recentlyNewsInformationReducer = (state, { type, payload }) => {
     }
 }
 
+const _message = {
+    value: ''
+}
+const messageReducer = (state, { type, payload }) => {
+    switch (type) {
+        default:
+            return _message;
+        case 'MESSAGE':
+            return payload;
+    }
+}
+
+
 const _viewPage = {
     viewPage:'', pageState:''
 }
@@ -190,6 +204,7 @@ const projectReducer = (state, {type, payload}) => {
 export {
     _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _search, searchReducer,
     _pageNumber, pageNumberReducer, _projectInformation, projectInformationReducer, _recentlyNewsInformation, recentlyNewsInformationReducer,
+    _message, messageReducer,
     _viewPage, viewStateReducer, pageReducer, _info, infoReducer, _content, contentReducer, boardItemListReducer,
     projectReducer
 };

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Store from '../Store/Store';
 
-function BoardItem({ id, image, title, name, date }) {
+function BoardItem({ id, image, title, name, date, answer }) {
   const { globalState, globalStateDispatch } = useContext(Store);
   const payload = {
     main: globalState.main,
@@ -12,10 +12,23 @@ function BoardItem({ id, image, title, name, date }) {
   }
   let _date = date;
   if(date) _date=date.substr(0,10);
+
+
+  console.log(answer);
+
+
   return (
     <Container onClick={() => globalStateDispatch( {type: 'GLOBAL', payload} )}>
       <LeftSide>
-        <Upside>{title}</Upside>
+        <Upside>
+          
+          {answer===' '||answer===undefined?'':
+          <IsAnswer>
+            <CheckAnswer src="https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/checkAnswer.png"/>
+          </IsAnswer>
+          }
+          {title}
+        </Upside>
         <Downside><Left>{name}</Left> <Right>{_date}</Right> </Downside>
       </LeftSide>
       {globalState.main !== 'event' ? '' :
@@ -36,11 +49,26 @@ const Container = styled.div`
 `
 
 const Upside = styled.div`
-    padding-left: 20px;
-    padding-top: 10px;
-    font-size: 18px;
-    height: 40px;
-    font-weight: bold;
+  line-height:40px;
+  padding-left: 15px;
+  padding-top: 10px;
+  font-size: 18px;
+  height: 40px;
+  font-weight: bold;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`
+const IsAnswer = styled.div`
+float:left;
+height: 40px;
+width: 30px;
+`
+const CheckAnswer = styled.img`
+  margin-top: 7px;
+  width: 25px;
+  height: 25px;
 `
 const Downside = styled.div`
     padding-left: 15px;

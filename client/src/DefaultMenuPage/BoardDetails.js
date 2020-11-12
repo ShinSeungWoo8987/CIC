@@ -46,7 +46,6 @@ function BoardDetails(props) {
         if (globalState.main === 'notice') _main = 'notice';
         if (globalState.main === 'center') _main = 'service_center';
         axios.delete(`/${_main}/delete/${selectedItem.id}`).then(res=>{
-            console.log(res);
             globalStateDispatch({
                 type: 'GLOBAL', payload: {
                     main: globalState.main,
@@ -55,6 +54,7 @@ function BoardDetails(props) {
                     num: globalState.num
                 }
             });
+            alert(`문의글이 삭제되었습니다.`);
         }).catch(err=>console.log(err));
     }
 
@@ -80,11 +80,11 @@ function BoardDetails(props) {
         // 삭제 url
         axios.delete(`/service_center_solution/delete/${globalState.num}`).then(()=>{
             boardItemListDispatch({type:'CHANGE',payload:boardItemList.map(i=>{
-                if(i.ser_NUMBER===globalState.num) return Object.assign(i, {ser_SOLUTION:i.ser_DESCRIPTION});
+                if(i.ser_NUMBER===globalState.num) return Object.assign(i, {ser_SOLUTION:' '});
                 else return i;
             }) });
-            globalStateDispatch({ type: 'GLOBAL', payload });
-            alert(`삭제되었습니다.`);
+            
+            alert(`답변이 삭제되었습니다.`);
         }).catch(err=>alert(err));
     }
 
@@ -130,7 +130,6 @@ function BoardDetails(props) {
                     <>
                         <Question>
                             <QuestionContent>
-                                {selectedItem.image}
                                 {parse(selectedItem.description)}
                             </QuestionContent>
                             {session.authority===2?
@@ -147,7 +146,7 @@ function BoardDetails(props) {
                                     onChange={(event, editor) => {
                                         handleCKeditorState(event, editor); // console.log(editor.sourceElement.parentNode.id)
                                     }}
-                                    data={selectedItem.solution===selectedItem.description?'':selectedItem.solution}
+                                    data={selectedItem.solution===' '?'':selectedItem.solution}
                                     config={{
                                         toolbar: [
                                             "heading", "|", "bold", "italic", "link", "bulletedList",
@@ -158,7 +157,7 @@ function BoardDetails(props) {
                                     }}
                                 />
                             :
-                                selectedItem.solution===selectedItem.description?'답변이 등록되어있지 않습니다.':parse(selectedItem.solution)
+                                selectedItem.solution===' '?'답변이 등록되어있지 않습니다.':parse(selectedItem.solution)
                             }
 
                             
@@ -171,7 +170,7 @@ function BoardDetails(props) {
                             </>
                             :
                             session.authority===2?
-                                selectedItem.solution===selectedItem.description?
+                                selectedItem.solution===' '?
                                 <Btn width='80px' height='25px' size='15px' bg='#87d37c' onClick={()=>setDoAnswer(true)}>답변작성</Btn>
                                 :
                                 <>
@@ -185,7 +184,7 @@ function BoardDetails(props) {
                     </>
                     :
                     <>
-                        {selectedItem.image}
+                        <EventImg src={selectedItem.image}/>
                         {parse(selectedItem.description)}
                     </>
                     }
@@ -303,4 +302,7 @@ cursor: pointer;
 &:hover {
     box-shadow: 2px 2px 5px #BDBDBD;
 }
+`
+const EventImg = styled.img`
+    width: 100%
 `

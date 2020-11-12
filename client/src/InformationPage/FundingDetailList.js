@@ -41,7 +41,7 @@ function FundingDetailList() {
             var idx = 0;
             while(idx < res.data.length){
                 newFundingDetailList.push(
-                    <FundingMember key={idx} number={res.data[idx].number} title={res.data[idx].title} period={res.data[idx].period} name={res.data[idx].name} address={res.data[idx].address} act='삭제' top='none' bottom='none' color='white' foneWeight='bold' type='delete' deleteCheck={deleteCheck} setDeleteCheck={setDeleteCheck}/>
+                    <FundingMember key={idx} number={res.data[idx].number} title={res.data[idx].title} period={res.data[idx].period} name={res.data[idx].name} address={res.data[idx].address} act='삭제' top='none' bottom='none' color='white' foneWeight='bold' type='fundingDetailList' deleteCheck={deleteCheck} setDeleteCheck={setDeleteCheck}/>
                 )
                 idx++;
             }
@@ -62,7 +62,7 @@ function FundingDetailList() {
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Text>펀딩목록 세부정보</Text>
-                <FundingMember title='프로젝트' period='기간' name='이름' address='배송지' act='삭제' top='none' bottom='none' color='#FAFAFA' foneWeight='bold' zIndex='1' type='delete' header='true'/>
+                <FundingMember title='프로젝트' period='기간' name='이름' address='배송지' act='삭제' top='none' bottom='none' color='#FAFAFA' foneWeight='bold' zIndex='1' type='fundingDetailList' header='true'/>
                 
                 {!fundingDetailList?<Preparing>목록을 불러오는 중입니다 . . .</Preparing>:
                     fundingDetailList.length===0?
@@ -74,13 +74,13 @@ function FundingDetailList() {
                         :
                         <>
                             <>
-                                <Container>
+                                <Container className='container'>
                                     <SubContainer height='480px'>
                                     {fundingDetailList}
                                     </SubContainer>
                                 </Container>
                                 <Search use='true'/>
-                                <Paging maxPage={maxPage} blockPerCnt={blockPerCnt} bottom='-10px'/>
+                                <Paging className='paging' maxPage={maxPage} blockPerCnt={blockPerCnt} bottom='-10px'/>
                             </>
                         </>
                 }

@@ -105,12 +105,12 @@ function AddBoardForm({id,title,description}) {
                         <InputFile id='thumbnail' type="file" ref={thumbnailRef} />
                     </Label>
                 </LabelContainer>
-                <Path margin='0 50px 10px 5px' id='thumbnailPath' type='text' defaultValue='여기' readOnly/>
+                <Path margin='0 50px 10px 5px' id='thumbnailPath' type='text' defaultValue={id?'! 수정시 이미지를 새로 넣어야합니다.':''} readOnly/>
                 <LabelContainer onChange={(e)=>viewPath(e)}>
                     <Label for='contentImage' >이미지 추가</Label>
                     <InputFile id='contentImage' type="file" ref={imageRef}/>
                 </LabelContainer>
-                <Path margin='0 0 10px 5px' id='contentImagePath' type='text' defaultValue='여기' readOnly/>
+                <Path margin='0 0 10px 5px' id='contentImagePath' type='text' defaultValue={id?'! 수정시 이미지를 새로 넣어야합니다.':''} readOnly/>
             </>}
             <SubContainer margin = {globalState.main==='addEvent'?'':'-30px 0 0 0'}>
                 <CKeditor
@@ -182,6 +182,8 @@ const Label = styled.label`
     font-size: 15px;
 `
 const Path = styled.input`
+    color: red;
+    font-weight: bold;
     float: left;
     width: 300px;
     height: 25px;

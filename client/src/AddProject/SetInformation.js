@@ -33,7 +33,6 @@ function SetInformation(props) {
             _newInfo[`${name}`] = files[0];
             setNewInfo(_newInfo);
         }
-        
     }
 
     return (

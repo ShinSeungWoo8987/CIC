@@ -2,6 +2,7 @@ import React, { useReducer } from 'react';
 import Store from './Store';
 import { _session, sessionReducer, _globalState, globalStateReducer, _addressValue, addressValueReducer, _modalState, modalStateReducer, _search, searchReducer,
          _pageNumber, pageNumberReducer, _projectInformation, projectInformationReducer, boardItemListReducer, _recentlyNewsInformation, recentlyNewsInformationReducer,
+         _message, messageReducer,
          _viewPage, viewStateReducer, pageReducer, _content, contentReducer, _info, infoReducer,
          projectReducer } from './clientReducer';
 
@@ -16,6 +17,7 @@ function ClientStore(props) {
     const [pageNumber, pageNumberDispatch] = useReducer(pageNumberReducer, _pageNumber);
     const [projectInformation, projectInformationDispatch] = useReducer(projectInformationReducer, _projectInformation)
     const [recentlyNewsInformation, recentlyNewsInformationDispatch] = useReducer(recentlyNewsInformationReducer, _recentlyNewsInformation)
+    const [message, messageDispatch] = useReducer(messageReducer, _message);
 
     const [viewState, viewStateDispatch] = useReducer(viewStateReducer, _viewPage);
     const [content, contentDispatch] = useReducer(contentReducer, _content);
@@ -28,7 +30,7 @@ function ClientStore(props) {
         <Store.Provider value={ {
             session, sessionDispatch, globalState, globalStateDispatch, addressValue, addressValueDispatch, modalState, modalStateDispatch, search, searchDispatch,
             pageNumber, pageNumberDispatch, projectInformation, projectInformationDispatch, recentlyNewsInformation, recentlyNewsInformationDispatch,
-            viewState, viewStateDispatch, content, contentDispatch, info, infoDispatch, page, pageDispatch,
+            viewState, viewStateDispatch, content, contentDispatch, info, infoDispatch, page, pageDispatch, message, messageDispatch,
             boardItemList , boardItemListDispatch, project, projectDispatch
             } }>
                 

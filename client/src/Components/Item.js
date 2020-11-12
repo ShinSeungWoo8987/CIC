@@ -79,19 +79,11 @@ const Container = Styled(Left)`
     border-radius: 10px;
     margin: 0 0 40px 50px;
 
+    transition: margin 0.5s,box-shadow 0.7s ease-in-out;
+
     &:hover {
         box-shadow: 0 0 10px 2.5px lightgrey;
-        animation-duration: 0.5s;
-        animation-name: projectShadow;
-        animation-fill-mode: forwards;
-    }
-    @keyframes projectShadow {
-        from {
-            margin: 0 0 40px 50px;
-        }
-        to {
-            margin: -5px 0 45px 50px;
-        }
+        margin: -5px 0 45px 50px;
     }
 `
 const ItemImage = Styled.img`

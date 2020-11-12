@@ -81,7 +81,6 @@ function Head(props) {
             num:0
         }
         globalStateDispatch( { type: 'GLOBAL', payload: newGlobalState });
-        // 검색 & 페이지 초기화
         searchDispatch({type:'DEFAULT'});
         pageNumberDispatch({ type: 'DEFAULT'});
     }
@@ -174,6 +173,7 @@ function Head(props) {
             <UpdateUser/>
             <Charge/>
             <Authority/>
+            
             {globalState.main==='projectDetails'?<FundingState/>:''}
         </Container>
     );

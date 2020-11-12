@@ -533,12 +533,11 @@ public class ProjectController {
 			ArrayList<Map> contentArray = (ArrayList)map.get("sendContent");
 	        for(Map i : contentArray) {
 				Content content = Content.builder()
-						.con_number( (int)i.get("id") )
+						.con_number( (int)i.get("id")+1 )
 	    				.con_type( ((String)i.get("head")).equals("text")?"t":"i" )
 	    				.con_content((String)i.get("content"))
 	    				.pro_number(project.getPro_number())
 	    				.build();
-				
 				this.cicService.updateContent(content);
 			}
 	        

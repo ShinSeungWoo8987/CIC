@@ -4,12 +4,13 @@ import Modal from 'react-modal';
 import Store from '../Store/Store';
 import { get, put } from 'axios';
 import PercentBar from '../Components/PercentBar'
+import Message from '../Components/Message';
 import { checkInputValueRestirctedCharacter, replaceInputValueRestirctedCharacter } from '../Util/Util'
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
 function Funding() {
-    const { session, addressValue, addressValueDispatch, modalState, modalStateDispatch, projectInformation } = useContext(Store);
+    const { session, addressValue, addressValueDispatch, modalState, modalStateDispatch, projectInformation, messageDispatch } = useContext(Store);
     const [ userInformation, setUserInformation] = useState('');
     const [ nameMesage, setNameMessage] = useState('');
     const [ address2Mesage, setAddress2Message] = useState('');
@@ -40,13 +41,9 @@ function Funding() {
             phone: '',
             address2: ''
         })
-        const payload = {
-            funding: false,
-            charge: true
-        }
-        modalStateDispatch({type: 'CHANGE_MODALSTATE', payload});
         setNameMessage("");
         setAddress2Message("");
+        modalStateDispatch({type: 'DEFAULT'});
     }
     // Postcode Modal Setting
     const openPostcodeModal = (e) => {
@@ -94,15 +91,27 @@ function Funding() {
         }
         put(url, data).then(res=>{
             if(res.data==='Fail'){
-                console.log('보유 금액이 부족합니다.')
-                return;
+                let payload = {
+                    funding: false,
+                    message: true
+                }
+                modalStateDispatch({type: 'CHANGE_MODALSTATE', payload});
+                payload = {
+                    value: '금액이 부족합니다.'
+                }
+                messageDispatch({type: 'MESSAGE', payload })
+            }else{
+                const payload = {
+                    funding: false,
+                    charge: true
+                }
+                modalStateDispatch({type: 'CHANGE_MODALSTATE', payload});
             }
-            closeModal();
         })
     }      
     return (
         <Container>
-            <Modal 
+            <Modal
                 isOpen= { modalState.funding }
                 style={ FundingModalStyle }
                 onRequestClose={(e) => closeModal(e)}
@@ -146,6 +155,7 @@ function Funding() {
                     <InputSubmit type="submit" value="펀딩하기"/>
                 </Form>
             </Modal>
+            <Message/>
         </Container>
     );
 }

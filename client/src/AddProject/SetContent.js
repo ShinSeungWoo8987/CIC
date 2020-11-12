@@ -5,7 +5,7 @@ import { put, post } from 'axios'
 import Store from '../Store/Store';
 
 function SetContent(props) {
-    const { globalState, globalStateDispatch, info, infoDispatch, pageDispatch, content, contentDispatch, projectInformation } = useContext(Store);
+    const { globalState, info, infoDispatch, pageDispatch, content, contentDispatch, projectInformation } = useContext(Store);
     const addContent = (e) => {
         e.preventDefault();
         var newContent = content.concat([{
@@ -58,7 +58,7 @@ function SetContent(props) {
                 // post data
                 put('/project/add', {...info, sendContent})
                     .then((res) => {
-                        globalStateDispatch({type:"DEFAULT"});
+                        window.location.href = '/';
                     }).catch((err2) => alert(err2));
             }).catch(err1=>alert(err1));
         }else{ // 프로젝트 수정
@@ -101,17 +101,9 @@ function SetContent(props) {
                 if(thumbnail!=='') _info.thumbnail=thumbnail;
                 if(logo!=='') _info.logo=logo;
 
-                // post data
-                const newInfo = Object.assign(info, {
-                    target_money: `${info.target_money}`,
-                    funding_price: `${info.funding_price}`
-                });
-
-                console.log(newInfo);
-
-                post('/project/update', {...newInfo, sendContent, project_num:`${projectInformation.number}`})
+                post('/project/update', {..._info, sendContent, project_num:`${projectInformation.number}`})
                     .then((res) => {
-                        globalStateDispatch({type:"DEFAULT"});
+                        window.location.href = '/';
                     }).catch((err2) => console.log(err2));
             }).catch(err1=>alert(err1));
         }

@@ -47,7 +47,8 @@ public interface CICMapper {
 	public void deleteProject(String number);
 	public List<FundingDetail> getFundingDetailList(SearchProject searchProject);
 	public int getFundingDetailListCnt(SearchProject searchProject);
-	public void deleteFundingDetailList(String number);
+	void deleteFundingDetailList(String number);
+	void deleteMoneyList(String number);
 	String findId(String name, String phone, String birth);
 	void findPw(String id, String pw);
 	List<RecentlyNews> getRecentlyNewsList(SearchProject searchProject);

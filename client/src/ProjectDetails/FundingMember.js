@@ -14,7 +14,7 @@ function FundingMember({number, id, title, period, name, phone, address, cnt, bo
         })
     }
     return <>
-        {type==='delete'?
+        {type==='fundingDetailList'?
             <>
             {header==='true'?
                 <Container border={border} borderTop={top} borderBottom={bottom} color={color} foneWeight={foneWeight} zIndex={zIndex}>
@@ -121,19 +121,13 @@ const Act_ = styled(Act)`
         0% {
             color: black;
         }
-        40% {
-            color: red;
-        }
         50% {
             color: red;
             font-weight: bold;
         }
-        90% {
-            color: black;
-            font-weight: bold;
-        }
         100% {
             color: black;
+            font-weight: bold;
         }
     }
 `

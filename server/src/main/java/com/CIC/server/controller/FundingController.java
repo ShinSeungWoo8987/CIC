@@ -67,7 +67,7 @@ public class FundingController {
 		}catch (Exception e) {
 			System.out.println("FundingController addFunding Error Message : React-Axios Error");
 		}
-		return "Fail";
+		return "???";
 	}
 	
 	@RequestMapping(value="/fundingMemberList/maxPage", method=RequestMethod.POST, consumes="application/json")
@@ -200,6 +200,7 @@ public class FundingController {
         if(!id.equals(values.get(1))) {
         	return;
         }
+        cicService.deleteMoneyList(values.get(0));
         cicService.deleteFundingDetailList(values.get(0));
 	}
 }

@@ -17,7 +17,7 @@ function App() {
                 <Main>
                     <View/>
                 </Main>
-                {/* <Footer/> */}
+                <Footer/>
             </Container>
         </ClientStore>
     );
