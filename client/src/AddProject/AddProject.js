@@ -1,13 +1,17 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {get} from 'axios';
 import Store from '../Store/Store';
 import SetInformation from './SetInformation';
 import SetContent from './SetContent';
 import styled from 'styled-components';
-import {executeHelloService} from '../Jwt/AuthenticationService';
 
 function AddProject(props) {
-  const { globalState, info, infoDispatch, project, content, contentDispatch, page, projectInformation } = useContext(Store);
+  const {
+    globalState, info, infoDispatch, project, content, contentDispatch, page, projectInformation,
+    modalStateDispatch, pageDispatch, messageDispatch
+  } = useContext(Store);
+  const [newInfo, setNewInfo] = useState(info);
+  
   useEffect(()=>{
     if(globalState.main==="projectDetails" && globalState.sub==="editProject"){
       get(`/project/information/${projectInformation.number}`)
@@ -18,8 +22,8 @@ function AddProject(props) {
           target_money: data.pro_target,
           sdate: data.pro_start.substr(0,10),
           fdate: data.pro_finish.substr(0,10),
-          thumbnail: data.pro_thumbnail, // 이거 처리필요
-          logo: data.pro_logo, // 이거 처리필요
+          thumbnail: data.pro_thumbnail,
+          logo: data.pro_logo,
           funding_price: data.pro_price,
           email: data.pro_email
         };
@@ -37,31 +41,103 @@ function AddProject(props) {
       }):'' });
   },[]);
 
-  const writeInfo = <SetInformation />
+  const writeInfo = <SetInformation newInfo={newInfo} setNewInfo={setNewInfo} />
   const writeContent = <SetContent/>
+
+  let navItem = []
 
   let view = '';
   switch (page) {
     default:
       view = '';
       break;
-    case 'writeContent':
-      view = writeContent;
-      break;
     case 'writeInfo':
       view = writeInfo;
+      navItem = [
+        <LineSection key='1' id='writeContent'>&nbsp;프로젝트정보&nbsp;</LineSection>,
+        <Section key='2' id='writeInfo' onClick={e =>{toWriteContent(e)}}>&nbsp;프로젝트내용&nbsp;</Section>
+      ]
+      break;
+    case 'writeContent':
+      view = writeContent;
+      navItem = [
+        <Section key='1' id='writeContent' onClick={() =>toWriteInfo()}>&nbsp;프로젝트정보&nbsp;</Section>,
+        <LineSection key='2' id='writeInfo'>&nbsp;프로젝트내용&nbsp;</LineSection>
+      ]
       break;
   }
 
+  const toWriteContent = (e) => {
+    e.preventDefault();
+    if(newInfo.sdate>newInfo.fdate) {
+        let payload={value:'잘못된 프로젝트 기간입니다.'}
+        messageDispatch({type:"MESSAGE", payload});
+        payload={message:true}
+        modalStateDispatch({type:"CHANGE_MODALSTATE", payload});
+        document.getElementById('fdate').focus();
+        return false;
+    }
+    infoDispatch({ type: 'CHANGE_INFO', payload: newInfo })
+    pageDispatch({ type: 'CHANGE_PAGE', payload: 'writeContent' });
+  }
+  
+  const toWriteInfo = () => pageDispatch({ type: 'CHANGE_PAGE', payload: 'writeInfo' });
+
   return (
     <Container>
-      {view}
-      <button onClick={()=>executeHelloService()}>+++</button>
+      <Center>
+          <Nav>
+              <Head>프로젝트 등록</Head>
+              <NavItem>
+                  {navItem}
+              </NavItem>
+          </Nav>
+          {view}
+      </Center>
     </Container>
   );
 }
 
 export default AddProject;
+
+
 const Container = styled.div`
-margin-left: 12.5%
+  float:left;
+  margin-top: -34px;    
+  margin-left: 110px;
+  width: 100%;
+  height: 880px;
+`
+const Center = styled.div`
+    margin: 0 auto;
+    width: 60%;
+`
+const Nav = styled.div`
+float: left;
+width: 100%;
+height: 112px;
+text-align: center;
+`
+const Head = styled.div`
+padding-top: 10px;
+font-size: 38px;
+font-weight: bold;
+`
+const NavItem = styled.div`
+padding: 0 29%;
+margin-top: 16px;
+width: 42%;
+height: 32px;
+font-size: 18px;
+border-bottom: 1px solid lightgrey;
+`
+const Section = styled.div`
+    z-index: 3;
+    height: 30px;
+    float: left;
+    margin: 0 30px;
+    cursor: pointer;
+`
+const LineSection = styled(Section)`
+    border-bottom: 3px solid #83E538;
 `

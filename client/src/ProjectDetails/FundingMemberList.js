@@ -37,7 +37,7 @@ function FundingMemberList() {
             var idx = 0;
             while(idx < res.data.length){
                 newFundingMemberList.push(
-                    <FundingMember key={idx} id={res.data[idx].id} name={res.data[idx].name} phone={res.data[idx].phone} address={res.data[idx].address} cnt={res.data[idx].fundingCnt+'회'} top='none' bottom='none' color='white' foneWeight='bold'/>
+                    <FundingMember key={idx} id={res.data[idx].id} name={res.data[idx].name} phone={res.data[idx].phone} address={res.data[idx].address} cnt={res.data[idx].fundingCnt+'회'} top='none' bottom='none' color='white' foneWeight='normal'/>
                 )
                 idx++;
             }
@@ -56,10 +56,16 @@ function FundingMemberList() {
                 onRequestClose={(e) => closeModal(e)}
             >
                 <Text>펀딩 참여자 명단</Text>
-                <FundingMember id='아이디' name='이름' phone='번호' address='주소' cnt='참여횟수' top='none' bottom='none' color='#FAFAFA' foneWeight='bold' zIndex='1'/>
+                <FundingMember id='아이디' name='이름' phone='번호' address='주소' cnt='참여횟수' top='none' bottom='none' bg='#b8e994' foneWeight='bold' zIndex='1'/>
                 
                 {!fundingMemberList?<Preparing>목록을 불러오는 중입니다 . . .</Preparing>:
-                    fundingMemberList.length===0?<NoList>펀딩에 참여한 인원이없습니다.</NoList>:
+                    fundingMemberList.length===0?
+                        <>
+                            <NoList>펀딩에 참여한 인원이없습니다.</NoList>
+                            <Search />
+                            <Paging maxPage={maxPage} bottom='-10px'/>
+                        </>
+                        :
                         <>
                             <Container>
                                 <SubContainer height='480px'>
@@ -100,6 +106,7 @@ const Preparing = Styled.div`
     }
 `
 const NoList = Styled.div`
+    height: 510px;
     line-height: 300px;
     text-align: center;
     font-size: 20px;

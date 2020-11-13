@@ -16,7 +16,7 @@ function Message( ){
             isOpen={modalState.message}
             style={MessageModalStyle}
             onRequestClose={(e) => closeMessageModal(e)}
-            onRequestClose={true}
+            // onRequestClose={true}
         >
             <Form onSubmit={(e)=>closeMessageModal(e)}>
                 <Text>{message.value}</Text>
@@ -35,7 +35,7 @@ const Form = Styled.form`
 `
 const Text = Styled.div`
     font-size: 15px;
-    margin: 0 0 20px 0;
+    margin: 20px 0;
 `
 const Input = Styled.input`
     width: 200px;
@@ -54,7 +54,7 @@ const Input = Styled.input`
 `
 const MessageModalStyle = {
     overlay: {
-        backgroundColor: 'rgba(140,140,140,0)',
+        backgroundColor: 'rgba(140,140,140,0.5)',
         zIndex: 5
     },
     content: {
@@ -62,10 +62,10 @@ const MessageModalStyle = {
         left: '40%',
         top: '30%',
         width: '420px',
-        height: '100px',
+        height: '150px',
         padding: '0px',
         border: 'none',
-        backgroundColor: 'white'
+        backgroundColor: '#F2F2F2'
     }
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

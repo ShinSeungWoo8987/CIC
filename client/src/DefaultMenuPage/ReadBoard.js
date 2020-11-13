@@ -207,7 +207,10 @@ text-align: right;
 width: 100%;
 `
 const Btn = styled.button`
+    position: relative;
+    float:right;
     width: 60px;
+    bottom: 20px;
     height: 25px;
     line-height: 25px;
     font-size: 15px;

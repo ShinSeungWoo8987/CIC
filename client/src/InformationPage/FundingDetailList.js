@@ -62,7 +62,7 @@ function FundingDetailList() {
                 // shouldCloseOnOverlayClick={false} // 화면 밖 클릭 시 종료되는 기능 제거
             >
                 <Text>펀딩목록 세부정보</Text>
-                <FundingMember title='프로젝트' period='기간' name='이름' address='배송지' act='삭제' top='none' bottom='none' color='#FAFAFA' foneWeight='bold' zIndex='1' type='fundingDetailList' header='true'/>
+                <FundingMember title='프로젝트' period='기간' name='이름' address='배송지' act='삭제' top='none' bottom='none' bg='#b8e994' foneWeight='bold' zIndex='1' type='fundingDetailList' header='true'/>
                 
                 {!fundingDetailList?<Preparing>목록을 불러오는 중입니다 . . .</Preparing>:
                     fundingDetailList.length===0?
@@ -114,7 +114,7 @@ const Preparing = Styled.div`
     }
 `
 const NoList = Styled.div`
-    height: 480px;
+    height: 510px;
     line-height: 300px;
     text-align: center;
     font-size: 20px;

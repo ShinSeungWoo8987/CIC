@@ -3,6 +3,7 @@ import UploadImage from './UploadImage';
 import TextEditor from './TextEditor';
 import { put, post } from 'axios'
 import Store from '../Store/Store';
+import styled from 'styled-components';
 
 function SetContent(props) {
     const { globalState, info, infoDispatch, pageDispatch, content, contentDispatch, projectInformation } = useContext(Store);
@@ -108,20 +109,22 @@ function SetContent(props) {
             }).catch(err1=>alert(err1));
         }
     }
-    return (
-        <>
-            <form onSubmit={e => onSubmit(e)}>
-                {content.map(i => i.head === 'text' ?
-                    <TextEditor key={i.id} id={i.id} _content={i.content}/> : <UploadImage key={i.id} id={i.id} />
-                )}
-                <br />
-                <button onClick={(e) => addContent(e)}>+</button>
-                <br /><br /><br />
-                <button type="submit">Upload</button>
-                <button onClick={() => pageDispatch({ type: 'CHANGE_PAGE', payload: 'writeInfo' })}>이전</button>
-            </form>
-        </>
-    );
+    console.log(content.length%2===0);
+    return <Form onSubmit={e => onSubmit(e)}>
+        {content.map(i => i.head === 'text' ?
+            <TextEditor key={i.id} id={i.id} _content={i.content}/> : <UploadImage key={i.id} id={i.id} />
+        )}
+        <br />
+        <button onClick={(e) => addContent(e)}>{content.length%2===0?'내용추가':'이미지추가'}</button>
+        <br /><br /><br />
+        <button type="submit">Upload</button>
+    </Form>
 }
 
 export default SetContent;
+
+const Form = styled.form`
+    padding-top: 120px;
+    font-size: 18px;
+    text-align: center;
+`

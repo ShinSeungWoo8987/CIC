@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { post } from 'axios';
 
-function FundingMember({number, id, title, period, name, phone, address, cnt, border, top, bottom, color, foneWeight, zIndex, type, act, header, deleteCheck, setDeleteCheck}) {
+function FundingMember({number, id, title, period, name, phone, address, cnt, border, top, bottom, bg, foneWeight, zIndex, type, act, header, deleteCheck, setDeleteCheck}) {
     const deleteFunding = (number) => {
         const url = '/fundingDetailList/delete';
         const data = {
@@ -17,29 +17,29 @@ function FundingMember({number, id, title, period, name, phone, address, cnt, bo
         {type==='fundingDetailList'?
             <>
             {header==='true'?
-                <Container border={border} borderTop={top} borderBottom={bottom} color={color} foneWeight={foneWeight} zIndex={zIndex}>
+                <Container border={border} borderTop={top} borderBottom={bottom} bg={bg} foneWeight={foneWeight} zIndex={zIndex}>
                     <Title>{title}</Title>
                     <Period>{period}</Period>
                     <Name_>{name}</Name_>
-                    <Address>{address}</Address>
+                    <Address width='30%'>{address}</Address>
                     <Act>{act}</Act>
                 </Container>
                 :
-                <Container border={border} borderTop={top} borderBottom={bottom} color={color} foneWeight={foneWeight} zIndex={zIndex}>
+                <Container border={border} borderTop={top} borderBottom={bottom} bg={bg} foneWeight={foneWeight} zIndex={zIndex}>
                     <Title>{title}</Title>
                     <Period>{period}</Period>
                     <Name_>{name}</Name_>
-                    <Address>{address}</Address>
+                    <Address width='30%'>{address}</Address>
                     <Act_ onClick={()=>deleteFunding(number)}>{act}</Act_>
                 </Container>
             }
             </>
             :
-            <Container border={border} borderTop={top} borderBottom={bottom} color={color} foneWeight={foneWeight} zIndex={zIndex}>
+            <Container border={border} borderTop={top} borderBottom={bottom} bg={bg} foneWeight={foneWeight} zIndex={zIndex}>
                 <Id>{id}</Id>
                 <Name>{name}</Name>
                 <Phone>{phone}</Phone>
-                <Address>{address}</Address>
+                <Address width='37%'>{address}</Address>
                 <Cnt>{cnt}</Cnt>
             </Container>
         }
@@ -59,7 +59,7 @@ padding: 5px 0;
 font-size: 16px;
 font-weight: ${({foneWeight})=>`${foneWeight}`};
 text-align: center;
-background-color: ${({color})=>`${color}`};
+background-color: ${({bg})=>`${bg}`};
 z-index: ${({zIndex})=>`${zIndex}`};
 `
 const Id = styled.div`
@@ -91,14 +91,14 @@ width: 17.5%;
 `
 const Address = styled.div`
 float: left;
-width: 30%;
+width: ${({width})=>`${width}`};
 overflow: hidden;
 text-overflow: ellipsis;
 white-space: nowrap;
 `
 const Cnt = styled.div`
 float: left;
-width: 10%;
+width: 7%;
 `
 const Act = styled.div`
     float: left;

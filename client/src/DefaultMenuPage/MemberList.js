@@ -22,8 +22,6 @@ function MemberList(props) {
             get(`/memberCnt/${globalState.main==='userList'?'all':'creator_request'}${keyword?`/${keyword}`:''}`)
                 .then( ({ data }) => setItemCnt(data) )
                 .catch(err => console.log(err));
-
-            // get(`/member/${globalState.main==='userList'?'all':'creator_request'}/${globalState.action}${keyword?`/${keyword}`:''}`)
             get(`/member/${globalState.main==='userList'?'all':'creator_request'}/${pageNumber.value}${keyword?`/${keyword}`:''}`)
                 .then(res=>setMemberList(res.data))
                 .catch(err=>console.log(err));
@@ -46,30 +44,6 @@ function MemberList(props) {
             num: 0
         } });
     }
-    /*
-    const setPaging = []
-    for (var k = 1; k <= itemCnt; k++) {
-        if (globalState.action === k) setPaging.push(
-            <SelectedA key={k} href={k} onClick={e => e.preventDefault()}> [{k}] </SelectedA>
-        );
-        else setPaging.push(
-            <A key={k} href={k} onClick={e => changePage(e)}> [{k}] </A>
-        );
-    }
-    */
-    /*
-    const changePage = e => {
-        e.preventDefault();
-        globalStateDispatch({
-            type: 'GLOBAL', payload: {
-                main: globalState.main,
-                sub: globalState.sub,
-                action: Number(e.target.pathname.split('/')[1]),
-                num: globalState.num
-            }
-        })
-    }
-    */
     const decision = _decesion=>{
         axios.delete(`/creator_request/${globalState.num}/${_decesion}`)
             .then(()=>globalStateDispatch({type:'GLOBAL', payload:{
@@ -82,7 +56,7 @@ function MemberList(props) {
     }
     const _all = (<>
         <List>
-            <Member key='99' idx='99' authority='권한' userId='아이디' name='이름' phone='전화번호' birth='생년월일' adress='주소' del='삭제' />
+            <Member key='99' idx='99' authority='권한' userId='아이디' name='이름' phone='전화번호' birth='생년월일' adress='주소' del='삭제' fontWeight='bold' bg='#b8e994'/>
             {memberList ?
                 memberList.map((i, idx) => <Member key={idx} idx={idx} authority={i.gra_number} userId={i.mem_id} name={i.mem_name} phone={i.mem_phone} birth={i.mem_birth} adress={i.mem_address1 + ' ' + i.mem_address2} changed={changed} setChanged={setChanged}/>)
                 : '불러오는 중입니다.'}
@@ -93,10 +67,10 @@ function MemberList(props) {
                 <SearchButton onClick={e => handleSearch(e)}>검색</SearchButton>
             </SearchDiv>
             <br />
-            {/* {setPaging} */}
             <Paging maxPage={itemCnt}/>
         </Bottom>
     </>);
+    
     const _selected = <>
         <List>
             <ListContainer>
@@ -132,15 +106,13 @@ function MemberList(props) {
 export default MemberList;
 
 const Container = styled.div`
-    margin-top: -54px;
     float: left;
-    margin-left: 110px;
     width: 100%;
     height: 880px;
+    margin: -54px 0 0 110px;
 `
 const Center = styled.div`
-    margin: 0 auto;
-    width: 70%;
+
 `
 const Nav = styled.div`
 float: left;
@@ -155,18 +127,23 @@ text-align: center;
 font-size: 38px;
 `
 const List = styled.div`
-float: left;
-margin-top: 30px;
-min-height: 570px;
-width: 100%;
-padding-bottom: 20px;
-border-top: 1px solid lightgrey;
-border-bottom: 1px solid lightgrey;
+    float: left;
+    width: 95%;
+    min-height: 570px;
+    margin: 30px 0 0 2.5%;
+    padding: 0 0 20px 0;
+
+    animation-duration: 1s;
+    animation-name: preparing;
+    animation-fill-mode: forwards;
+
+    @keyFrames preparing {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
 `
 const ListContainer = styled.div`
-text-align: center;
-width:90%;
-margin: 0 auto;
+    text-align: center;
 `
 const Decision = styled.div`
 float: left;
