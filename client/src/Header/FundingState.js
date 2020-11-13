@@ -3,9 +3,10 @@ import Styled from 'styled-components';
 import Store from '../Store/Store';
 import PercentBar from '../Components/PercentBar'
 import Company from './Company';
+import Message from '../Components/Message';
 
 function FundingState() {
-    const { project, session, globalState, globalStateDispatch, modalStateDispatch, projectInformation, infoDispatch, contentDispatch } = useContext(Store);
+    const { project, session, globalState, globalStateDispatch, modalStateDispatch, projectInformation, infoDispatch, messageDispatch } = useContext(Store);
     const dDayText = projectInformation.dDay === '마감' ? '' : '일';
     const [fundingBtn, setfundingBtn] = useState('');
     // Get User Information & Setting
@@ -40,6 +41,17 @@ function FundingState() {
             }
             modalStateDispatch({ type: 'CHANGE_MODALSTATE', payload: newModalState });
         } else if (value === 'delete') {
+            if(projectInformation.dDay==='마감'){
+                let payload = {
+                    value: '마감된 프로젝트는 삭제하실 수 없습니다.'
+                }
+                messageDispatch({type:'MESSAGE', payload});
+                payload = {
+                    message: true
+                }
+                modalStateDispatch({ type: "CHANGE_MODALSTATE", payload });
+                return;
+            }
             const newGlobalState = {
                 main: globalState.main,
                 sub: globalState.sub,
@@ -97,6 +109,7 @@ function FundingState() {
                     {!fundingBtn ? <CloseFudningBtn>준비중</CloseFudningBtn> : fundingBtn}
                 </CurrentStateContainer>
                 <Company />
+                <Message/>
             </Container>
 }
 export default FundingState;

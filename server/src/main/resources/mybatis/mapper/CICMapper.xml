@@ -381,6 +381,12 @@
 		</choose>
 	</update>
 	
+	<select id="getProjectDDay" resultType="float">
+		select <![CDATA[pro_finish-sysdate]]> dDay
+		from project
+		where pro_number = #{pro_number}
+	</select>
+	
 	
 	
 	

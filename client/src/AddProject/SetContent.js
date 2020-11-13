@@ -111,13 +111,15 @@ function SetContent(props) {
     }
     console.log(content.length%2===0);
     return <Form onSubmit={e => onSubmit(e)}>
-        {content.map(i => i.head === 'text' ?
-            <TextEditor key={i.id} id={i.id} _content={i.content}/> : <UploadImage key={i.id} id={i.id} />
-        )}
-        <br />
-        <button onClick={(e) => addContent(e)}>{content.length%2===0?'내용추가':'이미지추가'}</button>
-        <br /><br /><br />
-        <button type="submit">Upload</button>
+        <Content>
+            {content.map(i => i.head === 'text' ?
+                <TextEditor key={i.id} id={i.id} _content={i.content}/> : <UploadImage key={i.id} id={i.id} />
+            )}
+            <br/>
+            <PlusBtn onClick={(e) => addContent(e)}>{content.length%2===0?'내용추가':'이미지추가'}</PlusBtn>
+        </Content>
+        
+        <UploadBtn type="submit">프로젝트 등록하기</UploadBtn>
     </Form>
 }
 
@@ -127,4 +129,34 @@ const Form = styled.form`
     padding-top: 120px;
     font-size: 18px;
     text-align: center;
+`
+const Content = styled.div`
+    min-height: 600px;
+`
+
+const UploadBtn = styled.button`
+    margin-top:20px;
+    width: 300px;
+    height: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px grey;
+    box-shadow: 1px 1px 5px #BDBDBD;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background-color: #87d37c;
+    cursor: pointer;
+
+    &:hover {
+        box-shadow: 2px 2px 5px #BDBDBD;
+    }
+`
+
+const PlusBtn = styled(UploadBtn)`
+    font-size: 14px;
+    width: 90px;
+    height: 35px;
+    margin-top: 20px;
+    background-color: #fdcb6e;
 `

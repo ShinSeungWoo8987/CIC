@@ -16,6 +16,7 @@ function Register() {
     const [idMessage, setIdMessage] = useState(''); // Id Valid Check Message
     const [nameMessage, setNameMessage] = useState(''); // Id Valid Check Message
     const [address2Message, setAddress2Message] = useState(''); // Id Valid Check Message
+    const [confirm, setconfirm] = useState(false);
     // Register Modal Setting
     const openRegisterModal = (e) => {
         e.preventDefault();
@@ -75,10 +76,12 @@ function Register() {
                 setAddress2Message('사용할 수 없는 주소입니다.');
                 document.getElementById(inputId).focus();
             }
+            setconfirm(true);
         }else{
             setPasswordMessage('');
             setNameMessage('');
             setAddress2Message('');
+            setconfirm(false);
         }
     }
     // Password Equal Check
@@ -98,6 +101,8 @@ function Register() {
     // Register Submit
     const handleRegisterSubmit = (e) => {
         e.preventDefault();
+        if(confirm)
+            return false;
         const {id,pw1,name,birth,phone,postcode,address1,address2} = e.target;
         executeRegisterService(
             id.value,

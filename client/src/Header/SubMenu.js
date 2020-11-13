@@ -59,7 +59,7 @@ function SubMenu(){
             menu.push(
                 <SelectMenuContainer key={idx} id={menuList[idx].id} onClick={(e)=>changMenuState(e)}>
                     <TextContainer>
-                    <Text>{menuList[idx].title}</Text>
+                    <Text borderBottom='3px solid #83E538'>{menuList[idx].title}</Text>
                     </TextContainer><br/>
                 </SelectMenuContainer>
             )
@@ -82,7 +82,9 @@ function SubMenu(){
                     globalState.main==='adminGradeUp' || globalState.main==='userList' ||
                     globalState.main==='gradeUp' || globalState.main==='addProject'?'0px':'auto'}>
             <Menu>
-                {menu}
+                <AlignCenter>
+                    {menu}
+                </AlignCenter>
             </Menu>
         </Container>
     )
@@ -102,16 +104,16 @@ const Container = Styled(Left)`
 const Menu = Styled(Left)`
     position: relative;
     left: 50%;
+    transform: translate(-50%);
     height: 34px;
     line-height: 34px;
-    margin: 10px 0;
-    transform: translate(-50%);
+    margin: 10px 0 0 0;
+    border-bottom: 1px solid lightgrey;
 `
 const MenuContainer = Styled(Left)`
-    padding: 0 25px;
-    color: #A3A3A3;
     font-weight: normal;
-    cursor: pointer;   
+    color: #A3A3A3;
+    cursor: pointer; 
     
     &:hover {
         color: black;
@@ -123,9 +125,20 @@ const SelectMenuContainer = Styled(MenuContainer)`
     color: black;
     text-shadow: 1px 1px 2px gray;
 `
+const AlignCenter = Styled(Left)`
+    position: relative;
+    left: 50%;
+    transform: translate(-50%);
+`
 const TextContainer = Styled(Left)`
+    
 `
 const Text = Styled.div`
+    height: 32px;
+    border-bottom: ${({ borderBottom }) => `${borderBottom}`};
     font-size: 17.5px;
+    padding: 0 20px;
+    margin: 0 20px;
+    z-index: 3;
 `
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

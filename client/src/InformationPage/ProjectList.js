@@ -107,7 +107,7 @@ const Box = Styled(Left)`
 `
 const Preparing = Styled(Navigation)`
     width: 215px;
-    height: 25px;
+    height: 824px;
     margin: 5px 0 0 50px;
     font-size: 17.5px;
     font-weight: bold;

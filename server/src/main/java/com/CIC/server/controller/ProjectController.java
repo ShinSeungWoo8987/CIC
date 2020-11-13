@@ -77,8 +77,6 @@ public class ProjectController {
 		UserDetails userDetails = (UserDetails)principal;
 		String userId = userDetails.getUsername();
 		String authority = userDetails.getUsername();
-		
-		
 		try {
 			List<String> values = new ArrayList<String>();
 	        map.forEach((k, v) -> {
@@ -86,18 +84,31 @@ public class ProjectController {
 			});
 	        String projectNumber = values.get(0);
 	        try {
-	        	if( userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]") || userId.equals( this.cicService.checkProjectWriter(Integer.parseInt(projectNumber)) )) {
-	        		int joinCnt = this.cicService.getProjectJoinCnt(projectNumber);
-					if(joinCnt!=0) 
-						return;
-			        try {
-			        	this.cicService.deleteProject(projectNumber);
-			        }catch (Exception e) {
-			        	System.out.println("ProjectController deleteProject Error Message : Method-deleteProject Error");
+	        	float dDay = cicService.getProjectDDay(projectNumber);
+	        	System.out.println("dDay : "+dDay);
+	        	// 남은 날짜가 있는 경우
+	        	if(dDay > 0) {
+	        		try {
+			        	if( userDetails.getAuthorities().toString().equals("[ROLE_ADMIN]") || userId.equals( this.cicService.checkProjectWriter(Integer.parseInt(projectNumber)) )) {
+			        		try {
+				        		int joinCnt = this.cicService.getProjectJoinCnt(projectNumber);
+								if(joinCnt!=0) 
+									return;
+								try {
+						        	this.cicService.deleteProject(projectNumber);
+						        }catch (Exception e) {
+						        	System.out.println("ProjectController deleteProject Error Message : Method-deleteProject Error");
+								}
+			        		}catch (Exception e) {
+			        			System.out.println("ProjectController deleteProject Error Message : Method-getProjectJoinCnt Error");
+							}
+			    		}
+		        	}catch (Exception e) {
+		        		System.out.println("ProjectController deleteProject Error Message : Method-checkProjectWriter Error");
 					}
-	    		}
+	        	}
 	        }catch (Exception e) {
-	        	System.out.println("ProjectController deleteProject Error Message : Method-getProjectJoinCnt or checkProjectWriter Error");
+	        	System.out.println("ProjectController deleteProject Error Message : Method-getProjectDday Error");
 			}
 		}catch (Exception e) {
 			System.out.println("ProjectController deleteProject Error Message : React-Axios Error");

@@ -162,6 +162,10 @@ public class CICServiceImpl implements CICService {
 	public void updateMoneyHistory(String fun_number, String result) {
 		cicMapper.updateMoneyHistory(fun_number, result);
 	}
+	@Override
+	public float getProjectDDay(String pro_number) {
+		return cicMapper.getProjectDDay(pro_number);
+	}
 	
 	
 	

@@ -176,7 +176,7 @@ const LabelContainer = styled.span`
     border-radius: 5px;
     cursor: pointer;
     color: white;
-    background-color: #87d37c;
+    background-color: #fdcb6e;
 `
 const Label = styled.label`
     font-size: 15px;
