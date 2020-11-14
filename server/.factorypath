@@ -1,6 +1,6 @@
 <factorypath>
-    <factorypathentry kind="EXTJAR" id="C:\Users\Admin\Desktop\CIC\server\lib\javaSDK-2.2.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="EXTJAR" id="C:\Users\Admin\Desktop\CIC\server\lib\json-simple-1.1.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="C:\Users\Admin\OneDrive - 장안대학교\바탕 화면\CIC\server\lib\javaSDK-2.2.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="EXTJAR" id="C:\Users\Admin\OneDrive - 장안대학교\바탕 화면\CIC\server\lib\json-simple-1.1.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/amazonaws/aws-java-sdk/1.11.404/aws-java-sdk-1.11.404.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/amazonaws/aws-java-sdk-signer/1.11.404/aws-java-sdk-signer-1.11.404.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/amazonaws/jmespath-java/1.11.404/jmespath-java-1.11.404.jar" enabled="true" runInBatchMode="false"/>

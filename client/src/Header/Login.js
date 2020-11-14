@@ -85,7 +85,7 @@ function Login() {
     }
     return(
         <Container margin={session.state?'1300px':'1315px'}>
-            <LinkModal onClick={(e)=>openLoginModal(e)}>{session.state?'로그아웃':'로그인'}</LinkModal>
+            <LinkModal onClick={(e)=>openLoginModal(e)}><Text>{session.state?'로그아웃':'로그인'}</Text></LinkModal>
             <Modal 
                 isOpen={modalState.login}
                 style={LoginModalStyle}
@@ -122,6 +122,11 @@ const LinkModal = Styled.a`
         color: black;
         font-weight: bold;
     }
+`
+const Text = Styled.div`
+    height: 46px;
+    line-height: 46px;
+    text-align: left;
 `
 const Form = Styled.div`
     padding: 25px 0 0 0;

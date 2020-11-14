@@ -148,7 +148,7 @@ function Funding() {
                         <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} required readOnly/>
                         <BtnPostcode margin='0 0 15px 25px' type='submit' value='우편번호 검색' onClick={(e)=>openPostcodeModal(e)}/><br/>
                         <Input margin='0 0 15px 25px' id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} required readOnly/><br/>
-                        <Input margin='0 0 0 25px' id="address2" type="text" placeholder="상세 주소" defaultValue={userInformation.address2} onBlur={(e)=>checkInutValue(e)}/><br/>
+                        <Input margin='0 0 0 25px' id="address2" type="text" placeholder="상세 주소" defaultValue={userInformation.address2} required onBlur={(e)=>checkInutValue(e)}/><br/>
                         <SpanText>{address2Mesage}</SpanText><br/>
                     </DeliveryAddressContainer>
                     <Writing id='supportMessage' placeholder='응원글을 입력해주세요!'/><br/>

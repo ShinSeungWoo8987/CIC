@@ -69,8 +69,12 @@ function Main() {
     if(globalState.sub==='closeSoon') _period='마감임박';
     if(globalState.sub==='close') _period='마감';
 
+    const test = (e) => {
+        console.log(e);
+    }
+
     return(
-        <Container>
+        <Container onScroll={(e)=>test(e) }>
             <Navigation>카테고리&nbsp;&gt;&nbsp;{_category}&nbsp;&gt;&nbsp;{_period}</Navigation>
             <SubContainer>
                 <LeftSide>
@@ -93,6 +97,7 @@ const Left = Styled.div`
 `
 const Container = Styled(Left)`
     width: 1665px;
+    height: 2000px;
     text-align: center;
 `
 const Navigation = Styled.div`

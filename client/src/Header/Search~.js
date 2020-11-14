@@ -8,6 +8,7 @@ function Search() {
   useEffect(()=>{
     document.getElementById('inputSearch').value = null;
   },[globalState]);
+  // globalState 값 변경 시 검색값 초기화 유무 결정 필요
   const searchRef = useRef();
   const SearchImg = `https://crowdincreative.s3.ap-northeast-2.amazonaws.com/static/Search.png`;
 
@@ -34,13 +35,11 @@ function Search() {
   export default Search;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const Container = Styled.div`
+  float: left;
   position: fixed;
-  width: 600px;
-  margin: 0 0 0 690px;
+  margin: 0 0 0 533px;
 `
 const Input = Styled.input`
-  position: relative;
-  left: 0;
   float: right;
   width: 295px;
   height: 30px;
@@ -48,13 +47,10 @@ const Input = Styled.input`
   text-indent: 10px;
   border: none;
   border-radius: 5px;
-  outline: none;
-
-  transition: all .5s ease-in-out;
+  transition: width .35s ease-in-out;
 
   &:focus {
     width: 400px;
-    right: 100%;
   }
 `
 const ImageContainer = Styled.div`

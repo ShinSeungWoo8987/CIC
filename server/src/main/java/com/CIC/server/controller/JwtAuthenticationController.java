@@ -31,11 +31,15 @@ import com.CIC.server.model.JwtResponse;
 import com.CIC.server.model.Member;
 import com.CIC.server.service.CICService;
 import com.CIC.server.service.JwtUserDetailsService;
+import com.CIC.server.util.Util;
 
 
 @RestController
 @CrossOrigin
 public class JwtAuthenticationController {
+	
+	@Autowired
+	private Util util;
 	
 	@Autowired
 	private CICService cicService;
@@ -205,17 +209,19 @@ public class JwtAuthenticationController {
     
     @RequestMapping(value = "/authenticate/findPw", method = RequestMethod.POST, consumes="application/json")
     public String findPw(@RequestBody Map map) throws Exception {
-//    	.mem_pw(bcrypt.encode(values.get(1)))
     	try {
-	    	// index(0) : id, index(1): pw
+	    	// index(0) : id, index(1) : name, index(2) : phone
 	    	List<String> values = new ArrayList<String>();
 			map.forEach((k, v) -> {
 				values.add((String)v);
 			});
 			try {
-				if(cicService.getMember(values.get(0))!=null) {
+				if(cicService.checkMember(values.get(0), values.get(1), values.get(2) )!=null) {
 					try {
-						cicService.findPw(values.get(0), bcrypt.encode(values.get(1)));
+						String newPassword = util.getNewPassword();
+						cicService.findPw(values.get(0), bcrypt.encode(newPassword));
+						String message = values.get(1)+"님, 변경된 비밀번호는'"+newPassword+"'입니다.";
+						util.happyMessage(values.get(2), message);
 						return "비밀번호가 변경되었습니다.";
 					}catch (Exception e) {
 						System.out.println("JwtAuthenticationController findPw Error Message : Method-findPw Error");

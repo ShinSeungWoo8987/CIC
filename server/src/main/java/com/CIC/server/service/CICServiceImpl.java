@@ -166,6 +166,10 @@ public class CICServiceImpl implements CICService {
 	public float getProjectDDay(String pro_number) {
 		return cicMapper.getProjectDDay(pro_number);
 	}
+	@Override
+	public Member checkMember(String id, String name, String phone) {
+		return cicMapper.checkMember(id, name, phone);
+	}
 	
 	
 	

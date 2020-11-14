@@ -3,31 +3,24 @@ import styled from 'styled-components';
 import Store from '../Store/Store';
 import Message from '../Components/Message';
 
-function SetInformation({newInfo, setNewInfo}) {
+function SetInformation({newInfo, setNewInfo, toWriteContent}) {
     const { modalStateDispatch, info, infoDispatch, pageDispatch, messageDispatch } = useContext(Store);
     const [thumbnailChanged, setThumbnailChanged] = useState(false);
     const [logoChanged, setLogoChanged] = useState(false);
     useEffect(() => {
         setNewInfo(info);
     }, [info]);
-    const onSubmit = (e) => {
-        e.preventDefault();
-        if(newInfo.sdate>newInfo.fdate) {
-            let payload={value:'잘못된 프로젝트 기간입니다.'}
-            messageDispatch({type:"MESSAGE", payload});
-            payload={message:true}
-            modalStateDispatch({type:"CHANGE_MODALSTATE", payload});
-            document.getElementById('fdate').focus();
-            return false;
-        }
-        infoDispatch({ type: 'CHANGE_INFO', payload: newInfo })
-        pageDispatch({ type: 'CHANGE_PAGE', payload: 'writeContent' });
-    }
     const onValueChange = (e) => {
         const { name, value } = e.target;
         let _newInfo = { ...newInfo };
         _newInfo[`${name}`] = value;
         setNewInfo(_newInfo);
+
+        console.log( value.split('-')[0], value.split('-')[1], value.split('-')[2] )
+        // 날짜처리
+        const date = new Date('2020-10-31');
+        date.setDate(date.getDate() + 1);
+        console.log(date)
     }
     const onFileChange = (e) => {
         const { name, files } = e.target;
@@ -44,18 +37,16 @@ function SetInformation({newInfo, setNewInfo}) {
     }
 
     const viewPath = (e) => {
-        console.log(e.target.id);
         if(e.target.id==='thumbnail'){
             document.getElementById('thumbnailPath').value = e.target.value;
         }else{
-            console.log('here');
             document.getElementById('logoPath').value = e.target.value;
         }
     }
 
     return (
         <>
-            <Form onSubmit={(e) => onSubmit(e)}>
+            <Form onSubmit={(e) => toWriteContent(e)}>
                 <Info>
                     <Title>
                         프로젝트 제목<br/>
@@ -72,18 +63,18 @@ function SetInformation({newInfo, setNewInfo}) {
                     <ProjectPeriod>
                         프로젝트 기간설정<br/>
                         <DateInput type="date" name="sdate" value={newInfo.sdate} onChange={e => onValueChange(e)} required/>
-                        -
+                        &nbsp;-&nbsp;
                         <DateInput type="date" id="fdate" name="fdate" value={newInfo.fdate} onChange={e => onValueChange(e)} required/>
                     </ProjectPeriod>
 
                     <TargetMoney>
                         목표금액<br/>
-                        <ShortInput type="text" name="target_money" value={newInfo.target_money} onChange={e => onValueChange(e)} placeholder='아이템/서비스의 목표금액을 입력해주세요.' required/>&nbsp;원
+                        <ShortInput type="number" name="target_money" value={newInfo.target_money} onChange={e => onValueChange(e)} placeholder='아이템/서비스의 목표금액을 입력해주세요.' required/>&nbsp;원
                     </TargetMoney>
                     
                     <FundingPrice>
                         펀딩가격<br/>
-                        <ShortInput type="text" name="funding_price" value={newInfo.funding_price} onChange={e => onValueChange(e)} placeholder='아이템/서비스의 펀딩가격을 입력해주세요.' required/>&nbsp;원
+                        <ShortInput type="number" name="funding_price" value={newInfo.funding_price} onChange={e => onValueChange(e)} placeholder='아이템/서비스의 펀딩가격을 입력해주세요.' required/>&nbsp;원
                     </FundingPrice>
                     
                     <Thumbnail>
@@ -134,6 +125,7 @@ const Info = styled.div`
 `
 const Left = styled.div`
 float: left;
+font-weight: bold;
 `
 const Title = styled(Left)`
 margin-bottom: 40px;
@@ -209,16 +201,25 @@ const NextBtn = styled.button`
 const LongInput = styled.input`
     margin-top: 10px;
     width: 800px;
-    height: 25px;
+    height: 40px;
+    font-size: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;
+    color: #717171;
 `
 const ShortInput = styled.input`
     margin-top: 10px;
-    width: 325px;
-    height: 25px;
+    width: 330px;
+    height: 40px;
+    font-size: 15px;
+    border: 1px solid #E0E0E0;
+    border-radius: 5px;
+    color: #717171;
 `
 const RadioDiv = styled.div`
     float: left;
     width: 30%;
+    font-weight: normal;
 `
 const RadioInput = styled.input`
     margin-top: 17px;

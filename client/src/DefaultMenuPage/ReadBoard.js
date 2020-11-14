@@ -13,13 +13,13 @@ function ReadBoard() {
     const searchRef = useRef();
     const [keyword, setKeyword] = useState();
     useEffect(() => {
-        get(`http://localhost:5000/${globalState.main}Cnt${keyword?`/${keyword}`:''}`)
+        get(`/${globalState.main}Cnt${keyword?`/${keyword}`:''}`)
             .then(({ data }) => {
                 setItemCnt(parseInt(Number(data) / 7) + 1);
             })
             .catch(err => console.log(err));
 
-        get(`http://localhost:5000/${globalState.main}list/${globalState.action}${keyword?`/${keyword}`:''}`)
+        get(`/${globalState.main}list/${globalState.action}${keyword?`/${keyword}`:''}`)
             .then(({ data }) => {
                 boardItemListDispatch({ type: 'CHANGE', payload: data.slice(0, 7) });
             })

@@ -387,6 +387,12 @@
 		where pro_number = #{pro_number}
 	</select>
 	
+	<select id="checkMember" resultType="Member">
+		select *
+		from member
+		where mem_id = #{id} and mem_name = #{name} and mem_phone = #{phone}
+	</select>
+	
 	
 	
 	

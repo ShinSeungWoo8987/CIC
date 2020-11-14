@@ -109,7 +109,6 @@ function SetContent(props) {
             }).catch(err1=>alert(err1));
         }
     }
-    console.log(content.length%2===0);
     return <Form onSubmit={e => onSubmit(e)}>
         <Content>
             {content.map(i => i.head === 'text' ?

@@ -15,7 +15,7 @@ const executeRegisterService = (username, password, name, birth, phone, postcode
 
 // send username, password to the SERVER
 const executeJwtAuthenticationService = (username, password)=>{
-    // return axios.post('http://localhost:5000/authenticate', {
+    // return axios.post('/authenticate', {
     return axios.post('/authenticate', {
         username,
         password
@@ -24,7 +24,7 @@ const executeJwtAuthenticationService = (username, password)=>{
 
 const executeHelloService = ()=> {
     console.log("===executeHelloService===")
-    return axios.get('http://localhost:5000/hello');
+    return axios.get('/hello');
 }
 
 const registerSuccessfulLoginForJwt = (authority, token, userId)=>{

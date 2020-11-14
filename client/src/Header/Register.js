@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 import Store from '../Store/Store';
 import { post } from 'axios'
 import {executeRegisterService} from '../Jwt/AuthenticationService';
-import { checkInputValueRestirctedCharacter } from '../Util/Util';
+import { checkInputValueRestirctedCharacter, replaceInputValueRestirctedCharacter } from '../Util/Util';
 
 Modal.setAppElement('#root') // Modal 태그 내부에 onRequestClose 같은 속성을 사용하기 위해 선언
 
@@ -14,8 +14,7 @@ function Register() {
     const [passwordMessage, setPasswordMessage] = useState(''); // Password Valid Check Message
     const [passwordConfirmMessage, setPasswordConfirmMessage] = useState(''); // Password Equal Check Message
     const [idMessage, setIdMessage] = useState(''); // Id Valid Check Message
-    const [nameMessage, setNameMessage] = useState(''); // Id Valid Check Message
-    const [address2Message, setAddress2Message] = useState(''); // Id Valid Check Message
+    const [nameMessage, setNameMessage] = useState(''); // Name Valid Check Message
     const [confirm, setconfirm] = useState(false);
     // Register Modal Setting
     const openRegisterModal = (e) => {
@@ -28,7 +27,6 @@ function Register() {
         setPasswordMessage("");
         setPasswordConfirmMessage("");
         setNameMessage("");
-        setAddress2Message("");
         addressValueDispatch({type: 'DEFAULT'});
         setRegisterModalState(false);
     }
@@ -72,15 +70,11 @@ function Register() {
             }else if(inputId === 'name'){
                 setNameMessage('사용할 수 없는 이름입니다.');
                 document.getElementById(inputId).focus();
-            }else if(inputId === 'address2'){
-                setAddress2Message('사용할 수 없는 주소입니다.');
-                document.getElementById(inputId).focus();
             }
             setconfirm(true);
         }else{
             setPasswordMessage('');
             setNameMessage('');
-            setAddress2Message('');
             setconfirm(false);
         }
     }
@@ -112,7 +106,7 @@ function Register() {
             phone.value,
             postcode.value,
             address1.value,
-            address2.value
+            replaceInputValueRestirctedCharacter(address2.value)
         ).then(res=>{});
         closeRegisterModal();
     };
@@ -138,8 +132,7 @@ function Register() {
                     <InputPostcode id='postcode' name="postcode" type="text" placeholder="우편번호" value={addressValue.postcode} required readOnly/>
                     <BtnPostcode type='button' value='우편번호 검색' onClick={(e)=>openPostcodeModal(e)}/><br/>
                     <Input margin='0 0 20px 0' id="address1" type="text" placeholder="도로명 주소" value={addressValue.address1} required readOnly/><br/>
-                    <Input id="address2" type="text" placeholder="상세 주소" onBlur={(e)=>checkInutValue(e)}/><br/>
-                    <SpanText>{address2Message}</SpanText><br/>
+                    <Input margin='0 0 20px 0' id="address2" type="text" placeholder="상세 주소" required/><br/>
                     <InputSubmit type="submit" value="회원가입"/>
                 </Form>
             </Modal>

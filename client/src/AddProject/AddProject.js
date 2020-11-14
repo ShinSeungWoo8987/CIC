@@ -41,7 +41,38 @@ function AddProject(props) {
       }):'' });
   },[]);
 
-  const writeInfo = <SetInformation newInfo={newInfo} setNewInfo={setNewInfo} />
+  const toWriteContent = (e) => {
+    e.preventDefault();
+    if( newInfo.project_name==='' || newInfo.target_money==='' || newInfo.sdate==='' || newInfo.fdate==='' || newInfo.funding_price==='' || newInfo.email==='' ){
+      messageDispatch({type:"MESSAGE", payload: {value: `양식을 모두 작성해주세요.`} });
+      modalStateDispatch({type:"CHANGE_MODALSTATE", payload: {message:true} });
+      return false;
+    } else if( newInfo.category==='' || newInfo.thumbnail==='' || newInfo.logo==='' ){
+        messageDispatch({type:"MESSAGE", payload: {
+            value: [
+                `양식을 모두 작성해주세요.`,
+                <br key='br'/>,
+                `[ ${newInfo.category===''?'카테고리 ':''}${newInfo.thumbnail===''?'썸네일 ':''}${newInfo.logo===''?'로고 ':''}]`
+            ]
+        } });
+        modalStateDispatch({type:"CHANGE_MODALSTATE", payload: {message:true} });
+        return false;
+    }
+
+    e.preventDefault();
+    if(newInfo.sdate>newInfo.fdate) {
+        let payload={value:'잘못된 프로젝트 기간입니다.'}
+        messageDispatch({type:"MESSAGE", payload});
+        payload={message:true}
+        modalStateDispatch({type:"CHANGE_MODALSTATE", payload});
+        document.getElementById('fdate').focus();
+        return false;
+    }
+    infoDispatch({ type: 'CHANGE_INFO', payload: newInfo })
+    pageDispatch({ type: 'CHANGE_PAGE', payload: 'writeContent' });
+  }
+
+  const writeInfo = <SetInformation newInfo={newInfo} setNewInfo={setNewInfo} toWriteContent={toWriteContent} />
   const writeContent = <SetContent/>
 
   let navItem = []
@@ -67,20 +98,6 @@ function AddProject(props) {
       break;
   }
 
-  const toWriteContent = (e) => {
-    e.preventDefault();
-    if(newInfo.sdate>newInfo.fdate) {
-        let payload={value:'잘못된 프로젝트 기간입니다.'}
-        messageDispatch({type:"MESSAGE", payload});
-        payload={message:true}
-        modalStateDispatch({type:"CHANGE_MODALSTATE", payload});
-        document.getElementById('fdate').focus();
-        return false;
-    }
-    infoDispatch({ type: 'CHANGE_INFO', payload: newInfo })
-    pageDispatch({ type: 'CHANGE_PAGE', payload: 'writeContent' });
-  }
-  
   const toWriteInfo = () => pageDispatch({ type: 'CHANGE_PAGE', payload: 'writeInfo' });
 
   return (
@@ -103,10 +120,9 @@ export default AddProject;
 
 const Container = styled.div`
   float:left;
-  margin-top: -34px;    
-  margin-left: 110px;
   width: 100%;
-  height: 880px;
+  minheight: 880px;
+  margin: -34px 0 0 110px;
 `
 const Center = styled.div`
     margin: 0 auto;

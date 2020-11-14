@@ -57,6 +57,7 @@ public interface CICService {
 	List<FundingJoin> getFundingJoinList(String pro_number);
 	void updateMoneyHistory(String fun_number, String result);
 	float getProjectDDay(String pro_number);
+	Member checkMember(String id, String name, String phone);
 	
 	
 	
