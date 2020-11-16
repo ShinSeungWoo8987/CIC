@@ -16,10 +16,31 @@ function SetContent(props) {
         }]);
         contentDispatch({ type: 'CHANGE', payload: newContent });
     }
+
+    const getFormatDate = date=>{
+        var year = date.getFullYear();
+        var month = (1 + date.getMonth());
+        month = month >= 10 ? month : '0' + month;
+        var day = date.getDate();
+        day = day >= 10 ? day : '0' + day;
+        return  year + '-' + month + '-' + day;
+    }
+
+
+
+    
+
+
+
+
     // Upload to server
     const onSubmit = (e) => {
         e.preventDefault();
-        
+        // 날짜처리
+        let fdate = new Date(`${info.fdate.split('-')[0]}-${info.fdate.split('-')[1]}-${info.fdate.split('-')[2]}`);
+        fdate.setDate(fdate.getDate() + 1);
+        fdate = getFormatDate(fdate);
+
         if(globalState.main==='addProject'){ // 프로젝트 등록
             const url = '/upload'
             const formData = new FormData();
@@ -40,7 +61,7 @@ function SetContent(props) {
                 const thumbnail = `${folderName}/${data.thumbnail}`
                 const logo = `${folderName}/${data.logo}`
                 
-                const _info = Object.assign(info, {thumbnail,logo});
+                const _info = Object.assign(info, {thumbnail,logo,fdate});
                 infoDispatch({type:'CHANGE_INFO', payload:_info});
 
                 //DB에 저장할 data형태로 만들기.
@@ -101,6 +122,8 @@ function SetContent(props) {
                 let _info = {...info};
                 if(thumbnail!=='') _info.thumbnail=thumbnail;
                 if(logo!=='') _info.logo=logo;
+                
+                _info.fdate = fdate;
 
                 post('/project/update', {..._info, sendContent, project_num:`${projectInformation.number}`})
                     .then((res) => {

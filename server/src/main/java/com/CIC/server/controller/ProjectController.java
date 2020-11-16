@@ -447,6 +447,7 @@ public class ProjectController {
 				  .pro_logo(logo)
 				  .build();
 		try {
+			System.out.println(project);
 			this.cicService.addProject(project);
 			
 			ArrayList<Map> contentArray = (ArrayList)map.get("sendContent");

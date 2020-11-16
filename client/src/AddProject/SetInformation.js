@@ -15,12 +15,6 @@ function SetInformation({newInfo, setNewInfo, toWriteContent}) {
         let _newInfo = { ...newInfo };
         _newInfo[`${name}`] = value;
         setNewInfo(_newInfo);
-
-        console.log( value.split('-')[0], value.split('-')[1], value.split('-')[2] )
-        // 날짜처리
-        const date = new Date('2020-10-31');
-        date.setDate(date.getDate() + 1);
-        console.log(date)
     }
     const onFileChange = (e) => {
         const { name, files } = e.target;
