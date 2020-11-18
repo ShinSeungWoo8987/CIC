@@ -97,7 +97,7 @@ const Left = Styled.div`
 `
 const Container = Styled(Left)`
     width: 1665px;
-    height: 2000px;
+    height: 828px;
     text-align: center;
 `
 const Navigation = Styled.div`

@@ -123,7 +123,7 @@ const MenuContainer = Styled(Left)`
 const SelectMenuContainer = Styled(MenuContainer)`  
     font-weight: bold;
     color: black;
-    text-shadow: 1px 1px 2px gray;
+    // text-shadow: 1px 1px 2px gray;
 `
 const AlignCenter = Styled(Left)`
     position: relative;

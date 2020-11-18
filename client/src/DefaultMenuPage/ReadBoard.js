@@ -186,8 +186,16 @@ const Section = styled.div`
     height: 30px;
     float: left;
     margin: 0 30px;
+    color: #A3A3A3;
+
+    &:hover {
+        color: black;
+        font-weight: bold;
+    }
 `
 const LineSection = styled(Section)`
+    color: black;
+    font-weight: bold;
     border-bottom: 3px solid #83E538;
 `
 const List = styled.div`

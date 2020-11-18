@@ -89,7 +89,8 @@ function FundingState() {
                 <CurrentStateContainer>
                     <Text>모인금액</Text><br />
                     <SubContainer key={1} margin='-10px 0 10px 0'>
-                        <Value >{projectInformation.save}</Value><BottomText >원</BottomText><PercentText>{projectInformation.percent + '%'}</PercentText><br /><br />
+                        <Value >{projectInformation.save}</Value><BottomText >원</BottomText>
+                        <PercentText color={projectInformation.percent<=40?'black': projectInformation.percent<=70?'orange':'lime'}>{projectInformation.percent + '%'}</PercentText><br /><br />
                         <PercentBarContainer>
                             <PercentBar width='300px' height='10px' borderColor='white' percent={projectInformation.percent} />
                         </PercentBarContainer>
@@ -104,7 +105,7 @@ function FundingState() {
                     </SubContainer><br />
                     <Text>남은기간</Text><br />
                     <SubContainer key={4} margin='0 0 20px 0'>
-                        <Value >{projectInformation.dDay}</Value><BottomText >{dDayText}</BottomText>
+                        <Value color="#fdcb6e" >{projectInformation.dDay}</Value><BottomText >{dDayText}</BottomText>
                     </SubContainer>
                     {!fundingBtn ? <CloseFudningBtn>준비중</CloseFudningBtn> : fundingBtn}
                 </CurrentStateContainer>
@@ -138,7 +139,9 @@ const SubContainer = Styled(Left)`
 const Value = Styled(Left)`
     font-size: 30px;
     font-weight: bold;
-    color: #87d37c;
+    // color: #87d37c;
+    // color: #fdcb6e;
+    color: ${({ color }) => color || "#87d37c"};
 `
 const PercentBarContainer = Styled(Left)`
     border: none;
@@ -153,7 +156,8 @@ const BottomText = Styled(Text)`
 const PercentText = Styled(BottomText)`
     float: right;
     font-weight: bold;
-    color: #87d37c;
+    // color: #87d37c;
+    color: ${({ color }) => color || "#fdcb6e"};
 `
 const FundingBtn = Styled.button`
     left: 14%;

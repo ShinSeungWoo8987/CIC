@@ -49,6 +49,7 @@ const Input = Styled.input`
   border: none;
   border-radius: 5px;
   outline: none;
+  background-color: white;
 
   transition: all .5s ease-in-out;
 

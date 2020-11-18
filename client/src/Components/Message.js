@@ -20,7 +20,7 @@ function Message( ){
         >
             <Form onSubmit={(e)=>closeMessageModal(e)}>
                 <Text>{message.value}</Text>
-                <Input type='submit' value='아시겠어요?'/>
+                <Input type='submit' value='확인'/>
             </Form> 
         </Modal>
     );

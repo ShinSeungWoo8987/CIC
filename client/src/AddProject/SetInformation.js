@@ -95,7 +95,7 @@ function SetInformation({newInfo, setNewInfo, toWriteContent}) {
                     
                     <Email>
                         이메일<br/>
-                        <LongInput type="text" name="email" value={newInfo.email} onChange={e => onValueChange(e)} placeholder='펀딩문의를 위한 이메일을 입력해주세요.' required/>
+                        <LongInput type="email" name="email" value={newInfo.email} onChange={e => onValueChange(e)} placeholder='펀딩문의를 위한 이메일을 입력해주세요.' required/>
                     </Email>
                     
                 </Info>

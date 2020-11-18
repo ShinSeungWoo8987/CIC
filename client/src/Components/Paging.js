@@ -89,7 +89,7 @@ const Page = Styled.div`
 const SelectPage = Styled(Page)`
     font-weight: bold;
     color: black;
-    text-shadow: 1px 1px 2px gray;
+    // text-shadow: 1px 1px 2px gray;
     cursor: default;   
 `
 const MoveBlock = Styled.div`

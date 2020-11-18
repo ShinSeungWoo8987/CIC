@@ -105,6 +105,43 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.antMatchers("/centerlist/{num}").permitAll()
             	.antMatchers("/centerlist/{num}/{key}").permitAll()
             	.antMatchers("/notice/update/{num}").permitAll()
+            	
+            	
+            	
+            	.antMatchers("/service_center/add").permitAll()
+            	.antMatchers("/noticeCnt/{key}").permitAll()
+            	.antMatchers("/eventCnt/{key}").permitAll()
+            	.antMatchers("/centerCnt/{key}").permitAll()
+            	.antMatchers("/service_center/update/{num}").permitAll()
+            	.antMatchers("/service_center/delete/{num}").permitAll()
+            	.antMatchers("/upload").permitAll()
+            	.antMatchers("/type").permitAll()
+            	.antMatchers("/hello").permitAll()
+            	.antMatchers("/fundingList/list").permitAll()
+            	.antMatchers("/project_support/{projectNum}/{pageNum}").permitAll()
+            	.antMatchers("/project/{num}").permitAll()
+            	.antMatchers("/project/information/{num}").permitAll()
+
+            	.antMatchers("/projectListAll/list").hasAnyRole("ADMIN")
+            	.antMatchers("/event/update/{num}").hasAnyRole("ADMIN")
+            	.antMatchers("/event/delete/{num}").hasAnyRole("ADMIN")
+            	.antMatchers("/notice/delete/{num}").hasAnyRole("ADMIN")
+            	.antMatchers("/service_center_solution/update/{num}").hasAnyRole("ADMIN")
+            	.antMatchers("/service_center_solution/delete/{num}").hasAnyRole("ADMIN")
+            	.antMatchers("/event/uploadfile").hasAnyRole("ADMIN")
+            	.antMatchers("/member/{sort}/{page}").hasAnyRole("ADMIN")
+            	.antMatchers("/member/{sort}/{page}/{key}").hasAnyRole("ADMIN")
+            	.antMatchers("/memberCnt/{sort}").hasAnyRole("ADMIN")
+            	.antMatchers("/memberCnt/{sort}/{key}").hasAnyRole("ADMIN")
+            	.antMatchers("/creator_request/{userId}").hasAnyRole("ADMIN")
+            	.antMatchers("/member/delete/{userId}").hasAnyRole("ADMIN")
+            	.antMatchers("/creator_request/{userId}/{decision}").hasAnyRole("ADMIN")
+            	.antMatchers("/event/add").hasAnyRole("ADMIN")
+            	.antMatchers("/notice/add").hasAnyRole("ADMIN")
+
+            	.antMatchers("/project/add").hasAnyRole("CREATOR")
+            	.antMatchers("/project/update").hasAnyRole("CREATOR","ADMIN")
+            	.antMatchers("/creator/request").hasAnyRole("USER")
             	.antMatchers("/").permitAll()
             // all other requests need to be authenticated
             	.anyRequest().hasAnyRole("USER","CREATOR","ADMIN").and().

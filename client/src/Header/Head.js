@@ -65,6 +65,19 @@ function Head(props) {
         }
     },[session.state, session.authority]);
 
+    if ( document.addEventListener ) {
+        document.addEventListener("click",closeHeader,false);
+    } else if ( document.attachEvent ) {
+        document.attachEvent("onclick",closeHeader);
+    } else {
+        document.onmousemove = closeHeader;
+    }
+    function closeHeader(x) {
+      if(275<x.clientY && showMore){
+        setShowMore(!showMore);
+      }
+    }
+
     const handleClick = e=>{
         e.preventDefault();
         setShowMore(!showMore);
