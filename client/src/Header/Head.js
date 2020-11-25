@@ -154,8 +154,8 @@ function Head(props) {
                 {!showMore?
                 <A onClick={e=>handleClick(e)}>카테고리</A>
                 :
-                <>
-                    <A onClick={e=>handleClick(e)}>카테고리</A>
+                <div onClick={e=>handleClick(e)}>
+                    <A>카테고리</A>
                     <UlLeft>
                         {categoryList.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeDefaultMenuState(e)} ><A>{i.title}</A></Li> )}
                     </UlLeft>
@@ -166,7 +166,7 @@ function Head(props) {
                     <UlRight margin={session.state?"240px":"128px"}>
                         {moreList.map( (i)=><Li key={i.id} id={i.id} onClick={(e)=>changeDefaultMenuState(e)}><A>{i.title}</A></Li> )}
                     </UlRight>
-                </>
+                </div>
                 }
                 </Category>
                 {!session.state?'':
@@ -187,7 +187,10 @@ function Head(props) {
             <Charge/>
             <Authority/>
             
-            {globalState.main==='projectDetails'?<FundingState/>:''}
+            {globalState.main==='projectDetails'?
+            globalState.sub==='editProject'?'':<FundingState/>
+            :
+            ''}
         </Container>
     );
 }

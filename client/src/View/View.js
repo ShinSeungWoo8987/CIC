@@ -24,7 +24,11 @@ function MainView() {
         return <ProjectList/>;
     }
     if(globalState.main==='projectDetails'){
-        return <ProjectDetails/>;
+        if(globalState.sub==='editProject'){
+            return <AddProject/>;
+        }else{
+            return <ProjectDetails/>;
+        }
     }
     if(globalState.main==='addProject'){
         return <AddProject/>;

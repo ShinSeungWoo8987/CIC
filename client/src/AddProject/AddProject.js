@@ -103,8 +103,10 @@ function AddProject(props) {
   return (
     <Container>
       <Center>
-          <Nav>
-              <Head>프로젝트 등록</Head>
+          <Nav marginTop={globalState.sub==="editProject"?'10px':'0px'}>
+              <Head>
+                {globalState.sub==="editProject"?'프로젝트 수정':'프로젝트 등록'}
+              </Head>
               <NavItem>
                   {navItem}
               </NavItem>
@@ -129,6 +131,7 @@ const Center = styled.div`
     width: 60%;
 `
 const Nav = styled.div`
+margin-top: ${({marginTop})=>`${marginTop}`};
 float: left;
 width: 100%;
 height: 112px;

@@ -33,11 +33,13 @@ function SubMenu(){
         idx++;
     }
     if(globalState.main==='projectDetails'){
-        menuList = [
-            {id: 'introduction', title: '소개'},
-            {id: 'recentlyNews', title: '최근소식'},
-            {id: 'supportMessage', title: '참여자 응원'}
-        ]
+        if(globalState.sub !== 'editProject'){
+            menuList = [
+                {id: 'introduction', title: '소개'},
+                {id: 'recentlyNews', title: '최근소식'},
+                {id: 'supportMessage', title: '참여자 응원'}
+            ]
+        }
     }
     // Selected Sub Menu Setting
     const changMenuState = (e) => {
@@ -75,7 +77,8 @@ function SubMenu(){
         idx += 1;
     }
     return(
-        <Container 
+        <Container
+            color={globalState.sub==='editProject'?"none":"white"}
             margin={globalState.main==='projectDetails'?"265px":"0px"} 
             width={globalState.main==='projectDetails'?"1010.7px":"1920px"}
             height={globalState.main==='event' || globalState.main==='notice' || globalState.main==='center' ||
@@ -99,7 +102,7 @@ const Container = Styled(Left)`
     height: ${({height}) => height};
     margin: ${({margin}) => "0 0 0 "+margin};
     opacity: 0.8;
-    background-color: white;
+    background-color: ${({color}) => color};
 `
 const Menu = Styled(Left)`
     position: relative;
@@ -123,7 +126,7 @@ const MenuContainer = Styled(Left)`
 const SelectMenuContainer = Styled(MenuContainer)`  
     font-weight: bold;
     color: black;
-    // text-shadow: 1px 1px 2px gray;
+    text-shadow: 1px 1px 2px gray;
 `
 const AlignCenter = Styled(Left)`
     position: relative;
