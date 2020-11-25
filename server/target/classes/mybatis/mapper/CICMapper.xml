@@ -105,9 +105,9 @@
 	</delete>
 	
 	<select id="getFundingProjectList" resultType="ProjectList">
-		select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, dDay, fundingCnt
+		select pro_number, pro_title, pro_target, pro_price, pro_email, pro_thumbnail, pro_logo, mem_id, dDay, fundingCnt
 		from ( select rownum rnum, a.*
-			   from ( select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, <![CDATA[pro_finish-sysdate]]> as dDay, nvl(fundingCnt,0) fundingCnt
+			   from ( select pro_number, pro_title, pro_target, pro_price, pro_email, pro_thumbnail, pro_logo, mem_id, <![CDATA[pro_finish-sysdate]]> as dDay, nvl(fundingCnt,0) fundingCnt
 			   		  from project join ( select pro_number, count(fun_number) fundingCnt
                                           from funding
 			   	   			              where mem_id = #{id}
@@ -144,7 +144,7 @@
 	</select>
 	
 	<select id="getProjectList" resultType="ProjectList">
-		select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
+		select pro_number, pro_title, pro_target, pro_price, pro_email, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
 		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
 			   from ( select *
 			   		  from project
@@ -181,7 +181,7 @@
 	</select>
 	
 	<select id="getProjectListAll" resultType="ProjectList">
-	select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
+	select pro_number, pro_title, pro_target, pro_price, pro_email, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
 		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
 			   from ( select *
 			   		  from project
