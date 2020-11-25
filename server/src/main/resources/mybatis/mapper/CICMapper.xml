@@ -15,7 +15,7 @@
 	</select>
 	
 	<select id="getMainProjectList" resultType="ProjectList">
-	select pro_number, pro_title, pro_target, pro_price, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
+	select pro_number, pro_title, pro_target, pro_price, pro_email, pro_thumbnail, pro_logo, mem_id, dDay, nvl(fundingCnt,0)
 		from ( select rownum as rnum, <![CDATA[a.pro_finish-sysdate]]> as dDay, a.*
 			   from ( select *
 			   		  from project

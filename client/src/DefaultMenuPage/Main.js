@@ -34,7 +34,7 @@ function Main() {
             while(idx<data.length){
                 newProjectList.push(<Item key={idx} number={data[idx].pro_number} dDay={data[idx].dday} thumbnail={data[idx].pro_thumbnail} logo={data[idx].pro_logo} 
                     creator={data[idx].mem_id} title={data[idx].pro_title} targetMoney={data[idx].pro_target} saveMoney={data[idx].fundingCnt*data[idx].pro_price}
-                    fundingCnt={data[idx].fundingCnt} price={data[idx].pro_price}/>)
+                    fundingCnt={data[idx].fundingCnt} price={data[idx].pro_price} email={data[idx].pro_email}/>)
                 idx++;
             }
             setProjectList(newProjectList);

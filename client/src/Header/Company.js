@@ -6,11 +6,12 @@ import Store from '../Store/Store';
 
 function Company(props) {
     const { projectInformation } = useContext(Store);
+    console.log(projectInformation);
     return <Container>
         <Logo><LogoImg src={projectInformation.logo}></LogoImg></Logo>
         <CompanyInfo>
             <Creator>{projectInformation.creator}</Creator>
-            <Email>Email@eamil.com</Email>
+            <Email>{projectInformation.email}</Email>
         </CompanyInfo>
     </Container>;
 }

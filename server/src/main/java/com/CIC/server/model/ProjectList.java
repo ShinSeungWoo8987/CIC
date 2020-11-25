@@ -12,6 +12,7 @@ public class ProjectList {
 	private String pro_title;
 	private int pro_target;
 	private int pro_price;
+	private String pro_email;
 	private String pro_thumbnail;
 	private String pro_logo;
 	private String mem_id;

@@ -25,7 +25,8 @@ function Item(props){
             price: moneyFormat(props.price),
             fundingCnt: props.fundingCnt,
             save: saveMoneyStr,
-            percent: percent
+            percent: percent,
+            email: props.email
         }
         projectInformationDispatch( { type: 'PROJECT', payload: newProjectInformation });
         const newGlobalState = {

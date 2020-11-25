@@ -96,7 +96,8 @@ const _projectInformation = {
     price: '',
     fundingCnt: '',
     save: '',
-    percent: ''
+    percent: '',
+    email: ''
 }
 const projectInformationReducer = (state, { type, payload }) => {
     switch (type) {

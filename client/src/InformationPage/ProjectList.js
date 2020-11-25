@@ -10,6 +10,7 @@ function ProejctList() {
     const { globalState, pageNumber, modalState, modalStateDispatch, pageNumberDispatch } = useContext(Store);
     const [ projectList, setProjectList ] = useState('');
     const [ maxPage, setMaxPage ] = useState('');
+    const message = globalState.main==='fundingList'?'참여한 펀딩이 없습니다.':'등록한 프로젝트가 없습니다';
     // Get Max Page
     useEffect(() => {
         const url = `/${globalState.main}/maxPage`;
@@ -67,7 +68,7 @@ function ProejctList() {
             {!projectList?<Box><Preparing>목록을 불러오는 중입니다 . . .</Preparing></Box>:
                 projectList.length === 0?
                 <>
-                <NoList>참여한 펀딩이 없습니다.</NoList>
+                <NoList>{message}</NoList>
                 <Paging maxPage={maxPage} bottom='20px'/>
                 </>
                 :

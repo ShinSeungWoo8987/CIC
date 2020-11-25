@@ -396,7 +396,7 @@ public class ProjectController {
 		
 		System.out.println("-----------------------------------------");
         System.out.println( (ArrayList)map.get("sendContent") );
-		
+        
         map.forEach((k, v) -> {
         	if(!k.equals("sendContent")) {
         		switch ( (String)k ) {
@@ -407,7 +407,7 @@ public class ProjectController {
 					category = (String)v;
 					break;
 				case "target_money":
-					target_money = (String)v;
+					target_money = Integer.toString((int)v);
 					break;
 				case "sdate":
 					sdate = (String)v;
@@ -422,7 +422,7 @@ public class ProjectController {
 					logo = (String)v;
 					break;
 				case "funding_price":
-					funding_price = (String)v;
+					funding_price = Integer.toString((int)v);;
 					break;
 				case "email":
 					email = (String)v;
@@ -479,6 +479,8 @@ public class ProjectController {
 		String userId = userDetails.getUsername();
 		
         map.forEach((k, v) -> {
+        	System.out.println(k);
+        	System.out.println(v);
         	if(!k.equals("sendContent")) {
         		switch ( (String)k ) {
         		case "project_num":
@@ -491,7 +493,7 @@ public class ProjectController {
 					category = (String)v;
 					break;
 				case "target_money":
-					target_money = (String)v;
+					target_money = Integer.toString((int)v);
 					break;
 				case "sdate":
 					sdate = (String)v;
@@ -506,7 +508,7 @@ public class ProjectController {
 					logo = (String)v;
 					break;
 				case "funding_price":
-					funding_price = (String)v;
+					funding_price = Integer.toString((int)v);
 					break;
 				case "email":
 					email = (String)v;
