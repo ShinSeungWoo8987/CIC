@@ -407,7 +407,7 @@ public class ProjectController {
 					category = (String)v;
 					break;
 				case "target_money":
-					target_money = Integer.toString((int)v);
+					target_money = (String)v;
 					break;
 				case "sdate":
 					sdate = (String)v;
@@ -422,7 +422,7 @@ public class ProjectController {
 					logo = (String)v;
 					break;
 				case "funding_price":
-					funding_price = Integer.toString((int)v);;
+					funding_price = (String)v;
 					break;
 				case "email":
 					email = (String)v;

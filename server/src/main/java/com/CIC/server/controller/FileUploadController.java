@@ -24,7 +24,10 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 
+@CrossOrigin
 @RestController
 public class FileUploadController{
 	String k1 = "...";
@@ -36,21 +39,14 @@ public class FileUploadController{
 	        .withCredentials(new AWSStaticCredentialsProvider(credentials))
 	        .withRegion(Regions.AP_NORTHEAST_2)
 	        .build();
-	
-	
-	public File convert(MultipartFile mfile) throws IOException {
-		File file = new File(mfile.getOriginalFilename());
-		file.createNewFile();
-		FileOutputStream fos = new FileOutputStream(file);
-		fos.write(mfile.getBytes());
-		fos.close();
-		return file;
-	}
-	
-	private String uploadS3(String folderName, File file) throws IOException {
+
+	private String uploadS3(String folderName, MultipartFile file) throws IOException {
 		String fileName = UUID.randomUUID().toString();
 		try {
-			s3Client.putObject("crowdincreative", folderName+"/"+fileName, file);
+			s3Client.putObject(new PutObjectRequest("crowdincreative", folderName+"/"+fileName, file.getInputStream(), null)
+	                .withCannedAcl(CannedAccessControlList.PublicRead));
+			
+			// System.out.println( s3Client.getUrl("crowdincreative", folderName+"/"+fileName).toString() ); //애초에 이걸 썼으면..
 		} catch (AmazonServiceException e) {
             e.printStackTrace();
         } catch (SdkClientException e) {
@@ -62,7 +58,7 @@ public class FileUploadController{
 	}
 	
 	@RequestMapping( value = "/upload", method = RequestMethod.PUT, consumes = "multipart/form-data")
-	@CrossOrigin//(origins = {"http://localhost:3000"})
+	@CrossOrigin("*")
 	public FileUploadRes projectFileUpload( //ArrayList<FileUploadRes>
 			MultipartHttpServletRequest request
 			) throws IOException {
@@ -72,8 +68,8 @@ public class FileUploadController{
 		MultipartFile thumbnail = request.getFile("thumbnail"); //없으면 어쩔껀지 처리해줘야함
 		MultipartFile logo = request.getFile("logo");
 		
-		String thumbnailName = thumbnail == null ? "" : uploadS3(folderName, convert(thumbnail));
-		String logoName = logo == null ? "" : uploadS3(folderName, convert(logo));
+		String thumbnailName = thumbnail == null ? "" : uploadS3(folderName, thumbnail);
+		String logoName = logo == null ? "" : uploadS3(folderName, logo);
 		
 		int period = fileList.size();
 		if(thumbnail != null) {
@@ -87,7 +83,7 @@ public class FileUploadController{
 		for(int i=0; i<period; i++) {
 			MultipartFile file = request.getFile("file"+i);
 			
-			files.add( uploadS3(folderName, convert(file)) );
+			files.add( uploadS3(folderName, file) );
 		}
 		FileUploadRes res = new FileUploadRes(folderName,thumbnailName,logoName,files);
 		return res;
@@ -101,8 +97,8 @@ public class FileUploadController{
 			) throws IOException {
 		String folderName = UUID.randomUUID().toString();
 		
-		String imageName = image == null ? "" : uploadS3(folderName, convert(image));
-		String thumbnailName = thumbnail==null? "" : uploadS3(folderName, convert(thumbnail));
+		String imageName = image == null ? "" : uploadS3(folderName, image);
+		String thumbnailName = thumbnail==null? "" : uploadS3(folderName, thumbnail);
 		
 		EventFileUploadRes res = new EventFileUploadRes(folderName, imageName, thumbnailName);
 		return res;
